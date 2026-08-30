@@ -2,7 +2,7 @@
 
 MSc Computer Science dissertation project exploring graph-resident rewrite rules, guarded rule modification, semantic stability, and causal order derived from rewrite-event dependencies. The planned software artifact is a Rust rewriting engine with a concrete syntax, CLI, WebAssembly bridge, property-based tests, reproducible traces, and a browser visualiser.
 
-The repository is currently in specification/planning state; implementation evidence is tracked explicitly rather than inferred from planned architecture.
+The repository is currently documentation-only: no Rust workspace or executable engine exists. The pre-engine design was re-baselined on 30 August 2026 around an ordinary atom/field carrier graph, structural quotation and fresh-rule packages, variable instantiation followed by a ground rewrite, explicit rule lifecycle, and versioned mutable-rank guardedness. Its seven-kind semantic vocabulary is a candidate pending a constrained minimality audit; mathematical claims, design comparisons, and future implementation evidence are tracked separately.
 
 ## Documentation
 
@@ -20,3 +20,5 @@ New to the project? Start with [`docs/simple.md`](docs/simple.md) — a plain-la
 - [`docs/literature.md`](docs/literature.md) — annotated literature map and working bibliography.
 
 Build and run instructions will be added when the Rust workspace is scaffolded.
+
+The first implementation gate is the constrained minimality suite in [`docs/worked-examples.md`](docs/worked-examples.md) §8: the current typed records, a universal-atom encoding, and a generic-record encoding must be compared on A2/A4/B2/C1 before public graph enums or syntax are fixed. The selected encoding must then reproduce all operational fixtures—fresh staging, exact self-rewriting, rejected mutual regress, admitted restoration, conservative over-rejection, and object divergence—before broader engine runs count as evidence.
