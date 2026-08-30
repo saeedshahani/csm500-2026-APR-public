@@ -2,7 +2,7 @@
 
 MSc Computer Science dissertation project exploring graph-resident rewrite rules, guarded rule modification, semantic stability, and causal order derived from rewrite-event dependencies. The planned software artifact is a Rust rewriting engine with a concrete syntax, CLI, WebAssembly bridge, property-based tests, reproducible traces, and a browser visualiser.
 
-The repository is currently documentation-only: no Rust workspace or executable engine exists. The pre-engine design was re-baselined on 30 August 2026 around an ordinary atom/field carrier graph, structural quotation and fresh-rule packages, variable instantiation followed by a ground rewrite, explicit rule lifecycle, and revision-aware mutable-rank guardedness. The completed constrained subset/Pareto audit selects a five-kind generic-record schema. It is locally irredundant and Pareto-undominated among the studied ordinary-carrier candidates; subset and global minimality are not claimed.
+The repository is currently documentation-only: no Rust workspace or executable engine exists. The pre-engine design was re-baselined on 30 August 2026 around an ordinary atom/field carrier graph, structural quotation and fresh-rule packages, variable instantiation followed by a ground rewrite, explicit rule lifecycle, and revision-aware mutable-rank guardedness. The completed constrained comparative/Pareto audit selects a five-kind generic-record schema. It has a smaller declared profile than the superseded seven-kind schema, is fixed-schema irredundant under the recorded single-symbol ablations, and is Pareto-undominated among the studied eligible candidates on the published numeric vector; subset and global minimality are not claimed.
 
 ## Documentation
 
@@ -21,4 +21,4 @@ New to the project? Start with [`docs/simple.md`](docs/simple.md) — a plain-la
 
 Build and run instructions will be added when the Rust workspace is scaffolded.
 
-The pre-engine minimality gate is complete in [`docs/worked-examples.md`](docs/worked-examples.md) §8 and ADR-050. The selected generic-record encoding must now reproduce all operational fixtures—fresh staging, exact self-rewriting, rejected mutual regress, admitted restoration, conservative over-rejection, and object divergence—before broader engine runs count as evidence.
+The pre-engine minimality gate is complete in [`docs/worked-examples.md`](docs/worked-examples.md) §§8–9 and ADR-051. The selected generic-record encoding must now reproduce all operational fixtures—fresh staging, exact self-rewriting, rejected mutual revision-depth regress, admitted restoration, conservative over-rejection, and object divergence—before broader engine runs count as evidence.
