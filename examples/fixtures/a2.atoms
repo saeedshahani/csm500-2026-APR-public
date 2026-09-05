@@ -1,0 +1,40 @@
+# live rule metadata: 6 atoms, 5 fields
+az            RuleHead
+az_r0         Nat
+az_active     Record[Active]       s0=az
+az_mode       Record[ModeObject]   s0=az
+az_rank       Record[Rank]         s0=az       s1=az_r0
+az_revision   Record[Revision]     s0=az
+
+# quoted operational syntax: 8 atoms, 8 fields
+t_ev          Constructor[Eval]
+t_a           Constructor[Add]
+t_z           Constructor[Zero]
+t_y           PatternVariable admits={Constructor} binding=Free
+t_e0          Record[ObjectLink,expr] s0=t_ev  s1=t_a
+t_e1          Record[ObjectLink,arg1] s0=t_a   s1=t_z
+t_e2          Record[ObjectLink,arg2] s0=t_a   s1=t_y
+t_e3          Record[ObjectLink,expr] s0=t_ev  s1=t_y
+
+# operative LHS membership: 7 atoms, 14 fields
+az_L_ev       Record[Lhs] s0=az s1=t_ev
+az_L_a        Record[Lhs] s0=az s1=t_a
+az_L_z        Record[Lhs] s0=az s1=t_z
+az_L_y        Record[Lhs] s0=az s1=t_y
+az_L_e0       Record[Lhs] s0=az s1=t_e0
+az_L_e1       Record[Lhs] s0=az s1=t_e1
+az_L_e2       Record[Lhs] s0=az s1=t_e2
+
+# operative RHS membership: 3 atoms, 6 fields
+az_R_ev       Record[Rhs] s0=az s1=t_ev
+az_R_y        Record[Rhs] s0=az s1=t_y
+az_R_e3       Record[Rhs] s0=az s1=t_e3
+
+# smallest host redex: 7 atoms, 6 fields
+h_ev          Constructor[Eval]
+h_a           Constructor[Add]
+h_z           Constructor[Zero]
+h_y           Constructor[Value]
+h_e0          Record[ObjectLink,expr] s0=h_ev s1=h_a
+h_e1          Record[ObjectLink,arg1] s0=h_a  s1=h_z
+h_e2          Record[ObjectLink,arg2] s0=h_a  s1=h_y

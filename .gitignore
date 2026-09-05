@@ -8,3 +8,6 @@ docs/worked-examples.md
 docs/simple.md
 docs/decisions.md
 docs/explainers/
+docs/dissertation.md
+/target/
+**/.DS_Store

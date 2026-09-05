@@ -1,0 +1,38 @@
+# live installer metadata: 7 atoms, 6 fields
+iw            RuleHead
+iw_r0         Nat
+iw_r1         Nat                    s0=iw_r0
+iw_active     Record[Active]         s0=iw
+iw_mode       Record[ModeMeta]       s0=iw
+iw_rank       Record[Rank]           s0=iw      s1=iw_r1
+iw_revision   Record[Revision]       s0=iw
+
+# complete quoted Wrap package: 13 atoms, 15 fields
+wh            RuleHead
+wr0           Nat
+wrank         Record[Rank]           s0=wh      s1=wr0
+wmode         Record[ModeObject]     s0=wh
+wactive       Record[Active]         s0=wh
+wrev          Record[Revision]       s0=wh
+x             PatternVariable admits={Constructor} binding=Free
+box           Constructor[Wrapped]
+child         Record[ObjectLink,child] s0=box    s1=x
+wl_x          Record[Lhs]            s0=wh      s1=x
+wr_x          Record[Rhs]            s0=wh      s1=x
+wr_box        Record[Rhs]            s0=wh      s1=box
+wr_child      Record[Rhs]            s0=wh      s1=child
+
+# InstallWrap operative RHS membership: 13 atoms, 26 fields
+iw_R_wh       Record[Rhs] s0=iw s1=wh
+iw_R_wr0      Record[Rhs] s0=iw s1=wr0
+iw_R_wrank    Record[Rhs] s0=iw s1=wrank
+iw_R_wmode    Record[Rhs] s0=iw s1=wmode
+iw_R_wactive  Record[Rhs] s0=iw s1=wactive
+iw_R_wrev     Record[Rhs] s0=iw s1=wrev
+iw_R_x        Record[Rhs] s0=iw s1=x
+iw_R_box      Record[Rhs] s0=iw s1=box
+iw_R_child    Record[Rhs] s0=iw s1=child
+iw_R_wl_x     Record[Rhs] s0=iw s1=wl_x
+iw_R_wr_x     Record[Rhs] s0=iw s1=wr_x
+iw_R_wr_box   Record[Rhs] s0=iw s1=wr_box
+iw_R_wr_child Record[Rhs] s0=iw s1=wr_child

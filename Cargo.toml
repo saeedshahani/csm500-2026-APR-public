@@ -1,0 +1,21 @@
+[workspace]
+members = ["crates/graph-core", "crates/engine", "crates/parser", "crates/cli", "crates/wasm-bridge"]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.85"
+publish = false
+
+[workspace.dependencies]
+graph-core = { path = "crates/graph-core" }
+engine = { path = "crates/engine" }
+parser = { path = "crates/parser" }
+slotmap = "=1.0.7"
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+all = "warn"

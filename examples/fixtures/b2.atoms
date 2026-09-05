@@ -1,0 +1,28 @@
+# live SelfLower metadata: 7 atoms, 6 fields
+sl            RuleHead
+sl_r0         Nat
+sl_r1         Nat                  s0=sl_r0
+sl_active     Record[Active]       s0=sl
+sl_mode       Record[ModeMeta]     s0=sl
+sl_rank       Record[Rank]         s0=sl       s1=sl_r1
+sl_revision   Record[Revision]     s0=sl
+
+# quoted operational syntax: 7 atoms, 7 fields
+b_self        PatternVariable admits={RuleHead} binding=AppliedRule
+b_rest        PatternVariable admits={Nat} binding=Free
+b_top         Nat                  s0=b_rest
+b_old_rank    Record[Rank]         s0=b_self   s1=b_top
+b_old_rev     Record[Revision]     s0=b_self
+b_new_rank    Record[Rank]         s0=b_self   s1=b_rest
+b_new_rev     Record[Revision]     s0=b_self
+
+# operative memberships: 9 atoms, 18 fields
+sl_L_self     Record[Lhs] s0=sl s1=b_self
+sl_L_rest     Record[Lhs] s0=sl s1=b_rest
+sl_L_top      Record[Lhs] s0=sl s1=b_top
+sl_L_rank     Record[Lhs] s0=sl s1=b_old_rank
+sl_L_rev      Record[Lhs] s0=sl s1=b_old_rev
+sl_R_self     Record[Rhs] s0=sl s1=b_self
+sl_R_rest     Record[Rhs] s0=sl s1=b_rest
+sl_R_rank     Record[Rhs] s0=sl s1=b_new_rank
+sl_R_rev      Record[Rhs] s0=sl s1=b_new_rev

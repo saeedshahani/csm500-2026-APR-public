@@ -1,0 +1,92 @@
+# P live metadata at rank one: 7 atoms, 6 fields
+p                   RuleHead
+p_r0                Nat
+p_r1                Nat                    s0=p_r0
+p_active            Record[Active]         s0=p
+p_mode              Record[ModeMeta]       s0=p
+p_rank              Record[Rank]           s0=p            s1=p_r1
+p_revision          Record[Revision]       s0=p
+
+# P quoted syntax: 14 atoms, 13 fields
+p_self              PatternVariable admits={RuleHead} binding=AppliedRule
+p_other             PatternVariable admits={RuleHead} binding=Free
+p_self_zero         Nat
+p_self_one          Nat                    s0=p_self_zero
+p_other_zero        Nat
+p_self_rank         Record[Rank]           s0=p_self        s1=p_self_one
+p_other_rank        Record[Rank]           s0=p_other       s1=p_other_zero
+p_self_rev          Record[Revision]       s0=p_self
+p_other_rev         Record[Revision]       s0=p_other
+p_tag               Constructor[PTag]
+p_new_self_rank     Record[Rank]           s0=p_self        s1=p_other_zero
+p_new_other_rank    Record[Rank]           s0=p_other       s1=p_self_one
+p_new_self_rev      Record[Revision]       s0=p_self
+p_new_other_rev     Record[Revision]       s0=p_other
+
+# P operative memberships: 20 atoms, 40 fields
+p_L_self            Record[Lhs] s0=p s1=p_self
+p_L_other           Record[Lhs] s0=p s1=p_other
+p_L_self_zero       Record[Lhs] s0=p s1=p_self_zero
+p_L_self_one        Record[Lhs] s0=p s1=p_self_one
+p_L_other_zero      Record[Lhs] s0=p s1=p_other_zero
+p_L_self_rank       Record[Lhs] s0=p s1=p_self_rank
+p_L_other_rank      Record[Lhs] s0=p s1=p_other_rank
+p_L_self_rev        Record[Lhs] s0=p s1=p_self_rev
+p_L_other_rev       Record[Lhs] s0=p s1=p_other_rev
+p_L_tag             Record[Lhs] s0=p s1=p_tag
+p_R_self            Record[Rhs] s0=p s1=p_self
+p_R_other           Record[Rhs] s0=p s1=p_other
+p_R_self_zero       Record[Rhs] s0=p s1=p_self_zero
+p_R_self_one        Record[Rhs] s0=p s1=p_self_one
+p_R_other_zero      Record[Rhs] s0=p s1=p_other_zero
+p_R_tag             Record[Rhs] s0=p s1=p_tag
+p_R_new_self_rank   Record[Rhs] s0=p s1=p_new_self_rank
+p_R_new_other_rank  Record[Rhs] s0=p s1=p_new_other_rank
+p_R_new_self_rev    Record[Rhs] s0=p s1=p_new_self_rev
+p_R_new_other_rev   Record[Rhs] s0=p s1=p_new_other_rev
+
+# Q live metadata at rank zero: 6 atoms, 5 fields
+q                   RuleHead
+q_r0                Nat
+q_active            Record[Active]         s0=q
+q_mode              Record[ModeMeta]       s0=q
+q_rank              Record[Rank]           s0=q            s1=q_r0
+q_revision          Record[Revision]       s0=q
+
+# Q quoted syntax: 14 atoms, 13 fields
+q_self              PatternVariable admits={RuleHead} binding=AppliedRule
+q_other             PatternVariable admits={RuleHead} binding=Free
+q_self_zero         Nat
+q_self_one          Nat                    s0=q_self_zero
+q_other_zero        Nat
+q_self_rank         Record[Rank]           s0=q_self        s1=q_self_one
+q_other_rank        Record[Rank]           s0=q_other       s1=q_other_zero
+q_self_rev          Record[Revision]       s0=q_self
+q_other_rev         Record[Revision]       s0=q_other
+q_tag               Constructor[QTag]
+q_new_self_rank     Record[Rank]           s0=q_self        s1=q_other_zero
+q_new_other_rank    Record[Rank]           s0=q_other       s1=q_self_one
+q_new_self_rev      Record[Revision]       s0=q_self
+q_new_other_rev     Record[Revision]       s0=q_other
+
+# Q operative memberships: 20 atoms, 40 fields
+q_L_self            Record[Lhs] s0=q s1=q_self
+q_L_other           Record[Lhs] s0=q s1=q_other
+q_L_self_zero       Record[Lhs] s0=q s1=q_self_zero
+q_L_self_one        Record[Lhs] s0=q s1=q_self_one
+q_L_other_zero      Record[Lhs] s0=q s1=q_other_zero
+q_L_self_rank       Record[Lhs] s0=q s1=q_self_rank
+q_L_other_rank      Record[Lhs] s0=q s1=q_other_rank
+q_L_self_rev        Record[Lhs] s0=q s1=q_self_rev
+q_L_other_rev       Record[Lhs] s0=q s1=q_other_rev
+q_L_tag             Record[Lhs] s0=q s1=q_tag
+q_R_self            Record[Rhs] s0=q s1=q_self
+q_R_other           Record[Rhs] s0=q s1=q_other
+q_R_self_zero       Record[Rhs] s0=q s1=q_self_zero
+q_R_self_one        Record[Rhs] s0=q s1=q_self_one
+q_R_other_zero      Record[Rhs] s0=q s1=q_other_zero
+q_R_tag             Record[Rhs] s0=q s1=q_tag
+q_R_new_self_rank   Record[Rhs] s0=q s1=q_new_self_rank
+q_R_new_other_rank  Record[Rhs] s0=q s1=q_new_other_rank
+q_R_new_self_rev    Record[Rhs] s0=q s1=q_new_self_rev
+q_R_new_other_rev   Record[Rhs] s0=q s1=q_new_other_rev
