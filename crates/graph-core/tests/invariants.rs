@@ -263,3 +263,80 @@ fn genuinely_cyclic_batch_closure_terminates_without_copying() {
         ids.into_iter().collect()
     );
 }
+
+#[test]
+fn decoded_representations_retain_quoted_revisions_and_complete_packages() {
+    for (text, head, revision, quoted_revision) in [
+        (
+            include_str!("../../../examples/fixtures/b2.atoms"),
+            "sl",
+            "sl_revision",
+            "b_new_rev",
+        ),
+        (
+            include_str!("../../../examples/fixtures/a4.atoms"),
+            "iw",
+            "iw_revision",
+            "wrev",
+        ),
+    ] {
+        let f = fixture::load(text).unwrap();
+        let config = validate(&f.graph).unwrap();
+        assert_eq!(config.rules.len(), 1);
+        let view = &config.rules[&f.names[head]];
+        let all: BTreeSet<_> = f.names.values().copied().collect();
+        assert_eq!(view.representation, all);
+        let mut expected_body = all;
+        expected_body.remove(&f.names[revision]);
+        assert_eq!(view.body, expected_body);
+        assert!(view.body.contains(&f.names[quoted_revision]));
+        assert_eq!(view.revision, f.names[revision]);
+        assert_eq!(view.rank, 1);
+        assert!(view.active && view.meta);
+        if head == "iw" {
+            let package: BTreeSet<_> = [
+                "wh", "wr0", "wrank", "wmode", "wactive", "wrev", "x", "box", "child", "wl_x",
+                "wr_x", "wr_box", "wr_child",
+            ]
+            .map(|name| f.names[name])
+            .into_iter()
+            .collect();
+            assert_eq!(view.package_atoms, package);
+            assert_eq!(view.rhs, package);
+            assert!(view.lhs.is_empty());
+            assert!(!config.rules.contains_key(&f.names["wh"]));
+        } else {
+            assert!(view.package_atoms.is_empty());
+            let lhs = ["b_self", "b_rest", "b_top", "b_old_rank", "b_old_rev"];
+            let rhs = ["b_self", "b_rest", "b_new_rank", "b_new_rev"];
+            assert_eq!(
+                view.lhs,
+                lhs.map(|name| f.names[name]).into_iter().collect()
+            );
+            assert_eq!(
+                view.rhs,
+                rhs.map(|name| f.names[name]).into_iter().collect()
+            );
+        }
+    }
+}
+
+#[test]
+fn inactive_partial_sides_decode_but_cannot_be_activated_unclosed() {
+    let mut f = fixture::load(include_str!("../../../examples/fixtures/b2.atoms")).unwrap();
+    f.graph
+        .remove_set(&BTreeSet::from([
+            f.names["sl_active"],
+            f.names["sl_L_rest"],
+        ]))
+        .unwrap();
+    let config = validate(&f.graph).unwrap();
+    let view = &config.rules[&f.names["sl"]];
+    assert!(!view.active);
+    assert!(!view.lhs.contains(&f.names["b_rest"]));
+    assert!(view.rhs.contains(&f.names["b_rest"]));
+    f.graph
+        .insert(Kind::record(Role::Active), &[f.names["sl"]])
+        .unwrap();
+    assert_eq!(validate(&f.graph).unwrap_err().0, "unclosed rule side");
+}

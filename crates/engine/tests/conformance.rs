@@ -1,6 +1,182 @@
 use engine::apply_with_binding;
 
 #[test]
+fn consuming_a_variable_bound_record_preserves_its_completed_support() {
+    let mut g = Graph::new();
+    let source = rule(&mut g, 0, false, true);
+    let edge = variable(&mut g, Sort::Record(Role::ObjectLink));
+    sides(&mut g, source, &[edge], &[]);
+    let a = ctor(&mut g, "A");
+    let b = ctor(&mut g, "B");
+    let target = link(&mut g, "next", a, b);
+    let parallel = link(&mut g, "next", a, b);
+    let representation = validate(&g).unwrap().rules[&source].representation.clone();
+    let before = g.snapshot();
+    let event = apply_with_binding(&mut g, source, &BTreeMap::from([(edge, target)])).unwrap();
+    assert_eq!(event.consumed, BTreeSet::from([target]));
+    assert_eq!(event.preserved, BTreeSet::from([a, b]));
+    assert!(event.produced.is_empty());
+    let expected_reads = representation
+        .union(&BTreeSet::from([target, a, b]))
+        .copied()
+        .collect();
+    assert_eq!(event.read, expected_reads);
+    for (id, atom) in before {
+        if id != target {
+            assert_eq!(g.get(id), Some(&atom));
+        }
+    }
+    assert!(g.get(target).is_none());
+    assert!(g.get(parallel).is_some());
+}
+
+#[test]
+fn preserved_context_cannot_point_to_an_explicitly_consumed_atom() {
+    let mut g = Graph::new();
+    let source = rule(&mut g, 0, true, true);
+    let keep = variable(&mut g, Sort::Nat);
+    let delete = variable(&mut g, Sort::Nat);
+    sides(&mut g, source, &[keep, delete], &[keep]);
+    let zero = g.insert(Kind::Nat, &[]).unwrap();
+    let one = g.insert(Kind::Nat, &[zero]).unwrap();
+    let before = g.snapshot();
+    let error = apply_with_binding(
+        &mut g,
+        source,
+        &BTreeMap::from([(keep, one), (delete, zero)]),
+    )
+    .unwrap_err();
+    assert_eq!(error.0, "dangling reference");
+    assert_eq!(g.snapshot(), before);
+}
+
+#[test]
+fn object_visibility_checks_completed_context_of_inactive_representations() {
+    let mut g = Graph::new();
+    let source = rule(&mut g, 0, false, true);
+    let edge = variable(&mut g, Sort::Record(Role::ObjectLink));
+    sides(&mut g, source, &[edge], &[edge]);
+    let inactive = rule(&mut g, 0, false, false);
+    let hidden = ctor(&mut g, "Hidden");
+    sides(&mut g, inactive, &[hidden], &[hidden]);
+    let visible = ctor(&mut g, "Visible");
+    let target = link(&mut g, "next", visible, hidden);
+    let config = validate(&g).unwrap();
+    assert!(!config.rules[&inactive].representation.contains(&target));
+    let before = g.snapshot();
+    let error = apply_with_binding(&mut g, source, &BTreeMap::from([(edge, target)])).unwrap_err();
+    assert_eq!(error.0, "object grounding enters rule representation");
+    assert_eq!(g.snapshot(), before);
+}
+
+#[test]
+fn same_shape_metadata_replacement_requires_a_fresh_revision() {
+    for replace_revision in [false, true] {
+        let mut g = Graph::new();
+        let target = rule(&mut g, 0, false, true);
+        let source = rule(&mut g, 1, true, true);
+        let h = variable(&mut g, Sort::RuleHead);
+        let old_mode = record(&mut g, Role::ModeObject, &[h]);
+        let new_mode = record(&mut g, Role::ModeObject, &[h]);
+        let old_rev = record(&mut g, Role::Revision, &[h]);
+        let mut rhs = vec![h, new_mode];
+        rhs.push(if replace_revision {
+            record(&mut g, Role::Revision, &[h])
+        } else {
+            old_rev
+        });
+        sides(&mut g, source, &[h, old_mode, old_rev], &rhs);
+        let b = BTreeMap::from([
+            (h, target),
+            (old_mode, owned(&g, target, Role::ModeObject)),
+            (old_rev, owned(&g, target, Role::Revision)),
+        ]);
+        let before = g.snapshot();
+        let result = apply_with_binding(&mut g, source, &b);
+        if replace_revision {
+            let event = result.unwrap();
+            assert_eq!(event.altered, BTreeSet::from([target]));
+            let view = &validate(&g).unwrap().rules[&target];
+            assert!(!view.meta);
+            assert_eq!(view.rank, 0);
+        } else {
+            assert_eq!(
+                result.unwrap_err().0,
+                "alteration requires revision replacement"
+            );
+            assert_eq!(g.snapshot(), before);
+        }
+    }
+}
+
+#[test]
+fn lifecycle_and_gc_check_the_second_affected_head_and_rollback_allocations() {
+    for (second_rank, replace_second_revision, expected_error) in [
+        (0, true, None),
+        (
+            1,
+            true,
+            Some("GC: affected post-rank is not below source pre-rank"),
+        ),
+        (0, false, Some("alteration requires revision replacement")),
+    ] {
+        let mut g = Graph::new();
+        let first = rule(&mut g, 0, false, true);
+        let second = rule(&mut g, second_rank, false, true);
+        let source = rule(&mut g, 1, true, true);
+        let mut lhs = Vec::new();
+        let mut rhs = Vec::new();
+        let mut b = BTreeMap::new();
+        for target in [first, second] {
+            let h = variable(&mut g, Sort::RuleHead);
+            let old_mode = record(&mut g, Role::ModeObject, &[h]);
+            let new_mode = record(&mut g, Role::ModeMeta, &[h]);
+            let old_rev = record(&mut g, Role::Revision, &[h]);
+            let new_rev = if target == second && !replace_second_revision {
+                old_rev
+            } else {
+                record(&mut g, Role::Revision, &[h])
+            };
+            lhs.extend([h, old_mode, old_rev]);
+            rhs.extend([h, new_mode, new_rev]);
+            b.extend([
+                (h, target),
+                (old_mode, owned(&g, target, Role::ModeObject)),
+                (old_rev, owned(&g, target, Role::Revision)),
+            ]);
+        }
+        sides(&mut g, source, &lhs, &rhs);
+        let before = g.snapshot();
+        let mut probe = g.clone();
+        let next = probe.insert(Kind::Nat, &[]).unwrap();
+        let result = apply_with_binding(&mut g, source, &b);
+        if let Some(expected) = expected_error {
+            assert_eq!(result.unwrap_err().0, expected);
+            assert_eq!(g.snapshot(), before);
+            assert_eq!(g.insert(Kind::Nat, &[]).unwrap(), next);
+        } else {
+            assert_eq!(result.unwrap().altered, BTreeSet::from([first, second]));
+        }
+    }
+}
+
+#[test]
+fn caller_edited_rule_views_do_not_authorise_execution() {
+    let mut g = Graph::new();
+    let source = rule(&mut g, 0, false, false);
+    let mut detached = validate(&g).unwrap();
+    detached.rules.get_mut(&source).unwrap().active = true;
+    let before = g.snapshot();
+    assert_eq!(
+        apply_with_binding(&mut g, source, &BTreeMap::new())
+            .unwrap_err()
+            .0,
+        "source is inactive"
+    );
+    assert_eq!(g.snapshot(), before);
+}
+
+#[test]
 fn c3_safe_rank_preserving_annotation_is_conservatively_rejected() {
     let mut g = Graph::new();
     let source = rule(&mut g, 0, true, true);
