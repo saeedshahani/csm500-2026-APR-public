@@ -5,7 +5,10 @@
 //! Atom identities are scoped to one graph history. Clones preserve that history.
 
 pub mod fixture;
+mod limits;
 mod validation;
+
+pub use limits::{GraphLimits, LimitKind};
 
 #[cfg(test)]
 mod tests {
@@ -30,7 +33,7 @@ mod tests {
 use slotmap::{new_key_type, SlotMap};
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
-pub use validation::{validate, Configuration, RuleView};
+pub use validation::{validate, validate_with_limits, Configuration, RuleView, ValidatedGraph};
 
 /// Never reused in a committed graph history; allocation fails on exhaustion.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -154,9 +157,82 @@ pub struct NewAtom {
     pub fields: Vec<Target>,
 }
 
-/// First failure encountered by construction or validation, suitable for display.
+/// Stable failure category; callers must not parse the display message.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum ErrorKind {
+    MalformedInput,
+    InvalidConfiguration,
+    InvalidBinding,
+    Dangling,
+    Lifecycle,
+    Guardedness,
+    StaleCandidate,
+    ResourceExhaustion,
+}
+
+/// Machine-readable context for the first reported failure.
 #[derive(Clone, Debug, PartialEq, Eq)]
-pub struct Diagnostic(pub String);
+pub struct ErrorContext {
+    pub kind: ErrorKind,
+    pub atoms: Vec<AtomKey>,
+    pub role: Option<Role>,
+    pub slot: Option<usize>,
+    pub batch_index: Option<usize>,
+    pub limit: Option<LimitKind>,
+}
+
+/// First failure. Field zero retains the human-readable message for existing clients.
+/// Structured consumers use [`Diagnostic::context`] or [`Diagnostic::kind`].
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct Diagnostic(pub String, ErrorContext);
+impl Diagnostic {
+    pub fn new(kind: ErrorKind, message: impl Into<String>) -> Self {
+        Self(
+            message.into(),
+            ErrorContext {
+                kind,
+                atoms: Vec::new(),
+                role: None,
+                slot: None,
+                batch_index: None,
+                limit: None,
+            },
+        )
+    }
+    pub fn kind(&self) -> ErrorKind {
+        self.1.kind
+    }
+    pub fn context(&self) -> &ErrorContext {
+        &self.1
+    }
+    pub fn with_kind(mut self, kind: ErrorKind) -> Self {
+        self.1.kind = kind;
+        self
+    }
+    pub fn at_atom(mut self, atom: AtomKey) -> Self {
+        if !self.1.atoms.contains(&atom) {
+            self.1.atoms.push(atom);
+        }
+        self
+    }
+    pub fn at_role(mut self, role: Option<Role>) -> Self {
+        self.1.role = role;
+        self
+    }
+    pub fn at_slot(mut self, slot: usize) -> Self {
+        self.1.slot = Some(slot);
+        self
+    }
+    pub fn at_batch(mut self, index: usize) -> Self {
+        self.1.batch_index = Some(index);
+        self
+    }
+    pub fn exhausted(limit: LimitKind, message: impl Into<String>) -> Self {
+        let mut error = Self::new(ErrorKind::ResourceExhaustion, message);
+        error.1.limit = Some(limit);
+        error
+    }
+}
 impl fmt::Display for Diagnostic {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         f.write_str(&self.0)
@@ -169,7 +245,7 @@ pub fn ensure(condition: bool, message: impl Into<String>) -> Result<()> {
     if condition {
         Ok(())
     } else {
-        Err(Diagnostic(message.into()))
+        Err(Diagnostic::new(ErrorKind::InvalidConfiguration, message))
     }
 }
 
@@ -196,14 +272,34 @@ impl Graph {
         self.identities.is_empty()
     }
     /// Look up an atom; a consumed or unknown key resolves to `None`.
+    /// Stored fields cannot be modified through this reference.
+    ///
+    /// ```compile_fail
+    /// use graph_core::{Graph, Kind};
+    /// let mut graph = Graph::new();
+    /// let id = graph.insert(Kind::Nat, &[]).unwrap();
+    /// graph.get(id).unwrap().fields.push(id);
+    /// ```
+    ///
+    /// ```compile_fail
+    /// use graph_core::{Graph, Kind};
+    /// let mut graph = Graph::new();
+    /// let id = graph.insert(Kind::Nat, &[]).unwrap();
+    /// graph.get(id).unwrap().kind = Kind::RuleHead;
+    /// ```
     pub fn get(&self, key: AtomKey) -> Option<&Atom> {
         self.identities
             .get(&key)
             .and_then(|slot| self.atoms.get(*slot))
     }
     pub fn atom(&self, key: AtomKey) -> Result<&Atom> {
-        self.get(key)
-            .ok_or_else(|| Diagnostic(format!("unresolved atom {key:?}")))
+        self.get(key).ok_or_else(|| {
+            Diagnostic::new(
+                ErrorKind::InvalidConfiguration,
+                format!("unresolved atom {key:?}"),
+            )
+            .at_atom(key)
+        })
     }
     /// Iterate in increasing runtime identity order, not semantic canonical order.
     pub fn iter(&self) -> impl Iterator<Item = (AtomKey, &Atom)> {
@@ -235,23 +331,42 @@ impl Graph {
     }
     /// Shape and reference errors leave both storage and the allocation counter unchanged.
     pub fn insert_batch(&mut self, batch: &[NewAtom]) -> Result<Vec<AtomKey>> {
-        let end = self
-            .next_identity
-            .checked_add(batch.len() as u64)
-            .ok_or_else(|| Diagnostic("atom identity space exhausted".into()))?;
+        self.insert_batch_with_limits(batch, &GraphLimits::default())
+    }
+    /// Resolve the whole batch, including forward/cyclic references, before allocating.
+    /// This checks construction shape, not full configuration validity.
+    pub fn insert_batch_with_limits(
+        &mut self,
+        batch: &[NewAtom],
+        limits: &GraphLimits,
+    ) -> Result<Vec<AtomKey>> {
+        limits.check_batch(self, batch)?;
+        let count = u64::try_from(batch.len()).map_err(|_| {
+            Diagnostic::exhausted(LimitKind::Identities, "atom identity space exhausted")
+        })?;
+        let end = self.next_identity.checked_add(count).ok_or_else(|| {
+            Diagnostic::exhausted(LimitKind::Identities, "atom identity space exhausted")
+        })?;
         let ids: Vec<_> = (self.next_identity..end).map(AtomKey).collect();
         let mut records = Vec::new();
-        for item in batch {
-            check_shape(&item.kind, item.fields.len())?;
+        for (index, item) in batch.iter().enumerate() {
+            check_shape(&item.kind, item.fields.len())
+                .map_err(|e| e.at_batch(index).at_role(item.kind.role()))?;
             let fields = item
                 .fields
                 .iter()
-                .map(|t| match t {
-                    Target::Existing(id) => self.atom(*id).map(|_| *id),
-                    Target::Fresh(index) => ids
-                        .get(*index)
-                        .copied()
-                        .ok_or_else(|| Diagnostic("invalid fresh reference".into())),
+                .enumerate()
+                .map(|(slot, t)| {
+                    (match t {
+                        Target::Existing(id) => self.atom(*id).map(|_| *id),
+                        Target::Fresh(index) => ids.get(*index).copied().ok_or_else(|| {
+                            Diagnostic::new(
+                                ErrorKind::InvalidConfiguration,
+                                "invalid fresh reference",
+                            )
+                        }),
+                    })
+                    .map_err(|e| e.at_batch(index).at_role(item.kind.role()).at_slot(slot))
                 })
                 .collect::<Result<Vec<_>>>()?;
             records.push(Atom {
@@ -270,12 +385,20 @@ impl Graph {
         for id in consumed {
             self.atom(*id)?;
         }
-        ensure(
-            !self.iter().any(|(id, a)| {
-                !consumed.contains(&id) && a.fields.iter().any(|t| consumed.contains(t))
-            }),
-            "dangling reference",
-        )?;
+        for (id, atom) in self.iter().filter(|(id, _)| !consumed.contains(id)) {
+            if let Some((slot, target)) = atom
+                .fields
+                .iter()
+                .enumerate()
+                .find(|(_, t)| consumed.contains(t))
+            {
+                return Err(Diagnostic::new(ErrorKind::Dangling, "dangling reference")
+                    .at_atom(id)
+                    .at_atom(*target)
+                    .at_role(atom.kind.role())
+                    .at_slot(slot));
+            }
+        }
         for id in consumed {
             if let Some(slot) = self.identities.remove(id) {
                 self.atoms.remove(slot);

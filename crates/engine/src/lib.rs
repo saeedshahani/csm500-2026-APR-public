@@ -1,9 +1,17 @@
-//! Transactional single-step reference implementation with an explicit injective binding.
-//! Match enumeration, scheduling, caching and concurrency are deliberately not implemented.
-use graph_core::{ensure, validate, AtomKey, Binding, Graph, Kind, NewAtom, Result, Role, Target};
+//! Explicit-binding reference transaction and checked preparation/commit interfaces.
+//! Match enumeration, scheduling, caching and concurrency are not implemented.
+mod checked;
+pub use checked::{
+    CandidateSearch, Execution, ExecutionLimits, GroundMatch, GroundRule, OperationalBinding,
+    PreparedStep, SearchLimits,
+};
+use graph_core::{
+    ensure, validate_with_limits, AtomKey, Binding, Diagnostic, ErrorKind, Graph, GraphLimits,
+    Kind, NewAtom, Result, Role, Target,
+};
 use std::collections::{BTreeMap, BTreeSet};
 
-#[derive(Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Event {
     pub source: AtomKey,
     pub source_revision: AtomKey,
@@ -23,50 +31,80 @@ pub fn apply_with_binding(
     source: AtomKey,
     binding: &BTreeMap<AtomKey, AtomKey>,
 ) -> Result<Event> {
-    let before = validate(graph)?;
-    let rule = before
-        .rules
-        .get(&source)
-        .ok_or_else(|| graph_core::Diagnostic("source is not live".into()))?;
-    ensure(rule.active, "source is inactive")?;
+    apply_with_binding_with_limits(graph, source, binding, &GraphLimits::default())
+}
+
+/// Reference path with explicit resource bounds. Construction edits between calls
+/// are not guarded events and cannot silently extend a closed execution history.
+pub fn apply_with_binding_with_limits(
+    graph: &mut Graph,
+    source: AtomKey,
+    binding: &BTreeMap<AtomKey, AtomKey>,
+    limits: &GraphLimits,
+) -> Result<Event> {
+    let before = validate_with_limits(graph, limits)?;
+    let rule = before.rules.get(&source).ok_or_else(|| {
+        Diagnostic::new(ErrorKind::InvalidBinding, "source is not live").at_atom(source)
+    })?;
+    let binding_error = |e: Diagnostic| e.with_kind(ErrorKind::InvalidBinding).at_atom(source);
+    ensure(rule.active, "source is inactive").map_err(binding_error)?;
     ensure(
-        binding.keys().copied().collect::<BTreeSet<_>>() == rule.lhs,
+        binding.keys().eq(rule.lhs.iter()),
         "binding must cover exactly the LHS",
-    )?;
+    )
+    .map_err(binding_error)?;
     let image: BTreeSet<_> = binding.values().copied().collect();
-    ensure(image.len() == binding.len(), "non-injective binding")?;
+    ensure(image.len() == binding.len(), "non-injective binding").map_err(binding_error)?;
     let hidden: BTreeSet<_> = before
         .rules
         .values()
         .flat_map(|r| r.representation.iter().copied())
         .collect();
     for (pattern, target) in binding {
-        let p = graph.atom(*pattern)?;
-        let t = graph.atom(*target)?;
+        let p = graph.atom(*pattern).map_err(binding_error)?;
+        let t = graph.atom(*target).map_err(binding_error)?;
+        let at_binding = |e: Diagnostic| {
+            binding_error(e)
+                .at_atom(*pattern)
+                .at_atom(*target)
+                .at_role(p.kind.role().or(t.kind.role()))
+        };
         ensure(
             rule.meta || !hidden.contains(target),
             "object match enters rule representation",
-        )?;
+        )
+        .map_err(at_binding)?;
         match &p.kind {
             Kind::PatternVariable { admits, binding } => {
-                ensure(admits.contains(&t.kind.sort()), "variable sort mismatch")?;
+                ensure(admits.contains(&t.kind.sort()), "variable sort mismatch")
+                    .map_err(at_binding)?;
                 ensure(
                     *binding != Binding::AppliedRule || *target == source,
                     "AppliedRule mismatch",
-                )?;
+                )
+                .map_err(at_binding)?;
             }
             _ => {
                 ensure(
                     p.kind == t.kind && p.fields.len() == t.fields.len(),
                     "concrete atom mismatch",
-                )?;
-                ensure(
-                    p.fields
-                        .iter()
-                        .zip(&t.fields)
-                        .all(|(a, b)| binding.get(a) == Some(b)),
-                    "field mismatch",
-                )?;
+                )
+                .map_err(at_binding)?;
+                if let Some((slot, (a, b))) = p
+                    .fields
+                    .iter()
+                    .zip(&t.fields)
+                    .enumerate()
+                    .find(|(_, (a, b))| binding.get(a) != Some(b))
+                {
+                    return Err(at_binding(Diagnostic::new(
+                        ErrorKind::InvalidBinding,
+                        "field mismatch",
+                    ))
+                    .at_atom(*a)
+                    .at_atom(*b)
+                    .at_slot(slot));
+                }
             }
         }
     }
@@ -79,7 +117,8 @@ pub fn apply_with_binding(
     ensure(
         rule.meta || context.is_disjoint(&hidden),
         "object grounding enters rule representation",
-    )?;
+    )
+    .map_err(binding_error)?;
     let preserved = context.difference(&consumed).copied().collect();
     let mut read = context;
     read.extend(&rule.representation);
@@ -100,7 +139,13 @@ pub fn apply_with_binding(
                             .get(field)
                             .copied()
                             .map(Target::Existing)
-                            .ok_or_else(|| graph_core::Diagnostic("unresolved RHS field".into()))
+                            .ok_or_else(|| {
+                                Diagnostic::new(ErrorKind::InvalidBinding, "unresolved RHS field")
+                                    .at_atom(source)
+                                    .at_atom(*id)
+                                    .at_atom(*field)
+                                    .at_role(atom.kind.role())
+                            })
                     }
                 })
                 .collect::<Result<_>>()?;
@@ -112,8 +157,11 @@ pub fn apply_with_binding(
         .collect::<Result<Vec<_>>>()?;
     let mut candidate = graph.clone();
     candidate.remove_set(&consumed)?;
-    let produced: BTreeSet<_> = candidate.insert_batch(&batch)?.into_iter().collect();
-    let after = validate(&candidate)?;
+    let produced: BTreeSet<_> = candidate
+        .insert_batch_with_limits(&batch, limits)?
+        .into_iter()
+        .collect();
+    let after = validate_with_limits(&candidate, limits)?;
     let pre_heads: BTreeSet<_> = before.rules.keys().copied().collect();
     let post_heads: BTreeSet<_> = after.rules.keys().copied().collect();
     let entered: BTreeSet<_> = post_heads.difference(&pre_heads).copied().collect();
@@ -123,7 +171,12 @@ pub fn apply_with_binding(
         ensure(
             produced.contains(&after.rules[head].revision),
             "entry requires fresh revision",
-        )?;
+        )
+        .map_err(|e| {
+            e.with_kind(ErrorKind::Lifecycle)
+                .at_atom(*head)
+                .at_role(Some(Role::Revision))
+        })?;
         for (id, atom) in graph
             .iter()
             .filter(|(_, a)| a.kind.role() == Some(Role::Revision) && a.fields[0] == *head)
@@ -132,19 +185,31 @@ pub fn apply_with_binding(
             ensure(
                 consumed.contains(&id),
                 "entry retains an old revision template",
-            )?;
+            )
+            .map_err(|e| {
+                e.with_kind(ErrorKind::Lifecycle)
+                    .at_atom(*head)
+                    .at_atom(id)
+                    .at_role(Some(Role::Revision))
+            })?;
         }
     }
     for head in &exited {
         ensure(
             consumed.contains(&before.rules[head].revision),
             "exit must consume executable revision",
-        )?;
+        )
+        .map_err(|e| {
+            e.with_kind(ErrorKind::Lifecycle)
+                .at_atom(*head)
+                .at_role(Some(Role::Revision))
+        })?;
         if candidate.get(*head).is_none() {
             ensure(
                 before.rules[head].representation.is_subset(&consumed),
                 "head deletion must consume its representation",
-            )?;
+            )
+            .map_err(|e| e.with_kind(ErrorKind::Lifecycle).at_atom(*head))?;
         }
     }
     for head in pre_heads.intersection(&post_heads) {
@@ -155,19 +220,35 @@ pub fn apply_with_binding(
             ensure(
                 consumed.contains(&pre.revision) && produced.contains(&post.revision),
                 "alteration requires revision replacement",
-            )?;
+            )
+            .map_err(|e| {
+                e.with_kind(ErrorKind::Lifecycle)
+                    .at_atom(*head)
+                    .at_role(Some(Role::Revision))
+            })?;
         } else {
             ensure(
                 pre.revision == post.revision,
                 "unchanged rule cannot churn revision",
-            )?;
+            )
+            .map_err(|e| {
+                e.with_kind(ErrorKind::Lifecycle)
+                    .at_atom(*head)
+                    .at_role(Some(Role::Revision))
+            })?;
         }
     }
     for head in entered.union(&altered) {
         ensure(
             after.rules[head].rank < rule.rank,
             "GC: affected post-rank is not below source pre-rank",
-        )?;
+        )
+        .map_err(|e| {
+            e.with_kind(ErrorKind::Guardedness)
+                .at_atom(*head)
+                .at_atom(source)
+                .at_role(Some(Role::Rank))
+        })?;
     }
     let event = Event {
         source,

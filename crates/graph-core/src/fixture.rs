@@ -1,6 +1,7 @@
 //! Small explicit atom-ledger reader for tests; not the planned surface language.
 use crate::{
-    ensure, AtomKey, Binding, Diagnostic, Graph, Kind, NewAtom, Result, Role, Sort, Target,
+    ensure, AtomKey, Binding, Diagnostic, ErrorKind, Graph, GraphLimits, Kind, NewAtom, Result,
+    Role, Sort, Target,
 };
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -10,6 +11,22 @@ pub struct Fixture {
 }
 
 pub fn load(text: &str) -> Result<Fixture> {
+    load_with_limits(text, &GraphLimits::default())
+}
+
+/// Bounded ledger construction; deliberately does not claim full configuration validity.
+pub fn load_with_limits(text: &str, limits: &GraphLimits) -> Result<Fixture> {
+    limits.check_input(text)?;
+    load_buffer(text, limits).map_err(|e| {
+        if e.kind() == ErrorKind::InvalidConfiguration {
+            e.with_kind(ErrorKind::MalformedInput)
+        } else {
+            e
+        }
+    })
+}
+
+fn load_buffer(text: &str, limits: &GraphLimits) -> Result<Fixture> {
     let rows: Vec<Vec<&str>> = text
         .lines()
         .map(|l| {
@@ -21,6 +38,7 @@ pub fn load(text: &str) -> Result<Fixture> {
         })
         .filter(|r: &Vec<_>| !r.is_empty())
         .collect();
+    crate::limits::check(rows.len(), limits.max_atoms, crate::LimitKind::Atoms)?;
     let mut indices = BTreeMap::new();
     for (i, row) in rows.iter().enumerate() {
         ensure(row.len() >= 2, "expected name and kind")?;
@@ -33,14 +51,14 @@ pub fn load(text: &str) -> Result<Fixture> {
         for item in &row[2..] {
             let (key, value) = item
                 .split_once('=')
-                .ok_or_else(|| Diagnostic("expected key=value".into()))?;
+                .ok_or_else(|| Diagnostic::new(ErrorKind::MalformedInput, "expected key=value"))?;
             if let Some(slot) = key.strip_prefix("slot").or_else(|| key.strip_prefix('s')) {
                 let slot: usize = slot
                     .parse()
-                    .map_err(|_| Diagnostic("invalid slot".into()))?;
-                let index = indices
-                    .get(value)
-                    .ok_or_else(|| Diagnostic(format!("unknown target {value}")))?;
+                    .map_err(|_| Diagnostic::new(ErrorKind::MalformedInput, "invalid slot"))?;
+                let index = indices.get(value).ok_or_else(|| {
+                    Diagnostic::new(ErrorKind::MalformedInput, format!("unknown target {value}"))
+                })?;
                 ensure(
                     fields.insert(slot, Target::Fresh(*index)).is_none(),
                     "duplicate slot",
@@ -59,11 +77,13 @@ pub fn load(text: &str) -> Result<Fixture> {
             "PatternVariable" => {
                 let admits = attrs
                     .remove("admits")
-                    .ok_or_else(|| Diagnostic("missing admits".into()))?;
+                    .ok_or_else(|| Diagnostic::new(ErrorKind::MalformedInput, "missing admits"))?;
                 let admits = admits
                     .strip_prefix('{')
                     .and_then(|s| s.strip_suffix('}'))
-                    .ok_or_else(|| Diagnostic("expected admits={sort,...}".into()))?;
+                    .ok_or_else(|| {
+                        Diagnostic::new(ErrorKind::MalformedInput, "expected admits={sort,...}")
+                    })?;
                 let admits = admits
                     .split(',')
                     .map(sort)
@@ -71,7 +91,12 @@ pub fn load(text: &str) -> Result<Fixture> {
                 let binding = match attrs.remove("binding") {
                     Some("Free") => Binding::Free,
                     Some("AppliedRule") => Binding::AppliedRule,
-                    _ => return Err(Diagnostic("invalid binding".into())),
+                    _ => {
+                        return Err(Diagnostic::new(
+                            ErrorKind::MalformedInput,
+                            "invalid binding",
+                        ))
+                    }
                 };
                 Kind::PatternVariable { admits, binding }
             }
@@ -89,7 +114,12 @@ pub fn load(text: &str) -> Result<Fixture> {
                     label,
                 }
             }
-            _ => return Err(Diagnostic(format!("unknown kind {}", row[1]))),
+            _ => {
+                return Err(Diagnostic::new(
+                    ErrorKind::MalformedInput,
+                    format!("unknown kind {}", row[1]),
+                ))
+            }
         };
         ensure(attrs.is_empty(), "unknown attribute")?;
         batch.push(NewAtom {
@@ -98,7 +128,7 @@ pub fn load(text: &str) -> Result<Fixture> {
         });
     }
     let mut graph = Graph::new();
-    let ids = graph.insert_batch(&batch)?;
+    let ids = graph.insert_batch_with_limits(&batch, limits)?;
     let names = indices
         .into_iter()
         .map(|(name, i)| (name.to_string(), ids[i]))
@@ -116,7 +146,10 @@ fn role(s: &str) -> Result<Role> {
         "ModeObject" => Ok(Role::ModeObject),
         "ModeMeta" => Ok(Role::ModeMeta),
         "Revision" => Ok(Role::Revision),
-        _ => Err(Diagnostic(format!("unknown role {s}"))),
+        _ => Err(Diagnostic::new(
+            ErrorKind::MalformedInput,
+            format!("unknown role {s}"),
+        )),
     }
 }
 fn sort(s: &str) -> Result<Sort> {
@@ -129,6 +162,11 @@ fn sort(s: &str) -> Result<Sort> {
             .strip_prefix("Record[")
             .and_then(|s| s.strip_suffix(']'))
             .map(|s| role(s).map(Sort::Record))
-            .unwrap_or_else(|| Err(Diagnostic(format!("unknown sort {s}")))),
+            .unwrap_or_else(|| {
+                Err(Diagnostic::new(
+                    ErrorKind::MalformedInput,
+                    format!("unknown sort {s}"),
+                ))
+            }),
     }
 }
