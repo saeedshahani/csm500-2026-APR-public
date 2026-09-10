@@ -1,0 +1,28 @@
+// Syntax specimen: lowering and execution are separate from parsing.
+program {
+    rule install {
+        atom install_zero = Nat();
+        atom install_one = Nat(install_zero);
+        rank install_rank = install_one;
+        mode install_mode = ModeMeta;
+        revision install_revision;
+        active install_active;
+        lhs {}
+        rhs {
+            package {
+                rule wrap {
+                    atom wrap_zero = Nat();
+                    rank wrap_rank = wrap_zero;
+                    mode wrap_mode = ModeObject;
+                    revision wrap_revision;
+                    active wrap_active;
+                    atom x = PatternVariable[Constructor] Free;
+                    atom box = Constructor("Wrapped");
+                    atom child = Record[ObjectLink]("child", box, x);
+                    lhs { wrap_l_x: x; }
+                    rhs { wrap_r_x: x; wrap_r_box: box; wrap_r_child: child; }
+                }
+            }
+        }
+    }
+}

@@ -13,6 +13,7 @@ graph-core = { path = "crates/graph-core" }
 engine = { path = "crates/engine" }
 parser = { path = "crates/parser" }
 slotmap = "=1.0.7"
+logos = "=0.16.1"
 
 [workspace.lints.rust]
 unsafe_code = "forbid"

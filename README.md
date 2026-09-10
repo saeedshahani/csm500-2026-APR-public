@@ -33,14 +33,20 @@ RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 
 The repository's existing ignore policy for local documentation is preserved. Builds and tests use the source fixtures directly and do not require dissertation or explainer files.
 
-Sprint 1 local acceptance and Sprint 2's initial audit and checked-interface package (S2.A–S2.B) are complete. Research evidence is recorded in [`research-plan.md`](docs/research-plan.md), implementation boundaries in [`architecture.md`](docs/architecture.md), and remaining work in [`task-list.md`](docs/task-list.md). The explicit schema is a documented trade-off: a default-binding comparator uses one fewer declared tag with equal carrier costs. Full research adequacy remains pending. Sprint numbers and dates are unchanged; remote CI is reported separately from local verification.
+Sprint 1 local acceptance and Sprint 2's initial audit, checked interfaces and concrete-syntax package (S2.A–S2.C) are complete. Research evidence is recorded in [`research-plan.md`](docs/research-plan.md), implementation boundaries in [`architecture.md`](docs/architecture.md), and remaining work in [`task-list.md`](docs/task-list.md). The explicit schema is a documented trade-off: a default-binding comparator uses one fewer declared tag with equal carrier costs. Full research adequacy remains pending. Sprint numbers and dates are unchanged; remote CI is reported separately from local verification.
 
-## Checked native interfaces
+## Concrete syntax
+
+`parser::parse(source)` reads a complete `program { ... }` into a source-located syntax tree. It supports all atom kinds, explicit variable bindings, named rule metadata, L/R sides and nested RHS packages. It reports multiple syntax errors and bounds input, tokens, diagnostics and nesting. It does **not** yet resolve names or construct a validated graph.
+
+See [the grammar](docs/architecture.md#9-concrete-syntax-and-parsing) and [the installer syntax specimen](examples/syntax/install-wrap.graph). `parser::parse_with_limits` accepts explicit settings. The original `.atoms` ledger format remains a separate test-input path.
+
+## Checked execution
 
 `graph_core::ValidatedGraph` gives a read-only validated view tied to a graph borrow. `Graph::insert_batch_with_limits` resolves forward and cyclic references atomically; construction is distinct from full validation. `GraphLimits` bounds input bytes, atoms, fields, labels, package depth and validation work.
 
 `engine::Execution` owns the committed graph. Submit an `OperationalBinding` to `prepare`, inspect the resulting `PreparedStep`, then pass it to `commit`. Ground rule/match data are checked and read-only. A candidate becomes stale after any committed step or successful `replace_graph`, even when the graph looks unchanged. External replacement starts a new execution history.
 
-For multiple candidate attempts, reuse one `Execution::search()` and check `finish()` before treating the search as complete. Resource exhaustion is distinct from an invalid binding and must not be interpreted as a normal form. This interface does not yet enumerate matches; the authored parser and general matcher remain S2.C–S2.H work. `apply_with_binding` remains the direct reference path.
+For multiple candidate attempts, reuse one `Execution::search()` and check `finish()` before treating the search as complete. Resource exhaustion is distinct from an invalid binding and must not be interpreted as a normal form. This interface does not enumerate matches. Concrete syntax is parsed into an AST; checked lowering and general matching remain subsequent work. `apply_with_binding` remains the direct reference path.
 
-The suite currently passes 70 unit/integration tests plus eight documentation tests, including seven compile-fail API checks. See [architecture §20](docs/architecture.md#20-checked-construction-and-execution-interfaces) for defaults, error categories and the source-level commit argument. No new dependencies were required.
+The suite currently passes 100 unit/integration tests plus nine documentation tests, including seven compile-fail API checks. See [architecture §20](docs/architecture.md#20-checked-construction-and-execution-interfaces) for defaults, error categories and the source-level commit argument. The parser uses pinned Logos 0.16.1; engine and parser remain independent production siblings.
