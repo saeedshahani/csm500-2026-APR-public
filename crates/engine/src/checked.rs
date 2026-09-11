@@ -187,6 +187,8 @@ impl Execution {
     pub fn committed_steps(&self) -> u64 {
         self.steps
     }
+    /// Revalidate and decode the current carrier on every call; no rule cache or
+    /// separate rule store is maintained. The borrow prevents a concurrent commit.
     pub fn view(&self) -> Result<ValidatedGraph<'_>> {
         ValidatedGraph::new(&self.graph, &self.limits.graph)
     }

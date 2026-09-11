@@ -14,11 +14,13 @@
 mod ast;
 mod lexer;
 mod lowering;
+mod printer;
 mod syntax;
 
 pub use ast::*;
 pub use lexer::{lex, lex_with_limits, Lexed, Token, TokenKind};
 pub use lowering::{load, load_with_limits, AtomOrigin, LoadedProgram};
+pub use printer::{print, print_with_limits};
 pub use syntax::{parse, parse_with_limits};
 
 use graph_core::{Diagnostic, ErrorKind, GraphLimits};

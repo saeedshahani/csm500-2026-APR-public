@@ -65,6 +65,14 @@ impl<'g> ValidatedGraph<'g> {
     pub fn rule(&self, head: AtomKey) -> Option<&RuleView> {
         self.configuration.rules.get(&head)
     }
+    /// All live heads, including inactive representations; quoted heads are absent.
+    pub fn live_rules(&self) -> impl Iterator<Item = &RuleView> {
+        self.configuration.rules.values()
+    }
+    /// Active live sources, not necessarily rules with an enabled match.
+    pub fn active_rules(&self) -> impl Iterator<Item = &RuleView> {
+        self.live_rules().filter(|rule| rule.active)
+    }
 }
 
 /// Validate with default operational bounds; a resource error is not invalidity.

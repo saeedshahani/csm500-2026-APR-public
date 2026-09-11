@@ -1,0 +1,7 @@
+program {
+  atom a0 = Constructor("Zero");
+  atom a1 = Constructor("Succ");
+  atom a2 = Record[ObjectLink]("pred", a1, a0);
+  atom a3 = Record[ObjectLink]("pred", a1, a0);
+  atom a4 = Nat(a4);
+}

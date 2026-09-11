@@ -1,0 +1,7 @@
+program {
+  atom a0 = RuleHead;
+  atom a1 = Nat();
+  atom a2 = Record[Rank](a0, a1);
+  atom a3 = Record[ModeMeta](a0);
+  atom a4 = Record[Revision](a0);
+}

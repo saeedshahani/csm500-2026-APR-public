@@ -1,0 +1,29 @@
+// A rank-one supervisor replaces the output membership of a rank-zero rule.
+program {
+  rule target {
+    atom zero = Nat();
+    rank target_rank = zero;
+    mode target_mode = ModeObject;
+    revision target_rev;
+    active target_active;
+    atom output = Constructor("A");
+    rhs { output_member: output; }
+  }
+  rule supervisor {
+    atom s_zero = Nat();
+    atom s_one = Nat(s_zero);
+    rank s_rank = s_one;
+    mode s_mode = ModeMeta;
+    revision s_rev;
+    active s_active;
+    atom h = PatternVariable[RuleHead] Free;
+    atom x = PatternVariable[Constructor] Free;
+    atom old_member = Record[Rhs](h, x);
+    atom old_rev = Record[Revision](h);
+    atom replacement = Constructor("B");
+    atom new_member = Record[Rhs](h, replacement);
+    atom new_rev = Record[Revision](h);
+    lhs { l_h: h; l_x: x; l_m: old_member; l_v: old_rev; }
+    rhs { r_h: h; r_x: x; r_b: replacement; r_m: new_member; r_v: new_rev; }
+  }
+}
