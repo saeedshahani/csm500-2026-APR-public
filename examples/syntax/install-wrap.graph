@@ -1,4 +1,4 @@
-// Syntax specimen: lowering and execution are separate from parsing.
+// Authored installation specimen; tests supply explicit engine bindings.
 program {
     rule install {
         atom install_zero = Nat();

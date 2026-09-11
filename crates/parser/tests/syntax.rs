@@ -432,6 +432,7 @@ fn documented_graph_examples_are_accepted_by_the_actual_parser() {
     for section in architecture.split("```graph\n").skip(1) {
         let source = section.split("```").next().unwrap();
         parse(source).unwrap();
+        parser::load(source).unwrap();
         count += 1;
     }
     assert!(

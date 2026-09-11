@@ -121,6 +121,7 @@ impl Parser {
         } else if !self.exhausted {
             if self.errors.len() >= self.max_diagnostics {
                 self.errors.push(SourceDiagnostic {
+                    related: Box::default(),
                     span: error.span,
                     diagnostic: Diagnostic::exhausted(
                         LimitKind::SyntaxDiagnostics,
@@ -142,6 +143,7 @@ impl Parser {
         self.exhausted = true;
         self.position = self.tokens.len() - 1;
         Err(SourceDiagnostic {
+            related: Box::default(),
             span,
             diagnostic: Diagnostic::exhausted(
                 LimitKind::SyntaxNesting,

@@ -104,6 +104,7 @@ pub fn lex_with_limits(source: &str, limits: &ParseLimits) -> Lexed {
         return Lexed {
             tokens: vec![eof],
             diagnostics: vec![SourceDiagnostic {
+                related: Box::default(),
                 diagnostic,
                 span: Span { start: 0, end: 0 },
             }],
@@ -175,6 +176,7 @@ pub fn lex_with_limits(source: &str, limits: &ParseLimits) -> Lexed {
         if let Some(message) = error {
             if result.diagnostics.len() >= limits.max_diagnostics {
                 result.diagnostics.push(SourceDiagnostic {
+                    related: Box::default(),
                     span,
                     diagnostic: Diagnostic::exhausted(
                         LimitKind::SyntaxDiagnostics,
@@ -189,6 +191,7 @@ pub fn lex_with_limits(source: &str, limits: &ParseLimits) -> Lexed {
         }
         if result.tokens.len() >= limits.max_tokens {
             result.diagnostics.push(SourceDiagnostic {
+                related: Box::default(),
                 span,
                 diagnostic: Diagnostic::exhausted(
                     LimitKind::SyntaxTokens,

@@ -2,6 +2,8 @@
 //!
 //! Parsing checks syntax, not graph validity. Names are not runtime identities;
 //! resolution, graph construction and semantic validation are separate operations.
+//! [`load`] performs that complete pipeline into a separate validated buffer;
+//! it never mutates a running execution.
 //!
 //! ```
 //! let program = parser::parse(r#"program { atom hello = Constructor("Hello"); }"#)?;
@@ -11,10 +13,12 @@
 
 mod ast;
 mod lexer;
+mod lowering;
 mod syntax;
 
 pub use ast::*;
 pub use lexer::{lex, lex_with_limits, Lexed, Token, TokenKind};
+pub use lowering::{load, load_with_limits, AtomOrigin, LoadedProgram};
 pub use syntax::{parse, parse_with_limits};
 
 use graph_core::{Diagnostic, ErrorKind, GraphLimits};
@@ -61,13 +65,38 @@ pub fn source_position(source: &str, offset: usize) -> Option<Position> {
 pub struct SourceDiagnostic {
     pub diagnostic: Diagnostic,
     pub span: Span,
+    pub related: Box<[RelatedLocation]>,
+}
+
+/// A second source location explaining a duplicate, reference or graph failure.
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct RelatedLocation {
+    pub span: Span,
+    pub message: String,
 }
 
 impl SourceDiagnostic {
+    pub fn new(diagnostic: Diagnostic, span: Span) -> Self {
+        Self {
+            diagnostic,
+            span,
+            related: Box::default(),
+        }
+    }
+    pub fn with_related(mut self, span: Span, message: impl Into<String>) -> Self {
+        let mut related = self.related.into_vec();
+        related.push(RelatedLocation {
+            span,
+            message: message.into(),
+        });
+        self.related = related.into_boxed_slice();
+        self
+    }
     fn syntax(span: Span, message: impl Into<String>) -> Self {
         Self {
             diagnostic: Diagnostic::new(ErrorKind::MalformedInput, message),
             span,
+            related: Box::default(),
         }
     }
 }
