@@ -1,4 +1,4 @@
-use crate::{apply_with_binding_with_limits, Event};
+use crate::{apply_candidate, AdmissionFailure, Event};
 use graph_core::{
     Atom, AtomKey, Diagnostic, ErrorKind, Graph, GraphLimits, LimitKind, Result, ValidatedGraph,
 };
@@ -83,7 +83,7 @@ impl GroundMatch {
 /// Resource bounds for one enumeration/preparation search, not one execution history.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct SearchLimits {
-    /// Number of complete bindings submitted for applicability checking.
+    /// Number of complete bindings emitted or submitted for applicability checking.
     pub max_candidates: usize,
     /// Matcher work units plus one unit and the assignment size per preparation.
     pub max_work: usize,
@@ -139,7 +139,7 @@ impl PreparedStep {
 /// The engine is single-threaded; this boundary makes no concurrency guarantee.
 ///
 /// A complete empty-side rule supplies a minimal preparation/commit example.
-/// The ledger is test syntax, not the forthcoming authored language.
+/// The ledger is test syntax, separate from the authored language.
 ///
 /// ```
 /// use engine::{Execution, ExecutionLimits, OperationalBinding};
@@ -201,7 +201,7 @@ impl Execution {
         self.steps = 0;
         Ok(())
     }
-    /// Begin one bounded search. Match enumeration itself is a subsequent work package.
+    /// Begin one bounded search over this immutable state.
     pub fn search(&self) -> CandidateSearch<'_> {
         CandidateSearch {
             execution: self,
@@ -237,9 +237,12 @@ impl Execution {
         self.steps = next;
         Ok(prepared.event)
     }
-    fn prepare_checked(&self, binding: OperationalBinding) -> Result<PreparedStep> {
+    fn prepare_checked(
+        &self,
+        binding: OperationalBinding,
+    ) -> std::result::Result<PreparedStep, AdmissionFailure> {
         let mut candidate = self.graph.clone();
-        let event = apply_with_binding_with_limits(
+        let event = apply_candidate(
             &mut candidate,
             binding.source,
             &binding.assignments,
@@ -277,17 +280,17 @@ impl Execution {
 /// A bounded search over a borrowed, immutable execution state. Inapplicable bindings
 /// may be skipped, but resource exhaustion is sticky and must not become an empty
 /// enabled set. Call `finish` before interpreting enumeration as complete.
-/// A successful finish only certifies that limits were not exceeded; the future
-/// matcher must separately establish that it actually enumerated all assignments.
+/// A successful finish only certifies that limits were not exceeded; complete
+/// enumeration is guaranteed only by successful bindings/enabled queries.
 #[derive(Debug)]
 pub struct CandidateSearch<'a> {
-    execution: &'a Execution,
+    pub(crate) execution: &'a Execution,
     candidates: usize,
     work: usize,
     exhausted: Option<Diagnostic>,
 }
 impl CandidateSearch<'_> {
-    fn check(&self) -> Result<()> {
+    pub(crate) fn check(&self) -> Result<()> {
         match &self.exhausted {
             Some(error) => Err(error.clone()),
             None => Ok(()),
@@ -310,18 +313,35 @@ impl CandidateSearch<'_> {
         }
     }
     pub fn prepare(&mut self, binding: OperationalBinding) -> Result<PreparedStep> {
+        self.prepare_classified(binding)
+            .map_err(AdmissionFailure::diagnostic)
+    }
+    pub(crate) fn reserve_candidate(&mut self, size: usize) -> Result<()> {
         self.check()?;
         if self.candidates >= self.execution.limits.search.max_candidates {
             return Err(self.exhaust(LimitKind::Candidates));
         }
         self.candidates += 1;
         self.charge_work(1)?;
-        self.charge_work(binding.assignments.len())?;
+        self.charge_work(size)
+    }
+    pub(crate) fn prepare_classified(
+        &mut self,
+        binding: OperationalBinding,
+    ) -> std::result::Result<PreparedStep, AdmissionFailure> {
+        self.reserve_candidate(binding.assignments.len())?;
         let result = self.execution.prepare_checked(binding);
-        if let Err(error) = &result {
+        if let Err(AdmissionFailure::Failed(error) | AdmissionFailure::Rejected(error)) = &result {
             if error.kind() == ErrorKind::ResourceExhaustion {
                 self.exhausted = Some(error.clone());
             }
+        }
+        result
+    }
+    pub(crate) fn remember_failure<T>(&mut self, result: Result<T>) -> Result<T> {
+        if let Err(error) = &result {
+            // A failed complete query cannot later be mistaken for a completed search.
+            self.exhausted = Some(error.clone());
         }
         result
     }

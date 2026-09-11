@@ -14,9 +14,14 @@ fn apply(
 ) -> Event {
     let before = execution.view().unwrap();
     let source = before.rule(head).unwrap().clone();
+    let expected = OperationalBinding::new(head, assignments);
     let proposal = execution
-        .prepare(OperationalBinding::new(head, assignments))
-        .unwrap();
+        .enabled_for(head)
+        .unwrap()
+        .into_steps()
+        .into_iter()
+        .find(|p| p.binding() == &expected)
+        .expect("authored binding not discovered and admitted");
     assert_eq!(proposal.event().source_revision, source.revision);
     assert!(source.representation.is_subset(&proposal.event().read));
     let event = execution.commit(proposal).unwrap();

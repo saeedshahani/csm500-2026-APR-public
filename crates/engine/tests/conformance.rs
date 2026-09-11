@@ -1,4 +1,60 @@
-use engine::apply_with_binding;
+// Every specified transition is also discovered by the automatic matcher and
+// checked through the general applicability path. The reference transaction is
+// shared implementation, so agreement is integration evidence, not a second proof.
+fn apply_with_binding(
+    graph: &mut Graph,
+    source: AtomKey,
+    binding: &BTreeMap<AtomKey, AtomKey>,
+) -> graph_core::Result<engine::Event> {
+    let mut reference = graph.clone();
+    let expected = engine::apply_with_binding(&mut reference, source, binding);
+    let mut limits = engine::ExecutionLimits::default();
+    limits.search.max_candidates = 100_000;
+    limits.search.max_work = 50_000_000;
+    let mut execution = engine::Execution::new(graph.clone(), limits).unwrap();
+    let before = graph.snapshot();
+    let next = graph.clone().insert(Kind::Nat, &[]).unwrap();
+    let raw = execution.bindings(source).unwrap();
+    let wanted = engine::OperationalBinding::new(source, binding.clone());
+    let found = raw.contains(&wanted);
+    let enabled = execution.enabled_for(source).unwrap();
+    assert_eq!(execution.graph().snapshot(), before);
+    assert_eq!(
+        execution.graph().clone().insert(Kind::Nat, &[]).unwrap(),
+        next
+    );
+    match expected {
+        Ok(event) => {
+            assert!(found, "expected binding absent from enumeration");
+            let proposal = enabled
+                .into_steps()
+                .into_iter()
+                .find(|p| p.binding() == &wanted)
+                .expect("expected binding not admitted");
+            assert_eq!(proposal.event(), &event);
+            assert_eq!(execution.commit(proposal).unwrap(), event);
+            assert_eq!(execution.graph().snapshot(), reference.snapshot());
+            validate(execution.graph()).unwrap();
+            *graph = execution.graph().clone();
+            Ok(event)
+        }
+        Err(error) => {
+            assert!(enabled.steps().iter().all(|p| p.binding() != &wanted));
+            if found {
+                let rejection = enabled
+                    .rejected()
+                    .iter()
+                    .find(|r| r.binding == wanted)
+                    .expect("missing applicability rejection");
+                assert_eq!(rejection.diagnostic, error);
+            } else {
+                assert_eq!(error.kind(), graph_core::ErrorKind::InvalidBinding);
+            }
+            assert_eq!(graph.snapshot(), before);
+            Err(error)
+        }
+    }
+}
 
 #[test]
 fn consuming_a_variable_bound_record_preserves_its_completed_support() {
@@ -462,9 +518,154 @@ fn token_only_churn_is_not_a_substantive_alteration() {
         .contains("cannot churn"));
     assert_eq!(before, g.snapshot());
 }
+
+#[test]
+fn mode_restriction_requires_simultaneous_removal_of_meta_only_body() {
+    for replace_body in [false, true] {
+        let mut g = Graph::new();
+        let target = rule(&mut g, 0, true, true);
+        let meta_variable = variable(&mut g, Sort::RuleHead);
+        sides(&mut g, target, &[meta_variable], &[meta_variable]);
+        let member_l = owned(&g, target, Role::Lhs);
+        let member_r = owned(&g, target, Role::Rhs);
+        let source = rule(&mut g, 1, true, true);
+        let h = variable(&mut g, Sort::RuleHead);
+        let mode = record(&mut g, Role::ModeMeta, &[h]);
+        let rev = record(&mut g, Role::Revision, &[h]);
+        let new_mode = record(&mut g, Role::ModeObject, &[h]);
+        let new_rev = record(&mut g, Role::Revision, &[h]);
+        let mut l = vec![h, mode, rev];
+        let r = vec![h, new_mode, new_rev];
+        let mut b = BTreeMap::from([
+            (h, target),
+            (mode, owned(&g, target, Role::ModeMeta)),
+            (rev, owned(&g, target, Role::Revision)),
+        ]);
+        if replace_body {
+            let x = variable(&mut g, Sort::PatternVariable);
+            let ml = record(&mut g, Role::Lhs, &[h, x]);
+            let mr = record(&mut g, Role::Rhs, &[h, x]);
+            l.extend([x, ml, mr]);
+            b.extend([(x, meta_variable), (ml, member_l), (mr, member_r)]);
+        }
+        sides(&mut g, source, &l, &r);
+        let result = apply_with_binding(&mut g, source, &b);
+        if replace_body {
+            result.unwrap();
+            let view = validate(&g).unwrap();
+            assert!(!view.rules[&target].meta);
+            assert!(view.rules[&target].lhs.is_empty());
+        } else {
+            assert_eq!(
+                result.unwrap_err().kind(),
+                graph_core::ErrorKind::InvalidConfiguration
+            );
+        }
+    }
+}
+
+#[test]
+fn physical_head_deletion_requires_the_entire_representation() {
+    for complete in [false, true] {
+        let mut g = Graph::new();
+        let target = rule(&mut g, 0, false, false);
+        let source = rule(&mut g, 1, true, true);
+        let h = variable(&mut g, Sort::RuleHead);
+        let z = g.insert(Kind::Nat, &[]).unwrap();
+        let rank = record(&mut g, Role::Rank, &[h, z]);
+        let mode = record(&mut g, Role::ModeObject, &[h]);
+        let rev = record(&mut g, Role::Revision, &[h]);
+        sides(
+            &mut g,
+            source,
+            &[h, z, rank, mode, rev],
+            if complete {
+                &[]
+            } else {
+                std::slice::from_ref(&z)
+            },
+        );
+        let actual_rank = owned(&g, target, Role::Rank);
+        let actual_z = g.get(actual_rank).unwrap().fields[1];
+        let b = BTreeMap::from([
+            (h, target),
+            (z, actual_z),
+            (rank, actual_rank),
+            (mode, owned(&g, target, Role::ModeObject)),
+            (rev, owned(&g, target, Role::Revision)),
+        ]);
+        let result = apply_with_binding(&mut g, source, &b);
+        if complete {
+            assert_eq!(result.unwrap().exited, BTreeSet::from([target]));
+            assert!(g.get(target).is_none());
+        } else {
+            assert_eq!(
+                result.unwrap_err().0,
+                "head deletion must consume its representation"
+            );
+        }
+    }
+}
+
+#[test]
+fn both_mutual_swap_directions_and_object_interleaving_leave_gc_counterexample_intact() {
+    let mut f = fixture::load(include_str!("../../../examples/fixtures/c1.atoms")).unwrap();
+    let p = f.names["p"];
+    let q = f.names["q"];
+    let ticker = rule(&mut f.graph, 0, false, true); // A harmless object no-op between hypothetical swaps.
+    let initial = (f.graph.len(), f.graph.field_count());
+    let mut previous_token = None;
+    for (source, target) in [(p, q), (q, p), (p, q), (q, p)] {
+        let before = validate(&f.graph).unwrap();
+        if let Some(token) = previous_token {
+            assert_eq!(before.rules[&source].revision, token);
+        }
+        let run =
+            engine::Execution::new(f.graph.clone(), engine::ExecutionLimits::default()).unwrap();
+        let raw = run.bindings(source).unwrap();
+        let other = f.names[if source == p { "p_other" } else { "q_other" }];
+        assert!(raw.iter().any(|b| b.assignments()[&other] == target));
+        let enabled = run.enabled_for(source).unwrap();
+        assert!(enabled.steps().is_empty());
+        assert_eq!(enabled.rejected().len(), raw.len());
+        assert!(enabled
+            .rejected()
+            .iter()
+            .all(|r| r.diagnostic.kind() == graph_core::ErrorKind::Guardedness));
+        // Independently construct the mathematical swap, using the explicitly
+        // enumerated old ranks/revisions. This is test data, not an engine bypass.
+        let sr = owned(&f.graph, source, Role::Rank);
+        let tr = owned(&f.graph, target, Role::Rank);
+        let sroot = f.graph.get(sr).unwrap().fields[1];
+        let troot = f.graph.get(tr).unwrap().fields[1];
+        f.graph
+            .remove_set(&BTreeSet::from([
+                sr,
+                tr,
+                before.rules[&source].revision,
+                before.rules[&target].revision,
+            ]))
+            .unwrap();
+        record(&mut f.graph, Role::Rank, &[source, troot]);
+        record(&mut f.graph, Role::Rank, &[target, sroot]);
+        record(&mut f.graph, Role::Revision, &[source]);
+        previous_token = Some(record(&mut f.graph, Role::Revision, &[target]));
+        let after = validate(&f.graph).unwrap();
+        assert_eq!(
+            (after.rules[&source].rank, after.rules[&target].rank),
+            (0, 1)
+        );
+        assert_eq!((f.graph.len(), f.graph.field_count()), initial);
+        apply_with_binding(&mut f.graph, ticker, &BTreeMap::new()).unwrap();
+        assert_eq!(
+            validate(&f.graph).unwrap().rules[&target].revision,
+            previous_token.unwrap()
+        );
+    }
+}
 use graph_core::{
     fixture::{self, Fixture},
-    validate, AtomKey, Binding, Graph, Kind, Role, Sort,
+    validate, AtomKey, Graph, Kind, Role, Sort,
 };
 use std::collections::{BTreeMap, BTreeSet};
 
@@ -474,61 +675,8 @@ fn binding(f: &Fixture, pairs: &[(&str, &str)]) -> BTreeMap<AtomKey, AtomKey> {
         .map(|(p, t)| (f.names[*p], f.names[*t]))
         .collect()
 }
-fn record(g: &mut Graph, role: Role, fields: &[AtomKey]) -> AtomKey {
-    g.insert(Kind::record(role), fields).unwrap()
-}
-fn variable(g: &mut Graph, sort: Sort) -> AtomKey {
-    g.insert(Kind::variable(sort, Binding::Free), &[]).unwrap()
-}
-fn ctor(g: &mut Graph, label: &str) -> AtomKey {
-    g.insert(Kind::Constructor(label.into()), &[]).unwrap()
-}
-fn link(g: &mut Graph, label: &str, a: AtomKey, b: AtomKey) -> AtomKey {
-    g.insert(
-        Kind::Record {
-            role: Role::ObjectLink,
-            label: Some(label.into()),
-        },
-        &[a, b],
-    )
-    .unwrap()
-}
-fn rule(g: &mut Graph, rank: usize, meta: bool, active: bool) -> AtomKey {
-    let h = g.insert(Kind::RuleHead, &[]).unwrap();
-    let mut n = g.insert(Kind::Nat, &[]).unwrap();
-    for _ in 0..rank {
-        n = g.insert(Kind::Nat, &[n]).unwrap();
-    }
-    record(g, Role::Rank, &[h, n]);
-    record(g, Role::Revision, &[h]);
-    record(
-        g,
-        if meta {
-            Role::ModeMeta
-        } else {
-            Role::ModeObject
-        },
-        &[h],
-    );
-    if active {
-        record(g, Role::Active, &[h]);
-    }
-    h
-}
-fn sides(g: &mut Graph, h: AtomKey, l: &[AtomKey], r: &[AtomKey]) {
-    for a in l {
-        record(g, Role::Lhs, &[h, *a]);
-    }
-    for a in r {
-        record(g, Role::Rhs, &[h, *a]);
-    }
-}
-fn owned(g: &Graph, h: AtomKey, role: Role) -> AtomKey {
-    g.iter()
-        .find(|(_, a)| a.kind.role() == Some(role) && a.fields[0] == h)
-        .unwrap()
-        .0
-}
+mod support;
+use support::*;
 
 #[test]
 fn audit_ledgers_validate_and_reproduce_counts() {

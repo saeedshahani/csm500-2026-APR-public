@@ -1,6 +1,7 @@
-//! Explicit-binding reference transaction and checked preparation/commit interfaces.
-//! Match enumeration, scheduling, caching and concurrency are not implemented.
+//! Bounded complete matching, applicability and checked atomic graph transactions.
+//! Scheduling strategies, caching and concurrency are not implemented.
 mod checked;
+mod matching;
 pub use checked::{
     CandidateSearch, Execution, ExecutionLimits, GroundMatch, GroundRule, OperationalBinding,
     PreparedStep, SearchLimits,
@@ -9,6 +10,7 @@ use graph_core::{
     ensure, validate_with_limits, AtomKey, Binding, Diagnostic, ErrorKind, Graph, GraphLimits,
     Kind, NewAtom, Result, Role, Target,
 };
+pub use matching::{EnabledSet, RejectedBinding};
 use std::collections::{BTreeMap, BTreeSet};
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -42,6 +44,41 @@ pub fn apply_with_binding_with_limits(
     binding: &BTreeMap<AtomKey, AtomKey>,
     limits: &GraphLimits,
 ) -> Result<Event> {
+    apply_candidate(graph, source, binding, limits).map_err(AdmissionFailure::diagnostic)
+}
+
+/// Only explicitly identified applicability predicates may become rejected matches.
+/// All other errors abort general enumeration; resource errors are never rejection.
+pub(crate) enum AdmissionFailure {
+    Rejected(Diagnostic),
+    Failed(Diagnostic),
+}
+impl AdmissionFailure {
+    fn rejected(error: Diagnostic, expected: ErrorKind) -> Self {
+        if error.kind() != expected || error.kind() == ErrorKind::ResourceExhaustion {
+            Self::Failed(error)
+        } else {
+            Self::Rejected(error)
+        }
+    }
+    pub(crate) fn diagnostic(self) -> Diagnostic {
+        match self {
+            Self::Rejected(e) | Self::Failed(e) => e,
+        }
+    }
+}
+impl From<Diagnostic> for AdmissionFailure {
+    fn from(error: Diagnostic) -> Self {
+        Self::Failed(error)
+    }
+}
+
+pub(crate) fn apply_candidate(
+    graph: &mut Graph,
+    source: AtomKey,
+    binding: &BTreeMap<AtomKey, AtomKey>,
+    limits: &GraphLimits,
+) -> std::result::Result<Event, AdmissionFailure> {
     let before = validate_with_limits(graph, limits)?;
     let rule = before.rules.get(&source).ok_or_else(|| {
         Diagnostic::new(ErrorKind::InvalidBinding, "source is not live").at_atom(source)
@@ -103,7 +140,8 @@ pub fn apply_with_binding_with_limits(
                     ))
                     .at_atom(*a)
                     .at_atom(*b)
-                    .at_slot(slot));
+                    .at_slot(slot)
+                    .into());
                 }
             }
         }
@@ -118,7 +156,8 @@ pub fn apply_with_binding_with_limits(
         rule.meta || context.is_disjoint(&hidden),
         "object grounding enters rule representation",
     )
-    .map_err(binding_error)?;
+    .map_err(binding_error)
+    .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::InvalidBinding))?;
     let preserved = context.difference(&consumed).copied().collect();
     let mut read = context;
     read.extend(&rule.representation);
@@ -156,12 +195,15 @@ pub fn apply_with_binding_with_limits(
         })
         .collect::<Result<Vec<_>>>()?;
     let mut candidate = graph.clone();
-    candidate.remove_set(&consumed)?;
+    candidate
+        .remove_set(&consumed)
+        .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::Dangling))?;
     let produced: BTreeSet<_> = candidate
         .insert_batch_with_limits(&batch, limits)?
         .into_iter()
         .collect();
-    let after = validate_with_limits(&candidate, limits)?;
+    let after = validate_with_limits(&candidate, limits)
+        .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::InvalidConfiguration))?;
     let pre_heads: BTreeSet<_> = before.rules.keys().copied().collect();
     let post_heads: BTreeSet<_> = after.rules.keys().copied().collect();
     let entered: BTreeSet<_> = post_heads.difference(&pre_heads).copied().collect();
@@ -176,7 +218,8 @@ pub fn apply_with_binding_with_limits(
             e.with_kind(ErrorKind::Lifecycle)
                 .at_atom(*head)
                 .at_role(Some(Role::Revision))
-        })?;
+        })
+        .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::Lifecycle))?;
         for (id, atom) in graph
             .iter()
             .filter(|(_, a)| a.kind.role() == Some(Role::Revision) && a.fields[0] == *head)
@@ -191,7 +234,8 @@ pub fn apply_with_binding_with_limits(
                     .at_atom(*head)
                     .at_atom(id)
                     .at_role(Some(Role::Revision))
-            })?;
+            })
+            .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::Lifecycle))?;
         }
     }
     for head in &exited {
@@ -203,13 +247,15 @@ pub fn apply_with_binding_with_limits(
             e.with_kind(ErrorKind::Lifecycle)
                 .at_atom(*head)
                 .at_role(Some(Role::Revision))
-        })?;
+        })
+        .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::Lifecycle))?;
         if candidate.get(*head).is_none() {
             ensure(
                 before.rules[head].representation.is_subset(&consumed),
                 "head deletion must consume its representation",
             )
-            .map_err(|e| e.with_kind(ErrorKind::Lifecycle).at_atom(*head))?;
+            .map_err(|e| e.with_kind(ErrorKind::Lifecycle).at_atom(*head))
+            .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::Lifecycle))?;
         }
     }
     for head in pre_heads.intersection(&post_heads) {
@@ -225,7 +271,8 @@ pub fn apply_with_binding_with_limits(
                 e.with_kind(ErrorKind::Lifecycle)
                     .at_atom(*head)
                     .at_role(Some(Role::Revision))
-            })?;
+            })
+            .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::Lifecycle))?;
         } else {
             ensure(
                 pre.revision == post.revision,
@@ -235,7 +282,8 @@ pub fn apply_with_binding_with_limits(
                 e.with_kind(ErrorKind::Lifecycle)
                     .at_atom(*head)
                     .at_role(Some(Role::Revision))
-            })?;
+            })
+            .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::Lifecycle))?;
         }
     }
     for head in entered.union(&altered) {
@@ -248,7 +296,8 @@ pub fn apply_with_binding_with_limits(
                 .at_atom(*head)
                 .at_atom(source)
                 .at_role(Some(Role::Rank))
-        })?;
+        })
+        .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::Guardedness))?;
     }
     let event = Event {
         source,
