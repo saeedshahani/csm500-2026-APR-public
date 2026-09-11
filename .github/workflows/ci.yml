@@ -16,3 +16,14 @@ jobs:
         env:
           RUSTDOCFLAGS: "-D warnings"
       - run: cargo run --locked -p cli -- demo
+      - name: Authored CLI smoke checks
+        shell: bash
+        run: |
+          cargo run --locked -p cli -- check examples/programs/self-modify.graph
+          cargo run --locked -p cli -- run examples/programs/arithmetic.graph --max-steps 1
+          status=0
+          cargo run --locked -p cli -- run examples/programs/self-modify.graph --max-steps 3 || status=$?
+          test "$status" -eq 3
+          status=0
+          cargo run --locked -p cli -- run examples/programs/mutual-regress.graph --max-steps 1 --rule p || status=$?
+          test "$status" -eq 4

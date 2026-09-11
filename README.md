@@ -29,11 +29,29 @@ cargo clippy --workspace --all-targets --locked -- -D warnings
 RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 ```
 
-`demo` executes graph-resident SelfLower from rank one to zero. Test ledgers live in `examples/fixtures/`; they are not the planned surface language. The CI workflow is configured, but remote execution is not yet confirmed.
+`demo` executes graph-resident SelfLower from rank one to zero. Test ledgers live in `examples/fixtures/`; they are separate from the authored `.graph` language. The CI workflow is configured, but remote execution is not yet confirmed.
 
 The repository's existing ignore policy for local documentation is preserved. Builds and tests use the source fixtures directly and do not require dissertation or explainer files.
 
-Sprint 1 local acceptance and Sprint 2's initial audit, checked interfaces, concrete syntax, checked loading, printing, decoding integration and automatic matching/applicability (S2.A–S2.H) are complete. Research evidence is recorded in [`research-plan.md`](docs/research-plan.md), implementation boundaries in [`architecture.md`](docs/architecture.md), and remaining work in [`task-list.md`](docs/task-list.md). The explicit schema is a documented trade-off: a default-binding comparator uses one fewer declared tag with equal carrier costs. Full research adequacy remains pending. Sprint numbers and dates are unchanged; remote CI is reported separately from local verification.
+Sprint 1 and Sprint 2 local acceptance are complete, including native commands, authored examples and the integrated source-level correspondence audit. Research evidence is recorded in [`research-plan.md`](docs/research-plan.md), implementation boundaries in [`architecture.md`](docs/architecture.md), and remaining work in [`task-list.md`](docs/task-list.md). The explicit schema is a documented trade-off: a default-binding comparator uses one fewer declared tag with equal carrier costs. Full research adequacy remains pending. Sprint numbers and dates are unchanged; remote CI is reported separately from local verification.
+
+## Run an authored program
+
+```sh
+cargo run --locked -p cli -- check examples/programs/arithmetic.graph
+cargo run --locked -p cli -- run examples/programs/arithmetic.graph --max-steps 1
+cargo run --locked -p cli -- run examples/programs/self-modify.graph --max-steps 3
+cargo run --locked -p cli -- run examples/programs/mutual-regress.graph --max-steps 1 --rule p
+cargo run --locked -p cli -- --help
+```
+
+`check` means “this graph is valid”, not “nothing can run”. Arithmetic reaches a non-empty `NormalForm` in one step (exit 0). The self-modification run reaches `StepLimit` (exit 3). Requested P is rejected by guardedness (exit 4); without `--rule`, C1 has no enabled step and reports `NormalForm`. A limit never proves divergence.
+
+Use `-` instead of a filename to read standard input. Output is loadable graph text with outcome, committed-step, selection-policy and limit comments; diagnostics go to stderr. `--output new.graph` publishes a complete new file and refuses to overwrite an existing destination. Input/output failure codes are documented in [architecture §21](docs/architecture.md#21-native-command-interface). Check the exit code before consuming stdout: an I/O failure may interrupt a write. Loading or final-report size failure publishes no graph.
+
+Every run requires `--max-steps`, including zero. `--max-candidates` and `--max-work` bound each complete search; graph and input bounds are also configurable. The input-byte limit covers the final report too. Selection is temporarily first-enabled in identity-based search order, not fair or independent of renaming. `--rule` restricts execution to one initially named head and cannot establish global normality. JSON trace export and general schedulers remain later work.
+
+See the [example guide](examples/programs/README.md) for independently derived expected states, explicit witness selections and research limits. Printing/reloading preserves graph structure, not source names, allocation history or an execution trace.
 
 ## Concrete syntax
 
@@ -47,6 +65,6 @@ See [the grammar](docs/architecture.md#9-concrete-syntax-and-parsing) and [the i
 
 `engine::Execution` owns the committed graph. Submit an `OperationalBinding` to `prepare`, inspect the resulting `PreparedStep`, then pass it to `commit`. Ground rule/match data are checked and read-only. A candidate becomes stale after any committed step or successful `replace_graph`, even when the graph looks unchanged. External replacement starts a new execution history. `Execution::view()` decodes the current graph afresh; `live_rules()` includes inactive representations, while `active_rules()` excludes them and quoted heads. Neither iterator enumerates enabled matches.
 
-`Execution::bindings(source)` enumerates raw matches; `enabled()` examines every active source and returns fully checked candidates plus expected rejections. `enabled_for(source)` restricts that query to one source. Select a candidate from `into_steps()` and pass it to `commit`. For cumulative queries, reuse one `Execution::search()`. Interrupted searches return errors, not partial or empty enabled sets. Only a successful empty all-source query establishes absence of an enabled step. `apply_with_binding` remains the direct reference path. Native run/check commands and scheduling strategies remain subsequent work.
+`Execution::bindings(source)` enumerates raw matches; `enabled()` examines every active source and returns fully checked candidates plus expected rejections. `enabled_for(source)` restricts that query to one source. Select a candidate from `into_steps()` and pass it to `commit`. For cumulative queries, reuse one `Execution::search()`. Interrupted searches return errors, not partial or empty enabled sets. Only a successful empty all-source query establishes absence of an enabled step. `apply_with_binding` remains the direct reference path. Native run/check commands use this checked boundary; general scheduling strategies remain subsequent work.
 
-The suite currently passes 179 unit/integration tests plus eleven documentation tests, including eight compile-fail API checks. See [architecture §20](docs/architecture.md#20-checked-construction-and-execution-interfaces) for defaults, error categories and the source-level commit argument. The parser uses pinned Logos 0.16.1; engine and parser remain independent production siblings.
+The suite currently passes 200 unit/integration tests plus eleven documentation tests, including eight compile-fail API checks. See [architecture §20](docs/architecture.md#20-checked-construction-and-execution-interfaces) for defaults, error categories and the source-level commit argument. The parser uses pinned Logos 0.16.1; engine and parser remain independent production siblings.

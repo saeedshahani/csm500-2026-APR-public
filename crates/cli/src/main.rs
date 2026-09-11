@@ -1,11 +1,18 @@
 use graph_core::{fixture, validate};
 use std::collections::BTreeMap;
+mod commands;
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let command = std::env::args().nth(1).unwrap_or_else(|| "demo".into());
-    if command != "demo" {
-        return Err("usage: cli [demo]".into());
+fn main() -> std::process::ExitCode {
+    match commands::main_command() {
+        Ok(code) => std::process::ExitCode::from(code),
+        Err(error) => {
+            eprintln!("{}", error.message);
+            std::process::ExitCode::from(error.code)
+        }
     }
+}
+
+fn demo() -> Result<(), Box<dyn std::error::Error>> {
     let mut fixture = fixture::load(include_str!("../../../examples/fixtures/b2.atoms"))?;
     let names = &fixture.names;
     let head = names["sl"];
