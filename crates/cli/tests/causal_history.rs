@@ -30,6 +30,32 @@ fn restoration_keeps_note_dependency_but_reattributes_the_exact_revision() {
         }
     }
     let order = DependencyOrder::extract(log.events(), AnalysisLimits::default()).unwrap();
+    let portable = engine::trace::TraceDocument::from_recording(
+        &log,
+        &engine::observation::Observer::all(),
+        None,
+        engine::trace::TraceOptions {
+            checkpoint_interval: 3,
+            conflict_states: vec![],
+        },
+        Default::default(),
+    )
+    .unwrap();
+    let replay = engine::trace::VerifiedTrace::import(
+        &portable.to_json(4_000_000).unwrap(),
+        Default::default(),
+    )
+    .unwrap();
+    for i in 0..=log.events().len() {
+        assert_eq!(
+            replay.state_at(i).unwrap().snapshot(),
+            replay.state_from_initial(i).unwrap().snapshot()
+        );
+    }
+    assert_eq!(
+        replay.state_at(log.events().len()).unwrap().snapshot(),
+        run.graph().snapshot()
+    );
     for i in (2..log.events().len()).step_by(2) {
         let current = &log.events()[i];
         let lower = &log.events()[i - 2];

@@ -5,7 +5,7 @@ use graph_core::{
 };
 use std::collections::{BTreeMap, BTreeSet};
 
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct ObservationLimits {
     pub max_work: usize,
     pub max_comparison_work: usize,
@@ -91,6 +91,9 @@ fn decode_hex(s: &str) -> Result<String> {
     String::from_utf8(bytes).map_err(|_| malformed("label is not UTF-8"))
 }
 impl Observer {
+    pub fn initial_inputs(&self) -> &BTreeMap<String, AtomKey> {
+        &self.inputs
+    }
     pub fn all() -> Self {
         Self {
             canonical: "observer-v1\nall\n".into(),

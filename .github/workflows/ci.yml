@@ -23,6 +23,13 @@ jobs:
           name: property-regressions
           path: crates/**/proptest-regressions/*.txt
           if-no-files-found: ignore
+      - name: Portable trace and checked replay smoke checks
+        shell: bash
+        run: |
+          trace_dir=$(mktemp -d)
+          cargo run --locked -p cli -- export examples/independent/shared-read.graph --max-steps 2 --conflict-state 0 --output "$trace_dir/independent.json"
+          cargo run --locked -p cli -- trace-check "$trace_dir/independent.json"
+          cargo run --locked -p cli -- replay "$trace_dir/independent.json" --at 1
       - run: cargo doc --workspace --no-deps --locked
         env:
           RUSTDOCFLAGS: "-D warnings"

@@ -49,7 +49,7 @@ cargo run --locked -p cli -- --help
 
 Use `-` instead of a filename to read standard input. Output is loadable graph text with outcome, committed-step, selection-policy and limit comments; diagnostics go to stderr. `--output new.graph` publishes a complete new file and refuses to overwrite an existing destination. Input/output failure codes are documented in [architecture §21](docs/architecture.md#21-native-command-interface). Check the exit code before consuming stdout: an I/O failure may interrupt a write. Loading or final-report size failure publishes no graph.
 
-Every run requires `--max-steps`, including zero. `--max-candidates` and `--max-work` bound each complete search; graph and input bounds are also configurable. The input-byte limit covers the final report too. Selection uses the shared deterministic or seeded scheduler in explicit identity-relative candidate order; neither fairness nor renaming invariance is implied. `--rule` restricts execution to one initially named head and cannot establish global normality. JSON trace export remains later work; deterministic/seeded scheduling is implemented.
+Every run requires `--max-steps`, including zero. `--max-candidates` and `--max-work` bound each complete search; graph and input bounds are also configurable. The input-byte limit covers the final report too. Selection uses the shared deterministic or seeded scheduler in explicit identity-relative candidate order; neither fairness nor renaming invariance is implied. `--rule` restricts execution to one initially named head and cannot establish global normality. JSON trace export, validation and checked replay are implemented; see the [trace contract](docs/trace-format.md).
 
 See the [example guide](examples/programs/README.md) for independently derived expected states, explicit witness selections and research limits. Printing/reloading preserves graph structure, not source names, allocation history or an execution trace.
 
@@ -65,13 +65,23 @@ See [the grammar](docs/architecture.md#9-concrete-syntax-and-parsing) and [the i
 
 Enable `Runner::enable_recording(RecordingLimits::default())` at state zero to keep a committed history. For explicit checked selections, use `Recording::new(&execution, limits)` and `recording.commit(&mut execution, prepared)`. Read `recording.events()` and `recording.atom(id)` to inspect changes, including deleted atoms. `DependencyOrder::extract(events, AnalysisLimits::default())` supplies resource witnesses and bounded strict reachability; `LocalSnapshot::analyse(&execution, limits)` checks alternatives in both orders without changing the execution. The recording module includes a tested API example.
 
-In simple terms, the system now keeps a record of what each rewrite used and changed, explains which recorded steps depend on earlier ones, and checks whether two available rewrites interfere. Shared reading alone does not force an order. This is not a complete explanation of every enabling condition: making hidden rule data visible is a tested exception. No dependency arrow does **not** mean “safe to reorder”; local residual checking is separate. File export/import and browser history controls remain subsequent work.
+In simple terms, the system now keeps a record of what each rewrite used and changed, explains which recorded steps depend on earlier ones, and checks whether two available rewrites interfere. Shared reading alone does not force an order. This is not a complete explanation of every enabling condition: making hidden rule data visible is a tested exception. No dependency arrow does **not** mean “safe to reorder”; local residual checking is separate. Files can now be exported, checked and replayed; browser history controls remain subsequent work.
+
+### Save, check and revisit a run
+
+```sh
+cargo run -p cli -- export examples/behaviour/stable.graph --max-steps 1 --output stable.trace.json
+cargo run -p cli -- trace-check stable.trace.json
+cargo run -p cli -- replay stable.trace.json --at 1
+```
+
+A trace saves the starting graph and what each rewrite did. Loading it checks the steps again instead of trusting the file. Checkpoints let the engine revisit earlier states while keeping the right identity numbers. A paused run can continue with the same random choices and memory of earlier states; simply looking at an old state does not change the original run. Existing output files are never overwritten. A saved run may have stopped at a limit, so successful file validation does not mean the program finished its work. See the [full contract](docs/trace-format.md) and [annotated example](examples/traces/README.md).
 
 ### Core interfaces
 
 Sprint 3 adds repeatable rule selection, bounded graph comparison and automated tests that generate varied cases and shrink failures into smaller examples. This found a slow comparison on a nested rule package; the improved comparator and the reduced failing case are retained.
 
-The [behavioural examples](examples/behaviour/README.md) use the same test for useful content throughout: a value link between two distinct objects. One program finishes while keeping that link, another finishes after deleting it, and a third keeps it while alternating between two graph states. The last example has a mathematical argument for continuing indefinitely; a finite computer run alone does not prove that. Native committed history, positive-resource dependencies and exact local conflict analysis are implemented. Portable trace import/export/replay, the browser interface and the expressiveness study remain later work.
+The [behavioural examples](examples/behaviour/README.md) use the same test for useful content throughout: a value link between two distinct objects. One program finishes while keeping that link, another finishes after deleting it, and a third keeps it while alternating between two graph states. The last example has a mathematical argument for continuing indefinitely; a finite computer run alone does not prove that. Native committed history, positive-resource dependencies and exact local conflict analysis are implemented. Portable trace import/export, checked replay and resumable logical runs are implemented. The browser interface and expressiveness study remain later work.
 
 `graph_core::ValidatedGraph` gives a read-only validated view tied to a graph borrow. `Graph::insert_batch_with_limits` resolves forward and cyclic references atomically; construction is distinct from full validation. `GraphLimits` bounds input bytes, atoms, fields, labels, package depth and validation work.
 
@@ -79,4 +89,4 @@ The [behavioural examples](examples/behaviour/README.md) use the same test for u
 
 `Execution::bindings(source)` enumerates raw matches; `enabled()` examines every active source and returns fully checked candidates plus expected rejections. `enabled_for(source)` restricts that query to one source. Select a candidate from `into_steps()` and pass it to `commit`. For cumulative queries, reuse one `Execution::search()`. Interrupted searches return errors, not partial or empty enabled sets. Only a successful empty all-source query establishes absence of an enabled step. `apply_with_binding` remains the direct reference path. Native run/check commands use this checked boundary; shared deterministic/seeded scheduling and bounded observation are provided by engine::runner and engine::observation.
 
-The suite currently passes 270 unit/integration tests plus twelve documentation tests, including eight compile-fail API checks. See [architecture §20](docs/architecture.md#20-checked-construction-and-execution-interfaces) for defaults, error categories and the source-level commit argument. The parser uses pinned Logos 0.16.1; engine and parser remain independent production siblings.
+The suite currently passes 286 unit/integration tests plus twelve documentation tests, including eight compile-fail API checks. See [architecture §20](docs/architecture.md#20-checked-construction-and-execution-interfaces) for defaults, error categories and the source-level commit argument. The parser uses pinned Logos 0.16.1; engine and parser remain independent production siblings.

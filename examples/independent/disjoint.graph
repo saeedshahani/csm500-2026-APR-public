@@ -1,0 +1,22 @@
+// Two distinct pending links; neither rewrite consumes a shared read.
+program {
+  rule settle {
+    atom z = Nat();
+    rank r = z;
+    mode m = ModeObject;
+    revision v;
+    active active_settle;
+    atom x = PatternVariable[Constructor] Free;
+    atom y = PatternVariable[Constructor] Free;
+    atom old = Record[ObjectLink]("pending", x, y);
+    atom new = Record[ObjectLink]("done", x, y);
+    lhs { lx: x; ly: y; ll: old; }
+    rhs { rx: x; ry: y; rl: new; }
+  }
+  atom a = Constructor("A");
+  atom b = Constructor("B");
+  atom c = Constructor("C");
+  atom d = Constructor("D");
+  atom first = Record[ObjectLink]("pending", a, b);
+  atom second = Record[ObjectLink]("pending", c, d);
+}

@@ -41,6 +41,12 @@ pub struct SeededScheduler {
     rng: Box<ChaCha8Rng>,
 }
 impl Scheduler {
+    pub fn seed(&self) -> Option<u64> {
+        match self {
+            Self::Deterministic => None,
+            Self::Seeded(s) => Some(s.seed),
+        }
+    }
     /// Decimal u64 at the CLI; the little-endian eight bytes are repeated four
     /// times to form the explicit 256-bit seed. No platform entropy is used.
     pub fn seeded(seed: u64) -> Self {

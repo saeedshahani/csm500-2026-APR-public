@@ -218,6 +218,20 @@ fn unquoting_enables_a_read_without_any_positive_resource_edge() {
         ))
         .unwrap();
     log.commit(&mut e, second).unwrap();
+    let portable = engine::trace::TraceDocument::from_recording(
+        &log,
+        &engine::observation::Observer::all(),
+        None,
+        Default::default(),
+        Default::default(),
+    )
+    .unwrap();
+    let replay = engine::trace::VerifiedTrace::import(
+        &portable.to_json(1_000_000).unwrap(),
+        Default::default(),
+    )
+    .unwrap();
+    assert_eq!(replay.state_at(2).unwrap().snapshot(), e.graph().snapshot());
     assert!(log
         .events()
         .iter()
@@ -251,6 +265,20 @@ fn deleted_rule_representation_and_revision_are_retained_in_history() {
     let p = e.prepare(OperationalBinding::new(source, binding)).unwrap();
     log.commit(&mut e, p).unwrap();
     assert!(log.events()[0].footprint.exited.contains(&target.into()));
+    let portable = engine::trace::TraceDocument::from_recording(
+        &log,
+        &engine::observation::Observer::all(),
+        None,
+        Default::default(),
+        Default::default(),
+    )
+    .unwrap();
+    let replay = engine::trace::VerifiedTrace::import(
+        &portable.to_json(1_000_000).unwrap(),
+        Default::default(),
+    )
+    .unwrap();
+    assert_eq!(replay.state_at(1).unwrap().snapshot(), e.graph().snapshot());
     for id in rep {
         assert!(e.graph().get(id).is_none());
         assert!(log.atom(id.into()).is_some());

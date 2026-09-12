@@ -9,7 +9,7 @@ use std::fs::{self, File, OpenOptions};
 use std::io::{self, Read, Write};
 use std::path::{Path, PathBuf};
 
-const HELP: &str = "usage: cli [demo]\n       cli check INPUT [limits] [--output PATH]\n       cli run INPUT --max-steps N [--rule NAME] [limits] [--output PATH]\n\nINPUT is a UTF-8 program file, or - for standard input.\nrun selects the first fully enabled candidate in identity-based order.\n--rule restricts each step to the named initial rule (not a global normal-form query).\n--max-steps is required for every run; zero checks without committing.\nLimits: --max-candidates N, --max-work N (run only); --max-atoms N,\n        --max-fields N, --max-label-bytes N, --max-input-bytes N,\n        --max-validation-work N, --max-package-depth N.\nAll limits are non-negative decimal integers. Defaults follow the native API.\nOutput: loadable graph text with outcome/step/limit comments; diagnostics on stderr.\n--output publishes a new file only; existing files are never overwritten.\nExit codes: 0 valid/normal form; 1 engine/output failure; 2 arguments/input failure;\n            3 resource/step limit; 4 requested rule unavailable.\ncheck establishes validity, not normal form. Limits do not prove divergence.\nJSON trace export is not implemented; it belongs to the trace-export work.\n";
+const HELP: &str = "usage: cli [demo]\n       cli check INPUT [limits] [--output PATH]\n       cli run INPUT --max-steps N [run options] [--output PATH]\n       cli export INPUT --max-steps N [run options] [--checkpoint-interval N] [--conflict-state N] [--output PATH]\n       cli trace-check TRACE\n       cli replay TRACE [--at N] [--output PATH]\n\nINPUT/TRACE is a UTF-8 file, or - for standard input.\nrun/export use the configured scheduler and checked execution.\n--rule restricts steps to the named initial rule, not a global normal-form query.\n--max-steps is required; zero checks without committing.\nLimits: --max-candidates N, --max-work N (run/export); --max-atoms N,\n        --max-fields N, --max-label-bytes N, --max-input-bytes N,\n        --max-validation-work N, --max-package-depth N.\nAll limits are non-negative decimal integers. Defaults follow the native API.\nTrace import/export uses the default TraceLimits policy (see docs/trace-format.md).\nrun/check/replay emit loadable graph text; export emits only trace JSON.\ntrace-check verifies bindings, derived analysis and any scheduler claims.\nreplay inspects history; it does not append or branch.\n--output publishes a new file only; existing files are never overwritten.\nExit codes: 0 valid/normal form; 1 engine/output failure; 2 arguments/input failure;\n            3 resource/step limit; 4 requested rule unavailable; 5 cancelled; 6 recurrence.\nA finished trace may describe a bounded prefix: inspect its report, not status alone.\ncheck establishes validity, not normal form. Limits do not prove divergence.\n";
 
 pub(crate) struct Failure {
     pub code: u8,
@@ -26,6 +26,8 @@ impl Failure {
 type Result<T> = std::result::Result<T, Failure>;
 struct Options {
     run: bool,
+    export: bool,
+    trace_options: engine::trace::TraceOptions,
     input: String,
     output: Option<PathBuf>,
     max_steps: u64,
@@ -55,12 +57,18 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["help"]
         || args == ["run", "--help"]
         || args == ["check", "--help"]
+        || args == ["export", "--help"]
+        || args == ["replay", "--help"]
+        || args == ["trace-check", "--help"]
     {
         io::stdout()
             .lock()
             .write_all(format!("{HELP}\nScheduling: --strategy deterministic (default), or --strategy seeded --seed U64.\nOrdering: source identity, then (template identity, host identity) tuples.\nObservers: --observer FILE (observer-v1); --detect-cycles true|false (default false).\nBounds: --max-observation-work N, --max-comparison-work N, --max-history-units N.\nRecurrence is diagnostic, not proof of infinite behaviour; exit 6 CycleDetected.\nShared API cancellation stops at transaction boundaries (exit 5); CLI does not install a signal handler.\nNormal form takes precedence over recurrence and step limits; recurrence precedes step limit.\n").as_bytes())
             .map_err(|e| Failure::new(1, format!("output: {e}")))?;
         return Ok(0);
+    }
+    if matches!(args[0].as_str(), "replay" | "trace-check") {
+        return trace_command(&args);
     }
     let options = options(&args)?;
     let source = read_source(&options.input, options.parse.graph.max_input_bytes)?;
@@ -124,6 +132,11 @@ pub(crate) fn main_command() -> Result<u8> {
     };
     let mut runner = Runner::new(loaded.into_graph(), options.execution, scheduler, observer)
         .map_err(engine_failure)?;
+    if options.export {
+        runner
+            .enable_recording(Default::default())
+            .map_err(engine_failure)?;
+    }
     let mut outcome = "Valid";
     let mut code = 0;
     let mut rejected = 0;
@@ -148,6 +161,30 @@ pub(crate) fn main_command() -> Result<u8> {
         if let Some(cycle) = report.recurrence {
             details+=&format!("// recurrence: {} -> {}; exact-attributed-carrier-isomorphism; complete-state-equal={}\n// first-scheduler: {}\n// repeated-scheduler: {}\n// recurrence is not a proof of full execution-state recurrence, convergence, oscillation or divergence\n",cycle.first,cycle.repeated,cycle.complete_state_equal,cycle.first_scheduler,cycle.repeated_scheduler);
         }
+    }
+    if options.export {
+        let doc = engine::trace::TraceDocument::from_runner(
+            &runner,
+            Some(engine::trace::sha256(source.as_bytes())),
+            options.trace_options,
+            Default::default(),
+        )
+        .map_err(engine_failure)?;
+        let bytes = doc
+            .to_json(engine::trace::TraceLimits::default().max_bytes)
+            .map_err(engine_failure)?;
+        if let Some(path) = &options.output {
+            publish_new(path, &bytes)?;
+        } else {
+            io::stdout()
+                .lock()
+                .write_all(&bytes)
+                .map_err(|e| Failure::new(1, e.to_string()))?;
+        }
+        if let Some(error) = last_diagnostic {
+            eprintln!("{:?}: {}", error.kind(), error);
+        }
+        return Ok(code);
     }
     let execution = runner.execution();
     let graph = print_with_limits(execution.graph(), &options.parse).map_err(engine_failure)?;
@@ -196,14 +233,74 @@ fn position(source: &str, offset: usize) -> (usize, usize) {
     source_position(source, offset).map_or((1, 1), |p| (p.line, p.column))
 }
 
+fn trace_command(args: &[String]) -> Result<u8> {
+    if args.len() < 2 {
+        return Err(Failure::new(
+            2,
+            "usage: cli trace-check TRACE | cli replay TRACE [--at N] [--output PATH]",
+        ));
+    }
+    let mut index = None;
+    let mut output = None;
+    let mut seen = BTreeSet::new();
+    for pair in args[2..].chunks(2) {
+        if pair.len() != 2 || !seen.insert(&pair[0]) {
+            return Err(Failure::new(2, "missing or duplicate replay option"));
+        }
+        match pair[0].as_str() {
+            "--at" if args[0] == "replay" => index = Some(number::<usize>(&pair[1], "--at")?),
+            "--output" if args[0] == "replay" => output = Some(PathBuf::from(&pair[1])),
+            _ => return Err(Failure::new(2, "unsupported replay option")),
+        }
+    }
+    let limits = engine::trace::TraceLimits::default();
+    let text = read_source(&args[1], limits.max_bytes)?;
+    let trace = engine::trace::VerifiedTrace::import(text.as_bytes(), limits).map_err(|e| {
+        Failure::new(
+            if e.kind() == ErrorKind::ResourceExhaustion {
+                3
+            } else {
+                2
+            },
+            e.to_string(),
+        )
+    })?;
+    let result = if args[0] == "trace-check" {
+        format!(
+            "Verified {} events; status={}; relation={}\n",
+            trace.document().events.len(),
+            trace.document().status,
+            trace.document().relation
+        )
+    } else {
+        let state = index.unwrap_or(trace.document().events.len());
+        let graph = trace.state_at(state).map_err(engine_failure)?;
+        format!(
+            "// verified trace state: {state}; historical inspection only\n{}",
+            print_with_limits(&graph, &ParseLimits::default()).map_err(engine_failure)?
+        )
+    };
+    if let Some(path) = output {
+        publish_new(&path, result.as_bytes())?;
+    } else {
+        io::stdout()
+            .lock()
+            .write_all(result.as_bytes())
+            .map_err(|e| Failure::new(1, e.to_string()))?;
+    }
+    Ok(0)
+}
+
 fn options(args: &[String]) -> Result<Options> {
     let run = match args[0].as_str() {
-        "run" => true,
+        "run" | "export" => true,
         "check" => false,
         _ => return Err(Failure::new(2, HELP)),
     };
     let mut result = Options {
         run,
+        export: args[0] == "export",
+        trace_options: Default::default(),
         input: String::new(),
         output: None,
         max_steps: 0,
@@ -234,6 +331,13 @@ fn options(args: &[String]) -> Result<Options> {
                 .ok_or_else(|| Failure::new(2, format!("missing value for {arg}")))?;
             i += 1;
             match arg.as_str() {
+                "--checkpoint-interval" if result.export => {
+                    result.trace_options.checkpoint_interval = number(value, arg)?
+                }
+                "--conflict-state" if result.export => result
+                    .trace_options
+                    .conflict_states
+                    .push(number(value, arg)?),
                 "--output" => result.output = Some(PathBuf::from(value)),
                 "--rule" if run => result.rule = Some(value.clone()),
                 "--strategy" if run => result.scheduler = value.clone(),

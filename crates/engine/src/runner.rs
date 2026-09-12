@@ -15,7 +15,7 @@ pub enum Outcome {
     Cancelled,
     CycleDetected,
 }
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Recurrence {
     pub first: u64,
     pub repeated: u64,
@@ -25,7 +25,7 @@ pub struct Recurrence {
     /// Whether the complete carrier also recurs, confirmed independently.
     pub complete_state_equal: bool,
 }
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct RunReport {
     pub outcome: Outcome,
     pub rejected: usize,
@@ -36,7 +36,7 @@ pub struct RunReport {
     pub nontriviality_threshold: usize,
     pub scheduler: String,
 }
-#[derive(Clone, Copy, Debug)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct RunLimits {
     pub max_steps: u64,
     pub observation: ObservationLimits,
@@ -51,11 +51,25 @@ impl Default for RunLimits {
         }
     }
 }
+#[derive(Clone, Debug)]
 struct HistoryEntry {
     step: u64,
     full: Observation,
     selected: Observation,
     scheduler: String,
+}
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct RunPlan {
+    pub limits: RunLimits,
+    pub requested: Option<AtomKey>,
+    pub start_step: u64,
+}
+#[derive(Debug)]
+// A transient return value, not a retained collection; avoid a terminal heap allocation.
+#[allow(clippy::large_enum_variant)]
+pub enum RunProgress {
+    Yielded,
+    Finished(RunReport),
 }
 /// Owns the history boundary. No mutable Execution escape is provided. A valid
 /// replacement requires a freshly resolved observer and clears all run state.
@@ -68,6 +82,9 @@ pub struct Runner<S: SchedulingStrategy> {
     history_units: usize,
     initial_identity: String,
     recording: Option<crate::recording::Recording>,
+    plan: Option<RunPlan>,
+    active: bool,
+    last_report: Option<RunReport>,
 }
 impl<S: SchedulingStrategy> Runner<S> {
     pub fn new(
@@ -87,6 +104,9 @@ impl<S: SchedulingStrategy> Runner<S> {
             history_units: 0,
             initial_identity,
             recording: None,
+            plan: None,
+            active: false,
+            last_report: None,
         })
     }
     pub fn execution(&self) -> &Execution {
@@ -105,6 +125,58 @@ impl<S: SchedulingStrategy> Runner<S> {
     }
     pub fn recording(&self) -> Option<&crate::recording::Recording> {
         self.recording.as_ref()
+    }
+    pub fn run_plan(&self) -> Option<RunPlan> {
+        self.plan
+    }
+    pub fn is_active(&self) -> bool {
+        self.active
+    }
+    pub fn last_report(&self) -> Option<&RunReport> {
+        self.last_report.as_ref()
+    }
+    pub fn observer(&self) -> &Observer {
+        &self.observer
+    }
+    pub(crate) fn fork(&self) -> Self {
+        let execution = self.execution.fork();
+        let recording = self.recording.as_ref().map(|r| r.fork(&execution));
+        Self {
+            execution,
+            recording,
+            initial_scheduler: self.initial_scheduler.clone(),
+            scheduler: self.scheduler.clone(),
+            observer: self.observer.clone(),
+            history: self.history.clone(),
+            history_units: self.history_units,
+            initial_identity: self.initial_identity.clone(),
+            plan: self.plan,
+            active: self.active,
+            last_report: self.last_report.clone(),
+        }
+    }
+    pub(crate) fn continuation_identity(&self) -> String {
+        let mut hash = Sha256::new();
+        hash.update(format!(
+            "{:?};{};{};{};{:?};{};{:?}",
+            self.plan,
+            self.active,
+            self.execution.committed_steps(),
+            self.execution.graph().next_identity(),
+            self.history,
+            self.observer.identity(),
+            self.last_report
+        ));
+        hash.update(self.scheduler.description());
+        hash.update(initial_identity(self.execution.graph()));
+        format!("{:x}", hash.finalize())
+    }
+    pub(crate) fn checkpoint_units(&self) -> usize {
+        self.history_units
+            .saturating_add(self.recording.as_ref().map_or(0, |r| r.units()))
+            .saturating_add(
+                crate::recording::graph_units(self.execution.graph()).unwrap_or(usize::MAX),
+            )
     }
     pub fn scheduler(&self) -> &S {
         &self.scheduler
@@ -128,6 +200,9 @@ impl<S: SchedulingStrategy> Runner<S> {
         self.scheduler = self.initial_scheduler.clone();
         self.history = Vec::new();
         self.history_units = 0;
+        self.plan = None;
+        self.active = false;
+        self.last_report = None;
         Ok(())
     }
     /// Each call starts a fresh recurrence search, but resumes committed step and
@@ -139,10 +214,54 @@ impl<S: SchedulingStrategy> Runner<S> {
         &mut self,
         limits: RunLimits,
         requested: Option<AtomKey>,
-        mut cancelled: impl FnMut() -> bool,
+        cancelled: impl FnMut() -> bool,
     ) -> Result<RunReport> {
+        self.begin_run(limits, requested)?;
+        let mut cancelled = cancelled;
+        loop {
+            if let RunProgress::Finished(report) = self.advance(u64::MAX, &mut cancelled)? {
+                return Ok(report);
+            }
+        }
+    }
+    /// Begin a new logical run. A yielded run must be resumed or explicitly
+    /// reset; beginning another run must not silently erase its recurrence state.
+    pub fn begin_run(&mut self, limits: RunLimits, requested: Option<AtomKey>) -> Result<()> {
+        if self.active {
+            return Err(Diagnostic::new(
+                ErrorKind::InvalidConfiguration,
+                "a logical run is already active",
+            ));
+        }
+        self.plan = Some(RunPlan {
+            limits,
+            requested,
+            start_step: self.execution.committed_steps(),
+        });
+        self.active = true;
+        self.last_report = None;
         self.history = Vec::new();
         self.history_units = 0;
+        Ok(())
+    }
+    /// Execute at most batch_steps commits, yielding before the next state query.
+    /// Yield is not an outcome. Cancellation finishes the logical run; pausing by
+    /// not calling advance preserves it. Query-level interruption remains absent.
+    pub fn advance(
+        &mut self,
+        batch_steps: u64,
+        mut cancelled: impl FnMut() -> bool,
+    ) -> Result<RunProgress> {
+        if !self.active || batch_steps == 0 {
+            return Err(Diagnostic::new(
+                ErrorKind::InvalidConfiguration,
+                "advance requires an active run and positive batch size",
+            ));
+        }
+        let RunPlan {
+            limits, requested, ..
+        } = self.plan.expect("active run has a plan");
+        let start = self.execution.committed_steps();
         let mut report = RunReport {
             outcome: Outcome::Cancelled,
             rejected: 0,
@@ -158,6 +277,9 @@ impl<S: SchedulingStrategy> Runner<S> {
             scheduler: self.scheduler.description(),
         };
         loop {
+            if self.execution.committed_steps() - start >= batch_steps {
+                return Ok(RunProgress::Yielded);
+            }
             // Never attach a preceding state's measure to the final carrier.
             report.payload = None;
             if cancelled() {
@@ -241,7 +363,9 @@ impl<S: SchedulingStrategy> Runner<S> {
         if let Some(recurrence) = &mut report.recurrence {
             recurrence.observer = report.observer.clone();
         }
-        Ok(report)
+        self.active = false;
+        self.last_report = Some(report.clone());
+        Ok(RunProgress::Finished(report))
     }
     fn select_commit(
         &mut self,

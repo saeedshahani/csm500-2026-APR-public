@@ -169,6 +169,14 @@ pub struct Execution {
     steps: u64,
 }
 impl Execution {
+    pub(crate) fn fork(&self) -> Self {
+        Self {
+            graph: self.graph.clone(),
+            limits: self.limits,
+            baseline: Rc::new(()),
+            steps: self.steps,
+        }
+    }
     pub(crate) fn stamp(&self) -> (Rc<()>, u64) {
         (Rc::clone(&self.baseline), self.steps)
     }

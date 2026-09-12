@@ -1,4 +1,4 @@
-//! Native committed-event history. This is not yet a serialisation/import schema.
+//! Native committed-event history. Portable validation and replay live in [`crate::trace`].
 //! IDs are local to one recording; no process-global or private slotmap identity.
 //!
 //! ```
@@ -15,26 +15,34 @@
 //! assert!(order.edges().is_empty());
 //! # Ok::<(), graph_core::Diagnostic>(())
 //! ```
-use crate::{Event, Execution, OperationalBinding, PreparedStep};
+use crate::{Event, Execution, ExecutionLimits, OperationalBinding, PreparedStep};
 use graph_core::{Atom, AtomKey, Diagnostic, ErrorKind, Kind, LimitKind, Result};
 use std::collections::{BTreeMap, BTreeSet};
 use std::rc::Rc;
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct AtomId(pub u64);
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, serde::Serialize, serde::Deserialize,
+)]
+#[serde(transparent)]
+pub struct AtomId(#[serde(with = "crate::trace::decimal")] pub u64);
 impl From<AtomKey> for AtomId {
     fn from(key: AtomKey) -> Self {
         Self(key.number())
     }
 }
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
-pub struct EventId(pub u64);
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, serde::Serialize, serde::Deserialize,
+)]
+#[serde(transparent)]
+pub struct EventId(#[serde(with = "crate::trace::decimal")] pub u64);
 
 /// Content-addressed occurrence description, not a hash. The state index is
 /// scoped to the recording/snapshot; the binding identifies the same occurrence
 /// even when the enabled query is restricted to a particular source.
-#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct RedexId {
+    #[serde(with = "crate::trace::decimal")]
     pub state: u64,
     pub source: AtomId,
     pub revision: AtomId,
@@ -54,7 +62,8 @@ impl RedexId {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct AtomRecord {
     pub kind: Kind,
     pub fields: Vec<AtomId>,
@@ -67,7 +76,8 @@ impl From<&Atom> for AtomRecord {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct Footprint {
     pub consumed: BTreeSet<AtomId>,
     pub preserved: BTreeSet<AtomId>,
@@ -91,10 +101,12 @@ impl From<&Event> for Footprint {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+#[serde(deny_unknown_fields)]
 pub struct RecordedEvent {
     pub id: EventId,
     pub redex: RedexId,
+    #[serde(with = "crate::trace::decimal")]
     pub post_state: u64,
     pub footprint: Footprint,
     pub fresh: BTreeMap<AtomId, AtomRecord>,
@@ -129,6 +141,11 @@ pub(crate) fn atom_units(atom: &Atom) -> Result<usize> {
         .and_then(|n| n.checked_add(2))
         .ok_or_else(storage_error)
 }
+pub(crate) fn graph_units(graph: &graph_core::Graph) -> Result<usize> {
+    graph.iter().try_fold(0usize, |n, (_, a)| {
+        n.checked_add(atom_units(a)?).ok_or_else(storage_error)
+    })
+}
 fn storage_error() -> Diagnostic {
     Diagnostic::exhausted(LimitKind::TraceStorage, "recording capacity exhausted")
 }
@@ -147,6 +164,8 @@ pub struct Recording {
     units: usize,
     initial: BTreeMap<AtomId, AtomRecord>,
     events: Vec<RecordedEvent>,
+    initial_allocator: u64,
+    execution_limits: ExecutionLimits,
 }
 impl Recording {
     pub fn new(execution: &Execution, limits: RecordingLimits) -> Result<Self> {
@@ -174,10 +193,30 @@ impl Recording {
                 .map(|(k, a)| (k.into(), a.into()))
                 .collect(),
             events: Vec::new(),
+            initial_allocator: execution.graph().next_identity(),
+            execution_limits: execution.limits(),
         })
     }
     pub fn limits(&self) -> RecordingLimits {
         self.limits
+    }
+    pub fn initial_allocator(&self) -> u64 {
+        self.initial_allocator
+    }
+    pub fn execution_limits(&self) -> ExecutionLimits {
+        self.execution_limits
+    }
+    pub(crate) fn fork(&self, execution: &Execution) -> Self {
+        Self {
+            baseline: execution.stamp().0,
+            next_step: self.next_step,
+            limits: self.limits,
+            units: self.units,
+            initial: self.initial.clone(),
+            events: self.events.clone(),
+            initial_allocator: self.initial_allocator,
+            execution_limits: self.execution_limits,
+        }
     }
     pub fn units(&self) -> usize {
         self.units
@@ -246,18 +285,7 @@ impl Recording {
             ));
         }
         let post_state = step.checked_add(1).ok_or_else(storage_error)?;
-        let record = RecordedEvent {
-            id: EventId(step),
-            redex: RedexId::new(step, prepared.binding(), e),
-            post_state,
-            footprint: e.into(),
-            fresh: prepared
-                .ground_rule()
-                .fresh()
-                .iter()
-                .map(|(k, a)| ((*k).into(), a.into()))
-                .collect(),
-        };
+        let record = RecordedEvent::preview(step, &prepared)?;
         let units = self.limits.max_units - remaining;
         // No ordinary fallible recording operation follows the shared commit.
         let event = execution.commit(prepared)?;
@@ -265,5 +293,21 @@ impl Recording {
         self.units = units;
         self.next_step = post_state;
         Ok(event)
+    }
+}
+impl RecordedEvent {
+    pub(crate) fn preview(step: u64, prepared: &PreparedStep) -> Result<Self> {
+        Ok(Self {
+            id: EventId(step),
+            redex: RedexId::new(step, prepared.binding(), prepared.event()),
+            post_state: step.checked_add(1).ok_or_else(storage_error)?,
+            footprint: prepared.event().into(),
+            fresh: prepared
+                .ground_rule()
+                .fresh()
+                .iter()
+                .map(|(k, a)| ((*k).into(), a.into()))
+                .collect(),
+        })
     }
 }

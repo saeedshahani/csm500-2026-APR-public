@@ -1,0 +1,331 @@
+{
+  "schema": "reflective-trace-v1",
+  "profile": "checked-binding-positive-resources-v1",
+  "implementation": "engine-0.1.0-source-sha256=3e0770af8fa75cc08aafba3bbb16cf756936bc83c7ce9062ee06ab2cf616c0b7",
+  "source_sha256": "545212be523302481ddbbf7efff870204718ec47f58f92548e884a22b09ea6bc",
+  "initial_sha256": "b531d37b9449451775e669fa789a6afc34db32bfeda3d723d9f8f73ef2115a2e",
+  "initial": {
+    "next_identity": "20",
+    "atoms": {
+      "0": {
+        "kind": "RuleHead",
+        "fields": []
+      },
+      "1": {
+        "kind": "Nat",
+        "fields": []
+      },
+      "2": {
+        "kind": {
+          "Record": {
+            "role": "Rank",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "1"
+        ]
+      },
+      "3": {
+        "kind": {
+          "Record": {
+            "role": "ModeObject",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "4": {
+        "kind": {
+          "Record": {
+            "role": "Revision",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "5": {
+        "kind": {
+          "Record": {
+            "role": "Active",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "6": {
+        "kind": {
+          "PatternVariable": {
+            "admits": [
+              "Constructor"
+            ],
+            "binding": "Free"
+          }
+        },
+        "fields": []
+      },
+      "7": {
+        "kind": {
+          "PatternVariable": {
+            "admits": [
+              "Constructor"
+            ],
+            "binding": "Free"
+          }
+        },
+        "fields": []
+      },
+      "8": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "6",
+          "7"
+        ]
+      },
+      "9": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "done"
+          }
+        },
+        "fields": [
+          "6",
+          "7"
+        ]
+      },
+      "10": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "6"
+        ]
+      },
+      "11": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "7"
+        ]
+      },
+      "12": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "8"
+        ]
+      },
+      "13": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "6"
+        ]
+      },
+      "14": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "7"
+        ]
+      },
+      "15": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "9"
+        ]
+      },
+      "16": {
+        "kind": {
+          "Constructor": "A"
+        },
+        "fields": []
+      },
+      "17": {
+        "kind": {
+          "Constructor": "B"
+        },
+        "fields": []
+      },
+      "18": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "value"
+          }
+        },
+        "fields": [
+          "16",
+          "17"
+        ]
+      },
+      "19": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "16",
+          "17"
+        ]
+      }
+    }
+  },
+  "relation": "positive_resource_order",
+  "limitation": "Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.",
+  "settings": {
+    "graph": {
+      "max_input_bytes": "4194304",
+      "max_atoms": "10000",
+      "max_fields": "20000",
+      "max_label_bytes": "1048576",
+      "max_package_depth": "32",
+      "max_validation_work": "10000000"
+    },
+    "search": {
+      "max_candidates": "1000",
+      "max_work": "1000000"
+    },
+    "recording": {
+      "max_events": "10000",
+      "max_units": "2000000",
+      "max_work": "2000000"
+    },
+    "analysis": {
+      "max_work": "2000000",
+      "max_units": "2000000"
+    },
+    "observer": {
+      "declaration": "observer-v1\nall\n",
+      "inputs": {},
+      "nontriviality_threshold": "2"
+    },
+    "plan": null
+  },
+  "status": "recorded_prefix",
+  "report": null,
+  "events": [
+    {
+      "id": "0",
+      "redex": {
+        "state": "0",
+        "source": "0",
+        "revision": "4",
+        "binding": [
+          [
+            "6",
+            "16"
+          ],
+          [
+            "7",
+            "17"
+          ],
+          [
+            "8",
+            "19"
+          ]
+        ]
+      },
+      "post_state": "1",
+      "footprint": {
+        "consumed": [
+          "19"
+        ],
+        "preserved": [
+          "16",
+          "17"
+        ],
+        "produced": [
+          "20"
+        ],
+        "read": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "19"
+        ],
+        "entered": [],
+        "exited": [],
+        "altered": []
+      },
+      "fresh": {
+        "20": {
+          "kind": {
+            "Record": {
+              "role": "ObjectLink",
+              "label": "done"
+            }
+          },
+          "fields": [
+            "16",
+            "17"
+          ]
+        }
+      }
+    }
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "checkpoint_interval": "32",
+  "checkpoints": []
+}

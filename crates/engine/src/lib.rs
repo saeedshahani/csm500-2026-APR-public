@@ -8,6 +8,7 @@ pub mod observation;
 pub mod recording;
 pub mod runner;
 pub mod scheduling;
+pub mod trace;
 pub use checked::{
     CandidateSearch, Execution, ExecutionLimits, GroundMatch, GroundRule, OperationalBinding,
     PreparedStep, SearchLimits,

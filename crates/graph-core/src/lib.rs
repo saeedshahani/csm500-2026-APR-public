@@ -30,6 +30,7 @@ mod tests {
     }
 }
 
+use serde::{Deserialize, Serialize};
 use slotmap::{new_key_type, SlotMap};
 use std::collections::{BTreeMap, BTreeSet};
 use std::fmt;
@@ -49,7 +50,7 @@ impl AtomKey {
 new_key_type! { struct StorageKey; }
 
 /// The eight semantic record roles; fields are ordered by their vector positions.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Role {
     ObjectLink,
     Lhs,
@@ -75,7 +76,7 @@ impl Role {
 }
 
 /// Refined kinds admitted by an operational pattern variable.
-#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
 pub enum Sort {
     Constructor,
     PatternVariable,
@@ -85,14 +86,15 @@ pub enum Sort {
 }
 
 /// A free assignment or an assignment constrained to the applied rule's identity.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
 pub enum Binding {
     Free,
     AppliedRule,
 }
 
 /// Immutable semantic attributes of an atom, independent of its runtime identity.
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
 pub enum Kind {
     Constructor(String),
     PatternVariable {
@@ -262,6 +264,80 @@ pub struct Graph {
 }
 
 impl Graph {
+    /// Allocator high-water mark, including identities no longer present.
+    pub fn next_identity(&self) -> u64 {
+        self.next_identity
+    }
+    /// Resolve a public number only when that atom exists in this graph.
+    pub fn key(&self, number: u64) -> Option<AtomKey> {
+        let key = AtomKey(number);
+        self.identities.contains_key(&key).then_some(key)
+    }
+    /// Reconstruct a separate, fully validated identity-bearing snapshot. This
+    /// does not mutate any existing execution or trust its claimed history.
+    pub fn restore_identity_snapshot(
+        atoms: &[(u64, Kind, Vec<u64>)],
+        next_identity: u64,
+        limits: &GraphLimits,
+    ) -> Result<Self> {
+        if atoms.len() > limits.max_atoms {
+            return Err(Diagnostic::exhausted(
+                LimitKind::Atoms,
+                "snapshot atom limit exceeded",
+            ));
+        }
+        let mut fields = 0usize;
+        let mut bytes = 0usize;
+        let mut previous = None;
+        for (id, kind, targets) in atoms {
+            check_shape(kind, targets.len()).map_err(|e| e.at_atom(AtomKey(*id)))?;
+            ensure(
+                *id < next_identity && previous.is_none_or(|p| p < *id),
+                "snapshot identities must be unique, increasing and below allocator",
+            )?;
+            previous = Some(*id);
+            fields = fields
+                .checked_add(targets.len())
+                .filter(|n| *n <= limits.max_fields)
+                .ok_or_else(|| {
+                    Diagnostic::exhausted(LimitKind::Fields, "snapshot field limit exceeded")
+                })?;
+            let n = match kind {
+                Kind::Constructor(s) | Kind::Record { label: Some(s), .. } => s.len(),
+                _ => 0,
+            };
+            bytes = bytes
+                .checked_add(n)
+                .filter(|n| *n <= limits.max_label_bytes)
+                .ok_or_else(|| {
+                    Diagnostic::exhausted(LimitKind::LabelBytes, "snapshot label limit exceeded")
+                })?;
+        }
+        for (id, _, targets) in atoms {
+            for target in targets {
+                ensure(
+                    atoms
+                        .binary_search_by_key(target, |(key, _, _)| *key)
+                        .is_ok(),
+                    "snapshot field references missing atom",
+                )
+                .map_err(|e| e.at_atom(AtomKey(*id)))?;
+            }
+        }
+        let mut graph = Self {
+            next_identity,
+            ..Self::default()
+        };
+        for (id, kind, fields) in atoms {
+            let slot = graph.atoms.insert(Atom {
+                kind: kind.clone(),
+                fields: fields.iter().map(|id| AtomKey(*id)).collect(),
+            });
+            graph.identities.insert(AtomKey(*id), slot);
+        }
+        validate_with_limits(&graph, limits)?;
+        Ok(graph)
+    }
     pub fn new() -> Self {
         Self::default()
     }
