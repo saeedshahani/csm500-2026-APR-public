@@ -1,0 +1,33 @@
+// Hand-derived after an odd number of steps: only phase is replaced by done.
+program {
+  rule forward {
+    atom forward_z = Nat();
+    rank forward_rank = forward_z;
+    mode forward_mode = ModeObject;
+    revision forward_revision;
+    active forward_active;
+    atom forward_x = PatternVariable[Constructor] Free;
+    atom forward_y = PatternVariable[Constructor] Free;
+    atom forward_old = Record[ObjectLink]("pending", forward_x, forward_y);
+    atom forward_new = Record[ObjectLink]("done", forward_x, forward_y);
+    lhs { forward_lx: forward_x; forward_ly: forward_y; forward_ll: forward_old; }
+    rhs { forward_rx: forward_x; forward_ry: forward_y; forward_rl: forward_new; }
+  }
+  rule backward {
+    atom backward_z = Nat();
+    rank backward_rank = backward_z;
+    mode backward_mode = ModeObject;
+    revision backward_revision;
+    active backward_active;
+    atom backward_x = PatternVariable[Constructor] Free;
+    atom backward_y = PatternVariable[Constructor] Free;
+    atom backward_old = Record[ObjectLink]("done", backward_x, backward_y);
+    atom backward_new = Record[ObjectLink]("pending", backward_x, backward_y);
+    lhs { backward_lx: backward_x; backward_ly: backward_y; backward_ll: backward_old; }
+    rhs { backward_rx: backward_x; backward_ry: backward_y; backward_rl: backward_new; }
+  }
+  atom a = Constructor("A");
+  atom b = Constructor("B");
+  atom value = Record[ObjectLink]("value", a, b);
+  atom phase = Record[ObjectLink]("done", a, b);
+}

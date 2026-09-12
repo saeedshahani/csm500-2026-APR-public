@@ -1,0 +1,29 @@
+name: Extended generated properties
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '31 4 * * 1'
+permissions:
+  contents: read
+jobs:
+  properties:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: ['5452614', '1', '987654321']
+    env:
+      S3_CASES: '512'
+      S3_SEED: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: rustup toolchain install 1.85.0 --profile minimal
+      - run: cargo test -p engine --test generated -p cli --test generated --locked -- --nocapture
+      - name: Retain failing seeds and shrunken recipes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: property-regressions-${{ matrix.seed }}
+          path: crates/**/proptest-regressions/*.txt
+          if-no-files-found: ignore

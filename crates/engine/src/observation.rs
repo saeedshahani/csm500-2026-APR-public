@@ -313,6 +313,31 @@ pub(crate) fn isomorphic_budget(
     }
     let li: BTreeMap<_, _> = l.iter().enumerate().map(|(i, (k, _))| (**k, i)).collect();
     let ri: BTreeMap<_, _> = r.iter().enumerate().map(|(i, (k, _))| (**k, i)).collect();
+    let mut initial_classes = BTreeMap::new();
+    let mut colours = Vec::new();
+    let mut fields = Vec::new();
+    for (offset, atoms, indices) in [(0, &l, &li), (n, &r, &ri)] {
+        for (_, atom) in atoms {
+            budget.charge(1 + atom.fields.len())?;
+            let label = format!("{:?}", atom.kind);
+            budget.charge(label.len())?;
+            let next = initial_classes.len();
+            colours.push(
+                *initial_classes
+                    .entry((label, atom.fields.len()))
+                    .or_insert(next),
+            );
+            fields.push(
+                atom.fields
+                    .iter()
+                    .map(|k| indices[k] + offset)
+                    .collect::<Vec<_>>(),
+            );
+        }
+    }
+    let Some(colours) = refine(colours, &fields, n, budget)? else {
+        return Ok(false);
+    };
     let mut map = vec![None; n];
     let mut used = vec![false; n];
     let mut next = vec![0; n];
@@ -333,7 +358,7 @@ pub(crate) fn isomorphic_budget(
         let candidate = next[depth];
         next[depth] += 1;
         budget.charge(1)?;
-        if used[candidate] {
+        if used[candidate] || colours[depth] != colours[n + candidate] {
             continue;
         }
         let a = l[depth].1;
@@ -383,6 +408,60 @@ pub(crate) fn isomorphic_budget(
         } else {
             map[depth] = None;
         }
+    }
+}
+
+/// Necessary-condition partition refinement only. Incoming signatures are
+/// accumulated in one incidence pass, independently of the test oracle's
+/// all-pairs construction. Equal partitions still require exact bijection search.
+fn refine(
+    mut colours: Vec<usize>,
+    fields: &[Vec<usize>],
+    n: usize,
+    budget: &mut Budget,
+) -> Result<Option<Vec<usize>>> {
+    loop {
+        budget.charge(colours.len())?;
+        let mut incoming = vec![Vec::new(); colours.len()];
+        for (source, targets) in fields.iter().enumerate() {
+            budget.charge(1)?;
+            for (slot, target) in targets.iter().enumerate() {
+                budget.charge(1)?;
+                incoming[*target].push((slot, colours[source]));
+            }
+        }
+        let mut classes = BTreeMap::new();
+        let mut refined = Vec::new();
+        for i in 0..colours.len() {
+            let size = incoming[i].len();
+            budget.charge(
+                1 + fields[i].len()
+                    + size.saturating_mul(usize::BITS as usize - size.leading_zeros() as usize),
+            )?;
+            incoming[i].sort_unstable();
+            let signature = (
+                colours[i],
+                fields[i].iter().map(|j| colours[*j]).collect::<Vec<_>>(),
+                std::mem::take(&mut incoming[i]),
+            );
+            let next = classes.len();
+            refined.push(*classes.entry(signature).or_insert(next));
+        }
+        let mut balance = vec![0isize; classes.len()];
+        for (i, c) in refined.iter().enumerate() {
+            budget.charge(1)?;
+            balance[*c] += if i < n { 1 } else { -1 };
+        }
+        if balance.iter().any(|v| *v != 0) {
+            return Ok(None);
+        }
+        // Refinement cannot merge existing classes because their old colour is
+        // part of every signature. An unchanged class count is a fixed partition.
+        let old_count = colours.iter().copied().max().map_or(0, |c| c + 1);
+        if classes.len() == old_count {
+            return Ok(Some(refined));
+        }
+        colours = refined;
     }
 }
 

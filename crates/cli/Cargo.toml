@@ -8,5 +8,7 @@ publish.workspace = true
 engine.workspace = true
 graph-core.workspace = true
 parser.workspace = true
+[dev-dependencies]
+proptest.workspace = true
 [lints]
 workspace = true

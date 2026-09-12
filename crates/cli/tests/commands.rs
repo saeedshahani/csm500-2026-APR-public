@@ -104,6 +104,34 @@ fn observer_file_is_validated_by_check_without_querying_normality() {
 }
 
 #[test]
+fn behavioural_result_publication_never_overwrites_an_existing_report() {
+    let dir = Directory::new();
+    let output = dir.0.join("oscillation.graph");
+    let input =
+        Path::new(env!("CARGO_MANIFEST_DIR")).join("../../examples/behaviour/oscillating.graph");
+    let invoke = || {
+        command()
+            .args([
+                "run",
+                input.to_str().unwrap(),
+                "--max-steps",
+                "6",
+                "--detect-cycles",
+                "true",
+                "--output",
+                output.to_str().unwrap(),
+            ])
+            .output()
+            .unwrap()
+    };
+    assert_eq!(invoke().status.code(), Some(6));
+    let first = std::fs::read(&output).unwrap();
+    parser::load(std::str::from_utf8(&first).unwrap()).unwrap();
+    assert_eq!(invoke().status.code(), Some(1));
+    assert_eq!(std::fs::read(&output).unwrap(), first);
+}
+
+#[test]
 fn check_validates_active_and_inactive_rules_without_running() {
     let text = std::fs::read_to_string(program("arithmetic")).unwrap();
     for text in [

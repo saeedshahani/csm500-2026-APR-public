@@ -9,5 +9,7 @@ graph-core.workspace = true
 rand = { version = "=0.8.5", default-features = false }
 rand_chacha = { version = "=0.3.1", default-features = false }
 sha2 = "=0.10.8"
+[dev-dependencies]
+proptest.workspace = true
 [lints]
 workspace = true

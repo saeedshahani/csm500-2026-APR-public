@@ -1,0 +1,18 @@
+// Only the value link is deleted; endpoints and all program atoms remain.
+program {
+  rule erase {
+    atom erase_z = Nat();
+    rank erase_rank = erase_z;
+    mode erase_mode = ModeObject;
+    revision erase_revision;
+    active erase_active;
+    atom erase_x = PatternVariable[Constructor] Free;
+    atom erase_y = PatternVariable[Constructor] Free;
+    atom erase_old = Record[ObjectLink]("value", erase_x, erase_y);
+    lhs { erase_lx: erase_x; erase_ly: erase_y; erase_ll: erase_old; }
+    rhs { erase_rx: erase_x; erase_ry: erase_y;  }
+  }
+  atom a = Constructor("A");
+  atom b = Constructor("B");
+  atom value = Record[ObjectLink]("value", a, b);
+}

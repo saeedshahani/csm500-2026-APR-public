@@ -127,6 +127,29 @@ fn comparison_zero_and_exact_empty_budget() {
 }
 
 #[test]
+fn identical_refinement_colours_do_not_establish_isomorphism() {
+    let cycles = |length: usize| {
+        let mut g = Graph::new();
+        let nodes: Vec<_> = (0..6)
+            .map(|_| g.insert(Kind::Constructor("same".into()), &[]).unwrap())
+            .collect();
+        for i in 0..6 {
+            let target = (i / length) * length + (i + 1) % length;
+            g.insert(
+                Kind::Record {
+                    role: Role::ObjectLink,
+                    label: Some("same".into()),
+                },
+                &[nodes[i], nodes[target]],
+            )
+            .unwrap();
+        }
+        g
+    };
+    assert!(!compare(&cycles(6), &cycles(3)));
+}
+
+#[test]
 fn identity_ordered_scheduler_is_not_invariant_under_graph_renaming() {
     use engine::runner::{RunLimits, Runner};
     use engine::scheduling::Scheduler;
