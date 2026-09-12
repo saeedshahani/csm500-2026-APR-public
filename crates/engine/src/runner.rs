@@ -67,6 +67,7 @@ pub struct Runner<S: SchedulingStrategy> {
     history: Vec<HistoryEntry>,
     history_units: usize,
     initial_identity: String,
+    recording: Option<crate::recording::Recording>,
 }
 impl<S: SchedulingStrategy> Runner<S> {
     pub fn new(
@@ -85,10 +86,25 @@ impl<S: SchedulingStrategy> Runner<S> {
             history: Vec::new(),
             history_units: 0,
             initial_identity,
+            recording: None,
         })
     }
     pub fn execution(&self) -> &Execution {
         &self.execution
+    }
+    /// Start retaining events at state zero. Serialisation and replay are separate.
+    pub fn enable_recording(&mut self, limits: crate::recording::RecordingLimits) -> Result<()> {
+        if self.recording.is_some() {
+            return Err(Diagnostic::new(
+                ErrorKind::InvalidConfiguration,
+                "recording is already enabled",
+            ));
+        }
+        self.recording = Some(crate::recording::Recording::new(&self.execution, limits)?);
+        Ok(())
+    }
+    pub fn recording(&self) -> Option<&crate::recording::Recording> {
+        self.recording.as_ref()
     }
     pub fn scheduler(&self) -> &S {
         &self.scheduler
@@ -97,7 +113,16 @@ impl<S: SchedulingStrategy> Runner<S> {
         self.history.len()
     }
     pub fn replace_graph(&mut self, graph: Graph, observer: Observer) -> Result<()> {
-        self.execution.replace_graph(graph)?;
+        // Stage the complete replacement, including recording capacity, before
+        // publishing any new baseline or resetting scheduler/observation state.
+        let replacement = Execution::new(graph, self.execution.limits())?;
+        let recording = self
+            .recording
+            .as_ref()
+            .map(|r| crate::recording::Recording::new(&replacement, r.limits()))
+            .transpose()?;
+        self.execution = replacement;
+        self.recording = recording;
         self.initial_identity = initial_identity(self.execution.graph());
         self.observer = observer;
         self.scheduler = self.initial_scheduler.clone();
@@ -199,7 +224,15 @@ impl<S: SchedulingStrategy> Runner<S> {
                 report.outcome = Outcome::Cancelled;
                 break;
             }
-            if !self.select_commit(enabled.into_steps(), &mut cancelled)? {
+            let committed = match self.select_commit(enabled.into_steps(), &mut cancelled) {
+                Err(error) if error.kind() == ErrorKind::ResourceExhaustion => {
+                    report.outcome = Outcome::ResourceLimit;
+                    report.diagnostic = Some(error);
+                    break;
+                }
+                other => other?,
+            };
+            if !committed {
                 report.outcome = Outcome::Cancelled;
                 break;
             }
@@ -229,7 +262,12 @@ impl<S: SchedulingStrategy> Runner<S> {
         if cancelled() {
             return Ok(false);
         }
-        self.execution.commit(steps.swap_remove(index))?;
+        let prepared = steps.swap_remove(index);
+        if let Some(recording) = &mut self.recording {
+            recording.commit(&mut self.execution, prepared)?;
+        } else {
+            self.execution.commit(prepared)?;
+        }
         self.scheduler = next_scheduler;
         Ok(true)
     }

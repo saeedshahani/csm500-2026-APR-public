@@ -169,6 +169,9 @@ pub struct Execution {
     steps: u64,
 }
 impl Execution {
+    pub(crate) fn stamp(&self) -> (Rc<()>, u64) {
+        (Rc::clone(&self.baseline), self.steps)
+    }
     pub fn new(graph: Graph, limits: ExecutionLimits) -> Result<Self> {
         ValidatedGraph::new(&graph, &limits.graph)?;
         Ok(Self {
@@ -220,13 +223,7 @@ impl Execution {
     /// Full preparation already checked validity, lifecycle and GC. No graph mutation
     /// is possible through this API between preparation and a successful stamped commit.
     pub fn commit(&mut self, prepared: PreparedStep) -> Result<Event> {
-        if !Rc::ptr_eq(&self.baseline, &prepared.baseline) || self.steps != prepared.step {
-            return Err(Diagnostic::new(
-                ErrorKind::StaleCandidate,
-                "candidate belongs to a different execution state",
-            )
-            .at_atom(prepared.binding.source));
-        }
+        self.check_prepared(&prepared)?;
         let next = self.steps.checked_add(1).ok_or_else(|| {
             Diagnostic::exhausted(
                 LimitKind::ExecutionSteps,
@@ -236,6 +233,16 @@ impl Execution {
         self.graph = prepared.candidate;
         self.steps = next;
         Ok(prepared.event)
+    }
+    pub(crate) fn check_prepared(&self, prepared: &PreparedStep) -> Result<()> {
+        if !Rc::ptr_eq(&self.baseline, &prepared.baseline) || self.steps != prepared.step {
+            return Err(Diagnostic::new(
+                ErrorKind::StaleCandidate,
+                "candidate belongs to a different execution state",
+            )
+            .at_atom(prepared.binding.source));
+        }
+        Ok(())
     }
     fn prepare_checked(
         &self,

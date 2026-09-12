@@ -76,12 +76,22 @@ impl CandidateSearch<'_> {
         self.remember_failure(result)
     }
     pub fn enabled(&mut self) -> Result<EnabledSet> {
-        self.enabled_query(None)
+        self.enabled_query(None, |_| Ok(()))
     }
     pub fn enabled_for(&mut self, source: AtomKey) -> Result<EnabledSet> {
-        self.enabled_query(Some(source))
+        self.enabled_query(Some(source), |_| Ok(()))
     }
-    fn enabled_query(&mut self, source: Option<AtomKey>) -> Result<EnabledSet> {
+    pub(crate) fn enabled_retaining(
+        &mut self,
+        retain: impl FnMut(&PreparedStep) -> Result<()>,
+    ) -> Result<EnabledSet> {
+        self.enabled_query(None, retain)
+    }
+    fn enabled_query(
+        &mut self,
+        source: Option<AtomKey>,
+        mut retain: impl FnMut(&PreparedStep) -> Result<()>,
+    ) -> Result<EnabledSet> {
         let result = (|| {
             self.check()?;
             let execution = self.execution;
@@ -103,6 +113,7 @@ impl CandidateSearch<'_> {
                     match search.prepare_classified(binding.clone()) {
                         Ok(step) => {
                             search.charge_work(step.ground_rule().fresh().len())?;
+                            retain(&step)?;
                             steps.push(step);
                         }
                         Err(AdmissionFailure::Rejected(diagnostic)) => {

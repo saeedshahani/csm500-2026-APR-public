@@ -1,8 +1,11 @@
 //! Bounded complete matching, applicability and checked atomic graph transactions.
 //! Reproducible scheduling and bounded observation are layered above admission.
+pub mod causal;
 mod checked;
+pub mod conflict;
 mod matching;
 pub mod observation;
+pub mod recording;
 pub mod runner;
 pub mod scheduling;
 pub use checked::{

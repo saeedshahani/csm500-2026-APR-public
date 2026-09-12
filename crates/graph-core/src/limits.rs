@@ -19,6 +19,9 @@ pub enum LimitKind {
     ObservationWork,
     ComparisonWork,
     ObservationHistory,
+    TraceStorage,
+    AnalysisWork,
+    AnalysisStorage,
 }
 
 /// Operational bounds, not restrictions on the mathematical formalism.
