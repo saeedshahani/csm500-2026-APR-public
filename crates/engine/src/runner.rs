@@ -138,7 +138,9 @@ impl<S: SchedulingStrategy> Runner<S> {
     pub fn observer(&self) -> &Observer {
         &self.observer
     }
-    pub(crate) fn fork(&self) -> Self {
+    /// Independent logical-run copy with a fresh transaction baseline. Changes
+    /// in either copy do not publish into the other; used for staged UI commands.
+    pub fn fork(&self) -> Self {
         let execution = self.execution.fork();
         let recording = self.recording.as_ref().map(|r| r.fork(&execution));
         Self {

@@ -19,7 +19,18 @@ New to the project? Start with [`docs/explainers/simple.md`](docs/explainers/sim
 
 ## Build and check
 
-Install Rust through rustup; `rust-toolchain.toml` pins Rust/Cargo 1.85.0. No Node tooling is required for the current native workspace.
+Install Rust through rustup; `rust-toolchain.toml` pins Rust/Cargo 1.85.0. Native commands do not require Node. The browser uses Node 25.4.0 and npm 11.7.0.
+
+The engine-backed browser workspace supports editing, stepping/running, rule inspection and verified trace import/export. Its build and lifecycle contract is [docs/workbench.md](docs/workbench.md).
+
+```sh
+rustup target add wasm32-unknown-unknown --toolchain 1.85.0
+cd frontend
+npm ci
+npm run dev
+```
+
+Use npm run build and npm run preview for the production bundle. Native checks below run from the repository root.
 
 ```sh
 cargo test --workspace --locked

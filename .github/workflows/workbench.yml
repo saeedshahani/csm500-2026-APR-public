@@ -1,0 +1,37 @@
+name: Workbench build and runtime parity
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  workbench:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.node-version
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm install --global npm@11.7.0
+      - run: rustup toolchain install 1.85.0 --profile minimal
+      - run: rustup target add wasm32-unknown-unknown --toolchain 1.85.0
+      - run: npm ci
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run test:unit
+      - run: npm run test:parity
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: |
+            frontend/test-results/
+            frontend/playwright-report/
+            output/playwright/
+          if-no-files-found: ignore

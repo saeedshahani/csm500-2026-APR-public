@@ -133,7 +133,7 @@ fn hand_derived_diamond_chain_unrelated_and_shared_read() {
         .is_err());
 }
 proptest! {
-    #![proptest_config(ProptestConfig::with_cases(64))]
+    #![proptest_config(ProptestConfig { cases: std::env::var("PROPTEST_CASES").map(|v| v.parse().expect("numeric PROPTEST_CASES")).unwrap_or(64), ..ProptestConfig::default() })]
     #[test]
     fn generated_legal_resource_histories_agree_with_both_oracles(ops in prop::collection::vec((any::<bool>(),0usize..8,any::<bool>()),0..24)) {
         let mut live=vec![100u64,101,102]; let mut next=103; let mut records=vec![];

@@ -1,0 +1,30 @@
+{
+  "name": "reflective-graph-workbench",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {"node": "25.4.0", "npm": "11.7.0"},
+  "packageManager": "npm@11.7.0",
+  "scripts": {
+    "wasm": "node scripts/build-wasm.mjs web",
+    "wasm:node": "node scripts/build-wasm.mjs nodejs",
+    "dev": "npm run wasm && vite --host 127.0.0.1",
+    "build": "npm run wasm && tsc --noEmit && vite build",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint src tests",
+    "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
+    "test:unit": "node --experimental-strip-types --test tests/controller.test.ts",
+    "test:parity": "npm run wasm:node && node --test tests/parity.test.mjs",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "react": "19.3.0", "react-dom": "19.3.0",
+    "@codemirror/state": "6.7.4", "@codemirror/view": "6.43.11", "d3-force": "3.0.0"
+  },
+  "devDependencies": {
+    "vite": "8.3.0", "@vitejs/plugin-react": "6.1.1", "typescript": "5.9.3",
+    "eslint": "10.10.0", "typescript-eslint": "8.70.0", "@playwright/test": "1.63.0",
+    "@types/react": "19.2.14", "@types/react-dom": "19.2.3", "@types/d3-force": "3.0.10",
+    "@types/node": "25.0.10", "wasm-pack": "0.15.0"
+  }
+}

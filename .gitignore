@@ -11,3 +11,10 @@ docs/explainers/
 docs/dissertation.md
 /target/
 **/.DS_Store
+/frontend/node_modules/
+/frontend/dist/
+/frontend/pkg/
+/frontend/pkg-node/
+/frontend/playwright-report/
+/frontend/test-results/
+/output/
