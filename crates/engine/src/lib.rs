@@ -1,7 +1,10 @@
 //! Bounded complete matching, applicability and checked atomic graph transactions.
-//! Scheduling strategies, caching and concurrency are not implemented.
+//! Reproducible scheduling and bounded observation are layered above admission.
 mod checked;
 mod matching;
+pub mod observation;
+pub mod runner;
+pub mod scheduling;
 pub use checked::{
     CandidateSearch, Execution, ExecutionLimits, GroundMatch, GroundRule, OperationalBinding,
     PreparedStep, SearchLimits,

@@ -80,6 +80,30 @@ fn help_documents_all_commands_and_exit_meanings() {
 }
 
 #[test]
+fn observer_file_is_validated_by_check_without_querying_normality() {
+    let dir = Directory::new();
+    let path = dir.0.join("observer.txt");
+    let source = std::fs::read_to_string(program("arithmetic")).unwrap();
+    for (spec, valid) in [
+        ("observer-v1\nselect carrier\ninput h_ev\n", true),
+        ("observer-v1\nselect carrier\ninput missing\n", false),
+        ("observer-v1\nselect carrier\nlink FF\n", false),
+    ] {
+        std::fs::write(&path, spec).unwrap();
+        let out = stdin(
+            &["check", "-", "--observer", path.to_str().unwrap()],
+            source.as_bytes(),
+        );
+        if valid {
+            outcome(&out, 0, "Valid", 0);
+        } else {
+            assert_eq!(out.status.code(), Some(2));
+            assert!(out.stdout.is_empty());
+        }
+    }
+}
+
+#[test]
 fn check_validates_active_and_inactive_rules_without_running() {
     let text = std::fs::read_to_string(program("arithmetic")).unwrap();
     for text in [

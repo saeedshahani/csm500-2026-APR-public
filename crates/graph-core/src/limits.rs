@@ -16,6 +16,9 @@ pub enum LimitKind {
     SearchWork,
     Identities,
     ExecutionSteps,
+    ObservationWork,
+    ComparisonWork,
+    ObservationHistory,
 }
 
 /// Operational bounds, not restrictions on the mathematical formalism.

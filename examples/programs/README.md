@@ -14,9 +14,17 @@ cargo test --locked -p cli --test programs
 
 The arithmetic command exits 0 with `NormalForm`. The bounded self-modification command exits 3 with `StepLimit`; this is not an error in its graph or proof of divergence. The requested mutual-regress command exits 4 with `RequestedRuleUnavailable` and a guardedness diagnostic. Without `--rule p`, a complete query reports `NormalForm`: raw matches exist, but none is admissible. `check` reports only structural validity and performs no rewrite.
 
-The command-line policy chooses the first enabled candidate in identity-based search order. It is reproducible for the same input but is not fair or invariant under renaming. In particular, repeated installation can starve the installed rule, and repeated P/supervisor execution can starve Q. The integration tests select the indicated candidate from a **complete automatically computed enabled set**. They do not supply a binding to the transaction or bypass any admission check. The self-modification test selects the current output membership explicitly; the CLI's first-enabled policy need not choose that same membership when several become eligible. These are witness paths, not claims about all schedules. General scheduling is Sprint 3 work.
+The default command-line policy chooses the least source-and-binding tuple from the complete enabled set. --strategy seeded --seed U64 selects reproducibly from that same ordering. It is reproducible for the same input but is not fair or invariant under renaming. In particular, repeated installation can starve the installed rule, and repeated P/supervisor execution can starve Q. The integration tests select the indicated candidate from a **complete automatically computed enabled set**. They do not supply a binding to the transaction or bypass any admission check. The self-modification test selects the current output membership explicitly; the CLI's first-enabled policy need not choose that same membership when several become eligible. These are witness paths, not claims about all schedules. Scheduling and bounded observation use the shared runner; the full behavioural study remains separate.
 
 ## Independent expectations
+
+Scheduling and observation options can be combined, for example:
+
+```sh
+cargo run --locked -p cli -- run examples/programs/arithmetic.graph --max-steps 1 --strategy seeded --seed 42 --observer examples/observers/all.observer --detect-cycles true
+```
+
+`examples/observers/value.observer` selects non-rule value links and their endpoints. Repeated selected observations can hide changes elsewhere; reports separately say whether the complete carriers also agree. Exit 6 means a confirmed finite recurrence, not proven infinite oscillation. Observation, comparison and history budgets are configurable; exhaustion exits 3. Payload is absent when the final state was not observed, including when complete querying established normality first. These files supply declarations, not the completed behavioural study.
 
 Expected files were derived by symbolic delete–preserve–create accounting before executing these programs, not by saving interpreter output. Arithmetic, SelfLower and installation are transcriptions/extensions of A2, B2 and A4's hand ledgers. C1 is the rejected rank exchange. Restoration transcribes C2's two note-replacing lowerers and supervisor. Fresh names in expected files are explanatory and do not predict allocation keys. Every atom omitted from a stated deletion survives, including unattached syntax and old output atoms; no garbage collection is assumed.
 

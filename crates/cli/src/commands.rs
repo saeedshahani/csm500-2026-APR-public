@@ -1,4 +1,7 @@
-use engine::{Execution, ExecutionLimits};
+use engine::observation::Observer;
+use engine::runner::{Outcome, RunLimits, Runner};
+use engine::scheduling::Scheduler;
+use engine::ExecutionLimits;
 use graph_core::{Diagnostic, ErrorKind, Kind};
 use parser::{load_with_limits, print_with_limits, source_position, ParseLimits};
 use std::collections::BTreeSet;
@@ -29,6 +32,10 @@ struct Options {
     rule: Option<String>,
     parse: ParseLimits,
     execution: ExecutionLimits,
+    scheduler: String,
+    seed: Option<u64>,
+    observer: Option<String>,
+    run_limits: RunLimits,
 }
 
 pub(crate) fn main_command() -> Result<u8> {
@@ -51,7 +58,7 @@ pub(crate) fn main_command() -> Result<u8> {
     {
         io::stdout()
             .lock()
-            .write_all(HELP.as_bytes())
+            .write_all(format!("{HELP}\nScheduling: --strategy deterministic (default), or --strategy seeded --seed U64.\nOrdering: source identity, then (template identity, host identity) tuples.\nObservers: --observer FILE (observer-v1); --detect-cycles true|false (default false).\nBounds: --max-observation-work N, --max-comparison-work N, --max-history-units N.\nRecurrence is diagnostic, not proof of infinite behaviour; exit 6 CycleDetected.\nShared API cancellation stops at transaction boundaries (exit 5); CLI does not install a signal handler.\nNormal form takes precedence over recurrence and step limits; recurrence precedes step limit.\n").as_bytes())
             .map_err(|e| Failure::new(1, format!("output: {e}")))?;
         return Ok(0);
     }
@@ -100,63 +107,58 @@ pub(crate) fn main_command() -> Result<u8> {
             Ok(key)
         })
         .transpose()?;
-    let mut execution =
-        Execution::new(loaded.into_graph(), options.execution).map_err(engine_failure)?;
+    let observer = if let Some(path) = &options.observer {
+        let text = read_source(path, options.parse.graph.max_input_bytes)?;
+        Observer::parse(
+            &text,
+            |name| loaded.name(name),
+            options.parse.graph.max_input_bytes,
+        )
+        .map_err(|e| Failure::new(2, e.to_string()))?
+    } else {
+        Observer::all()
+    };
+    let scheduler = match options.seed {
+        Some(seed) => Scheduler::seeded(seed),
+        None => Scheduler::Deterministic,
+    };
+    let mut runner = Runner::new(loaded.into_graph(), options.execution, scheduler, observer)
+        .map_err(engine_failure)?;
     let mut outcome = "Valid";
     let mut code = 0;
     let mut rejected = 0;
     let mut last_diagnostic = None;
+    let mut details = String::new();
     if options.run {
-        loop {
-            if let Some(head) = requested {
-                let view = execution.view().map_err(engine_failure)?;
-                if view.rule(head).is_none() {
-                    outcome = "RequestedRuleUnavailable";
-                    code = 4;
-                    break;
-                }
-            }
-            let query = match requested {
-                Some(head) => execution.enabled_for(head),
-                None => execution.enabled(),
-            };
-            let enabled = match query {
-                Ok(enabled) => enabled,
-                Err(error) if error.kind() == ErrorKind::ResourceExhaustion => {
-                    outcome = "ResourceLimit";
-                    code = 3;
-                    last_diagnostic = Some(error);
-                    break;
-                }
-                Err(error) => return Err(engine_failure(error)),
-            };
-            rejected = enabled.rejected().len();
-            if enabled.steps().is_empty() {
-                if requested.is_some() {
-                    outcome = "RequestedRuleUnavailable";
-                    code = 4;
-                } else {
-                    outcome = "NormalForm";
-                }
-                last_diagnostic = enabled.rejected().first().map(|r| r.diagnostic.clone());
-                break;
-            }
-            if execution.committed_steps() >= options.max_steps {
-                outcome = "StepLimit";
-                code = 3;
-                break;
-            }
-            let first = enabled.into_steps().into_iter().next().unwrap();
-            execution.commit(first).map_err(engine_failure)?;
+        let report = runner
+            .run(options.run_limits, requested, || false)
+            .map_err(engine_failure)?;
+        (outcome, code) = match report.outcome {
+            Outcome::NormalForm => ("NormalForm", 0),
+            Outcome::RequestedRuleUnavailable => ("RequestedRuleUnavailable", 4),
+            Outcome::ResourceLimit => ("ResourceLimit", 3),
+            Outcome::StepLimit => ("StepLimit", 3),
+            Outcome::Cancelled => ("Cancelled", 5),
+            Outcome::CycleDetected => ("CycleDetected", 6),
+        };
+        rejected = report.rejected;
+        last_diagnostic = report.diagnostic;
+        details+=&format!("// scheduler: {}\n// observer: {}\n// value-payload: {:?}; nontriviality-threshold: {}\n",report.scheduler,report.observer,report.payload,report.nontriviality_threshold);
+        details+=&format!("// observation-limits: projection-work={} comparison-work={} history-units={}; detect-cycles={}\n",options.run_limits.observation.max_work,options.run_limits.observation.max_comparison_work,options.run_limits.observation.max_history_units,options.run_limits.detect_cycles);
+        if let Some(cycle) = report.recurrence {
+            details+=&format!("// recurrence: {} -> {}; exact-attributed-carrier-isomorphism; complete-state-equal={}\n// first-scheduler: {}\n// repeated-scheduler: {}\n// recurrence is not a proof of full execution-state recurrence, convergence, oscillation or divergence\n",cycle.first,cycle.repeated,cycle.complete_state_equal,cycle.first_scheduler,cycle.repeated_scheduler);
         }
     }
+    let execution = runner.execution();
     let graph = print_with_limits(execution.graph(), &options.parse).map_err(engine_failure)?;
     let policy = if !options.run {
         "none"
+    } else if options.seed.is_some() {
+        "seeded-source-template-host-v1"
     } else if requested.is_some() {
-        "requested-identity-first-v1"
+        "requested-source-template-host-v1"
     } else {
-        "identity-first-v1"
+        "deterministic-source-template-host-v1"
     };
     let mut output=format!("// outcome: {outcome}\n// committed-steps: {}\n// selection-policy: {policy}\n// rejected-in-last-complete-query: {rejected}\n",execution.committed_steps());
     output+=&format!("// max-steps: {}\n// limits: candidates={} work={} atoms={} fields={} label-bytes={} input-bytes={} validation-work={} package-depth={}\n",options.max_steps,options.execution.search.max_candidates,options.execution.search.max_work,options.parse.graph.max_atoms,options.parse.graph.max_fields,options.parse.graph.max_label_bytes,options.parse.graph.max_input_bytes,options.parse.graph.max_validation_work,options.parse.graph.max_package_depth);
@@ -164,6 +166,7 @@ pub(crate) fn main_command() -> Result<u8> {
         output += &format!("// requested-initial-rule: {rule}\n");
     }
     output += &graph;
+    output += &details;
     if output.len() > options.parse.graph.max_input_bytes {
         return Err(Failure::new(
             3,
@@ -207,6 +210,10 @@ fn options(args: &[String]) -> Result<Options> {
         rule: None,
         parse: ParseLimits::default(),
         execution: ExecutionLimits::default(),
+        scheduler: "deterministic".into(),
+        seed: None,
+        observer: None,
+        run_limits: RunLimits::default(),
     };
     let mut seen = BTreeSet::new();
     let mut i = 1;
@@ -229,6 +236,25 @@ fn options(args: &[String]) -> Result<Options> {
             match arg.as_str() {
                 "--output" => result.output = Some(PathBuf::from(value)),
                 "--rule" if run => result.rule = Some(value.clone()),
+                "--strategy" if run => result.scheduler = value.clone(),
+                "--seed" if run => result.seed = Some(number(value, arg)?),
+                "--observer" => result.observer = Some(value.clone()),
+                "--detect-cycles" if run => {
+                    result.run_limits.detect_cycles = match value.as_str() {
+                        "true" => true,
+                        "false" => false,
+                        _ => return Err(Failure::new(2, "--detect-cycles expects true or false")),
+                    }
+                }
+                "--max-observation-work" if run => {
+                    result.run_limits.observation.max_work = number(value, arg)?
+                }
+                "--max-comparison-work" if run => {
+                    result.run_limits.observation.max_comparison_work = number(value, arg)?
+                }
+                "--max-history-units" if run => {
+                    result.run_limits.observation.max_history_units = number(value, arg)?
+                }
                 "--max-steps" if run => result.max_steps = number(value, arg)?,
                 "--max-candidates" if run => {
                     result.execution.search.max_candidates = number(value, arg)?
@@ -262,6 +288,16 @@ fn options(args: &[String]) -> Result<Options> {
         return Err(Failure::new(2, HELP));
     }
     result.execution.graph = result.parse.graph;
+    result.run_limits.max_steps = result.max_steps;
+    match (result.scheduler.as_str(), result.seed) {
+        ("deterministic", None) | ("seeded", Some(_)) => {}
+        _ => {
+            return Err(Failure::new(
+                2,
+                "use --strategy deterministic without a seed, or --strategy seeded --seed U64",
+            ))
+        }
+    }
     Ok(result)
 }
 fn number<T: std::str::FromStr>(value: &str, option: &str) -> Result<T> {

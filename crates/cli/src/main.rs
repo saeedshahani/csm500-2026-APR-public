@@ -1,5 +1,6 @@
+use engine::scheduling::{candidate_key, Scheduler, SchedulingStrategy};
+use engine::{Execution, ExecutionLimits};
 use graph_core::{fixture, validate};
-use std::collections::BTreeMap;
 mod commands;
 
 fn main() -> std::process::ExitCode {
@@ -13,29 +14,25 @@ fn main() -> std::process::ExitCode {
 }
 
 fn demo() -> Result<(), Box<dyn std::error::Error>> {
-    let mut fixture = fixture::load(include_str!("../../../examples/fixtures/b2.atoms"))?;
+    let fixture = fixture::load(include_str!("../../../examples/fixtures/b2.atoms"))?;
     let names = &fixture.names;
     let head = names["sl"];
-    let binding = [
-        ("b_self", "sl"),
-        ("b_rest", "sl_r0"),
-        ("b_top", "sl_r1"),
-        ("b_old_rank", "sl_rank"),
-        ("b_old_rev", "sl_revision"),
-    ]
-    .into_iter()
-    .map(|(p, t)| (names[p], names[t]))
-    .collect::<BTreeMap<_, _>>();
     println!(
         "SelfLower before: {} atoms, rank {}",
         fixture.graph.len(),
         validate(&fixture.graph)?.rules[&head].rank
     );
-    let event = engine::apply_with_binding(&mut fixture.graph, head, &binding)?;
+    let mut execution = Execution::new(fixture.graph, ExecutionLimits::default())?;
+    let mut enabled = execution.enabled()?.into_steps();
+    enabled.sort_by_cached_key(candidate_key);
+    let selected = Scheduler::Deterministic
+        .select(&enabled)
+        .ok_or("SelfLower has no enabled candidate")?;
+    let event = execution.commit(enabled.swap_remove(selected))?;
     println!(
         "SelfLower after: {} atoms, rank {}; consumed {}, produced {}, revised {} rule(s)",
-        fixture.graph.len(),
-        validate(&fixture.graph)?.rules[&head].rank,
+        execution.graph().len(),
+        validate(execution.graph())?.rules[&head].rank,
         event.consumed.len(),
         event.produced.len(),
         event.altered.len()
