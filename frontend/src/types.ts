@@ -5,7 +5,7 @@ export type EngineState = {
   rules:{head:string;revision:string;rank:string;active:boolean;meta:boolean;lhs?:string[];rhs?:string[];preserved?:string[];representation?:string[]}[];quoted:Record<string,string>;
   events:EventRecord[];dependencies:{before:string;after:string;witnesses:{kind:string;atom:string}[]}[];
   relation:string;limitation:string;position:string;endpoint:string;status:string;can_advance:boolean;
-  report:null|{outcome:string;payload:string|null;scheduler:string;recurrence:null|{first:string;repeated:string}};
+  report:null|{outcome:string;payload:string|null;scheduler:string;recurrence:null|{first:string;repeated:string;complete_state_equal?:boolean}};
   previous?:{next_identity:string;atoms:Record<string,Atom>}|null;
   names?:Record<string,string>;
   observer?:string;

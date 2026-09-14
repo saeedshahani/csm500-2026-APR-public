@@ -15,7 +15,7 @@ export function parseProject(text:string):Project {
  if(!object(p.config)||!object(p.presentation))throw Error('Missing configuration');
  keys(p.config,['max_steps','max_work','max_candidates','seed','detect_cycles','observer']);
  const c=p.config;if(!natural(c.max_steps,10000n)||!natural(c.max_work,1000000n)||!natural(c.max_candidates,1000n)||!(c.seed===null||natural(c.seed,18446744073709551615n))||typeof c.detect_cycles!=='boolean'||typeof c.observer!=='string'||c.observer.length>4*1024*1024)throw Error('Invalid pending run configuration');
- keys(p.presentation,['theme','view']);if(!['light','dark','system'].includes(String(p.presentation.theme))||!['Practical','Internal','Rules','History'].includes(String(p.presentation.view)))throw Error('Unsupported presentation preference');
+ keys(p.presentation,['theme','view']);if(typeof p.presentation.theme!=='string'||typeof p.presentation.view!=='string'||!['light','dark','system'].includes(p.presentation.theme)||!['Practical','Internal','Rules','History'].includes(p.presentation.view))throw Error('Unsupported presentation preference');
  if(p.trace===null&&(p.source===null||p.execution!==null||p.position!=='0'))throw Error('Source-only project requires source and state zero');
  if(p.trace!==null&&!object(p.execution))throw Error('Trace execution settings required');
  return p as Project;

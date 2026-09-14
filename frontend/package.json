@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "react": "19.3.0", "react-dom": "19.3.0",
-    "@codemirror/state": "6.7.4", "@codemirror/view": "6.43.11", "d3-force": "3.0.0"
+    "@codemirror/commands": "6.11.0", "@codemirror/state": "6.7.4", "@codemirror/view": "6.43.11", "d3-force": "3.0.0"
   },
   "devDependencies": {
     "vite": "8.3.0", "@vitejs/plugin-react": "6.1.1", "typescript": "5.9.3",

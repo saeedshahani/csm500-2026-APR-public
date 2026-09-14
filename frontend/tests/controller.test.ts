@@ -9,6 +9,7 @@ class Fake implements WorkerPort {
   answer(reply:Reply,index=this.messages.length-1){const request=this.messages[index];this.onmessage?.({data:{generation:request.generation,id:request.id,reply}});}
 }
 const ok=(trace:string|null=null):Reply=>({ok:true,error:null,state:null,trace});
+test('synchronous worker send failure releases the request and permits recovery',async()=>{let first=true;const client=new EngineClient(()=>{const w=new Fake();if(first){w.postMessage=()=>{throw Error('send failed');};first=false;}return w;});await assert.rejects(client.request({command:'state'}),/send failed/);await assert.rejects(client.request({command:'state'}),/Recover engine/);assert.equal(await client.interrupt(),null);client.dispose();});
 test('recovery restores a historical inspection cursor, not just the endpoint',async()=>{
   const workers:Fake[]=[];const client=new EngineClient(()=>{const w=new Fake();workers.push(w);return w;});
   const state:EngineState={graph:{next_identity:'0',atoms:{}},rules:[],quoted:{},events:[],dependencies:[],relation:'positive_resource_order',limitation:'',position:'0',endpoint:'2',status:'Paused',can_advance:false,report:null};

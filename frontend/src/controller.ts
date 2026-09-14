@@ -34,7 +34,7 @@ export class EngineClient {
     if(this.dead)return Promise.reject(new Error('Engine client is disposed'));
     if(this.failed)return Promise.reject(new Error('Engine worker failed; use Recover engine'));
     if(this.pending)return Promise.reject(new Error('An engine command is already in flight'));
-    return new Promise((resolve,reject)=>{const id=++this.nextId;this.pending={id,generation:this.generation,resolve,reject};this.worker.postMessage({generation:this.generation,id,payload});});
+    return new Promise((resolve,reject)=>{const id=++this.nextId;this.pending={id,generation:this.generation,resolve,reject};try{this.worker.postMessage({generation:this.generation,id,payload});}catch(error){this.pending=null;this.failed=true;reject(error);}});
   }
   /** Abort unacknowledged work, then rebuild exactly the last acknowledged prefix. */
   async interrupt():Promise<Reply|null>{

@@ -1,13 +1,14 @@
 import {useEffect,useRef} from 'react';
 import {EditorState,Compartment} from '@codemirror/state';
-import {EditorView,lineNumbers,highlightActiveLine,drawSelection,Decoration} from '@codemirror/view';
+import {EditorView,lineNumbers,highlightActiveLine,drawSelection,Decoration,keymap} from '@codemirror/view';
+import {defaultKeymap,history,historyKeymap} from '@codemirror/commands';
 export function Editor({value,onChange,diagnostic,jump=0}:{value:string;onChange:(text:string)=>void;diagnostic?:{line:string|null;column:string|null;message:string}|null;jump?:number}) {
   const host=useRef<HTMLDivElement>(null),view=useRef<EditorView|null>(null),callback=useRef(onChange);
   const marks=useRef(new Compartment());
   useEffect(()=>{callback.current=onChange;},[onChange]);
   useEffect(()=>{
     if(!host.current)return;
-    const editor=new EditorView({parent:host.current,state:EditorState.create({doc:value,extensions:[marks.current.of([]),lineNumbers(),highlightActiveLine(),drawSelection(),EditorView.lineWrapping,EditorView.contentAttributes.of({'aria-label':'Program source','spellcheck':'false'}),EditorView.updateListener.of(update=>{if(update.docChanged)callback.current(update.state.doc.toString());})]})});view.current=editor;
+    const editor=new EditorView({parent:host.current,state:EditorState.create({doc:value,extensions:[history(),keymap.of([...defaultKeymap,...historyKeymap]),marks.current.of([]),lineNumbers(),highlightActiveLine(),drawSelection(),EditorView.lineWrapping,EditorView.contentAttributes.of({'aria-label':'Program source','spellcheck':'false'}),EditorView.updateListener.of(update=>{if(update.docChanged)callback.current(update.state.doc.toString());})]})});view.current=editor;
     return ()=>{editor.destroy();view.current=null;};
     // Initial content is followed by the controlled update below.
   },[]);
