@@ -9,9 +9,10 @@ export type EngineState = {
   previous?:{next_identity:string;atoms:Record<string,Atom>}|null;
   names?:Record<string,string>;
   observer?:string;
+  settings?:{plan?:{max_steps:string;seed:string|null;detect_cycles:boolean}|null;search?:{max_work:string;max_candidates:string};[key:string]:unknown};
 };
 export type Analysis = {state:string;ancestors:string[];descendants:string[];local:null|{alternatives:EventRecord['redex'][];pairs:{first:string;second:string;second_after_first:string|null;first_after_second:string|null;commutes:boolean|null;corresponding_events:boolean|null}[]}};
-export type Reply = {ok:boolean;error:null|{kind:string;message:string;line:string|null;column:string|null};state:EngineState|null;trace:string|null;analysis?:Analysis|null};
+export type Reply = {ok:boolean;error:null|{kind:string;message:string;line:string|null;column:string|null};state:EngineState|null;trace:string|null;analysis?:Analysis|null;dataset?:import('./Datasets').Preview|null;inspection?:{total:string;atoms:[string,Atom][]}|null};
 export type Command = {command:string;[key:string]:unknown};
 export type Request = {generation:number;id:number;payload:Command};
 export type Response = {generation:number;id:number;reply:Reply};

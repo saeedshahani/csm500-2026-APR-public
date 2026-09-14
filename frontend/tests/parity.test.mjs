@@ -10,6 +10,15 @@ const root=new URL('../../',import.meta.url);
 const source=name=>readFileSync(new URL(`examples/${name}`,root),'utf8');
 execFileSync('cargo',['build','-p','wasm-bridge','--example','protocol','--locked'],{cwd:root,stdio:'inherit'});
 function compare(commands){const native=execFileSync(fileURLToPath(new URL('target/debug/examples/protocol',root)),[],{input:commands.map(c=>JSON.stringify(c)).join('\n')+'\n',encoding:'utf8',maxBuffer:64*1024*1024}).trim().split('\n').map(JSON.parse);const handle=new WorkbenchHandle();try{const wasm=commands.map(c=>handle.dispatch(JSON.stringify(c)));assert.deepEqual(wasm,native);return wasm;}finally{handle.free();}}
+for(const [policy,file,events] of [['fixed','work-items',10],['guarded_enable','policy-enable',11]])test(`practical ${policy} CLI/WASM and project parity`,()=>{
+ const preview=compare([{command:'generate_dataset',count:'10',seed:'42',policy}])[0];assert.equal(preview.ok,true);assert.equal(preview.dataset.source,source(`practical/${file}.graph`));
+ const src=preview.dataset.source;const commands=[{command:'load',source:src,config:{max_steps:'20'}},{command:'advance',batch:'20'},{command:'inspect',query:'WorkItem:',offset:'5',limit:'5'}];const replies=compare(commands);assert.equal(replies[1].state.status,'NormalForm');assert.equal(replies[1].state.events.length,events);
+ const cli=execFileSync('cargo',['run','--quiet','--locked','-p','cli','--','export','-','--max-steps','20'],{cwd:root,input:src,encoding:'utf8'});assert.deepEqual(JSON.parse(replies[1].trace),JSON.parse(cli));
+ const project={command:'project',source:src,trace:replies[1].trace,execution:replies[1].state.settings,position:'1'};const result=compare([project,{...project,source:'program {}'},{command:'state'}]);assert.equal(result[0].ok,true);assert.equal(result[1].ok,false);assert.deepEqual(result[2],result[0]);
+});
+test('larger practical dataset reports a bounded failure without invented events',()=>{
+ const preview=compare([{command:'generate_dataset',count:'1000',seed:'42',policy:'fixed'}])[0];const result=compare([{command:'load',source:preview.dataset.source},{command:'advance',batch:'1'}]);assert.equal(result[1].state.status,'ResourceLimit');assert.equal(result[1].state.events.length,0);
+});
 for(const name of ['programs/arithmetic.graph','programs/staging.graph','programs/self-modify.graph','programs/restoration.graph','independent/disjoint.graph','independent/shared-read.graph'])test(`exact native/WASM protocol parity: ${name}`,()=>{
   const replies=compare([{command:'load',source:source(name),config:{max_steps:'4',seed:'42'}},...Array.from({length:5},()=>({command:'advance',batch:'1'})),{command:'reset'},{command:'state'},{command:'dispose'},{command:'state'}]);assert.equal(replies[0].ok,true);assert.equal(replies.at(-1).ok,false);
 });

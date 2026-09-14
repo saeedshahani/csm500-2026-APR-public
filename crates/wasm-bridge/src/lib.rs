@@ -1,4 +1,5 @@
 //! Checked workbench protocol, shared verbatim by native and WebAssembly hosts.
+pub mod dataset;
 mod protocol;
 pub use protocol::*;
 #[cfg(target_arch = "wasm32")]

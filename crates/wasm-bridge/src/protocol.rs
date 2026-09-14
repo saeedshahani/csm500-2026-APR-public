@@ -45,6 +45,27 @@ enum Command {
     Validate {
         source: String,
     },
+    Dataset {
+        data: String,
+    },
+    GenerateDataset {
+        count: Number,
+        seed: Number,
+        policy: crate::dataset::Policy,
+    },
+    Project {
+        source: Option<String>,
+        trace: Option<String>,
+        #[serde(default)]
+        config: Config,
+        position: Number,
+        execution: Option<Settings>,
+    },
+    Inspect {
+        query: String,
+        offset: Number,
+        limit: Number,
+    },
     Advance {
         batch: Number,
     },
@@ -117,6 +138,19 @@ pub struct State {
     pub previous: Option<GraphData>,
     pub names: BTreeMap<AtomId, String>,
     pub observer: String,
+    pub settings: Settings,
+}
+#[derive(Clone, Debug, Serialize)]
+pub struct DatasetPreview {
+    pub source: String,
+    pub dataset: crate::dataset::Dataset,
+    pub atoms: Number,
+    pub pending: Number,
+}
+#[derive(Clone, Debug, Serialize)]
+pub struct Inspection {
+    pub total: Number,
+    pub atoms: Vec<(AtomId, engine::recording::AtomRecord)>,
 }
 #[derive(Clone, Debug, Serialize)]
 pub struct Analysis {
@@ -132,6 +166,8 @@ pub struct Reply {
     pub state: Option<State>,
     pub trace: Option<String>,
     pub analysis: Option<Analysis>,
+    pub dataset: Option<DatasetPreview>,
+    pub inspection: Option<Inspection>,
 }
 impl Reply {
     fn empty() -> Self {
@@ -141,6 +177,8 @@ impl Reply {
             state: None,
             trace: None,
             analysis: None,
+            dataset: None,
+            inspection: None,
         }
     }
 }
@@ -252,6 +290,7 @@ impl Session {
             },
             names: self.names.clone(),
             observer: doc.settings.observer.declaration.clone(),
+            settings: doc.settings.clone(),
         };
         let trace = String::from_utf8(doc.to_json(TraceLimits::default().max_bytes)?)
             .map_err(|_| error("internal UTF-8 failure"))?;
@@ -261,6 +300,8 @@ impl Session {
             state: Some(state),
             trace: Some(trace),
             analysis: None,
+            dataset: None,
+            inspection: None,
         };
         let size = serde_json::to_vec(&reply)
             .map_err(|e| error(&e.to_string()))?
@@ -299,6 +340,8 @@ impl Workbench {
             state: None,
             trace: None,
             analysis: None,
+            dataset: None,
+            inspection: None,
         })
     }
     fn publish(&mut self, next: Session) -> Result<Reply> {
@@ -308,6 +351,79 @@ impl Workbench {
     }
     fn execute(&mut self, command: Command) -> Result<Reply> {
         match command {
+            Command::Dataset { data } => {
+                if data.len() > 1024 * 1024 {
+                    return Err(resource("dataset input limit: 1 MiB"));
+                }
+                let dataset: crate::dataset::Dataset = serde_json::from_str(&data)
+                    .map_err(|e| error(&format!("invalid dataset: {e}")))?;
+                self.preview_dataset(dataset)
+            }
+            Command::GenerateDataset {
+                count,
+                seed,
+                policy,
+            } => {
+                if count.0 > 1000 || seed.0 > u32::MAX as u64 {
+                    return Err(resource(
+                        "generator supports at most 1000 items and a u32 seed",
+                    ));
+                }
+                let dataset = crate::dataset::generate(count.size()?, seed.0 as u32, policy)
+                    .map_err(|e| error(&e))?;
+                self.preview_dataset(dataset)
+            }
+            Command::Project {
+                source,
+                trace,
+                config,
+                position,
+                execution,
+            } => {
+                let mut next = if let Some(trace) = trace {
+                    let mut next = Session::from_trace(&trace)?;
+                    if execution.as_ref() != Some(&next.verified.document().settings) {
+                        return Err(error(
+                            "project execution settings do not match verified trace",
+                        ));
+                    }
+                    if let Some(source) = source {
+                        let loaded = load(&source)?;
+                        let doc = next.verified.document();
+                        if doc.source_sha256.as_ref() != Some(&sha256(source.as_bytes()))
+                            || doc.initial != GraphData::from_graph(loaded.graph())
+                        {
+                            return Err(error("project source does not match trace initial carrier and source hash"));
+                        }
+                        next.names = loaded
+                            .names()
+                            .iter()
+                            .map(|(n, k)| ((*k).into(), n.clone()))
+                            .collect();
+                    }
+                    next
+                } else {
+                    if execution.is_some() {
+                        return Err(error(
+                            "source-only project must not claim trace execution settings",
+                        ));
+                    }
+                    let mut staged = Workbench::default();
+                    staged.execute(Command::Load {
+                        source: source.ok_or_else(|| error("project needs source or trace"))?,
+                        config,
+                    })?;
+                    staged
+                        .session
+                        .take()
+                        .ok_or_else(|| error("missing staged project"))?
+                };
+                if position.0 > next.verified.document().events.len() as u64 {
+                    return Err(error("project inspection index outside trace"));
+                }
+                next.position = position.size()?;
+                self.publish(next)
+            }
             Command::Dispose => {
                 self.session = None;
                 self.disposed = true;
@@ -374,6 +490,47 @@ impl Workbench {
                     .as_mut()
                     .ok_or_else(|| error("no loaded session"))?;
                 match other {
+                    Command::Inspect {
+                        query,
+                        offset,
+                        limit,
+                    } => {
+                        if query.len() > 256 || limit.0 > 200 || limit.0 == 0 || offset.0 > 10_000 {
+                            return Err(resource("inspection limits: query 256 bytes, page 1–200, offset at most 10000"));
+                        }
+                        let graph = current.verified.state_at(current.position)?;
+                        let query = query.to_lowercase();
+                        let matches: Vec<_> = graph
+                            .iter()
+                            .filter(|(k, a)| {
+                                format!(
+                                    "{} {:?} {}",
+                                    k.number(),
+                                    a.kind,
+                                    current
+                                        .names
+                                        .get(&(*k).into())
+                                        .map(String::as_str)
+                                        .unwrap_or("")
+                                )
+                                .to_lowercase()
+                                .contains(&query)
+                            })
+                            .collect();
+                        let atoms = matches
+                            .iter()
+                            .skip(offset.size()?)
+                            .take(limit.size()?)
+                            .map(|(k, a)| ((*k).into(), (*a).into()))
+                            .collect();
+                        Ok(Reply {
+                            inspection: Some(Inspection {
+                                total: Number(matches.len() as u64),
+                                atoms,
+                            }),
+                            ..Reply::empty()
+                        })
+                    }
                     Command::State | Command::Export => current.reply(),
                     Command::Analyse { event, max_work } => {
                         let work = max_work.unwrap_or(Number(2_000_000));
@@ -520,6 +677,24 @@ impl Workbench {
                 }
             }
         }
+    }
+    fn preview_dataset(&self, dataset: crate::dataset::Dataset) -> Result<Reply> {
+        let source = crate::dataset::source(&dataset).map_err(|e| error(&e))?;
+        let loaded = load(&source)?;
+        let pending = dataset
+            .items
+            .iter()
+            .filter(|i| i.status == crate::dataset::Status::Pending)
+            .count();
+        Ok(Reply {
+            dataset: Some(DatasetPreview {
+                source,
+                dataset,
+                atoms: Number(loaded.graph().len() as u64),
+                pending: Number(pending as u64),
+            }),
+            ..Reply::empty()
+        })
     }
 }
 fn load(source: &str) -> Result<parser::LoadedProgram> {

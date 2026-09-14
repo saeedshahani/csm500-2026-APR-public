@@ -1,0 +1,31 @@
+program {
+rule process {
+ atom z = Nat(); rank rank0 = z; mode mode0 = ModeObject; revision rev;
+ active processing_active;
+ atom item = PatternVariable[Constructor] Free;
+ atom pending = Record[ObjectLink]("pending", item, item);
+ atom processed = Record[ObjectLink]("processed", item, item);
+ lhs { li: item; ls: pending; } rhs { ri: item; rs: processed; }
+}
+atom item_0 = Constructor("WorkItem:work-0000");
+atom status_0 = Record[ObjectLink]("pending", item_0, item_0);
+atom item_1 = Constructor("WorkItem:work-0004");
+atom status_1 = Record[ObjectLink]("pending", item_1, item_1);
+atom item_2 = Constructor("WorkItem:work-0006");
+atom status_2 = Record[ObjectLink]("pending", item_2, item_2);
+atom item_3 = Constructor("WorkItem:work-0005");
+atom status_3 = Record[ObjectLink]("pending", item_3, item_3);
+atom item_4 = Constructor("WorkItem:work-0002");
+atom status_4 = Record[ObjectLink]("pending", item_4, item_4);
+atom item_5 = Constructor("WorkItem:work-0008");
+atom status_5 = Record[ObjectLink]("pending", item_5, item_5);
+atom item_6 = Constructor("WorkItem:work-0001");
+atom status_6 = Record[ObjectLink]("pending", item_6, item_6);
+atom item_7 = Constructor("WorkItem:work-0009");
+atom status_7 = Record[ObjectLink]("pending", item_7, item_7);
+atom item_8 = Constructor("WorkItem:work-0007");
+atom status_8 = Record[ObjectLink]("pending", item_8, item_8);
+atom item_9 = Constructor("WorkItem:work-0003");
+atom status_9 = Record[ObjectLink]("pending", item_9, item_9);
+}
+// Dataset recipe: count=10, seed=42, policy=fixed

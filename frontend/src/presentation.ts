@@ -15,6 +15,7 @@ export function project(state:EngineState):Projection{
   return {nodes:[...constructors,...fallback],links,hidden:Object.keys(atoms).length-data.length,fallback};
 }
 export function stopReason(state:EngineState){
+  if(state.status==='ResourceLimit')return 'Execution stopped at a resource limit. The retained prefix is valid, but this does not establish a normal form. Inspect the loaded limits or try a smaller dataset.';
   const messages:Record<string,string>={NormalForm:'No admitted rewrite remains at the run endpoint.',StepLimit:'The absolute step bound was reached. Reload with a larger bound to start a longer run.',CycleDetected:'The selected observation repeated. This is not necessarily identity equality or equality of hidden data. Disable recurrence detection and reload for a longer bounded run.',ResourceExhaustion:'A resource allowance prevented a complete answer. This is not a normal form.',Yielded:'The batch finished. Step or Run continues the same logical run.',Paused:'Execution is paused at an acknowledged boundary.',Ready:'The loaded program is ready. Step applies one admitted rewrite.',RecordedPrefix:'This recorded prefix is inspectable, but is not a resumable scheduled run.'};
   return messages[state.status]??`Run endpoint outcome: ${state.status}.`;
 }
