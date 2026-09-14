@@ -5,7 +5,7 @@ mod oracle;
 use engine::observation::{ObservationLimits, Observer};
 use engine::trace::{GraphData, TraceLimits, VerifiedTrace};
 use graph_core::{GraphLimits, ValidatedGraph};
-use std::io::Write;
+use std::io::{ErrorKind, Write};
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
 fn path(name: &str) -> PathBuf {
@@ -229,7 +229,9 @@ fn pipe(command: &[&str], input: &[u8]) -> std::process::Output {
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    child.stdin.take().unwrap().write_all(input).unwrap();
+    if let Err(error) = child.stdin.take().unwrap().write_all(input) {
+        assert_eq!(error.kind(), ErrorKind::BrokenPipe);
+    }
     child.wait_with_output().unwrap()
 }
 #[test]

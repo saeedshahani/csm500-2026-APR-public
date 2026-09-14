@@ -1,4 +1,4 @@
-use std::io::Write;
+use std::io::{ErrorKind, Write};
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output, Stdio};
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -19,7 +19,9 @@ fn stdin(args: &[&str], text: &[u8]) -> Output {
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    child.stdin.take().unwrap().write_all(text).unwrap();
+    if let Err(error) = child.stdin.take().unwrap().write_all(text) {
+        assert_eq!(error.kind(), ErrorKind::BrokenPipe);
+    }
     child.wait_with_output().unwrap()
 }
 fn outcome(output: &Output, code: i32, label: &str, steps: u64) -> parser::LoadedProgram {

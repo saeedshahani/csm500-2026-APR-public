@@ -1,4 +1,4 @@
-use std::io::Write;
+use std::io::{ErrorKind, Write};
 use std::process::{Command, Stdio};
 fn run(args: &[&str], source: &str) -> std::process::Output {
     let mut child = Command::new(env!("CARGO_BIN_EXE_cli"))
@@ -8,12 +8,9 @@ fn run(args: &[&str], source: &str) -> std::process::Output {
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(source.as_bytes())
-        .unwrap();
+    if let Err(error) = child.stdin.take().unwrap().write_all(source.as_bytes()) {
+        assert_eq!(error.kind(), ErrorKind::BrokenPipe);
+    }
     child.wait_with_output().unwrap()
 }
 const LOOP:&str="program { rule a { atom az=Nat(); rank ar=az; mode am=ModeObject; revision av; active aa; } rule b { atom bz=Nat(); rank br=bz; mode bm=ModeObject; revision bv; active ba; } }";
