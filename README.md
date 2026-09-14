@@ -4,6 +4,8 @@ MSc Computer Science dissertation project exploring graph-resident rewrite rules
 
 ## Documentation
 
+For the browser's concepts and planned practical views, read [Understanding the graph workbench](docs/workbench-guide.md). It explains data, rules, execution history, stopping conditions and large-dataset limits without requiring source-code knowledge.
+
 New to the project? Start with [`docs/explainers/simple.md`](docs/explainers/simple.md) — a plain-language explanation of what the work is and where it stands, written for a general reader rather than a marker.
 
 - [`docs/project-proposal.md`](docs/project-proposal.md) — approved research baseline and fixed six-sprint timeline.

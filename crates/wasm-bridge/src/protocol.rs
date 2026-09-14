@@ -58,6 +58,10 @@ enum Command {
     Jump {
         state: Number,
     },
+    Analyse {
+        event: Option<Number>,
+        max_work: Option<Number>,
+    },
     Dispose,
 }
 #[derive(Clone, Debug, Serialize)]
@@ -91,6 +95,10 @@ pub struct RuleData {
     pub rank: Number,
     pub active: bool,
     pub meta: bool,
+    pub lhs: Vec<AtomId>,
+    pub rhs: Vec<AtomId>,
+    pub preserved: Vec<AtomId>,
+    pub representation: Vec<AtomId>,
 }
 #[derive(Clone, Debug, Serialize)]
 pub struct State {
@@ -106,6 +114,16 @@ pub struct State {
     pub status: String,
     pub can_advance: bool,
     pub report: Option<ReportData>,
+    pub previous: Option<GraphData>,
+    pub names: BTreeMap<AtomId, String>,
+    pub observer: String,
+}
+#[derive(Clone, Debug, Serialize)]
+pub struct Analysis {
+    pub state: Number,
+    pub local: Option<ConflictData>,
+    pub ancestors: Vec<engine::recording::EventId>,
+    pub descendants: Vec<engine::recording::EventId>,
 }
 #[derive(Clone, Debug, Serialize)]
 pub struct Reply {
@@ -113,6 +131,7 @@ pub struct Reply {
     pub error: Option<BridgeError>,
     pub state: Option<State>,
     pub trace: Option<String>,
+    pub analysis: Option<Analysis>,
 }
 impl Reply {
     fn empty() -> Self {
@@ -121,6 +140,7 @@ impl Reply {
             error: None,
             state: None,
             trace: None,
+            analysis: None,
         }
     }
 }
@@ -129,6 +149,7 @@ struct Session {
     verified: VerifiedTrace,
     position: usize,
     status: String,
+    names: BTreeMap<AtomId, String>,
 }
 impl Session {
     fn from_runner(
@@ -149,6 +170,7 @@ impl Session {
             verified,
             position,
             status,
+            names: BTreeMap::new(),
         })
     }
     fn from_trace(text: &str) -> Result<Self> {
@@ -174,6 +196,7 @@ impl Session {
             verified,
             position,
             status,
+            names: BTreeMap::new(),
         })
     }
     fn reply(&self) -> Result<Reply> {
@@ -190,6 +213,15 @@ impl Session {
                 rank: Number(r.rank as u64),
                 active: r.active,
                 meta: r.meta,
+                lhs: r.lhs.iter().copied().map(Into::into).collect(),
+                rhs: r.rhs.iter().copied().map(Into::into).collect(),
+                preserved: r
+                    .lhs
+                    .intersection(&r.rhs)
+                    .copied()
+                    .map(Into::into)
+                    .collect(),
+                representation: r.representation.iter().copied().map(Into::into).collect(),
             })
             .collect();
         let state = State {
@@ -211,6 +243,15 @@ impl Session {
             can_advance: self.position == doc.events.len()
                 && self.runner.as_ref().is_some_and(Runner::is_active),
             report: doc.report.clone(),
+            previous: if self.position > 0 {
+                Some(GraphData::from_graph(
+                    &self.verified.state_at(self.position - 1)?,
+                ))
+            } else {
+                None
+            },
+            names: self.names.clone(),
+            observer: doc.settings.observer.declaration.clone(),
         };
         let trace = String::from_utf8(doc.to_json(TraceLimits::default().max_bytes)?)
             .map_err(|_| error("internal UTF-8 failure"))?;
@@ -219,6 +260,7 @@ impl Session {
             error: None,
             state: Some(state),
             trace: Some(trace),
+            analysis: None,
         };
         let size = serde_json::to_vec(&reply)
             .map_err(|e| error(&e.to_string()))?
@@ -256,6 +298,7 @@ impl Workbench {
             error: Some(error),
             state: None,
             trace: None,
+            analysis: None,
         })
     }
     fn publish(&mut self, next: Session) -> Result<Reply> {
@@ -282,6 +325,11 @@ impl Workbench {
                     return Err(resource("configuration exceeds portable workbench policy"));
                 }
                 let input = load(&source)?;
+                let names = input
+                    .names()
+                    .iter()
+                    .map(|(name, key)| ((*key).into(), name.clone()))
+                    .collect();
                 let observer =
                     Observer::parse(&config.observer, |n| input.name(n), 4 * 1024 * 1024)?;
                 let requested = config
@@ -314,11 +362,10 @@ impl Workbench {
                     },
                     requested,
                 )?;
-                self.publish(Session::from_runner(
-                    runner,
-                    Some(sha256(source.as_bytes())),
-                    "Ready".into(),
-                )?)
+                let mut next =
+                    Session::from_runner(runner, Some(sha256(source.as_bytes())), "Ready".into())?;
+                next.names = names;
+                self.publish(next)
             }
             Command::Import { trace } => self.publish(Session::from_trace(&trace)?),
             other => {
@@ -328,6 +375,62 @@ impl Workbench {
                     .ok_or_else(|| error("no loaded session"))?;
                 match other {
                     Command::State | Command::Export => current.reply(),
+                    Command::Analyse { event, max_work } => {
+                        let work = max_work.unwrap_or(Number(2_000_000));
+                        if work.0 > 2_000_000 {
+                            return Err(resource("analysis exceeds portable workbench policy"));
+                        }
+                        let limits = engine::causal::AnalysisLimits {
+                            max_work: work.size()?,
+                            max_units: 2_000_000,
+                        };
+                        let mut analysis = Analysis {
+                            state: Number(current.position as u64),
+                            local: None,
+                            ancestors: vec![],
+                            descendants: vec![],
+                        };
+                        if let Some(event) = event {
+                            let order = engine::causal::DependencyOrder::extract(
+                                &current.verified.document().events,
+                                limits,
+                            )?;
+                            analysis.ancestors = order
+                                .ancestors(engine::recording::EventId(event.0), limits)?
+                                .into_iter()
+                                .collect();
+                            analysis.descendants = order
+                                .descendants(engine::recording::EventId(event.0), limits)?
+                                .into_iter()
+                                .collect();
+                        } else {
+                            let execution = engine::Execution::new(
+                                current.verified.state_at(current.position)?,
+                                current.verified.document().settings.execution()?,
+                            )?;
+                            let mut snapshot =
+                                engine::conflict::LocalSnapshot::analyse(&execution, limits)?;
+                            // The isolated query starts its own counter at zero; public
+                            // redex identities refer to the selected verified history state.
+                            snapshot.state = current.position as u64;
+                            for redex in &mut snapshot.alternatives {
+                                redex.state = current.position as u64;
+                            }
+                            analysis.local = Some(ConflictData::from_snapshot(snapshot)?);
+                        }
+                        let reply = Reply {
+                            analysis: Some(analysis),
+                            ..Reply::empty()
+                        };
+                        if serde_json::to_vec(&reply)
+                            .map_err(|e| error(&e.to_string()))?
+                            .len()
+                            > 32 * 1024 * 1024
+                        {
+                            return Err(resource("bridge analysis reply byte limit"));
+                        }
+                        Ok(reply)
+                    }
                     Command::Stop => {
                         let old = current.status.clone();
                         if current.runner.as_ref().is_some_and(Runner::is_active) {
@@ -369,11 +472,12 @@ impl Workbench {
                             RunProgress::Yielded => "Yielded".into(),
                             RunProgress::Finished(report) => format!("{:?}", report.outcome),
                         };
-                        let next = Session::from_runner(
+                        let mut next = Session::from_runner(
                             runner,
                             current.verified.document().source_sha256.clone(),
                             status,
                         )?;
+                        next.names = current.names.clone();
                         self.publish(next)
                     }
                     Command::Reset => {
@@ -404,11 +508,12 @@ impl Workbench {
                         )?;
                         runner.enable_recording(doc.settings.recording.native()?)?;
                         runner.begin_run(plan.limits()?, requested)?;
-                        let next = Session::from_runner(
+                        let mut next = Session::from_runner(
                             runner,
                             doc.source_sha256.clone(),
                             "Ready".into(),
                         )?;
+                        next.names = current.names.clone();
                         self.publish(next)
                     }
                     _ => unreachable!("handled session-independent command"),

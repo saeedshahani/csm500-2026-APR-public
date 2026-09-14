@@ -10,6 +10,73 @@ fn load(w: &mut Workbench) -> Value {
     )
 }
 #[test]
+fn historical_inspection_and_analysis_preserve_the_run() {
+    let mut w = Workbench::default();
+    let initial = request(
+        &mut w,
+        json!({"command":"load","source":include_str!("../../../examples/independent/shared-read.graph")}),
+    );
+    assert_eq!(initial["state"]["names"]["0"], "settle");
+    assert!(!initial["state"]["rules"][0]["lhs"]
+        .as_array()
+        .unwrap()
+        .is_empty());
+    assert!(initial["state"]["previous"].is_null());
+    let result = request(&mut w, json!({"command":"analyse"}));
+    assert_eq!(result["ok"], true);
+    assert_eq!(
+        result["analysis"]["local"]["alternatives"]
+            .as_array()
+            .unwrap()
+            .len(),
+        2
+    );
+    assert_eq!(result["analysis"]["local"]["pairs"][0]["commutes"], true);
+    assert_eq!(request(&mut w, json!({"command":"state"})), initial);
+    let exhausted = request(&mut w, json!({"command":"analyse","max_work":"0"}));
+    assert_eq!(exhausted["error"]["kind"], "ResourceExhaustion");
+    assert_eq!(request(&mut w, json!({"command":"state"})), initial);
+    let step = request(&mut w, json!({"command":"advance","batch":"1"}));
+    assert_eq!(step["state"]["previous"], initial["state"]["graph"]);
+    assert_eq!(step["state"]["names"], initial["state"]["names"]);
+    let result = request(&mut w, json!({"command":"analyse"}));
+    assert_eq!(result["analysis"]["local"]["alternatives"][0]["state"], "1");
+    assert_eq!(request(&mut w, json!({"command":"state"})), step);
+    let related = request(&mut w, json!({"command":"analyse","event":"0"}));
+    assert_eq!(related["analysis"]["ancestors"], json!([]));
+    assert_eq!(request(&mut w, json!({"command":"state"})), step);
+    assert_eq!(
+        request(
+            &mut w,
+            json!({"command":"analyse","event":"18446744073709551615"})
+        )["ok"],
+        false
+    );
+}
+#[test]
+fn causal_queries_return_witnessed_order_and_no_execution_changes() {
+    let mut w = Workbench::default();
+    load(&mut w);
+    request(&mut w, json!({"command":"advance","batch":"2"}));
+    let before = request(&mut w, json!({"command":"state"}));
+    assert_eq!(
+        request(&mut w, json!({"command":"analyse","event":"0"}))["analysis"]["descendants"],
+        json!(["1"])
+    );
+    assert_eq!(
+        request(&mut w, json!({"command":"analyse","event":"1"}))["analysis"]["ancestors"],
+        json!(["0"])
+    );
+    request(&mut w, json!({"command":"jump","state":"0"}));
+    assert_eq!(
+        request(&mut w, json!({"command":"analyse"}))["analysis"]["local"]["alternatives"][0]
+            ["state"],
+        "0"
+    );
+    request(&mut w, json!({"command":"jump","state":"2"}));
+    assert_eq!(request(&mut w, json!({"command":"state"})), before);
+}
+#[test]
 fn handle_lifecycle_and_atomic_replacement() {
     let mut a = Workbench::default();
     let mut b = Workbench::default();
@@ -69,10 +136,12 @@ fn all_commands_preserve_replay_and_logical_run_semantics() {
         true
     );
     for _ in 0..2 {
-        assert_eq!(
-            request(&mut w, json!({"command":"advance","batch":"1"})),
-            request(&mut imported, json!({"command":"advance","batch":"1"}))
-        );
+        let mut authored = request(&mut w, json!({"command":"advance","batch":"1"}));
+        let restored = request(&mut imported, json!({"command":"advance","batch":"1"}));
+        // Trace-v1 retains executable identities, not optional source-name aliases.
+        assert_eq!(restored["state"]["names"], json!({}));
+        authored["state"]["names"] = json!({});
+        assert_eq!(authored, restored);
     }
     let done = request(&mut w, json!({"command":"state"}));
     assert_eq!(done["state"]["status"], "CycleDetected");

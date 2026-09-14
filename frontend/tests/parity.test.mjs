@@ -40,3 +40,7 @@ test('all identity bits survive native/WASM import and replay',()=>{
   for(const e of d.events){e.redex.source=id(e.redex.source);e.redex.revision=id(e.redex.revision);e.redex.binding=e.redex.binding.map(([a,b])=>[id(a),id(b)]);e.fresh=atoms(e.fresh);for(const key of Object.keys(e.footprint))e.footprint[key]=e.footprint[key].map(id);}
   const replies=compare([{command:'import',trace:JSON.stringify(d)},{command:'jump',state:'0'},{command:'jump',state:'1'},{command:'export'}]);assert.equal(replies[0].ok,true);assert.ok(Object.keys(replies[0].state.graph.atoms).every(k=>BigInt(k)>=offset));assert.equal(replies[2].state.graph.next_identity,id('21'));
 });
+test('read-only rule, historical and local analysis has exact native/WASM parity',()=>{
+  const results=compare([{command:'load',source:source('independent/shared-read.graph')},{command:'analyse'},{command:'analyse',max_work:'0'},{command:'advance',batch:'2'},{command:'analyse',event:'0'},{command:'jump',state:'1'},{command:'analyse'},{command:'state'}]);
+  assert.equal(results[1].analysis.local.pairs[0].commutes,true);assert.equal(results[2].error.kind,'ResourceExhaustion');assert.equal(results.at(-1).state.position,'1');assert.equal(results[6].analysis.local.alternatives[0].state,'1');
+});
