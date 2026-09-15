@@ -3,6 +3,22 @@ import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 const root=path.resolve('..');
+test('complete example gallery applies reference settings without replacing the loaded history',async({page})=>{
+ test.setTimeout(180_000);
+ const entries=JSON.parse(readFileSync(path.join(root,'examples/manifest.json'),'utf8')) as {file:string;profile:{max_steps:string};result:{outcome:string;events:number}}[];
+ await page.goto('/');await expect(page.getByTestId('status')).toHaveText('No program loaded');
+ let previous='No program loaded';
+ for(const entry of entries){
+  await page.getByLabel('Example',{exact:true}).selectOption({label:entry.file.replace('.graph','')});
+  await page.getByRole('button',{name:'Apply example settings',exact:true}).click();
+  await expect(page.getByTestId('status')).toHaveText(previous);
+  await expect(page.getByLabel('Absolute step bound')).toHaveValue(entry.profile.max_steps);
+  await page.getByRole('button',{name:'Load program',exact:true}).click();await expect(page.getByTestId('status')).toHaveText('Ready');
+  await page.getByRole('button',{name:'Run',exact:true}).click();await expect(page.getByTestId('status')).toHaveText(entry.result.outcome,{timeout:30_000});
+  await expect(page.getByLabel('Inspect state',{exact:true})).toHaveValue(String(entry.result.events));
+  previous=entry.result.outcome;
+ }
+});
 test('lambda source prepares one graph and historical interpretation follows recorded steps',async({page})=>{
  await page.goto('/');await expect(page.getByTestId('status')).toHaveText('No program loaded');
  await page.getByText('Lambda program',{exact:true}).click();await page.getByLabel('Lambda source',{exact:true}).fill('((\\x. x) (\\y. y))');

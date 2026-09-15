@@ -5,6 +5,7 @@ import {execFileSync} from 'node:child_process';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
+import {verifyExamples} from '../../scripts/verify-examples.mjs';
 const require=createRequire(import.meta.url);const {WorkbenchHandle}=require('../pkg-node/wasm_bridge.js');
 const root=new URL('../../',import.meta.url);
 test('lambda translation, interpretation, history and failures share native/WASM semantics',()=>{
@@ -20,6 +21,10 @@ test('lambda translation, interpretation, history and failures share native/WASM
 });
 const source=name=>readFileSync(new URL(`examples/${name}`,root),'utf8');
 execFileSync('cargo',['build','-p','wasm-bridge','--example','protocol','--locked'],{cwd:root,stdio:'inherit'});
+execFileSync('cargo',['build','-p','cli','--locked'],{cwd:root,stdio:'inherit'});
+test('complete catalogue has exact CLI/native/WASM execution, trace and historical parity',()=>{
+ assert.equal(verifyExamples(compare),22);
+});
 function compare(commands){const native=execFileSync(fileURLToPath(new URL('target/debug/examples/protocol',root)),[],{input:commands.map(c=>JSON.stringify(c)).join('\n')+'\n',encoding:'utf8',maxBuffer:64*1024*1024}).trim().split('\n').map(JSON.parse);const handle=new WorkbenchHandle();try{const wasm=commands.map(c=>handle.dispatch(JSON.stringify(c)));assert.deepEqual(wasm,native);return wasm;}finally{handle.free();}}
 for(const [policy,file,events] of [['fixed','work-items',10],['guarded_enable','policy-enable',11]])test(`practical ${policy} CLI/WASM and project parity`,()=>{
  const preview=compare([{command:'generate_dataset',count:'10',seed:'42',policy}])[0];assert.equal(preview.ok,true);assert.equal(preview.dataset.source,source(`practical/${file}.graph`));

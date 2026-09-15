@@ -12,11 +12,11 @@ import {DatasetInput,WorkItems} from './Datasets';
 import {LambdaInput,LambdaResult} from './Lambda';
 import {Guide} from './Guide';
 import {parseProject,readLocal,readUtf8,saveLocal,type Theme,type Project} from './projects';
-import manifest from './examples.json';
+import manifest from '../../examples/manifest.json';
 import './workspace.css';
 import './application.css';
-const examples=import.meta.glob('../../examples/{programs,behaviour,independent,practical}/*.graph',{query:'?raw',import:'default',eager:true}) as Record<string,string>;
-const choices=manifest.map(m=>Object.keys(examples).find(k=>k.endsWith('/'+m.file))).filter((k):k is string=>!!k).sort();
+const examples=import.meta.glob('../../examples/{programs,behaviour,independent,practical,lambda}/*.graph',{query:'?raw',import:'default',eager:true}) as Record<string,string>;
+const choices=manifest.map(m=>{const key='../../examples/'+m.file;if(!(key in examples))throw new Error(`Missing gallery source: ${m.file}`);return key;}).sort();
 const initial=choices.find(k=>k.endsWith('/independent/shared-read.graph'))!;
 const observers=import.meta.glob('../../examples/observers/*.observer',{query:'?raw',import:'default',eager:true}) as Record<string,string>;
 const all=observers[Object.keys(observers).find(k=>k.endsWith('/all.observer'))!];
@@ -103,7 +103,7 @@ export default function App(){
     <div className="workspace">
       <section className="source-pane" aria-label="Program editor"><div className="section-heading"><h1>Program</h1></div>
         <label className="example-label">Example<select aria-label="Example" value={example} disabled={locked} onChange={e=>{if(e.target.value)edit(examples[e.target.value]);}}><option value="">Custom source / dataset</option>{choices.map(k=><option key={k} value={k}>{k.replace('../../examples/','').replace('.graph','')}</option>)}</select></label>
-        {exampleInfo&&<p className="example-context">Selected example: {exampleInfo.purpose} {exampleInfo.expected} Observer: {exampleInfo.observer}. Tested scope: {exampleInfo.limit}. Evidence: {exampleInfo.evidence}. {source!==examples[example]?'Draft is modified; this expectation may no longer apply.':'Load to execute this source.'}</p>}
+        {exampleInfo&&<div className="example-context"><p>{exampleInfo.purpose} {exampleInfo.expected} Reference profile: {exampleInfo.observer}; {exampleInfo.limit}. Different source or settings may change the result.</p><button disabled={locked} onClick={()=>{const p=exampleInfo.profile;setMaxSteps(p.max_steps);setSeed(p.seed);setCycles(p.detect_cycles);setMaxWork(p.max_work);setMaxCandidates(p.max_candidates);setObserver(p.observer==='observers/value.observer'?'value':'all');}}>Apply example settings</button> Settings take effect on load.</div>}
         <DatasetInput request={command} load={s=>load(s,true)} disabled={locked} maxSteps={maxSteps}/>
         <LambdaInput request={command} prepare={edit} disabled={locked}/>
         <div className="editor-controls"><button disabled={locked} onClick={()=>void validateDraft()}>Validate draft</button>{sourceError&&<p role="status">{sourceError.message} {sourceError.line&&<button onClick={()=>setJumpError(n=>n+1)}>Go to line {sourceError.line}</button>}</p>}</div>

@@ -1,0 +1,282 @@
+{
+  "normalisation": "Canonical JSON key ordering; only implementation fingerprint omitted after full live trace verification. Identities, settings, source hash, reports and event evidence retained.",
+  "profiles": {
+    "practical/work-items.graph": {
+      "outcome": "NormalForm",
+      "events": 10,
+      "trace_sha256": "ad9007c690e1be0d6933d62c460c1a933844921a71ef3be8b6c2a7c48e844fa7",
+      "state_sha256": [
+        "8489c13d07b0a4ec7e0854f84533b020ca3b10efe249031d73c1fd326d067f57",
+        "86e1965701388c50ac3e133564b27b2b7dce84c681ae4064ff93d2ba165cbc59",
+        "ed9b5d24cbdbb2996c2e327bc87a27fab7164a1b26b81e826e4c6379b067fdee",
+        "05068f23933577da82687b5735ad8688a8d50f0d2b6ab626283416f8d58a9fa8",
+        "387c7cb7dc7ca1667d1d896b4398952941d38adbb90b784227c58b00a16036bb",
+        "c31ef0baeb615e6dd1688f0d6c04cc6900aa1c72f7b3648b46eeedaf9afcd7b9",
+        "52814dfc9a7697237385b430bbf99bde8fd7ac2304c508ec9028de50fb4faeaf",
+        "401b8bd7a61350961f1a2d03c93cdc974275d4235f338be6ca1f5eceb542d449",
+        "e0790e4a434bf8b2ac003023e2ce0673d3baf073ec7207e1f39b610cb3525d44",
+        "363b8f197441e962a5d026321b91b2da1a5c6c93b4828b148fbe7b742a515d2d",
+        "d670085e0e11fdf851b6a4198d6bf9cbcc6b60529945d863f817ce8211888736"
+      ]
+    },
+    "practical/policy-enable.graph": {
+      "outcome": "NormalForm",
+      "events": 11,
+      "trace_sha256": "a7119a4e4a4dd06936eea744202995b906735737f99cd5c12efc553465a5a95c",
+      "state_sha256": [
+        "72380fa0740063fe09f2fa7eb412663140b62f2838602a0fd1c8bf456b17be4c",
+        "239db3f5733d0c295c7251cf30714934a5904db0bbb547f05c541900c56e6af9",
+        "601c0c3ef686f64ca936d7fc8c5674f1058709d2f87c953819f06be24512ef9d",
+        "5823bd69f7b0fade34229f6a98aa725c1a38d3b4538a33dfa7fadbe0fc03a840",
+        "39e247cf65ec5590c583abba7417d92710a17e4344250b3254046aedcc89d7fa",
+        "ebcd692e2134d2d98b9a11b6151e02dd7d62d903db61bcc29f69aac43e8f0f27",
+        "4f827d4202c63fb5c6bb8fdaea74ff57dad16876f2f0caac672065e7c8e70a14",
+        "b1343cbee4b71ecc4212ad659e69c89dc24303e3c20313469942506101c89944",
+        "da2143de64b2795b22edea9bf8cffce40f7c3ad05da2a034b652e87f18d52806",
+        "577ce50ba5c9bd3925ab5ece86aa99883049bd2692f59f64ef6d7e06d71bb445",
+        "be8dbfe16ceea34a583ac3d62fe1b7471cfe390c8b40edc274ff033a425020be",
+        "af0029208416796999df67dd94166eb0630799bf274bd3751f05a96d01ab95f3"
+      ]
+    },
+    "independent/shared-read.graph": {
+      "outcome": "NormalForm",
+      "events": 2,
+      "trace_sha256": "63e5bbd8582d537036b7836fbd8c5c16a5816ab45efa66fcef1f5ab8ab7233d7",
+      "state_sha256": [
+        "e7c6496b24be51251bd63187dc379649ff78f4e7e934617dd84f59c2d8377754",
+        "c55536187dd8b351c5163c58ebe249bb276bdb0cbdb42ad9d2ed52fd932922ba",
+        "f4dc01c3a9379f61c299b8a67f504298b7c27af9068d3509eaa0c5309e37cbbf"
+      ]
+    },
+    "independent/disjoint.graph": {
+      "outcome": "NormalForm",
+      "events": 2,
+      "trace_sha256": "2dd56a7724b0237346faf48e27627e78ed909a8f4ccc3bb92629b0aab5a3caaa",
+      "state_sha256": [
+        "d09147478033736b05b2ea0aaae0684a54160aee396489b05ee7884b8258558a",
+        "2d30f414cae842063afff66e3ae7696ccd008115c9cb3de0170ad4869e9662c6",
+        "0591848047501259fc8ca5693fcb4019e32b7006565699e2eff1572ff7f07e19"
+      ]
+    },
+    "behaviour/oscillating.graph": {
+      "outcome": "CycleDetected",
+      "events": 2,
+      "trace_sha256": "f46e7a928d8711b92709e9c6d6574d9c419219c038e83b12f418b11ac9a348d0",
+      "state_sha256": [
+        "098f5fdd429a62dcce01b488d9e4a5233b6c5377c814f48c5e20cd3142d40d0e",
+        "6d31e8e59af36c1818ced1c7c5db3db32c0ae36077cb64df5f5fb337205e7a6f",
+        "4f8d98968f2452d853e335fb0e36e44a75c4f1c510cfbdde7b12cb254712afdd"
+      ]
+    },
+    "behaviour/stable.graph": {
+      "outcome": "NormalForm",
+      "events": 1,
+      "trace_sha256": "bc091cf19e7d285d8d1ab39ddf7a5dc16fb6518d6ded713babf0d9ee7785b6d9",
+      "state_sha256": [
+        "7146503420564d25b7ec617b45e544cb4c85d47c333f0774a392afccb878266f",
+        "798f6afd69256f159ae322b7985f7bdd77e6fb40df2113e0adee4687e786d0db"
+      ]
+    },
+    "behaviour/collapse.graph": {
+      "outcome": "NormalForm",
+      "events": 1,
+      "trace_sha256": "48dbc78f15393c4482b13296606c4fb69737919ead0aa06297886edd6fe5decc",
+      "state_sha256": [
+        "fc7905d72be954926d771b0a8661c7969ac59adf2c4f0edf9afd95b7145bc75f",
+        "7448341b05d4e921a29a937b356a8f47ac4f5934eaf9e41123fef6b7b835b87a"
+      ]
+    },
+    "programs/mutual-regress.graph": {
+      "outcome": "NormalForm",
+      "events": 0,
+      "trace_sha256": "85aace5d62c32b110a796445e5351bac52fab382ccbbe631fea167be38a916d3",
+      "state_sha256": [
+        "82f09632d09cdf0ad4226d34725a5fc5609ed3ee1901037c97b26d741028da36"
+      ]
+    },
+    "programs/arithmetic.graph": {
+      "outcome": "NormalForm",
+      "events": 1,
+      "trace_sha256": "c155d7fb2ea54ec1746b89c476bfd9a9dc69b45b91bcc11dbfb14d2d4cd4e070",
+      "state_sha256": [
+        "a95876de22b913ceede06966747d1da56828ba012ca4b6ac9108d36b2144c4f8",
+        "0ae91731fcebe75b18aa96304da505b3959d4eff2474f6f5a1342e9ae7ca4a61"
+      ]
+    },
+    "programs/staging.graph": {
+      "outcome": "StepLimit",
+      "events": 6,
+      "trace_sha256": "e63a5d83f6510449649a87dfbb3ffc10515a5dffae17f2453bb790499996725d",
+      "state_sha256": [
+        "1bd8028d2256a8c4fc9b76ac71be2bf147915b766bfc2e04ce2240a0dcf66795",
+        "58ef58da1a559011972ad8dc70af0035a079b2c857940d41a90d7619ac2b377a",
+        "531bc7941d07f4a63dd46103afdef2ac2ab8eb36485f29fa3a6a660de5389954",
+        "187beddbd2d0e0c09e84bf79f25e3e179e3bc9cef4f420bc57dc0cbd20b5236c",
+        "cadbc1c6c62a9d6fd31f4461564ae49e48100b8f44b5273090d689242b6b8f8d",
+        "c901b62a73bc42d60afa70d61c3e39eb6505dc3ab3245c4874ea85b329f67618",
+        "41d85918f1e2a142fce4e151fc32588576903dd034f1e1efdcee386f547d7356"
+      ]
+    },
+    "programs/self-modify.graph": {
+      "outcome": "StepLimit",
+      "events": 6,
+      "trace_sha256": "22976f0622ca2189a4fe9f6ad2534cb04b57f31158319fe8f4b05966e7e8c49f",
+      "state_sha256": [
+        "ea817db636f45cbf05bed0dac75236fce3a5ffac47b903e3a21cd8fe61886714",
+        "255a9ee0d6c81a7ecdc2a80801606f501055ed5ccc4b0d0cc4adb98d6d96711d",
+        "e2d94d8bb2628614a070dab8da0af3bafb1f698f8f53b10a2e4505c41869efaf",
+        "91f4d1cc3a6cdb42686ad335064a0bbcd3533e63e5e17f771c887f75c2523732",
+        "4937c545632082beff35307fc8312e6157eabbe657e299bdc94ffaa8c77be049",
+        "e2fe23b805956c67e8541a21eb95e22747377d67db4ae832a4102f463efadfbc",
+        "2b92b2221b0738c8277d2733c4f47232575ad019f38c051ba2323efb5543cd38"
+      ]
+    },
+    "programs/restoration.graph": {
+      "outcome": "StepLimit",
+      "events": 6,
+      "trace_sha256": "f597b641d2880b62c011ff566e713865d23c11a323933bfbb6288b88d8e7a3dd",
+      "state_sha256": [
+        "86b8032fc6b8de99978cc63cdaf4ad014118282b835bfe4608e076c5cd888d6e",
+        "c7a1141f3733f0df4fd1042701cbe9937812e6752aa07b6234c668b6e9dd56d2",
+        "08a4a5867ad72b91584b31f8ef64f43e837379c331123c83831f072b2688105e",
+        "cee63c4702b38d0768b2488c8b0656c812a29b801b8c5f48b02f771accaf1425",
+        "f64f2c1f3c6aa2bb0a2ff5ce88be89af19f82a65b1253d70e940e0f636419aff",
+        "6070196cc32eb36ece4410602848c2c141839df024416d6ab3190eecdf66484b",
+        "418f38aae79eb53fee9ebe855219321b3fa20fa1004ed936f7def614844ddc2e"
+      ]
+    },
+    "lambda/identity.graph": {
+      "outcome": "NormalForm",
+      "events": 3,
+      "trace_sha256": "8c1bd97683272efd57eb2a5fac1a8bdd31b2e22d95ba653f9a6cd163e3002ccb",
+      "state_sha256": [
+        "a3344610bcffdc8afea6faa1439b4e44b5fdfe4c8623eaf749365a8f581be656",
+        "7f11ab50083be487121da506f21a3ea2164a03cc16b93a2b20bb06b89232bfd1",
+        "7233fad5e742dcd9da79dfc817560517218273a0b77cf30c4b1cdccaaa670003",
+        "9545f420eb0f56a2e085a93409c4ab77f653f1836a97ee7de18646318cae3f6d"
+      ]
+    },
+    "lambda/erasure.graph": {
+      "outcome": "NormalForm",
+      "events": 6,
+      "trace_sha256": "e69581827552853a8b60aeb869e3806962449dd35c90b52c74091dbe8b054958",
+      "state_sha256": [
+        "c7230879b07feb7f806b13e6aadb3d76ea0c3cc3a8435058b63b9f60da8b1ba7",
+        "8f5fa3d4edee28cc02de28fb80de32dd2e4a0d0d6be824b36c457383e9ec9a16",
+        "65da50c28aadbd1a133342a0ed77ea4be6ad9d8f9675597ccc8d785a5ce1a98d",
+        "008df18206faf4df650872a1089400171e1da84acdb120f8418984ceedc23999",
+        "495324453fc75fbf66c40fd435288b3ea99515b9986ae1e7c477a5966b647715",
+        "c774fc9a5f282299315d888bfae7e978f07fdd025e5c743b5359778de3e1e78b",
+        "3037927377ee1ba7550ded0c434023527cab4751ade2162a8eb6dab5063c09e1"
+      ]
+    },
+    "lambda/repetition.graph": {
+      "outcome": "NormalForm",
+      "events": 7,
+      "trace_sha256": "e8cc3ce30c2a1b2a1127e531d4f5f6f40dee17a858c9b2fd209cfb9c929b8edc",
+      "state_sha256": [
+        "3a5763d6e9838676e41ca082a75f926c12963fbd46a61cfe61ebd7863ac3af43",
+        "99e24907c617080bd65dc731c3da705703f4dad04af7cf7099b4d8a65b3586ea",
+        "eef92bb6db007b8394ac0f516ef9ce7c1a3e6704afa104c0a8094b85d88d1d04",
+        "062fdd3595c9283c68cffe83146da3b94863d2028f58d8c8765545e1d8cb8aba",
+        "312275fda63292b72cbda7d83bd19242b53d684ea58de2d86c64c4afd0084471",
+        "09ce6d984d9dcb6375ba1c6479c13d5296aee17df90a1c6a6e9746eab02bb2f9",
+        "fb0a8c3545325451821e48530aa1f0e401fb78a6d82c38e353467814b760b2f6",
+        "ee8b96b4231ef991200dac0e244436e250d4205eaea704fbf000b242dc3f8299"
+      ]
+    },
+    "lambda/shadowing.graph": {
+      "outcome": "NormalForm",
+      "events": 2,
+      "trace_sha256": "8e75c30bd2397af97cc1bfcdb4797c55c52af05e96eb8b436e687886f62259ad",
+      "state_sha256": [
+        "bc51ad9c79f19f28d28620cdbcc805dd71e1f3027cc4962dc430fef183f09649",
+        "96887910058950c8b79d8cb53032bb6d9416ce4623260a8ec1a7c846cd8bf506",
+        "d3ed89aecb5fbacb09ad11966707433a3a01169be71666457b60243959f85b63"
+      ]
+    },
+    "lambda/context.graph": {
+      "outcome": "NormalForm",
+      "events": 6,
+      "trace_sha256": "2e03b75723533dbd38b2fe6381e1a3d95b59c4546184f1187aaff33ab3c36ee4",
+      "state_sha256": [
+        "a9805a8222b6d32f01cbd37b67dd98868787260ebe65eb49999ddfef8cf596da",
+        "1228d53a00d4ae1daf6a8d573b84b2768cb39200601d546af064bdad270e1ba7",
+        "d2067896dfad01c11b9a77694c190504ad124e140d88d7995fc8ab5a4d2175b4",
+        "4fc8a9e475dcfa8b317ce553fecc1bdffbee1072c39f888e401dc297c3c537ec",
+        "f459d5ff686149260ff17e0087c9bc31bda404076ec14b75f11bb9d34dc8ad23",
+        "6c2b6bd5bca14437eab44aa40645d87a05d8cb811a883cbfd16396582bb4b081",
+        "19b0eca0439250d2ac3f4d0a81f6a46f711724aaa4e5b939e4bd43b6f7208ab0"
+      ]
+    },
+    "lambda/omega.graph": {
+      "outcome": "StepLimit",
+      "events": 20,
+      "trace_sha256": "c754e0f670dfa7bc04d86f7a03ee91b87deb69bdecc8d479141eb66b115a7ae7",
+      "state_sha256": [
+        "ebe6e1445317bfde6bd2e4a31a00e5808a65ac2e42b440e5db64e08c64ac271f",
+        "fb1fe5ae012ab81da86f74f3d31c46e516bf0691a154db11b99b9d9ab0c9385c",
+        "bba6784546c0ccf3009b1e214bf11b0e9706be00af029228c521115cda784f3e",
+        "66dee431f6af1fb433a4420dd54c4f56d8d80319ca3e466e893d2290bfd99fe5",
+        "f8535c08b0979e2fa0a8f1f093928b1fa56c7582445e7f959bcc7064be7265d0",
+        "298c61b1d7253c4420058708f178e538e54a659a2e9786f60cbcd878423f6337",
+        "137b6c5b79818aa88a7ece53f25f63e553f32bc375a3e5273a8511981e339ef3",
+        "de4fcfad407295b6e9f830fd0f0252ae5cd49e6dc029a765d91ee0cdcfc50a27",
+        "57061b360585dc9a3b717c9bb26f82efcfd85a050f9c62c59d976353eebf1234",
+        "e6a2b9ede842a001f23312c76655301bc82b94d33f38518bfebd2e66c1250128",
+        "6b426afd39fcd84914750870e8211cc6d1ae46db9d9fe8092861e6e746e22c80",
+        "09f898d80e4bd31cdd06171417335d0705d28c0af662663fc5abd7268d716b7c",
+        "5e23fea2e0b03556b885e093d35b91a33d6f9431f53add733cb22105b1f9fa33",
+        "4873fb38b98b9b13bd66e0cd9941552b9c1bef4f6b97102abbf076ede9921f59",
+        "ea7b5ca8c759d5a41b12214478598669e7c8847011b587bbe0e8e6368fe0195f",
+        "54f62bdfed1fd6260b4f3e69c1ed7e324d5237054db1ecc5571fe3453ac4d638",
+        "926ce825279868bb15491d7ac6a3757b300a1bc986ebc0bb308fc05ca3250c70",
+        "f9a070d5a398af66ac76b3c300ad0ec467394d4af5860919365e477cc0a3f9d9",
+        "02544c3d7e47929a1d58ff0d611455056550db0b834fd6946c8f1e1f05e8eb0d",
+        "fbce45cfeaf52e379a86a83d8f812e3695c5754e7db261c1841083006b696e6d",
+        "ba70931202dccea0bb50c465c0ae66e7c6b23a04666e168b6535fb7197280690"
+      ]
+    },
+    "behaviour/oscillating.graph:value": {
+      "outcome": "CycleDetected",
+      "events": 1,
+      "trace_sha256": "447c32f27bb05186d14679e7bc8c93d06e5a374f5d68c21b7833469feef525fd",
+      "state_sha256": [
+        "098f5fdd429a62dcce01b488d9e4a5233b6c5377c814f48c5e20cd3142d40d0e",
+        "6d31e8e59af36c1818ced1c7c5db3db32c0ae36077cb64df5f5fb337205e7a6f"
+      ]
+    },
+    "behaviour/oscillating.graph:bounded": {
+      "outcome": "StepLimit",
+      "events": 6,
+      "trace_sha256": "0cabfcbdc5c9290ef82e1ede344091a42c1557359486243feaa4c42fbe9707f3",
+      "state_sha256": [
+        "098f5fdd429a62dcce01b488d9e4a5233b6c5377c814f48c5e20cd3142d40d0e",
+        "6d31e8e59af36c1818ced1c7c5db3db32c0ae36077cb64df5f5fb337205e7a6f",
+        "4f8d98968f2452d853e335fb0e36e44a75c4f1c510cfbdde7b12cb254712afdd",
+        "0ba7a62893a77c13ed30a9da6f46d0e029f47cff72d03a69ee89d252d9a786c4",
+        "7ae1c7b0c7966052a44be4cb06e99b9520e721c1b8d20ffa3541f2205d8fb937",
+        "a52d2733c31974bb34c5aca69bb66f3745c7157dc2fe837b34aceffb2a941cf5",
+        "a58dec4855218366ecb70e6836b3cd02015e51d5b6dce1e488ae2263f0c74da7"
+      ]
+    },
+    "behaviour/stable.graph:value": {
+      "outcome": "NormalForm",
+      "events": 1,
+      "trace_sha256": "f3d66b1390fbe6099e819035a626ad4b66be148d12a6d55a9218c047f93c7d38",
+      "state_sha256": [
+        "7146503420564d25b7ec617b45e544cb4c85d47c333f0774a392afccb878266f",
+        "798f6afd69256f159ae322b7985f7bdd77e6fb40df2113e0adee4687e786d0db"
+      ]
+    },
+    "behaviour/collapse.graph:value": {
+      "outcome": "NormalForm",
+      "events": 1,
+      "trace_sha256": "4206f0cf8c82d1c1e5687b888d2bfe63288c5fafc1498e59cff61e6738ba1fc7",
+      "state_sha256": [
+        "fc7905d72be954926d771b0a8661c7969ac59adf2c4f0edf9afd95b7145bc75f",
+        "7448341b05d4e921a29a937b356a8f47ac4f5934eaf9e41123fef6b7b835b87a"
+      ]
+    }
+  }
+}

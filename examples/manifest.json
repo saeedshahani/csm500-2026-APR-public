@@ -1,0 +1,474 @@
+[
+  {
+    "file": "practical/work-items.graph",
+    "purpose": "Process ten named work items.",
+    "expected": "Ten status rewrites, then NormalForm if budgets suffice.",
+    "observer": "complete carrier",
+    "limit": "20 steps; seeded scheduler 42; recurrence off",
+    "evidence": "independent whole-carrier oracle, CLI/WASM parity and browser practical tests",
+    "category": "practical",
+    "authored": "practical/work-items.graph",
+    "rqs": [
+      "RQ2"
+    ],
+    "profile": {
+      "max_steps": "20",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 10
+    },
+    "documentation": "practical/README.md"
+  },
+  {
+    "file": "practical/policy-enable.graph",
+    "purpose": "Enable a processing rule from inside the graph.",
+    "expected": "One guarded activation with a new revision, then ten status rewrites.",
+    "observer": "complete carrier",
+    "limit": "20 steps; seeded scheduler 42; recurrence off",
+    "evidence": "independent revision oracle, CLI/WASM parity and browser practical tests",
+    "category": "reflection",
+    "authored": "practical/policy-enable.graph",
+    "rqs": [
+      "RQ1"
+    ],
+    "profile": {
+      "max_steps": "20",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 11
+    },
+    "documentation": "practical/README.md"
+  },
+  {
+    "file": "independent/shared-read.graph",
+    "purpose": "Two rules read one shared item.",
+    "expected": "Two commits, then NormalForm; shared reads alone impose no order.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "parity and browser shared-read tests",
+    "category": "independence",
+    "authored": "independent/shared-read.graph",
+    "rqs": [
+      "RQ4"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 2
+    },
+    "documentation": "independent/README.md"
+  },
+  {
+    "file": "independent/disjoint.graph",
+    "purpose": "Two separate rewrites.",
+    "expected": "Two commits, then NormalForm.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "native/WASM parity",
+    "category": "independence",
+    "authored": "independent/disjoint.graph",
+    "rqs": [
+      "RQ4"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 2
+    },
+    "documentation": "independent/README.md"
+  },
+  {
+    "file": "behaviour/oscillating.graph",
+    "purpose": "Alternate pending and done.",
+    "expected": "Two commits before recurrence when detection is enabled; otherwise the step bound stops the run.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence on",
+    "evidence": "browser timeline and parity recurrence tests",
+    "category": "oscillation",
+    "authored": "behaviour/oscillating.graph",
+    "rqs": [
+      "RQ2",
+      "RQ3"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": true,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "CycleDetected",
+      "events": 2
+    },
+    "documentation": "behaviour/README.md"
+  },
+  {
+    "file": "behaviour/stable.graph",
+    "purpose": "Make one irreversible status change.",
+    "expected": "One commit, then NormalForm.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "CLI transfer and browser tests",
+    "category": "stability",
+    "authored": "behaviour/stable.graph",
+    "rqs": [
+      "RQ2",
+      "RQ3"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 1
+    },
+    "documentation": "behaviour/README.md"
+  },
+  {
+    "file": "behaviour/collapse.graph",
+    "purpose": "Remove observed data.",
+    "expected": "One deletion, then NormalForm. Under the declared value observer, payload falls from 2 to 0; rule atoms survive.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "native behaviour tests",
+    "category": "collapse",
+    "authored": "behaviour/collapse.graph",
+    "rqs": [
+      "RQ2",
+      "RQ3"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 1
+    },
+    "documentation": "behaviour/README.md"
+  },
+  {
+    "file": "programs/mutual-regress.graph",
+    "purpose": "Attempt a disallowed rule-version change.",
+    "expected": "NormalForm with zero admitted steps. Requesting rule p explicitly reports RequestedRuleUnavailable: the rank guard rejects its raw match.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "native engine guard tests",
+    "category": "reflection",
+    "authored": "programs/mutual-regress.graph",
+    "rqs": [
+      "RQ1"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 0
+    },
+    "documentation": "programs/README.md"
+  },
+  {
+    "file": "programs/arithmetic.graph",
+    "purpose": "Represent a small arithmetic rewrite.",
+    "expected": "Inspect the changed constructor structure; this is not a general calculator.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "native/WASM parity",
+    "category": "arithmetic",
+    "authored": "programs/arithmetic.graph",
+    "rqs": [
+      "RQ1",
+      "RQ2"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 1
+    },
+    "documentation": "programs/README.md"
+  },
+  {
+    "file": "programs/staging.graph",
+    "purpose": "Expose staged rule behaviour.",
+    "expected": "Six-step seeded prefix. Installation and use depend on selection; the separately tested installer-then-use witness is not guaranteed by this profile.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "native/WASM parity",
+    "category": "reflection",
+    "authored": "programs/staging.graph",
+    "rqs": [
+      "RQ1"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "StepLimit",
+      "events": 6
+    },
+    "documentation": "programs/README.md"
+  },
+  {
+    "file": "programs/self-modify.graph",
+    "purpose": "A rule rewrites its own representation.",
+    "expected": "Six-step seeded prefix with changing revisions. The A-then-B demonstration uses a separately tested selected-binding witness.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "browser historical rule inspection and parity",
+    "category": "reflection",
+    "authored": "programs/self-modify.graph",
+    "rqs": [
+      "RQ1"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "StepLimit",
+      "events": 6
+    },
+    "documentation": "programs/README.md"
+  },
+  {
+    "file": "programs/restoration.graph",
+    "purpose": "Restore rule structure with a fresh revision.",
+    "expected": "Six-step seeded prefix. Complete-carrier restoration is established separately along the selected P/supervisor/Q/supervisor path.",
+    "observer": "complete carrier",
+    "limit": "6 steps; seeded scheduler 42; recurrence off",
+    "evidence": "native/WASM parity",
+    "category": "reflection",
+    "authored": "programs/restoration.graph",
+    "rqs": [
+      "RQ1"
+    ],
+    "profile": {
+      "max_steps": "6",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "StepLimit",
+      "events": 6
+    },
+    "documentation": "programs/README.md"
+  },
+  {
+    "file": "lambda/identity.graph",
+    "authored": "lambda/identity.lambda",
+    "category": "lambda",
+    "rqs": [
+      "RQ5"
+    ],
+    "purpose": "Apply the identity function.",
+    "expected": "NormalForm with interpreted result (λ.0); bookkeeping steps also appear in the timeline.",
+    "observer": "complete carrier",
+    "limit": "20 steps; seeded scheduler 42; recurrence off",
+    "evidence": "independent source substitution oracle, golden readbacks and full CLI/native/WASM catalogue checks",
+    "documentation": "lambda/README.md",
+    "profile": {
+      "max_steps": "20",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 3
+    }
+  },
+  {
+    "file": "lambda/erasure.graph",
+    "authored": "lambda/erasure.lambda",
+    "category": "lambda",
+    "rqs": [
+      "RQ5"
+    ],
+    "purpose": "Discard an argument that would diverge if evaluated.",
+    "expected": "NormalForm with interpreted result (λ.0); bookkeeping steps also appear in the timeline.",
+    "observer": "complete carrier",
+    "limit": "20 steps; seeded scheduler 42; recurrence off",
+    "evidence": "independent source substitution oracle, golden readbacks and full CLI/native/WASM catalogue checks",
+    "documentation": "lambda/README.md",
+    "profile": {
+      "max_steps": "20",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 6
+    }
+  },
+  {
+    "file": "lambda/repetition.graph",
+    "authored": "lambda/repetition.lambda",
+    "category": "lambda",
+    "rqs": [
+      "RQ5"
+    ],
+    "purpose": "Use an argument twice.",
+    "expected": "NormalForm with interpreted result (λ.0); bookkeeping steps also appear in the timeline.",
+    "observer": "complete carrier",
+    "limit": "20 steps; seeded scheduler 42; recurrence off",
+    "evidence": "independent source substitution oracle, golden readbacks and full CLI/native/WASM catalogue checks",
+    "documentation": "lambda/README.md",
+    "profile": {
+      "max_steps": "20",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 7
+    }
+  },
+  {
+    "file": "lambda/shadowing.graph",
+    "authored": "lambda/shadowing.lambda",
+    "category": "lambda",
+    "rqs": [
+      "RQ5"
+    ],
+    "purpose": "Resolve an inner binder that shadows an outer name.",
+    "expected": "NormalForm with interpreted result (λ.0); bookkeeping steps also appear in the timeline.",
+    "observer": "complete carrier",
+    "limit": "20 steps; seeded scheduler 42; recurrence off",
+    "evidence": "independent source substitution oracle, golden readbacks and full CLI/native/WASM catalogue checks",
+    "documentation": "lambda/README.md",
+    "profile": {
+      "max_steps": "20",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 2
+    }
+  },
+  {
+    "file": "lambda/context.graph",
+    "authored": "lambda/context.lambda",
+    "category": "lambda",
+    "rqs": [
+      "RQ5"
+    ],
+    "purpose": "Reduce a function inside an application context.",
+    "expected": "NormalForm with interpreted result (λ.0); bookkeeping steps also appear in the timeline.",
+    "observer": "complete carrier",
+    "limit": "20 steps; seeded scheduler 42; recurrence off",
+    "evidence": "independent source substitution oracle, golden readbacks and full CLI/native/WASM catalogue checks",
+    "documentation": "lambda/README.md",
+    "profile": {
+      "max_steps": "20",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "NormalForm",
+      "events": 6
+    }
+  },
+  {
+    "file": "lambda/omega.graph",
+    "authored": "lambda/omega.lambda",
+    "category": "lambda",
+    "rqs": [
+      "RQ5"
+    ],
+    "purpose": "Repeat self-application without reaching a weak-head result.",
+    "expected": "Twenty graph steps reach StepLimit, not a completed result.",
+    "observer": "complete carrier",
+    "limit": "20 steps; seeded scheduler 42; recurrence off",
+    "evidence": "independent source substitution oracle, golden readbacks and full CLI/native/WASM catalogue checks",
+    "documentation": "lambda/README.md",
+    "profile": {
+      "max_steps": "20",
+      "seed": "42",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {
+      "outcome": "StepLimit",
+      "events": 20
+    }
+  }
+]
