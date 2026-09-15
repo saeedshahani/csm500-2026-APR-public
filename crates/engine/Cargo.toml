@@ -13,6 +13,8 @@ serde.workspace = true
 serde_json.workspace = true
 serde_path_to_error = "=0.1.20"
 [dev-dependencies]
+parser.workspace = true
+criterion = { version = "=0.5.1", default-features = false, features = ["cargo_bench_support"] }
 proptest.workspace = true
 petgraph = { version = "=0.6.5", default-features = false }
 # Bound petgraph's transitive indexmap selection to the pinned Rust toolchain.
@@ -21,3 +23,6 @@ indexmap = "=2.7.1"
 sha2 = "=0.10.8"
 [lints]
 workspace = true
+[[bench]]
+name = "scaling"
+harness = false

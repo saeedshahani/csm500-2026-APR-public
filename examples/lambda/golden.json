@@ -1,0 +1,156 @@
+{
+  "context": {
+    "administrative_steps": 4,
+    "beta_steps": 2,
+    "outcome": "NormalForm",
+    "readbacks": [
+      "(((λ.0) (λ.0)) (λ.0))",
+      "(((λ.0) (λ.0)) (λ.0))",
+      "(((λ.0) (λ.0)) (λ.0))",
+      "((λ.0) (λ.0))",
+      "((λ.0) (λ.0))",
+      "(λ.0)",
+      "(λ.0)"
+    ],
+    "source": "(((\\x. x) (\\y. y)) (\\z. z))",
+    "transitions": [
+      "Push",
+      "Push",
+      "Beta",
+      "LookupZero",
+      "Beta",
+      "LookupZero"
+    ]
+  },
+  "erasure": {
+    "administrative_steps": 4,
+    "beta_steps": 2,
+    "outcome": "NormalForm",
+    "readbacks": [
+      "(((λ.(λ.1)) (λ.0)) ((λ.(0 0)) (λ.(0 0))))",
+      "(((λ.(λ.1)) (λ.0)) ((λ.(0 0)) (λ.(0 0))))",
+      "(((λ.(λ.1)) (λ.0)) ((λ.(0 0)) (λ.(0 0))))",
+      "((λ.(λ.0)) ((λ.(0 0)) (λ.(0 0))))",
+      "(λ.0)",
+      "(λ.0)",
+      "(λ.0)"
+    ],
+    "source": "(((\\x. (\\y. x)) (\\z. z)) ((\\x. (x x)) (\\x. (x x))))",
+    "transitions": [
+      "Push",
+      "Push",
+      "Beta",
+      "Beta",
+      "LookupSucc",
+      "LookupZero"
+    ]
+  },
+  "identity": {
+    "administrative_steps": 2,
+    "beta_steps": 1,
+    "outcome": "NormalForm",
+    "readbacks": [
+      "((λ.0) (λ.0))",
+      "((λ.0) (λ.0))",
+      "(λ.0)",
+      "(λ.0)"
+    ],
+    "source": "((\\x. x) (\\y. y))",
+    "transitions": [
+      "Push",
+      "Beta",
+      "LookupZero"
+    ]
+  },
+  "omega": {
+    "administrative_steps": 15,
+    "beta_steps": 5,
+    "outcome": "StepLimit",
+    "readbacks": [
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))",
+      "((λ.(0 0)) (λ.(0 0)))"
+    ],
+    "source": "((\\x. (x x)) (\\x. (x x)))",
+    "transitions": [
+      "Push",
+      "Beta",
+      "Push",
+      "LookupZero",
+      "Beta",
+      "Push",
+      "LookupZero",
+      "LookupZero",
+      "Beta",
+      "Push",
+      "LookupZero",
+      "LookupZero",
+      "LookupZero",
+      "Beta",
+      "Push",
+      "LookupZero",
+      "LookupZero",
+      "LookupZero",
+      "LookupZero",
+      "Beta"
+    ]
+  },
+  "repetition": {
+    "administrative_steps": 5,
+    "beta_steps": 2,
+    "outcome": "NormalForm",
+    "readbacks": [
+      "((λ.(0 0)) (λ.0))",
+      "((λ.(0 0)) (λ.0))",
+      "((λ.0) (λ.0))",
+      "((λ.0) (λ.0))",
+      "((λ.0) (λ.0))",
+      "(λ.0)",
+      "(λ.0)",
+      "(λ.0)"
+    ],
+    "source": "((\\x. (x x)) (\\y. y))",
+    "transitions": [
+      "Push",
+      "Beta",
+      "Push",
+      "LookupZero",
+      "Beta",
+      "LookupZero",
+      "LookupZero"
+    ]
+  },
+  "shadowing": {
+    "administrative_steps": 1,
+    "beta_steps": 1,
+    "outcome": "NormalForm",
+    "readbacks": [
+      "((λ.(λ.0)) (λ.0))",
+      "((λ.(λ.0)) (λ.0))",
+      "(λ.0)"
+    ],
+    "source": "((\\x. (\\x. x)) (\\z. z))",
+    "transitions": [
+      "Push",
+      "Beta"
+    ]
+  }
+}

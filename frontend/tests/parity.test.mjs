@@ -7,6 +7,17 @@ import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 const require=createRequire(import.meta.url);const {WorkbenchHandle}=require('../pkg-node/wasm_bridge.js');
 const root=new URL('../../',import.meta.url);
+test('lambda translation, interpretation, history and failures share native/WASM semantics',()=>{
+ const input='((\\x. x) (\\y. y))';
+ const preview=compare([{command:'lambda_compile',source:input}])[0];assert.equal(preview.ok,true);
+ const src=preview.compiled;
+ const replies=compare([{command:'load',source:src,config:{max_steps:'20'}},{command:'advance',batch:'20'},{command:'jump',state:'0'},{command:'jump',state:'2'},{command:'lambda_compile',source:'(\\x. y)'},{command:'lambda_compile',source:input,max_work:'0'},{command:'state'}]);
+ assert.equal(replies[1].state.status,'NormalForm');assert.equal(replies[1].state.events.length,3);assert.equal(replies[1].state.lambda.term,'(λ.0)');
+ assert.equal(replies[2].state.lambda.term,'((λ.0) (λ.0))');assert.equal(replies[3].state.lambda.term,'(λ.0)');
+ assert.equal(replies[4].ok,false);assert.equal(replies[5].error.kind,'ResourceExhaustion');assert.deepEqual(replies[6],replies[3]);
+ const cli=execFileSync('cargo',['run','--quiet','--locked','-p','cli','--','lambda-compile','-'],{cwd:root,input:input,encoding:'utf8'});assert.equal(cli.trim(),src.trim());
+ const trace=compare([{command:'import',trace:replies[1].trace},{command:'jump',state:'1'}]);assert.equal(trace[1].state.lambda.term,'((λ.0) (λ.0))');
+});
 const source=name=>readFileSync(new URL(`examples/${name}`,root),'utf8');
 execFileSync('cargo',['build','-p','wasm-bridge','--example','protocol','--locked'],{cwd:root,stdio:'inherit'});
 function compare(commands){const native=execFileSync(fileURLToPath(new URL('target/debug/examples/protocol',root)),[],{input:commands.map(c=>JSON.stringify(c)).join('\n')+'\n',encoding:'utf8',maxBuffer:64*1024*1024}).trim().split('\n').map(JSON.parse);const handle=new WorkbenchHandle();try{const wasm=commands.map(c=>handle.dispatch(JSON.stringify(c)));assert.deepEqual(wasm,native);return wasm;}finally{handle.free();}}

@@ -1,0 +1,31 @@
+# Controlled performance study
+
+## Protocol
+
+This protocol is fixed before collection. It evaluates the native implementation, not the complexity of the formalism. No browser rendering timing or external-tool throughput comparison is claimed. Functional native/WASM parity is assessed separately.
+
+Questions: (1) Does exhaustive candidate preparation dominate commitment as branching increases? (2) How do carrier size, rule count and pattern size affect scan-based queries? (3) What are the storage and replay costs of longer histories and more frequent checkpoints? (4) Which practical dataset sizes complete under the unchanged portable limits?
+
+Deterministic inputs vary atom count (16, 128, 1024), owned-link count (16, 128, 1024), live rule count (1, 8, 32), preserved pattern size (1, 4, 8), and branching (1, 8, 32). A dangling-deletion family supplies rejected candidates. Retained workloads include object oscillation, reflective self-modification, lambda identity/repetition/bounded Ω, and the production dataset generator at seed 42: fixed 10/100/1000 items and guarded-enable 10. Trace lengths are 8/32/64 with checkpoint intervals 1/8/32. Atom, field, rule and pattern counts are descriptors, not measurements of cost. Other structural dimensions may covary; these are controlled families, not independent causal estimates.
+
+Each region uses a preconstructed fixture unless stated otherwise:
+
+- `parse`: lexing and syntax parsing only; `load`: parsing, lowering and validation together. These overlap and must not be added.
+- `validate_decode`: the public validator returns decoded rule views. Validation and decoding cannot be isolated through the current API; no artificial subtraction estimates either one.
+- `scan`: one public sort query over the carrier.
+- `bindings`: raw matching of the first active rule; no transaction preparation. `enabled`: all-source search plus candidate preparation and applicability checks. These have different scope and are not disjoint phases.
+- `prepare`: preparation of one already enumerated binding; `commit`: installation of one already prepared candidate, excluding search, fixture copying and preparation. A lack of an admitted candidate is reported as inapplicable, not zero execution time.
+- `run`: recording-enabled bounded execution with default search/observation limits and deterministic scheduling. Fixture loading and runner setup are excluded; report outcome and commit count. ResourceLimit is a measured failed search, not completed workload throughput.
+- `order` and `closure`: direct positive-resource extraction and closure of an already extracted order. `publish`: construction, verification and JSON serialisation of a portable trace; `replay`: reconstructing the penultimate state from a previously verified trace, so intervals 8 and 32 require residual replay whereas interval 1 has an exact checkpoint. Checkpoint storage is the serialised JSON byte count. Publication and replay are not browser rendering.
+
+Criterion 0.5.1 supplies uninstrumented wall-time microbenchmarks under `crates/engine/benches`, with 50 ms warm-up, ten samples and a 150 ms target measurement period per case. Raw samples and estimates are retained. These deliberately short exploratory samples do not support narrow precision claims. The broader matrix uses one discarded warm-up process followed by five separate measured processes per cell, with one `Instant`-timed operation per process. Medians and observed minima/maxima are reported, not population confidence bounds. Every process validates fixture semantics before timing; that check is excluded from the region but included in whole-process memory. No other tests or builds are intentionally run during collection. Background OS activity, thermal/frequency changes and scheduling are uncontrolled and recorded as threats.
+
+Memory uses macOS `/usr/bin/time -l` maximum resident set size, in bytes, for each whole benchmark process. It includes startup, fixture construction, validation and retained inputs/results; it is not incremental allocation, live graph memory or a per-region peak. Baseline and touched 64 MiB buffer calibration processes check the instrument and show runtime overhead. Each child has a 30 s wall timeout. A process-group RSS sampler checks a 512 MiB ceiling approximately every 100 ms and kills the group on excess; this is a sampled operational ceiling, not a hard allocation guarantee. Failed, killed, timed-out and malformed runs remain in the raw data. Missing RSS is missing, never zero. Process-group sampling includes the `time` wrapper and is separate from its reported benchmark RSS.
+
+Timing-loop boundaries are explicit: Criterion's validation and enabled-query loops include destruction of their returned owned results. Its commit loop borrows the prepared input so destruction of the temporary execution and event occurs outside timing. The process probe retains each result until after the elapsed-time reading. Criterion's repeated warm loops and the single-operation process probe are complementary measurements, not interchangeable samples or subtractable phase estimates. Preliminary owned-input commit-loop data are retained separately and excluded from reported results.
+
+Builds use pinned Rust 1.85.0, the checked-in lockfile, Cargo's default release/bench profiles, no target-CPU override, and one benchmark process at a time. The collector records OS, CPU, memory, tool versions, command arguments and source/protocol digests. CI compiles and smoke-tests the harness only. It supplies no dissertation timing evidence. Results are specific to the recorded machine and workload ranges.
+
+Optimisation is conditional: retain the scan-based reference until profiling justifies a separate change with identical states, footprints, replay, scheduler/RNG and observations. External-tool benchmarks require a faithful comparable encoding and are not part of this collection. Qualitative comparisons must be labelled as such.
+
+Instrumentation references: [Criterion command-line and CI guidance](https://bheisler.github.io/criterion.rs/book/user_guide/command_line_options.html); macOS `man time` for platform-specific RSS units and process accounting. Reproduction commands and collected results are added below after collection without changing the protocol above.

@@ -24,6 +24,14 @@ impl Failure {
     }
 }
 type Result<T> = std::result::Result<T, Failure>;
+fn lambda_failure(error: parser::lambda::Error) -> Failure {
+    let code = match &error {
+        parser::lambda::Error::ResourceLimit => 3,
+        parser::lambda::Error::Core(d) if d.kind() == ErrorKind::ResourceExhaustion => 3,
+        _ => 2,
+    };
+    Failure::new(code, error.to_string())
+}
 struct Options {
     run: bool,
     export: bool,
@@ -60,7 +68,10 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["export", "--help"]
         || args == ["replay", "--help"]
         || args == ["trace-check", "--help"]
+        || args == ["lambda-compile", "--help"]
+        || args == ["lambda-readback", "--help"]
     {
+        io::stdout().lock().write_all(b"Lambda adapters: cli lambda-compile SOURCE | cli lambda-readback GRAPH\nBoth accept a file or -; compilation emits ordinary graph source.\nUse cli replay TRACE --at N | cli lambda-readback - for recorded terms.\n\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout()
             .lock()
             .write_all(format!("{HELP}\nScheduling: --strategy deterministic (default), or --strategy seeded --seed U64.\nOrdering: source identity, then (template identity, host identity) tuples.\nObservers: --observer FILE (observer-v1); --detect-cycles true|false (default false).\nBounds: --max-observation-work N, --max-comparison-work N, --max-history-units N.\nRecurrence is diagnostic, not proof of infinite behaviour; exit 6 CycleDetected.\nShared API cancellation stops at transaction boundaries (exit 5); CLI does not install a signal handler.\nNormal form takes precedence over recurrence and step limits; recurrence precedes step limit.\n").as_bytes())
@@ -69,6 +80,45 @@ pub(crate) fn main_command() -> Result<u8> {
     }
     if matches!(args[0].as_str(), "replay" | "trace-check") {
         return trace_command(&args);
+    }
+    if matches!(args[0].as_str(), "lambda-compile" | "lambda-readback") {
+        if args.len() != 2 {
+            return Err(Failure::new(
+                2,
+                "usage: cli lambda-compile SOURCE | lambda-readback GRAPH (file or -)",
+            ));
+        }
+        let text = read_source(&args[1], ParseLimits::default().graph.max_input_bytes)?;
+        let limits = parser::lambda::Limits::default();
+        let output = if args[0] == "lambda-compile" {
+            let term = parser::lambda::parse(&text, limits).map_err(lambda_failure)?;
+            let encoded = parser::lambda::encode(&term, limits).map_err(lambda_failure)?;
+            format!(
+                "// Lambda source: {}\n{}",
+                text.trim().replace(['\n', '\r'], " "),
+                parser::print(&encoded.graph).map_err(engine_failure)?
+            )
+        } else {
+            let loaded = parser::load(&text).map_err(|errors| {
+                let code = if errors
+                    .iter()
+                    .any(|e| e.diagnostic.kind() == ErrorKind::ResourceExhaustion)
+                {
+                    3
+                } else {
+                    2
+                };
+                Failure::new(code, format!("{errors:?}"))
+            })?;
+            parser::lambda::interpret(loaded.graph(), limits)
+                .map_err(lambda_failure)?
+                .ok_or_else(|| Failure::new(2, "no lambda machine"))?
+        };
+        io::stdout()
+            .lock()
+            .write_all(format!("{output}\n").as_bytes())
+            .map_err(|e| Failure::new(1, e.to_string()))?;
+        return Ok(0);
     }
     let options = options(&args)?;
     let source = read_source(&options.input, options.parse.graph.max_input_bytes)?;

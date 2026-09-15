@@ -145,6 +145,255 @@ fn reference_substitution_has_hand_checked_binding_and_strategy_cases() {
 }
 
 #[test]
+fn named_syntax_resolves_alpha_renaming_shadowing_and_rejects_bad_inputs() {
+    for (left, right) in [
+        ("(\\x. x)", "(\\y. y)"),
+        ("(\\x. (\\x. x))", "(\\a. (\\b. b))"),
+        ("(\\x. (\\y. x))", "(\\a. (\\b. a))"),
+    ] {
+        let a = lambda::parse(left, Limits::default()).unwrap();
+        let b = lambda::parse(right, Limits::default()).unwrap();
+        assert_eq!(expression(&a, a.root()), expression(&b, b.root()));
+        assert_eq!(run(a, 40), run(b, 40));
+    }
+    for text in [
+        "x",
+        "(\\x. y)",
+        "(\\x. x) garbage",
+        "(\\x. x",
+        "(\\. x)",
+        "(a b c)",
+        "(\\λ. λ)",
+    ] {
+        assert!(lambda::parse(text, Limits::default()).is_err(), "{text}");
+    }
+    assert_eq!(
+        lambda::parse(
+            "(\\x. x)",
+            Limits {
+                max_work: 0,
+                ..Limits::default()
+            }
+        )
+        .unwrap_err(),
+        lambda::Error::ResourceLimit
+    );
+}
+
+#[test]
+fn seeded_generated_closed_terms_have_shrinkable_source_reproductions() {
+    generated_evidence(false);
+}
+fn generated_evidence(regenerate: bool) {
+    use proptest::{
+        prelude::*,
+        test_runner::{Config, RngAlgorithm, TestRng, TestRunner},
+    };
+    // Trees are built from closed combinators, so shrinking never introduces free names.
+    // Failure output is the fully parenthesised source, usable directly by lambda-compile.
+    let leaf = prop_oneof![
+        Just("(\\x. x)".to_string()),
+        Just("(\\x. (\\y. x))".to_string()),
+        Just("(\\x. (x x))".to_string())
+    ];
+    let strategy = leaf.prop_recursive(3, 12, 2, |inner| {
+        (inner.clone(), inner).prop_map(|(f, a)| format!("({f} {a})"))
+    });
+    let mut runner = TestRunner::new_with_rng(
+        Config {
+            cases: 32,
+            failure_persistence: None,
+            ..Config::default()
+        },
+        TestRng::from_seed(RngAlgorithm::ChaCha, &[53; 32]),
+    );
+    let evidence = std::cell::RefCell::new(Vec::new());
+    runner
+        .run(&strategy, |text| {
+            let term = lambda::parse(&text, Limits::default()).unwrap();
+            let renamed = text.replace('x', "a").replace('y', "b");
+            let alpha = lambda::parse(&renamed, Limits::default()).unwrap();
+            assert_eq!(term.nodes(), alpha.nodes());
+            let (_,betas,steps,done) = run(term, 24);
+            evidence.borrow_mut().push(serde_json::json!({"source":text,"alpha_renamed":renamed,"beta_steps":betas,"administrative_steps":steps.len()-betas,"graph_steps":steps.len(),"terminal":done}));
+            Ok(())
+        })
+        .unwrap();
+    let value = serde_json::json!({"algorithm":"proptest 1.6.0 ChaCha","seed_bytes":vec![53;32],"cases":evidence.into_inner()});
+    let file = std::path::Path::new(env!("CARGO_MANIFEST_DIR"))
+        .join("../../examples/lambda/generated.json");
+    if regenerate {
+        std::fs::write(file, serde_json::to_string_pretty(&value).unwrap() + "\n").unwrap();
+    } else {
+        assert_eq!(
+            value,
+            serde_json::from_slice::<serde_json::Value>(&std::fs::read(file).unwrap()).unwrap()
+        );
+    }
+}
+
+fn example_evidence(regenerate: bool) {
+    use engine::{
+        observation::Observer,
+        runner::{RunLimits, Runner},
+        trace::{TraceDocument, VerifiedTrace},
+    };
+    use serde_json::json;
+    let folder = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("../../examples/lambda");
+    let mut golden = serde_json::Map::new();
+    for (name, beta_count) in [
+        ("identity", 1),
+        ("erasure", 2),
+        ("repetition", 2),
+        ("shadowing", 1),
+        ("context", 2),
+        ("omega", 0),
+    ] {
+        let text = std::fs::read_to_string(folder.join(format!("{name}.lambda"))).unwrap();
+        let term = lambda::parse(&text, Limits::default()).unwrap();
+        let (_, betas, steps, done) = run(term.clone(), 20);
+        if name != "omega" {
+            assert!(done);
+            assert_eq!(betas, beta_count);
+        } else {
+            assert!(!done);
+        }
+        let encoded = lambda::encode(&term, Limits::default()).unwrap();
+        let graph_text = format!(
+            "// Lambda source: {}\n{}",
+            text.trim().replace(['\n', '\r'], " "),
+            parser::print(&encoded.graph).unwrap()
+        );
+        // Parse the published source before execution: printer/lowerer identity renaming is exercised.
+        let graph = parser::load(&graph_text).unwrap().into_graph();
+        let mut runner = Runner::new(
+            graph,
+            Default::default(),
+            Scheduler::Deterministic,
+            Observer::all(),
+        )
+        .unwrap();
+        runner.enable_recording(Default::default()).unwrap();
+        let report = runner
+            .run(
+                RunLimits {
+                    max_steps: 20,
+                    ..Default::default()
+                },
+                None,
+                || false,
+            )
+            .unwrap();
+        assert_eq!(
+            format!("{:?}", report.outcome),
+            if name == "omega" {
+                "StepLimit"
+            } else {
+                "NormalForm"
+            }
+        );
+        let doc = TraceDocument::from_runner(
+            &runner,
+            Some(engine::trace::sha256(graph_text.as_bytes())),
+            Default::default(),
+            Default::default(),
+        )
+        .unwrap();
+        let verified = VerifiedTrace::verify(doc.clone(), Default::default()).unwrap();
+        let observations: Vec<_> = (0..=doc.events.len())
+            .map(|i| {
+                lambda::interpret(&verified.state_at(i).unwrap(), Limits::default())
+                    .unwrap()
+                    .unwrap()
+            })
+            .collect();
+        let mut reference = expression(&term, term.root());
+        assert_eq!(
+            observations[0],
+            source(&reference).display(Limits::default()).unwrap()
+        );
+        for (i, step) in steps.iter().enumerate() {
+            if *step == Transition::Beta {
+                reference = reduce(&reference).unwrap();
+            }
+            assert_eq!(
+                observations[i + 1],
+                source(&reference).display(Limits::default()).unwrap()
+            );
+        }
+        golden.insert(name.into(), json!({"source":text.trim(),"outcome":format!("{:?}",report.outcome),"beta_steps":betas,"administrative_steps":steps.len()-betas,"transitions":steps.iter().map(|s| format!("{s:?}")).collect::<Vec<_>>(),"readbacks":observations}));
+        // Durable fixtures certify checked bindings, not a scheduler implementation
+        // hash which changes with the lockfile. The fresh run above checks outcomes.
+        let portable = TraceDocument::from_recording(
+            runner.recording().unwrap(),
+            runner.observer(),
+            Some(engine::trace::sha256(graph_text.as_bytes())),
+            Default::default(),
+            Default::default(),
+        )
+        .unwrap();
+        let trace = portable.to_json(16 * 1024 * 1024).unwrap();
+        if regenerate {
+            std::fs::write(folder.join(format!("{name}.graph")), graph_text).unwrap();
+            std::fs::write(folder.join(format!("{name}.trace.json")), trace).unwrap();
+        } else {
+            assert_eq!(
+                std::fs::read_to_string(folder.join(format!("{name}.graph"))).unwrap(),
+                graph_text
+            );
+            let stored = VerifiedTrace::import(
+                &std::fs::read(folder.join(format!("{name}.trace.json"))).unwrap(),
+                Default::default(),
+            )
+            .unwrap();
+            // Implementation hashes may change; event content, observations and outcomes may not.
+            assert_eq!(
+                serde_json::to_value(&stored.document().events).unwrap(),
+                serde_json::to_value(&doc.events).unwrap()
+            );
+            assert_eq!(
+                lambda::interpret(
+                    &stored.state_at(doc.events.len()).unwrap(),
+                    Limits::default()
+                )
+                .unwrap(),
+                lambda::interpret(
+                    &verified.state_at(doc.events.len()).unwrap(),
+                    Limits::default()
+                )
+                .unwrap()
+            );
+        }
+    }
+    let value = serde_json::Value::Object(golden);
+    if regenerate {
+        std::fs::write(
+            folder.join("golden.json"),
+            serde_json::to_string_pretty(&value).unwrap() + "\n",
+        )
+        .unwrap();
+    } else {
+        assert_eq!(
+            serde_json::from_str::<serde_json::Value>(
+                &std::fs::read_to_string(folder.join("golden.json")).unwrap()
+            )
+            .unwrap(),
+            value
+        );
+    }
+}
+#[test]
+fn published_lambda_examples_match_manual_oracle_and_verified_histories() {
+    example_evidence(false);
+}
+#[test]
+#[ignore = "explicit deterministic fixture regeneration; overwrites only examples/lambda generated files"]
+fn regenerate_lambda_fixtures() {
+    example_evidence(true);
+    generated_evidence(true);
+}
+
+#[test]
 fn graph_machine_simulates_nested_duplication_erasure_shadowing_and_lookup() {
     let omega_body = l(a(v(0), v(0)));
     let omega = a(omega_body.clone(), omega_body);

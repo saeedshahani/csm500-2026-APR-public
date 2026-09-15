@@ -9,6 +9,7 @@ import {Rules,HistoryAnalysis} from './Inspection';
 import {Editor} from './Editor';
 import {EventList} from './EventList';
 import {DatasetInput,WorkItems} from './Datasets';
+import {LambdaInput,LambdaResult} from './Lambda';
 import {Guide} from './Guide';
 import {parseProject,readLocal,readUtf8,saveLocal,type Theme,type Project} from './projects';
 import manifest from './examples.json';
@@ -104,6 +105,7 @@ export default function App(){
         <label className="example-label">Example<select aria-label="Example" value={example} disabled={locked} onChange={e=>{if(e.target.value)edit(examples[e.target.value]);}}><option value="">Custom source / dataset</option>{choices.map(k=><option key={k} value={k}>{k.replace('../../examples/','').replace('.graph','')}</option>)}</select></label>
         {exampleInfo&&<p className="example-context">Selected example: {exampleInfo.purpose} {exampleInfo.expected} Observer: {exampleInfo.observer}. Tested scope: {exampleInfo.limit}. Evidence: {exampleInfo.evidence}. {source!==examples[example]?'Draft is modified; this expectation may no longer apply.':'Load to execute this source.'}</p>}
         <DatasetInput request={command} load={s=>load(s,true)} disabled={locked} maxSteps={maxSteps}/>
+        <LambdaInput request={command} prepare={edit} disabled={locked}/>
         <div className="editor-controls"><button disabled={locked} onClick={()=>void validateDraft()}>Validate draft</button>{sourceError&&<p role="status">{sourceError.message} {sourceError.line&&<button onClick={()=>setJumpError(n=>n+1)}>Go to line {sourceError.line}</button>}</p>}</div>
         <Editor value={source} onChange={edit} diagnostic={sourceError} jump={jumpError}/>
         <details className="settings"><summary>Run settings <span>Applied on load</span></summary><div className="settings-grid">
@@ -119,6 +121,7 @@ export default function App(){
       <section className="graph-pane"><div className="section-heading"><h2>{view}</h2><span>State {state?.position??'—'}</span></div>
         <nav className="view-tabs" aria-label="Graph views">{['Practical','Internal','Rules','History'].map(name=><button key={name} aria-pressed={view===name} onClick={()=>setView(name)}>{name}</button>)}</nav>
         {state&&view==='Practical'&&<WorkItems state={state} select={setSelected}/>}
+        {state&&<LambdaResult state={state}/>}
         {state?<>{(view==='Practical'||view==='Internal')&&<GraphCanvas key={`${dataset}:${view}`} state={state} selected={selected} onSelect={setSelected} practical={view==='Practical'}/>}{view==='Rules'&&<Rules state={state} select={setSelected} analysis={analysis} onAnalyse={()=>void analyse()} disabled={locked}/>} {view==='History'&&<HistoryAnalysis state={state} analysis={analysis} error={analysisError} onAnalyse={e=>void analyse(e)} selectedEvent={selectedEvent} selectEvent={(id,atom)=>{if(!locked)void seek(Number(id)+1).then(reply=>{if(reply?.ok&&atom)setSelected(atom);});}} disabled={locked}/>}</>:<div className="welcome"><p>Load a program to view its graph.</p></div>}
         <div className="inspector"><div className="section-heading"><h2>Atom inspector</h2><span>{selected?`ID ${selected}`:''}</span></div>
           <input aria-label="Find atom" className="atom-search" placeholder="Find by identity, kind or label" value={atomSearch} onChange={e=>{setAtomSearch(e.target.value);setAtomPage(0);setInspected(null);}}/>

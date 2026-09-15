@@ -80,6 +80,129 @@ fn spend(work: &mut usize) -> Result<(), Error> {
     Ok(())
 }
 
+/// Read fully parenthesised named terms: `x`, `(\\x. term)`, `(term term)`.
+/// Names are resolved to the nearest binder; free names are rejected.
+pub fn parse(text: &str, limits: Limits) -> Result<Term, Error> {
+    if text.len() > limits.max_work || limits.max_depth > 128 {
+        return Err(Error::ResourceLimit);
+    }
+    struct Reader<'a> {
+        text: &'a [u8],
+        at: usize,
+        nodes: Vec<Node>,
+        binders: Vec<String>,
+        limits: Limits,
+    }
+    impl Reader<'_> {
+        fn space(&mut self) {
+            while self.text.get(self.at).is_some_and(u8::is_ascii_whitespace) {
+                self.at += 1;
+            }
+        }
+        fn take(&mut self, token: u8) -> Result<(), Error> {
+            self.space();
+            if self.text.get(self.at) != Some(&token) {
+                return Err(Error::InvalidSource(
+                    "expected parenthesis, backslash or dot",
+                ));
+            }
+            self.at += 1;
+            Ok(())
+        }
+        fn name(&mut self) -> Result<String, Error> {
+            self.space();
+            let start = self.at;
+            while self
+                .text
+                .get(self.at)
+                .is_some_and(|b| b.is_ascii_alphanumeric() || *b == b'_')
+            {
+                self.at += 1;
+            }
+            if start == self.at || !self.text[start].is_ascii_alphabetic() {
+                return Err(Error::InvalidSource("expected an ASCII variable name"));
+            }
+            Ok(String::from_utf8(self.text[start..self.at].to_vec()).unwrap())
+        }
+        fn term(&mut self, depth: usize) -> Result<usize, Error> {
+            if depth > self.limits.max_depth || self.nodes.len() >= self.limits.max_nodes {
+                return Err(Error::ResourceLimit);
+            }
+            self.space();
+            let node = if self.text.get(self.at) == Some(&b'(') {
+                self.at += 1;
+                self.space();
+                let node = if self.text.get(self.at) == Some(&b'\\') {
+                    self.at += 1;
+                    let name = self.name()?;
+                    self.take(b'.')?;
+                    self.binders.push(name);
+                    let body = self.term(depth + 1)?;
+                    self.binders.pop();
+                    Node::Lam(body)
+                } else {
+                    let f = self.term(depth + 1)?;
+                    let a = self.term(depth + 1)?;
+                    Node::App(f, a)
+                };
+                self.take(b')')?;
+                node
+            } else {
+                let name = self.name()?;
+                Node::Var(
+                    self.binders
+                        .iter()
+                        .rev()
+                        .position(|n| n == &name)
+                        .ok_or(Error::InvalidSource("free variable"))?,
+                )
+            };
+            if self.nodes.len() >= self.limits.max_nodes {
+                return Err(Error::ResourceLimit);
+            }
+            let id = self.nodes.len();
+            self.nodes.push(node);
+            Ok(id)
+        }
+    }
+    let mut reader = Reader {
+        text: text.as_bytes(),
+        at: 0,
+        nodes: Vec::new(),
+        binders: Vec::new(),
+        limits,
+    };
+    let root = reader.term(0)?;
+    reader.space();
+    if reader.at != text.len() {
+        return Err(Error::InvalidSource("trailing input"));
+    }
+    Term::new(reader.nodes, root, limits)
+}
+
+/// Interpret a uniquely identified, unquoted machine at an inspected state.
+/// This is bounded readback, not a certificate of the machine invariant.
+pub fn interpret(graph: &Graph, limits: Limits) -> Result<Option<String>, Error> {
+    let configuration = graph_core::validate(graph)?;
+    let representation: BTreeSet<_> = configuration
+        .rules
+        .values()
+        .flat_map(|r| r.representation.iter().copied())
+        .collect();
+    let roots: Vec<_> = graph
+        .iter()
+        .filter(|(id, a)| {
+            !representation.contains(id) && a.kind == Kind::Constructor("lc.Machine".into())
+        })
+        .map(|(id, _)| id)
+        .collect();
+    match roots.as_slice() {
+        [] => Ok(None),
+        [root] => Ok(Some(readback(graph, *root, limits)?.display(limits)?)),
+        _ => Err(Error::InvalidGraph("multiple lambda machines")),
+    }
+}
+
 impl Term {
     pub fn new(nodes: Vec<Node>, root: usize, limits: Limits) -> Result<Self, Error> {
         if nodes.len() > limits.max_nodes || limits.max_depth > 128 {

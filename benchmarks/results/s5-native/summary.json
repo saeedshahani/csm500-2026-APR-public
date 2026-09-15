@@ -1,0 +1,7550 @@
+[
+  {
+    "family": "calibration",
+    "size": 0,
+    "phase": "memory",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 0,
+      "median": 0,
+      "max": 42
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 1753088,
+      "median": 1753088,
+      "max": 1753088
+    },
+    "details": {
+      "family": "calibration",
+      "outcome": "Completed",
+      "phase": "memory",
+      "size": 0,
+      "touched_bytes": 0,
+      "wall_ns": 42
+    }
+  },
+  {
+    "family": "calibration",
+    "size": 64,
+    "phase": "memory",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2517792,
+      "median": 2577667,
+      "max": 2775041
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 68894720,
+      "median": 68894720,
+      "max": 68894720
+    },
+    "details": {
+      "family": "calibration",
+      "outcome": "Completed",
+      "phase": "memory",
+      "size": 64,
+      "touched_bytes": 67108864,
+      "wall_ns": 2622666
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 16,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 8000,
+      "median": 8459,
+      "max": 8875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2277376,
+      "median": 2277376,
+      "max": 2277376
+    },
+    "details": {
+      "atoms": 17,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 582,
+      "wall_ns": 8625
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 16,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 17208,
+      "median": 17541,
+      "max": 18084
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2293760,
+      "median": 2293760,
+      "max": 2293760
+    },
+    "details": {
+      "atoms": 17,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 582,
+      "wall_ns": 17334
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 16,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 291,
+      "median": 292,
+      "max": 333
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2211840,
+      "median": 2211840,
+      "max": 2211840
+    },
+    "details": {
+      "atoms": 17,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 582,
+      "wall_ns": 333
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 16,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 792,
+      "median": 833,
+      "max": 875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2211840,
+      "median": 2211840,
+      "max": 2211840
+    },
+    "details": {
+      "atoms": 17,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 582,
+      "wall_ns": 792
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 16,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2211840,
+      "median": 2211840,
+      "max": 2211840
+    },
+    "details": {
+      "atoms": 17,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "bindings",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 582,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 16,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 333,
+      "median": 375,
+      "max": 417
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2211840,
+      "median": 2211840,
+      "max": 2211840
+    },
+    "details": {
+      "admitted": 0,
+      "atoms": 17,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 582,
+      "wall_ns": 375,
+      "work_units": 0
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 16,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2211840,
+      "median": 2211840,
+      "max": 2211840
+    },
+    "details": {
+      "atoms": 17,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "prepare",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 582,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 16,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2211840,
+      "median": 2211840,
+      "max": 2211840
+    },
+    "details": {
+      "atoms": 17,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 582,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 128,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 26084,
+      "median": 27583,
+      "max": 28625
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2637824,
+      "median": 2654208,
+      "max": 2686976
+    },
+    "details": {
+      "atoms": 129,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 4419,
+      "wall_ns": 26084
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 128,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 75500,
+      "median": 77417,
+      "max": 82208
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2850816,
+      "median": 2867200,
+      "max": 2916352
+    },
+    "details": {
+      "atoms": 129,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 4419,
+      "wall_ns": 78292
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 128,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1417,
+      "median": 1458,
+      "max": 1542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2441216,
+      "median": 2473984,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 129,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 4419,
+      "wall_ns": 1542
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 128,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1916,
+      "median": 2000,
+      "max": 2375
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2441216,
+      "median": 2473984,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 129,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 4419,
+      "wall_ns": 2375
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 128,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2441216,
+      "median": 2473984,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 129,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "bindings",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 4419,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 128,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1500,
+      "median": 1500,
+      "max": 1584
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2441216,
+      "median": 2473984,
+      "max": 2506752
+    },
+    "details": {
+      "admitted": 0,
+      "atoms": 129,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 4419,
+      "wall_ns": 1500,
+      "work_units": 0
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 128,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2441216,
+      "median": 2473984,
+      "max": 2473984
+    },
+    "details": {
+      "atoms": 129,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "prepare",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 4419,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 128,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2441216,
+      "median": 2457600,
+      "max": 2473984
+    },
+    "details": {
+      "atoms": 129,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 4419,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 1024,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 133500,
+      "median": 135500,
+      "max": 159625
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3555328,
+      "median": 3571712,
+      "max": 3604480
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 35804,
+      "wall_ns": 135500
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 1024,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 455167,
+      "median": 462833,
+      "max": 479959
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4194304,
+      "median": 4210688,
+      "max": 4227072
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 35804,
+      "wall_ns": 462833
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 1024,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 10458,
+      "median": 10500,
+      "max": 10750
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3162112,
+      "median": 3162112,
+      "max": 3194880
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 35804,
+      "wall_ns": 10750
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 1024,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 9125,
+      "median": 9875,
+      "max": 10583
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3211264,
+      "median": 3227648,
+      "max": 3244032
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 35804,
+      "wall_ns": 9792
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 1024,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3162112,
+      "median": 3162112,
+      "max": 3194880
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "bindings",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 35804,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 1024,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 10583,
+      "median": 10666,
+      "max": 10833
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3162112,
+      "median": 3194880,
+      "max": 3194880
+    },
+    "details": {
+      "admitted": 0,
+      "atoms": 1025,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 35804,
+      "wall_ns": 10833,
+      "work_units": 0
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 1024,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3162112,
+      "median": 3162112,
+      "max": 3162112
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "prepare",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 35804,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "atoms",
+    "size": 1024,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3145728,
+      "median": 3162112,
+      "max": 3194880
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "atoms",
+      "fields": 0,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 35804,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 16,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 11625,
+      "median": 12084,
+      "max": 15125
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2326528,
+      "median": 2326528,
+      "max": 2326528
+    },
+    "details": {
+      "atoms": 17,
+      "family": "fields",
+      "fields": 32,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 822,
+      "wall_ns": 11833
+    }
+  },
+  {
+    "family": "fields",
+    "size": 16,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 23709,
+      "median": 24666,
+      "max": 28209
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2326528,
+      "median": 2326528,
+      "max": 2326528
+    },
+    "details": {
+      "atoms": 17,
+      "family": "fields",
+      "fields": 32,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 822,
+      "wall_ns": 24666
+    }
+  },
+  {
+    "family": "fields",
+    "size": 16,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2084,
+      "median": 2167,
+      "max": 2417
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2228224,
+      "median": 2228224,
+      "max": 2228224
+    },
+    "details": {
+      "atoms": 17,
+      "family": "fields",
+      "fields": 32,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 822,
+      "wall_ns": 2167
+    }
+  },
+  {
+    "family": "fields",
+    "size": 16,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 208,
+      "median": 208,
+      "max": 334
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2228224,
+      "median": 2228224,
+      "max": 2228224
+    },
+    "details": {
+      "atoms": 17,
+      "family": "fields",
+      "fields": 32,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 822,
+      "wall_ns": 250
+    }
+  },
+  {
+    "family": "fields",
+    "size": 16,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2228224,
+      "median": 2228224,
+      "max": 2228224
+    },
+    "details": {
+      "atoms": 17,
+      "family": "fields",
+      "fields": 32,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "bindings",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 822,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 16,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2125,
+      "median": 2167,
+      "max": 2292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2228224,
+      "median": 2228224,
+      "max": 2228224
+    },
+    "details": {
+      "admitted": 0,
+      "atoms": 17,
+      "family": "fields",
+      "fields": 32,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 822,
+      "wall_ns": 2125,
+      "work_units": 0
+    }
+  },
+  {
+    "family": "fields",
+    "size": 16,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2228224,
+      "median": 2228224,
+      "max": 2228224
+    },
+    "details": {
+      "atoms": 17,
+      "family": "fields",
+      "fields": 32,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "prepare",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 822,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 16,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2228224,
+      "median": 2228224,
+      "max": 2228224
+    },
+    "details": {
+      "atoms": 17,
+      "family": "fields",
+      "fields": 32,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 0,
+      "size": 16,
+      "source_bytes": 822,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 128,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 41750,
+      "median": 43959,
+      "max": 46292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2736128,
+      "median": 2752512,
+      "max": 2785280
+    },
+    "details": {
+      "atoms": 129,
+      "family": "fields",
+      "fields": 256,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 6339,
+      "wall_ns": 44792
+    }
+  },
+  {
+    "family": "fields",
+    "size": 128,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 121375,
+      "median": 126833,
+      "max": 147000
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3047424,
+      "median": 3047424,
+      "max": 3096576
+    },
+    "details": {
+      "atoms": 129,
+      "family": "fields",
+      "fields": 256,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 6339,
+      "wall_ns": 121375
+    }
+  },
+  {
+    "family": "fields",
+    "size": 128,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14250,
+      "median": 15125,
+      "max": 15292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2539520,
+      "max": 2572288
+    },
+    "details": {
+      "atoms": 129,
+      "family": "fields",
+      "fields": 256,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 6339,
+      "wall_ns": 15125
+    }
+  },
+  {
+    "family": "fields",
+    "size": 128,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 500,
+      "median": 500,
+      "max": 584
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2523136,
+      "max": 2588672
+    },
+    "details": {
+      "atoms": 129,
+      "family": "fields",
+      "fields": 256,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 6339,
+      "wall_ns": 541
+    }
+  },
+  {
+    "family": "fields",
+    "size": 128,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2539520,
+      "median": 2572288,
+      "max": 2572288
+    },
+    "details": {
+      "atoms": 129,
+      "family": "fields",
+      "fields": 256,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "bindings",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 6339,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 128,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14834,
+      "median": 15875,
+      "max": 23000
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2523136,
+      "max": 2572288
+    },
+    "details": {
+      "admitted": 0,
+      "atoms": 129,
+      "family": "fields",
+      "fields": 256,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 6339,
+      "wall_ns": 16125,
+      "work_units": 0
+    }
+  },
+  {
+    "family": "fields",
+    "size": 128,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2523136,
+      "median": 2523136,
+      "max": 2555904
+    },
+    "details": {
+      "atoms": 129,
+      "family": "fields",
+      "fields": 256,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "prepare",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 6339,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 128,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2523136,
+      "median": 2539520,
+      "max": 2572288
+    },
+    "details": {
+      "atoms": 129,
+      "family": "fields",
+      "fields": 256,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 0,
+      "size": 128,
+      "source_bytes": 6339,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 1024,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 245000,
+      "median": 254250,
+      "max": 296500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4227072,
+      "median": 4276224,
+      "max": 4292608
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "fields",
+      "fields": 2048,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 51164,
+      "wall_ns": 296500
+    }
+  },
+  {
+    "family": "fields",
+    "size": 1024,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 792042,
+      "median": 818959,
+      "max": 843250
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4980736,
+      "median": 5029888,
+      "max": 5062656
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "fields",
+      "fields": 2048,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 51164,
+      "wall_ns": 829250
+    }
+  },
+  {
+    "family": "fields",
+    "size": 1024,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 113709,
+      "median": 122625,
+      "max": 142209
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3670016,
+      "median": 3670016,
+      "max": 3686400
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "fields",
+      "fields": 2048,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 51164,
+      "wall_ns": 122625
+    }
+  },
+  {
+    "family": "fields",
+    "size": 1024,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2459,
+      "median": 2583,
+      "max": 3042
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3670016,
+      "median": 3670016,
+      "max": 3686400
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "fields",
+      "fields": 2048,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 51164,
+      "wall_ns": 3042
+    }
+  },
+  {
+    "family": "fields",
+    "size": 1024,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3670016,
+      "median": 3686400,
+      "max": 3686400
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "fields",
+      "fields": 2048,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "bindings",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 51164,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 1024,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 116125,
+      "median": 117792,
+      "max": 126417
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3637248,
+      "median": 3686400,
+      "max": 3686400
+    },
+    "details": {
+      "admitted": 0,
+      "atoms": 1025,
+      "family": "fields",
+      "fields": 2048,
+      "max_lhs": 0,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 51164,
+      "wall_ns": 126417,
+      "work_units": 0
+    }
+  },
+  {
+    "family": "fields",
+    "size": 1024,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3637248,
+      "median": 3670016,
+      "max": 3702784
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "fields",
+      "fields": 2048,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "prepare",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 51164,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "fields",
+    "size": 1024,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3670016,
+      "median": 3670016,
+      "max": 3686400
+    },
+    "details": {
+      "atoms": 1025,
+      "family": "fields",
+      "fields": 2048,
+      "max_lhs": 0,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 0,
+      "size": 1024,
+      "source_bytes": 51164,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "rules",
+    "size": 1,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 6166,
+      "median": 6250,
+      "max": 7833
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2539520,
+      "median": 2555904,
+      "max": 2555904
+    },
+    "details": {
+      "atoms": 10,
+      "family": "rules",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 6500
+    }
+  },
+  {
+    "family": "rules",
+    "size": 1,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 15583,
+      "median": 15958,
+      "max": 16333
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2539520,
+      "median": 2539520,
+      "max": 2555904
+    },
+    "details": {
+      "atoms": 10,
+      "family": "rules",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 16125
+    }
+  },
+  {
+    "family": "rules",
+    "size": 1,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2292,
+      "median": 2458,
+      "max": 2542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2490368,
+      "median": 2506752,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 10,
+      "family": "rules",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 2458
+    }
+  },
+  {
+    "family": "rules",
+    "size": 1,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 167,
+      "median": 209,
+      "max": 250
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2490368,
+      "median": 2506752,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 10,
+      "family": "rules",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 208
+    }
+  },
+  {
+    "family": "rules",
+    "size": 1,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 4083,
+      "median": 4708,
+      "max": 6750
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2506752,
+      "max": 2523136
+    },
+    "details": {
+      "atoms": 10,
+      "bindings": 1,
+      "family": "rules",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 4708
+    }
+  },
+  {
+    "family": "rules",
+    "size": 1,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 12375,
+      "median": 13416,
+      "max": 13875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2523136,
+      "median": 2523136,
+      "max": 2539520
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 10,
+      "family": "rules",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 13417,
+      "work_units": 36
+    }
+  },
+  {
+    "family": "rules",
+    "size": 1,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 8417,
+      "median": 9167,
+      "max": 9791
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2523136,
+      "max": 2539520
+    },
+    "details": {
+      "atoms": 10,
+      "family": "rules",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 9167
+    }
+  },
+  {
+    "family": "rules",
+    "size": 1,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 458,
+      "median": 541,
+      "max": 542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2523136,
+      "max": 2539520
+    },
+    "details": {
+      "atoms": 10,
+      "commits": 1,
+      "family": "rules",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 458
+    }
+  },
+  {
+    "family": "rules",
+    "size": 8,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 23042,
+      "median": 25000,
+      "max": 26583
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3047424,
+      "median": 3063808,
+      "max": 3080192
+    },
+    "details": {
+      "atoms": 73,
+      "family": "rules",
+      "fields": 72,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 8,
+      "size": 8,
+      "source_bytes": 2355,
+      "wall_ns": 23042
+    }
+  },
+  {
+    "family": "rules",
+    "size": 8,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 81792,
+      "median": 83375,
+      "max": 92542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3194880,
+      "median": 3211264,
+      "max": 3244032
+    },
+    "details": {
+      "atoms": 73,
+      "family": "rules",
+      "fields": 72,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 8,
+      "size": 8,
+      "source_bytes": 2355,
+      "wall_ns": 91917
+    }
+  },
+  {
+    "family": "rules",
+    "size": 8,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 20000,
+      "median": 20709,
+      "max": 31333
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2949120,
+      "median": 2981888,
+      "max": 2981888
+    },
+    "details": {
+      "atoms": 73,
+      "family": "rules",
+      "fields": 72,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 8,
+      "size": 8,
+      "source_bytes": 2355,
+      "wall_ns": 20000
+    }
+  },
+  {
+    "family": "rules",
+    "size": 8,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 666,
+      "median": 708,
+      "max": 709
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2949120,
+      "median": 2981888,
+      "max": 2998272
+    },
+    "details": {
+      "atoms": 73,
+      "family": "rules",
+      "fields": 72,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 8,
+      "size": 8,
+      "source_bytes": 2355,
+      "wall_ns": 708
+    }
+  },
+  {
+    "family": "rules",
+    "size": 8,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 25959,
+      "median": 26583,
+      "max": 34167
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2949120,
+      "median": 2965504,
+      "max": 2998272
+    },
+    "details": {
+      "atoms": 73,
+      "bindings": 1,
+      "family": "rules",
+      "fields": 72,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 8,
+      "size": 8,
+      "source_bytes": 2355,
+      "wall_ns": 26667
+    }
+  },
+  {
+    "family": "rules",
+    "size": 8,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 406417,
+      "median": 408875,
+      "max": 413875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3080192,
+      "median": 3112960,
+      "max": 3145728
+    },
+    "details": {
+      "admitted": 8,
+      "atoms": 73,
+      "family": "rules",
+      "fields": 72,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 8,
+      "size": 8,
+      "source_bytes": 2355,
+      "wall_ns": 413875,
+      "work_units": 1296
+    }
+  },
+  {
+    "family": "rules",
+    "size": 8,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 50000,
+      "median": 51042,
+      "max": 57958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3014656,
+      "median": 3031040,
+      "max": 3031040
+    },
+    "details": {
+      "atoms": 73,
+      "family": "rules",
+      "fields": 72,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 8,
+      "size": 8,
+      "source_bytes": 2355,
+      "wall_ns": 57958
+    }
+  },
+  {
+    "family": "rules",
+    "size": 8,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 958,
+      "median": 959,
+      "max": 1000
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2981888,
+      "median": 3031040,
+      "max": 3031040
+    },
+    "details": {
+      "atoms": 73,
+      "commits": 1,
+      "family": "rules",
+      "fields": 72,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 8,
+      "size": 8,
+      "source_bytes": 2355,
+      "wall_ns": 959
+    }
+  },
+  {
+    "family": "rules",
+    "size": 32,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 58708,
+      "median": 61125,
+      "max": 64916
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4849664,
+      "median": 4866048,
+      "max": 4931584
+    },
+    "details": {
+      "atoms": 289,
+      "family": "rules",
+      "fields": 288,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 32,
+      "size": 32,
+      "source_bytes": 9735,
+      "wall_ns": 63833
+    }
+  },
+  {
+    "family": "rules",
+    "size": 32,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 339666,
+      "median": 360875,
+      "max": 374542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5193728,
+      "median": 5210112,
+      "max": 5292032
+    },
+    "details": {
+      "atoms": 289,
+      "family": "rules",
+      "fields": 288,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 32,
+      "size": 32,
+      "source_bytes": 9735,
+      "wall_ns": 339666
+    }
+  },
+  {
+    "family": "rules",
+    "size": 32,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 163833,
+      "median": 171375,
+      "max": 182458
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4653056,
+      "median": 4669440,
+      "max": 4718592
+    },
+    "details": {
+      "atoms": 289,
+      "family": "rules",
+      "fields": 288,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 32,
+      "size": 32,
+      "source_bytes": 9735,
+      "wall_ns": 182458
+    }
+  },
+  {
+    "family": "rules",
+    "size": 32,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1584,
+      "median": 1708,
+      "max": 1959
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4653056,
+      "median": 4669440,
+      "max": 4751360
+    },
+    "details": {
+      "atoms": 289,
+      "family": "rules",
+      "fields": 288,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 32,
+      "size": 32,
+      "source_bytes": 9735,
+      "wall_ns": 1959
+    }
+  },
+  {
+    "family": "rules",
+    "size": 32,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 188042,
+      "median": 189833,
+      "max": 201917
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4653056,
+      "median": 4669440,
+      "max": 4718592
+    },
+    "details": {
+      "atoms": 289,
+      "bindings": 1,
+      "family": "rules",
+      "fields": 288,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 32,
+      "size": 32,
+      "source_bytes": 9735,
+      "wall_ns": 188042
+    }
+  },
+  {
+    "family": "rules",
+    "size": 32,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 11825000,
+      "median": 11990542,
+      "max": 12301166
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4751360,
+      "median": 4833280,
+      "max": 4833280
+    },
+    "details": {
+      "admitted": 32,
+      "atoms": 289,
+      "family": "rules",
+      "fields": 288,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 32,
+      "size": 32,
+      "source_bytes": 9735,
+      "wall_ns": 12043208,
+      "work_units": 19008
+    }
+  },
+  {
+    "family": "rules",
+    "size": 32,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 349708,
+      "median": 370041,
+      "max": 378041
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4636672,
+      "median": 4702208,
+      "max": 4718592
+    },
+    "details": {
+      "atoms": 289,
+      "family": "rules",
+      "fields": 288,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 32,
+      "size": 32,
+      "source_bytes": 9735,
+      "wall_ns": 378041
+    }
+  },
+  {
+    "family": "rules",
+    "size": 32,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2791,
+      "median": 2958,
+      "max": 3167
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4669440,
+      "median": 4669440,
+      "max": 4669440
+    },
+    "details": {
+      "atoms": 289,
+      "commits": 1,
+      "family": "rules",
+      "fields": 288,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 32,
+      "size": 32,
+      "source_bytes": 9735,
+      "wall_ns": 3167
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 1,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 6083,
+      "median": 6209,
+      "max": 6250
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2555904,
+      "median": 2555904,
+      "max": 2555904
+    },
+    "details": {
+      "atoms": 10,
+      "family": "pattern",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 6209
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 1,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 15500,
+      "median": 15917,
+      "max": 16959
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2555904,
+      "median": 2555904,
+      "max": 2555904
+    },
+    "details": {
+      "atoms": 10,
+      "family": "pattern",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 15917
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 1,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2417,
+      "median": 2542,
+      "max": 3042
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2490368,
+      "median": 2506752,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 10,
+      "family": "pattern",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 2542
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 1,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 167,
+      "median": 208,
+      "max": 209
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2490368,
+      "median": 2506752,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 10,
+      "family": "pattern",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 167
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 1,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 4041,
+      "median": 4250,
+      "max": 4792
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2506752,
+      "max": 2523136
+    },
+    "details": {
+      "atoms": 10,
+      "bindings": 1,
+      "family": "pattern",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 4208
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 1,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14291,
+      "median": 15084,
+      "max": 17375
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2523136,
+      "max": 2539520
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 10,
+      "family": "pattern",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 14291,
+      "work_units": 36
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 1,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 8417,
+      "median": 9083,
+      "max": 14791
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2523136,
+      "max": 2539520
+    },
+    "details": {
+      "atoms": 10,
+      "family": "pattern",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 14791
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 1,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 500,
+      "median": 583,
+      "max": 667
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2523136,
+      "max": 2523136
+    },
+    "details": {
+      "atoms": 10,
+      "commits": 1,
+      "family": "pattern",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 317,
+      "wall_ns": 667
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 4,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 10000,
+      "median": 10833,
+      "max": 11083
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2621440,
+      "median": 2637824,
+      "max": 2637824
+    },
+    "details": {
+      "atoms": 22,
+      "family": "pattern",
+      "fields": 21,
+      "max_lhs": 4,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 4,
+      "source_bytes": 717,
+      "wall_ns": 10000
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 4,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 27792,
+      "median": 29500,
+      "max": 44084
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2637824,
+      "median": 2670592,
+      "max": 2670592
+    },
+    "details": {
+      "atoms": 22,
+      "family": "pattern",
+      "fields": 21,
+      "max_lhs": 4,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 4,
+      "source_bytes": 717,
+      "wall_ns": 44084
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 4,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 4375,
+      "median": 4500,
+      "max": 5333
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2555904,
+      "median": 2572288,
+      "max": 2588672
+    },
+    "details": {
+      "atoms": 22,
+      "family": "pattern",
+      "fields": 21,
+      "max_lhs": 4,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 4,
+      "source_bytes": 717,
+      "wall_ns": 4958
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 4,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 333,
+      "median": 375,
+      "max": 417
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2555904,
+      "median": 2555904,
+      "max": 2572288
+    },
+    "details": {
+      "atoms": 22,
+      "family": "pattern",
+      "fields": 21,
+      "max_lhs": 4,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 4,
+      "source_bytes": 717,
+      "wall_ns": 375
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 4,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 8292,
+      "median": 8541,
+      "max": 8583
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2572288,
+      "median": 2572288,
+      "max": 2588672
+    },
+    "details": {
+      "atoms": 22,
+      "bindings": 1,
+      "family": "pattern",
+      "fields": 21,
+      "max_lhs": 4,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 4,
+      "source_bytes": 717,
+      "wall_ns": 8541
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 4,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 23041,
+      "median": 25125,
+      "max": 26958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2588672,
+      "median": 2621440,
+      "max": 2637824
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 22,
+      "family": "pattern",
+      "fields": 21,
+      "max_lhs": 4,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 4,
+      "source_bytes": 717,
+      "wall_ns": 25125,
+      "work_units": 102
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 4,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 16041,
+      "median": 16500,
+      "max": 17459
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2605056,
+      "median": 2621440,
+      "max": 2637824
+    },
+    "details": {
+      "atoms": 22,
+      "family": "pattern",
+      "fields": 21,
+      "max_lhs": 4,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 4,
+      "source_bytes": 717,
+      "wall_ns": 16375
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 4,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 875,
+      "median": 1000,
+      "max": 1000
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2588672,
+      "median": 2605056,
+      "max": 2637824
+    },
+    "details": {
+      "atoms": 22,
+      "commits": 1,
+      "family": "pattern",
+      "fields": 21,
+      "max_lhs": 4,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 1,
+      "size": 4,
+      "source_bytes": 717,
+      "wall_ns": 1000
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 8,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14000,
+      "median": 15541,
+      "max": 16458
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2801664,
+      "median": 2818048,
+      "max": 2834432
+    },
+    "details": {
+      "atoms": 38,
+      "family": "pattern",
+      "fields": 37,
+      "max_lhs": 8,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 1253,
+      "wall_ns": 16458
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 8,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 42750,
+      "median": 46625,
+      "max": 47000
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2883584,
+      "median": 2899968,
+      "max": 2916352
+    },
+    "details": {
+      "atoms": 38,
+      "family": "pattern",
+      "fields": 37,
+      "max_lhs": 8,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 1253,
+      "wall_ns": 42750
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 8,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 7167,
+      "median": 8375,
+      "max": 9042
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2719744,
+      "median": 2736128,
+      "max": 2752512
+    },
+    "details": {
+      "atoms": 38,
+      "family": "pattern",
+      "fields": 37,
+      "max_lhs": 8,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 1253,
+      "wall_ns": 9042
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 8,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 541,
+      "median": 583,
+      "max": 625
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2686976,
+      "median": 2703360,
+      "max": 2736128
+    },
+    "details": {
+      "atoms": 38,
+      "family": "pattern",
+      "fields": 37,
+      "max_lhs": 8,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 1253,
+      "wall_ns": 625
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 8,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 13291,
+      "median": 15167,
+      "max": 17208
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2703360,
+      "median": 2719744,
+      "max": 2736128
+    },
+    "details": {
+      "atoms": 38,
+      "bindings": 1,
+      "family": "pattern",
+      "fields": 37,
+      "max_lhs": 8,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 1253,
+      "wall_ns": 15167
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 8,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 38917,
+      "median": 40542,
+      "max": 46542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2768896,
+      "median": 2768896,
+      "max": 2785280
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 38,
+      "family": "pattern",
+      "fields": 37,
+      "max_lhs": 8,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 1253,
+      "wall_ns": 46542,
+      "work_units": 232
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 8,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 23500,
+      "median": 24167,
+      "max": 28292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2752512,
+      "median": 2752512,
+      "max": 2785280
+    },
+    "details": {
+      "atoms": 38,
+      "family": "pattern",
+      "fields": 37,
+      "max_lhs": 8,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 1253,
+      "wall_ns": 24167
+    }
+  },
+  {
+    "family": "pattern",
+    "size": 8,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1166,
+      "median": 1291,
+      "max": 1333
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2752512,
+      "median": 2768896,
+      "max": 2785280
+    },
+    "details": {
+      "atoms": 38,
+      "commits": 1,
+      "family": "pattern",
+      "fields": 37,
+      "max_lhs": 8,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 1253,
+      "wall_ns": 1209
+    }
+  },
+  {
+    "family": "branch",
+    "size": 1,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 6542,
+      "median": 6667,
+      "max": 7166
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2555904,
+      "median": 2555904,
+      "max": 2555904
+    },
+    "details": {
+      "atoms": 10,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 333,
+      "wall_ns": 7166
+    }
+  },
+  {
+    "family": "branch",
+    "size": 1,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 16250,
+      "median": 16625,
+      "max": 17167
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2539520,
+      "median": 2555904,
+      "max": 2572288
+    },
+    "details": {
+      "atoms": 10,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 333,
+      "wall_ns": 16625
+    }
+  },
+  {
+    "family": "branch",
+    "size": 1,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2416,
+      "median": 2458,
+      "max": 3917
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2506752,
+      "median": 2506752,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 10,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 333,
+      "wall_ns": 3917
+    }
+  },
+  {
+    "family": "branch",
+    "size": 1,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 125,
+      "median": 166,
+      "max": 209
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2490368,
+      "median": 2506752,
+      "max": 2506752
+    },
+    "details": {
+      "atoms": 10,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 333,
+      "wall_ns": 125
+    }
+  },
+  {
+    "family": "branch",
+    "size": 1,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 4000,
+      "median": 4375,
+      "max": 4958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2490368,
+      "median": 2506752,
+      "max": 2523136
+    },
+    "details": {
+      "atoms": 10,
+      "bindings": 1,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 333,
+      "wall_ns": 4083
+    }
+  },
+  {
+    "family": "branch",
+    "size": 1,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 12625,
+      "median": 13792,
+      "max": 14583
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2523136,
+      "median": 2539520,
+      "max": 2555904
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 10,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 333,
+      "wall_ns": 14583,
+      "work_units": 36
+    }
+  },
+  {
+    "family": "branch",
+    "size": 1,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 8875,
+      "median": 9667,
+      "max": 10708
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2523136,
+      "median": 2523136,
+      "max": 2555904
+    },
+    "details": {
+      "atoms": 10,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 333,
+      "wall_ns": 9292
+    }
+  },
+  {
+    "family": "branch",
+    "size": 1,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 541,
+      "median": 542,
+      "max": 750
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2523136,
+      "median": 2523136,
+      "max": 2539520
+    },
+    "details": {
+      "atoms": 10,
+      "commits": 1,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 1,
+      "size": 1,
+      "source_bytes": 333,
+      "wall_ns": 750
+    }
+  },
+  {
+    "family": "branch",
+    "size": 8,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 7584,
+      "median": 8083,
+      "max": 8667
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2686976,
+      "median": 2703360,
+      "max": 2719744
+    },
+    "details": {
+      "atoms": 17,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 557,
+      "wall_ns": 8667
+    }
+  },
+  {
+    "family": "branch",
+    "size": 8,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 20125,
+      "median": 20750,
+      "max": 22958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2703360,
+      "median": 2703360,
+      "max": 2719744
+    },
+    "details": {
+      "atoms": 17,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 557,
+      "wall_ns": 20750
+    }
+  },
+  {
+    "family": "branch",
+    "size": 8,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2375,
+      "median": 2375,
+      "max": 2708
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2637824,
+      "median": 2654208,
+      "max": 2654208
+    },
+    "details": {
+      "atoms": 17,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 557,
+      "wall_ns": 2375
+    }
+  },
+  {
+    "family": "branch",
+    "size": 8,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 333,
+      "median": 375,
+      "max": 375
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2637824,
+      "median": 2654208,
+      "max": 2654208
+    },
+    "details": {
+      "atoms": 17,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 557,
+      "wall_ns": 333
+    }
+  },
+  {
+    "family": "branch",
+    "size": 8,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 5209,
+      "median": 5958,
+      "max": 6959
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2637824,
+      "median": 2654208,
+      "max": 2670592
+    },
+    "details": {
+      "atoms": 17,
+      "bindings": 8,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 557,
+      "wall_ns": 6959
+    }
+  },
+  {
+    "family": "branch",
+    "size": 8,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 60583,
+      "median": 62666,
+      "max": 70083
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2719744,
+      "median": 2736128,
+      "max": 2752512
+    },
+    "details": {
+      "admitted": 8,
+      "atoms": 17,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 557,
+      "wall_ns": 70083,
+      "work_units": 204
+    }
+  },
+  {
+    "family": "branch",
+    "size": 8,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 7416,
+      "median": 8000,
+      "max": 8958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2670592,
+      "median": 2670592,
+      "max": 2686976
+    },
+    "details": {
+      "atoms": 17,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 557,
+      "wall_ns": 8000
+    }
+  },
+  {
+    "family": "branch",
+    "size": 8,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 625,
+      "median": 667,
+      "max": 792
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2670592,
+      "median": 2670592,
+      "max": 2686976
+    },
+    "details": {
+      "atoms": 17,
+      "commits": 1,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 557,
+      "wall_ns": 667
+    }
+  },
+  {
+    "family": "branch",
+    "size": 32,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 13500,
+      "median": 13625,
+      "max": 16542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3047424,
+      "median": 3063808,
+      "max": 3080192
+    },
+    "details": {
+      "atoms": 41,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 32,
+      "source_bytes": 1347,
+      "wall_ns": 13542
+    }
+  },
+  {
+    "family": "branch",
+    "size": 32,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 34417,
+      "median": 35334,
+      "max": 38166
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3080192,
+      "median": 3096576,
+      "max": 3112960
+    },
+    "details": {
+      "atoms": 41,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 32,
+      "source_bytes": 1347,
+      "wall_ns": 35334
+    }
+  },
+  {
+    "family": "branch",
+    "size": 32,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2708,
+      "median": 2709,
+      "max": 3250
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2949120,
+      "median": 2965504,
+      "max": 2981888
+    },
+    "details": {
+      "atoms": 41,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 32,
+      "source_bytes": 1347,
+      "wall_ns": 2750
+    }
+  },
+  {
+    "family": "branch",
+    "size": 32,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 833,
+      "median": 916,
+      "max": 917
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2949120,
+      "median": 2965504,
+      "max": 2981888
+    },
+    "details": {
+      "atoms": 41,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 32,
+      "source_bytes": 1347,
+      "wall_ns": 917
+    }
+  },
+  {
+    "family": "branch",
+    "size": 32,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 8208,
+      "median": 8541,
+      "max": 8917
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2965504,
+      "median": 2965504,
+      "max": 2981888
+    },
+    "details": {
+      "atoms": 41,
+      "bindings": 32,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 32,
+      "source_bytes": 1347,
+      "wall_ns": 8416
+    }
+  },
+  {
+    "family": "branch",
+    "size": 32,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 280042,
+      "median": 283459,
+      "max": 286416
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2998272,
+      "median": 3014656,
+      "max": 3031040
+    },
+    "details": {
+      "admitted": 32,
+      "atoms": 41,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 32,
+      "source_bytes": 1347,
+      "wall_ns": 283459,
+      "work_units": 1524
+    }
+  },
+  {
+    "family": "branch",
+    "size": 32,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 9084,
+      "median": 9250,
+      "max": 9417
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2949120,
+      "median": 2965504,
+      "max": 2981888
+    },
+    "details": {
+      "atoms": 41,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 32,
+      "source_bytes": 1347,
+      "wall_ns": 9417
+    }
+  },
+  {
+    "family": "branch",
+    "size": 32,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 833,
+      "median": 875,
+      "max": 1167
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2965504,
+      "median": 2965504,
+      "max": 2981888
+    },
+    "details": {
+      "atoms": 41,
+      "commits": 1,
+      "family": "branch",
+      "fields": 9,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 0,
+      "rules": 1,
+      "size": 32,
+      "source_bytes": 1347,
+      "wall_ns": 833
+    }
+  },
+  {
+    "family": "reject",
+    "size": 8,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 11375,
+      "median": 11875,
+      "max": 13417
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2686976,
+      "median": 2703360,
+      "max": 2719744
+    },
+    "details": {
+      "atoms": 24,
+      "family": "reject",
+      "fields": 23,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 961,
+      "wall_ns": 11875
+    }
+  },
+  {
+    "family": "reject",
+    "size": 8,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 28875,
+      "median": 29250,
+      "max": 31500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2703360,
+      "median": 2703360,
+      "max": 2719744
+    },
+    "details": {
+      "atoms": 24,
+      "family": "reject",
+      "fields": 23,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 961,
+      "wall_ns": 31500
+    }
+  },
+  {
+    "family": "reject",
+    "size": 8,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 3208,
+      "median": 3292,
+      "max": 4042
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2605056,
+      "median": 2621440,
+      "max": 2637824
+    },
+    "details": {
+      "atoms": 24,
+      "family": "reject",
+      "fields": 23,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 961,
+      "wall_ns": 3833
+    }
+  },
+  {
+    "family": "reject",
+    "size": 8,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 375,
+      "median": 416,
+      "max": 417
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2605056,
+      "median": 2621440,
+      "max": 2621440
+    },
+    "details": {
+      "atoms": 24,
+      "family": "reject",
+      "fields": 23,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 961,
+      "wall_ns": 375
+    }
+  },
+  {
+    "family": "reject",
+    "size": 8,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 6125,
+      "median": 6333,
+      "max": 7375
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2605056,
+      "median": 2621440,
+      "max": 2621440
+    },
+    "details": {
+      "atoms": 24,
+      "bindings": 8,
+      "family": "reject",
+      "fields": 23,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 961,
+      "wall_ns": 6500
+    }
+  },
+  {
+    "family": "reject",
+    "size": 8,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 48167,
+      "median": 50250,
+      "max": 51416
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2621440,
+      "median": 2637824,
+      "max": 2654208
+    },
+    "details": {
+      "admitted": 0,
+      "atoms": 24,
+      "family": "reject",
+      "fields": 23,
+      "max_lhs": 1,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 8,
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 961,
+      "wall_ns": 51083,
+      "work_units": 266
+    }
+  },
+  {
+    "family": "reject",
+    "size": 8,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Dangling"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 6125,
+      "median": 6875,
+      "max": 7375
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2621440,
+      "median": 2621440,
+      "max": 2637824
+    },
+    "details": {
+      "atoms": 24,
+      "family": "reject",
+      "fields": 23,
+      "max_lhs": 1,
+      "outcome": "Dangling",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 961,
+      "wall_ns": 7375
+    }
+  },
+  {
+    "family": "reject",
+    "size": 8,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2621440,
+      "median": 2637824,
+      "max": 2637824
+    },
+    "details": {
+      "atoms": 24,
+      "family": "reject",
+      "fields": 23,
+      "max_lhs": 1,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 1,
+      "size": 8,
+      "source_bytes": 961,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 10875,
+      "median": 11333,
+      "max": 11791
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2998272,
+      "median": 3014656,
+      "max": 3047424
+    },
+    "details": {
+      "atoms": 33,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 11125
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 34333,
+      "median": 37458,
+      "max": 41875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3063808,
+      "median": 3096576,
+      "max": 3112960
+    },
+    "details": {
+      "atoms": 33,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 36709
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 5000,
+      "median": 5042,
+      "max": 5875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2965504,
+      "median": 2981888,
+      "max": 3014656
+    },
+    "details": {
+      "atoms": 33,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 5000
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 542,
+      "median": 625,
+      "max": 1667
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2965504,
+      "median": 2981888,
+      "max": 3031040
+    },
+    "details": {
+      "atoms": 33,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 625
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14875,
+      "median": 16292,
+      "max": 17958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2949120,
+      "median": 2998272,
+      "max": 3014656
+    },
+    "details": {
+      "atoms": 33,
+      "bindings": 10,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 14875
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 158042,
+      "median": 159208,
+      "max": 164500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3031040,
+      "median": 3047424,
+      "max": 3063808
+    },
+    "details": {
+      "admitted": 10,
+      "atoms": 33,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 164500,
+      "work_units": 869
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14666,
+      "median": 15208,
+      "max": 18541
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2965504,
+      "median": 2998272,
+      "max": 3014656
+    },
+    "details": {
+      "atoms": 33,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 18541
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 875,
+      "median": 1083,
+      "max": 1292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2965504,
+      "median": 2981888,
+      "max": 3014656
+    },
+    "details": {
+      "atoms": 33,
+      "commits": 1,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 1,
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 1209
+    }
+  },
+  {
+    "family": "practical",
+    "size": 10,
+    "phase": "run",
+    "failures": [],
+    "outcomes": [
+      "NormalForm"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 931833,
+      "median": 1016709,
+      "max": 1080875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3194880,
+      "median": 3211264,
+      "max": 3227648
+    },
+    "details": {
+      "atoms": 33,
+      "commits": 10,
+      "family": "practical",
+      "fields": 37,
+      "max_lhs": 2,
+      "outcome": "NormalForm",
+      "phase": "run",
+      "rules": 1,
+      "size": 10,
+      "source_bytes": 1495,
+      "wall_ns": 931833
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 54958,
+      "median": 57209,
+      "max": 57709
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6766592,
+      "median": 6782976,
+      "max": 6782976
+    },
+    "details": {
+      "atoms": 213,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 56042
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 157208,
+      "median": 158208,
+      "max": 165709
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6897664,
+      "median": 6914048,
+      "max": 6930432
+    },
+    "details": {
+      "atoms": 213,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 163625
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 20833,
+      "median": 21833,
+      "max": 25292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6733824,
+      "median": 6733824,
+      "max": 6766592
+    },
+    "details": {
+      "atoms": 213,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 21833
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1959,
+      "median": 2292,
+      "max": 3000
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6717440,
+      "median": 6733824,
+      "max": 6766592
+    },
+    "details": {
+      "atoms": 213,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 2042
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 606084,
+      "median": 613250,
+      "max": 645458
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6766592,
+      "median": 6799360,
+      "max": 6832128
+    },
+    "details": {
+      "atoms": 213,
+      "bindings": 100,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 645458
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 6476292,
+      "median": 6648333,
+      "max": 6801375
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6848512,
+      "median": 6881280,
+      "max": 6897664
+    },
+    "details": {
+      "admitted": 100,
+      "atoms": 213,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 6476292,
+      "work_units": 62429
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 57542,
+      "median": 58333,
+      "max": 67459
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6766592,
+      "median": 6782976,
+      "max": 6799360
+    },
+    "details": {
+      "atoms": 213,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 67459
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 3292,
+      "median": 3875,
+      "max": 4000
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6782976,
+      "median": 6799360,
+      "max": 6832128
+    },
+    "details": {
+      "atoms": 213,
+      "commits": 1,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 1,
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 4000
+    }
+  },
+  {
+    "family": "practical",
+    "size": 100,
+    "phase": "run",
+    "failures": [],
+    "outcomes": [
+      "NormalForm"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 354371917,
+      "median": 355613542,
+      "max": 357964542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 7290880,
+      "median": 7356416,
+      "max": 7520256
+    },
+    "details": {
+      "atoms": 213,
+      "commits": 100,
+      "family": "practical",
+      "fields": 217,
+      "max_lhs": 2,
+      "outcome": "NormalForm",
+      "phase": "run",
+      "rules": 1,
+      "size": 100,
+      "source_bytes": 10900,
+      "wall_ns": 354638792
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 445875,
+      "median": 451041,
+      "max": 469625
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 49807360,
+      "median": 49840128,
+      "max": 50069504
+    },
+    "details": {
+      "atoms": 2013,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": 469625
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1438500,
+      "median": 1495791,
+      "max": 1671250
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 49905664,
+      "median": 49954816,
+      "max": 50003968
+    },
+    "details": {
+      "atoms": 2013,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": 1441417
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 191208,
+      "median": 204042,
+      "max": 211500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 49790976,
+      "median": 49790976,
+      "max": 49856512
+    },
+    "details": {
+      "atoms": 2013,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": 191208
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 12417,
+      "median": 12834,
+      "max": 14958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 49807360,
+      "median": 49823744,
+      "max": 49840128
+    },
+    "details": {
+      "atoms": 2013,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": 12750
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "ResourceExhaustion"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14787958,
+      "median": 15280167,
+      "max": 15509042
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 49840128,
+      "median": 49938432,
+      "max": 49954816
+    },
+    "details": {
+      "atoms": 2013,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "ResourceExhaustion",
+      "phase": "bindings",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": 15083750
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "ResourceExhaustion"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 103231750,
+      "median": 105019583,
+      "max": 109315875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 52166656,
+      "median": 52920320,
+      "max": 57327616
+    },
+    "details": {
+      "atoms": 2013,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "ResourceExhaustion",
+      "phase": "enabled",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": 109315875
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 49840128,
+      "median": 49889280,
+      "max": 50200576
+    },
+    "details": {
+      "atoms": 2013,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "Inapplicable",
+      "phase": "prepare",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 49807360,
+      "median": 49856512,
+      "max": 49856512
+    },
+    "details": {
+      "atoms": 2013,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "practical",
+    "size": 1000,
+    "phase": "run",
+    "failures": [],
+    "outcomes": [
+      "ResourceLimit"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 102562166,
+      "median": 103375833,
+      "max": 106075500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 53280768,
+      "median": 53362688,
+      "max": 54198272
+    },
+    "details": {
+      "atoms": 2013,
+      "commits": 0,
+      "family": "practical",
+      "fields": 2017,
+      "max_lhs": 2,
+      "outcome": "ResourceLimit",
+      "phase": "run",
+      "rules": 1,
+      "size": 1000,
+      "source_bytes": 108325,
+      "wall_ns": 103375833
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 18417,
+      "median": 21333,
+      "max": 23792
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3080192,
+      "median": 3080192,
+      "max": 3112960
+    },
+    "details": {
+      "atoms": 60,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": 18417
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 61833,
+      "median": 64125,
+      "max": 75166
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3194880,
+      "median": 3227648,
+      "max": 3260416
+    },
+    "details": {
+      "atoms": 60,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": 64125
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 12333,
+      "median": 12541,
+      "max": 13542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3047424,
+      "median": 3063808,
+      "max": 3096576
+    },
+    "details": {
+      "atoms": 60,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": 13208
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 542,
+      "median": 708,
+      "max": 1416
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2998272,
+      "median": 3063808,
+      "max": 3096576
+    },
+    "details": {
+      "atoms": 60,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": 708
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 23417,
+      "median": 24334,
+      "max": 28000
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3047424,
+      "median": 3063808,
+      "max": 3129344
+    },
+    "details": {
+      "atoms": 60,
+      "bindings": 2,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": 28000
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 75583,
+      "median": 78292,
+      "max": 86833
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3080192,
+      "median": 3129344,
+      "max": 3162112
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 60,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 1,
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": 78583,
+      "work_units": 520
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Dangling"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 19375,
+      "median": 20166,
+      "max": 22667
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3047424,
+      "median": 3063808,
+      "max": 3096576
+    },
+    "details": {
+      "atoms": 60,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "Dangling",
+      "phase": "prepare",
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": 22042
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Inapplicable"
+    ],
+    "wall_ns": null,
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3080192,
+      "median": 3096576,
+      "max": 3145728
+    },
+    "details": {
+      "atoms": 60,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "Inapplicable",
+      "phase": "commit",
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": null
+    }
+  },
+  {
+    "family": "guarded",
+    "size": 10,
+    "phase": "run",
+    "failures": [],
+    "outcomes": [
+      "NormalForm"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2294667,
+      "median": 2428917,
+      "max": 2560500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3424256,
+      "median": 3440640,
+      "max": 3457024
+    },
+    "details": {
+      "atoms": 60,
+      "commits": 11,
+      "family": "guarded",
+      "fields": 72,
+      "max_lhs": 6,
+      "outcome": "NormalForm",
+      "phase": "run",
+      "rules": 2,
+      "size": 10,
+      "source_bytes": 2441,
+      "wall_ns": 2354000
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 121041,
+      "median": 122375,
+      "max": 134208
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4341760,
+      "median": 4358144,
+      "max": 4374528
+    },
+    "details": {
+      "atoms": 563,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 121041
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 613209,
+      "median": 617834,
+      "max": 626375
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4784128,
+      "median": 4800512,
+      "max": 4849664
+    },
+    "details": {
+      "atoms": 563,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 617834
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 233833,
+      "median": 241708,
+      "max": 257125
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4014080,
+      "median": 4030464,
+      "max": 4046848
+    },
+    "details": {
+      "atoms": 563,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 252875
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2708,
+      "median": 2833,
+      "max": 3209
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4014080,
+      "median": 4046848,
+      "max": 4096000
+    },
+    "details": {
+      "atoms": 563,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 2708
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 277583,
+      "median": 290125,
+      "max": 296166
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4030464,
+      "median": 4046848,
+      "max": 4063232
+    },
+    "details": {
+      "atoms": 563,
+      "bindings": 1,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 290125
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 886292,
+      "median": 913584,
+      "max": 945291
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4128768,
+      "median": 4145152,
+      "max": 4210688
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 563,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 913584,
+      "work_units": 8454
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 546875,
+      "median": 549208,
+      "max": 560167
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4079616,
+      "median": 4145152,
+      "max": 4161536
+    },
+    "details": {
+      "atoms": 563,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 560167
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 7250,
+      "median": 8209,
+      "max": 8917
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4096000,
+      "median": 4112384,
+      "max": 4128768
+    },
+    "details": {
+      "atoms": 563,
+      "commits": 1,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 6,
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 8917
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 1,
+    "phase": "run",
+    "failures": [],
+    "outcomes": [
+      "NormalForm"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 3133542,
+      "median": 3194458,
+      "max": 3319041
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4358144,
+      "median": 4390912,
+      "max": 4423680
+    },
+    "details": {
+      "atoms": 563,
+      "commits": 3,
+      "family": "lambda",
+      "fields": 885,
+      "max_lhs": 15,
+      "outcome": "NormalForm",
+      "phase": "run",
+      "readback": "(λ.0)",
+      "rules": 11,
+      "size": 1,
+      "source_bytes": 23772,
+      "wall_ns": 3319041
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 118458,
+      "median": 120541,
+      "max": 131875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4308992,
+      "median": 4325376,
+      "max": 4358144
+    },
+    "details": {
+      "atoms": 567,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 131875
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 618042,
+      "median": 651958,
+      "max": 672458
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4800512,
+      "median": 4833280,
+      "max": 4833280
+    },
+    "details": {
+      "atoms": 567,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 672458
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 232250,
+      "median": 244625,
+      "max": 261958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4014080,
+      "median": 4014080,
+      "max": 4030464
+    },
+    "details": {
+      "atoms": 567,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 244625
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 3125,
+      "median": 3333,
+      "max": 3708
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3997696,
+      "median": 4030464,
+      "max": 4079616
+    },
+    "details": {
+      "atoms": 567,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 3125
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 285708,
+      "median": 301875,
+      "max": 330791
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4014080,
+      "median": 4030464,
+      "max": 4063232
+    },
+    "details": {
+      "atoms": 567,
+      "bindings": 1,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 285708
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 875125,
+      "median": 916875,
+      "max": 922542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4128768,
+      "median": 4177920,
+      "max": 4227072
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 567,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 875125,
+      "work_units": 8876
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 548958,
+      "median": 559666,
+      "max": 842667
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4079616,
+      "median": 4096000,
+      "max": 4145152
+    },
+    "details": {
+      "atoms": 567,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 559666
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 7834,
+      "median": 8542,
+      "max": 9875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4096000,
+      "median": 4112384,
+      "max": 4112384
+    },
+    "details": {
+      "atoms": 567,
+      "commits": 1,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 6,
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 9875
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 2,
+    "phase": "run",
+    "failures": [],
+    "outcomes": [
+      "NormalForm"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 7157792,
+      "median": 7248667,
+      "max": 7827583
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4440064,
+      "median": 4538368,
+      "max": 4554752
+    },
+    "details": {
+      "atoms": 567,
+      "commits": 7,
+      "family": "lambda",
+      "fields": 889,
+      "max_lhs": 15,
+      "outcome": "NormalForm",
+      "phase": "run",
+      "readback": "(λ.0)",
+      "rules": 11,
+      "size": 2,
+      "source_bytes": 23956,
+      "wall_ns": 7158958
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 123917,
+      "median": 129250,
+      "max": 137292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4325376,
+      "median": 4341760,
+      "max": 4358144
+    },
+    "details": {
+      "atoms": 571,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 129250
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 646208,
+      "median": 668792,
+      "max": 712834
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4767744,
+      "median": 4816896,
+      "max": 4882432
+    },
+    "details": {
+      "atoms": 571,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 712834
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 234333,
+      "median": 252625,
+      "max": 265917
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4014080,
+      "median": 4030464,
+      "max": 4046848
+    },
+    "details": {
+      "atoms": 571,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 265917
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2916,
+      "median": 3000,
+      "max": 3334
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4014080,
+      "median": 4014080,
+      "max": 4063232
+    },
+    "details": {
+      "atoms": 571,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 3334
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 288666,
+      "median": 297583,
+      "max": 312125
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3997696,
+      "median": 4030464,
+      "max": 4063232
+    },
+    "details": {
+      "atoms": 571,
+      "bindings": 1,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 297583
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 915625,
+      "median": 929459,
+      "max": 954875
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4128768,
+      "median": 4177920,
+      "max": 4227072
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 571,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 0,
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 934834,
+      "work_units": 9286
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 530916,
+      "median": 545458,
+      "max": 563125
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4030464,
+      "median": 4096000,
+      "max": 4194304
+    },
+    "details": {
+      "atoms": 571,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 530916
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 7542,
+      "median": 7916,
+      "max": 9792
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4096000,
+      "median": 4112384,
+      "max": 4145152
+    },
+    "details": {
+      "atoms": 571,
+      "commits": 1,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 6,
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 9792
+    }
+  },
+  {
+    "family": "lambda",
+    "size": 3,
+    "phase": "run",
+    "failures": [],
+    "outcomes": [
+      "StepLimit"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 22450208,
+      "median": 22601959,
+      "max": 22787292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4571136,
+      "median": 4636672,
+      "max": 4636672
+    },
+    "details": {
+      "atoms": 571,
+      "commits": 20,
+      "family": "lambda",
+      "fields": 893,
+      "max_lhs": 15,
+      "outcome": "StepLimit",
+      "phase": "run",
+      "readback": "((λ.(0 0)) (λ.(0 0)))",
+      "rules": 11,
+      "size": 3,
+      "source_bytes": 24140,
+      "wall_ns": 22450208
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "parse",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14000,
+      "median": 14125,
+      "max": 14625
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3112960,
+      "median": 3129344,
+      "max": 3178496
+    },
+    "details": {
+      "atoms": 58,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "Completed",
+      "phase": "parse",
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 14000
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "load",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 57542,
+      "median": 58292,
+      "max": 59083
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3227648,
+      "median": 3244032,
+      "max": 3260416
+    },
+    "details": {
+      "atoms": 58,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "Completed",
+      "phase": "load",
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 59083
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "validate_decode",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 14667,
+      "median": 15042,
+      "max": 18500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3063808,
+      "median": 3129344,
+      "max": 3162112
+    },
+    "details": {
+      "atoms": 58,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "Completed",
+      "phase": "validate_decode",
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 18500
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "scan",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 333,
+      "median": 334,
+      "max": 416
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3096576,
+      "median": 3112960,
+      "max": 3145728
+    },
+    "details": {
+      "atoms": 58,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "Completed",
+      "phase": "scan",
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 334
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "bindings",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 38958,
+      "median": 42084,
+      "max": 44833
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3129344,
+      "median": 3162112,
+      "max": 3162112
+    },
+    "details": {
+      "atoms": 58,
+      "bindings": 2,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "Completed",
+      "phase": "bindings",
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 42084
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "enabled",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 115708,
+      "median": 117709,
+      "max": 118917
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3162112,
+      "median": 3162112,
+      "max": 3211264
+    },
+    "details": {
+      "admitted": 1,
+      "atoms": 58,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "Completed",
+      "phase": "enabled",
+      "rejected": 1,
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 117709,
+      "work_units": 1627
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "prepare",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 45834,
+      "median": 46334,
+      "max": 47916
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3129344,
+      "median": 3162112,
+      "max": 3178496
+    },
+    "details": {
+      "atoms": 58,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "Completed",
+      "phase": "prepare",
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 47916
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "commit",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1292,
+      "median": 1333,
+      "max": 1500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3145728,
+      "median": 3178496,
+      "max": 3194880
+    },
+    "details": {
+      "atoms": 58,
+      "commits": 1,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "Completed",
+      "phase": "commit",
+      "produced": 5,
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 1500
+    }
+  },
+  {
+    "family": "reflective",
+    "size": 1,
+    "phase": "run",
+    "failures": [],
+    "outcomes": [
+      "StepLimit"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2013958,
+      "median": 2075625,
+      "max": 2236250
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3522560,
+      "median": 3571712,
+      "max": 3571712
+    },
+    "details": {
+      "atoms": 58,
+      "commits": 20,
+      "family": "reflective",
+      "fields": 79,
+      "max_lhs": 7,
+      "outcome": "StepLimit",
+      "phase": "run",
+      "rules": 2,
+      "size": 1,
+      "source_bytes": 1949,
+      "wall_ns": 2236250
+    }
+  },
+  {
+    "family": "trace",
+    "size": 8,
+    "phase": "order",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 7792,
+      "median": 8625,
+      "max": 9125
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3276800,
+      "median": 3276800,
+      "max": 3293184
+    },
+    "details": {
+      "atoms": 36,
+      "edges": 7,
+      "events": 8,
+      "family": "trace",
+      "fields": 46,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "order",
+      "recording_units": 530,
+      "rules": 2,
+      "size": 8,
+      "source_bytes": 1359,
+      "wall_ns": 8625
+    }
+  },
+  {
+    "family": "trace",
+    "size": 8,
+    "phase": "closure",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2583,
+      "median": 2708,
+      "max": 3417
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3276800,
+      "median": 3276800,
+      "max": 3309568
+    },
+    "details": {
+      "atoms": 36,
+      "events": 8,
+      "family": "trace",
+      "fields": 46,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "pairs": 28,
+      "phase": "closure",
+      "recording_units": 530,
+      "rules": 2,
+      "size": 8,
+      "source_bytes": 1359,
+      "wall_ns": 2791
+    }
+  },
+  {
+    "family": "trace",
+    "size": 8,
+    "phase": "publish-1",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 2512292,
+      "median": 2572459,
+      "max": 2744625
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4898816,
+      "median": 4931584,
+      "max": 4980736
+    },
+    "details": {
+      "atoms": 36,
+      "events": 8,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 94613,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-1",
+      "recording_units": 530,
+      "rules": 2,
+      "size": 8,
+      "source_bytes": 1359,
+      "wall_ns": 2744625
+    }
+  },
+  {
+    "family": "trace",
+    "size": 8,
+    "phase": "publish-8",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1767167,
+      "median": 1770208,
+      "max": 1860708
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4096000,
+      "median": 4112384,
+      "max": 4161536
+    },
+    "details": {
+      "atoms": 36,
+      "events": 8,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 36336,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-8",
+      "recording_units": 530,
+      "rules": 2,
+      "size": 8,
+      "source_bytes": 1359,
+      "wall_ns": 1770208
+    }
+  },
+  {
+    "family": "trace",
+    "size": 8,
+    "phase": "publish-32",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1719708,
+      "median": 1763917,
+      "max": 1810250
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4063232,
+      "median": 4063232,
+      "max": 4194304
+    },
+    "details": {
+      "atoms": 36,
+      "events": 8,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 36337,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-32",
+      "recording_units": 530,
+      "rules": 2,
+      "size": 8,
+      "source_bytes": 1359,
+      "wall_ns": 1728917
+    }
+  },
+  {
+    "family": "trace",
+    "size": 8,
+    "phase": "replay-1",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1666,
+      "median": 1667,
+      "max": 1917
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5046272,
+      "median": 5128192,
+      "max": 5210112
+    },
+    "details": {
+      "atoms": 36,
+      "events": 8,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 7,
+      "json_bytes": 94613,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-1",
+      "recording_units": 530,
+      "rules": 2,
+      "size": 8,
+      "source_bytes": 1359,
+      "wall_ns": 1667
+    }
+  },
+  {
+    "family": "trace",
+    "size": 8,
+    "phase": "replay-8",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 156208,
+      "median": 164833,
+      "max": 186500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4128768,
+      "median": 4177920,
+      "max": 4210688
+    },
+    "details": {
+      "atoms": 36,
+      "events": 8,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 7,
+      "json_bytes": 36336,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-8",
+      "recording_units": 530,
+      "rules": 2,
+      "size": 8,
+      "source_bytes": 1359,
+      "wall_ns": 165625
+    }
+  },
+  {
+    "family": "trace",
+    "size": 8,
+    "phase": "replay-32",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 154584,
+      "median": 159500,
+      "max": 166709
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4177920,
+      "median": 4243456,
+      "max": 4292608
+    },
+    "details": {
+      "atoms": 36,
+      "events": 8,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 7,
+      "json_bytes": 36337,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-32",
+      "recording_units": 530,
+      "rules": 2,
+      "size": 8,
+      "source_bytes": 1359,
+      "wall_ns": 166709
+    }
+  },
+  {
+    "family": "trace",
+    "size": 32,
+    "phase": "order",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 25708,
+      "median": 26542,
+      "max": 32792
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3309568,
+      "median": 3358720,
+      "max": 3407872
+    },
+    "details": {
+      "atoms": 36,
+      "edges": 31,
+      "events": 32,
+      "family": "trace",
+      "fields": 46,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "order",
+      "recording_units": 1646,
+      "rules": 2,
+      "size": 32,
+      "source_bytes": 1359,
+      "wall_ns": 26542
+    }
+  },
+  {
+    "family": "trace",
+    "size": 32,
+    "phase": "closure",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 37958,
+      "median": 38958,
+      "max": 44958
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3342336,
+      "median": 3375104,
+      "max": 3407872
+    },
+    "details": {
+      "atoms": 36,
+      "events": 32,
+      "family": "trace",
+      "fields": 46,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "pairs": 496,
+      "phase": "closure",
+      "recording_units": 1646,
+      "rules": 2,
+      "size": 32,
+      "source_bytes": 1359,
+      "wall_ns": 38125
+    }
+  },
+  {
+    "family": "trace",
+    "size": 32,
+    "phase": "publish-1",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 8674833,
+      "median": 8700250,
+      "max": 9172208
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 9109504,
+      "median": 9142272,
+      "max": 9175040
+    },
+    "details": {
+      "atoms": 36,
+      "events": 32,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 329191,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-1",
+      "recording_units": 1646,
+      "rules": 2,
+      "size": 32,
+      "source_bytes": 1359,
+      "wall_ns": 8691375
+    }
+  },
+  {
+    "family": "trace",
+    "size": 32,
+    "phase": "publish-8",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 5557083,
+      "median": 5589375,
+      "max": 5651125
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5046272,
+      "median": 5095424,
+      "max": 5111808
+    },
+    "details": {
+      "atoms": 36,
+      "events": 32,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 96063,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-8",
+      "recording_units": 1646,
+      "rules": 2,
+      "size": 32,
+      "source_bytes": 1359,
+      "wall_ns": 5583084
+    }
+  },
+  {
+    "family": "trace",
+    "size": 32,
+    "phase": "publish-32",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 5150666,
+      "median": 5189250,
+      "max": 5337500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4685824,
+      "median": 4734976,
+      "max": 4751360
+    },
+    "details": {
+      "atoms": 36,
+      "events": 32,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 71081,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-32",
+      "recording_units": 1646,
+      "rules": 2,
+      "size": 32,
+      "source_bytes": 1359,
+      "wall_ns": 5234667
+    }
+  },
+  {
+    "family": "trace",
+    "size": 32,
+    "phase": "replay-1",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1875,
+      "median": 2000,
+      "max": 2542
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 9682944,
+      "median": 9715712,
+      "max": 9830400
+    },
+    "details": {
+      "atoms": 36,
+      "events": 32,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 31,
+      "json_bytes": 329191,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-1",
+      "recording_units": 1646,
+      "rules": 2,
+      "size": 32,
+      "source_bytes": 1359,
+      "wall_ns": 2542
+    }
+  },
+  {
+    "family": "trace",
+    "size": 32,
+    "phase": "replay-8",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 159375,
+      "median": 166333,
+      "max": 172750
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5160960,
+      "median": 5226496,
+      "max": 5373952
+    },
+    "details": {
+      "atoms": 36,
+      "events": 32,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 31,
+      "json_bytes": 96063,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-8",
+      "recording_units": 1646,
+      "rules": 2,
+      "size": 32,
+      "source_bytes": 1359,
+      "wall_ns": 163625
+    }
+  },
+  {
+    "family": "trace",
+    "size": 32,
+    "phase": "replay-32",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 719125,
+      "median": 724042,
+      "max": 754166
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4784128,
+      "median": 4816896,
+      "max": 4849664
+    },
+    "details": {
+      "atoms": 36,
+      "events": 32,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 31,
+      "json_bytes": 71081,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-32",
+      "recording_units": 1646,
+      "rules": 2,
+      "size": 32,
+      "source_bytes": 1359,
+      "wall_ns": 722500
+    }
+  },
+  {
+    "family": "trace",
+    "size": 64,
+    "phase": "order",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 51916,
+      "median": 54791,
+      "max": 60834
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3473408,
+      "median": 3473408,
+      "max": 3506176
+    },
+    "details": {
+      "atoms": 36,
+      "edges": 63,
+      "events": 64,
+      "family": "trace",
+      "fields": 46,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "order",
+      "recording_units": 3134,
+      "rules": 2,
+      "size": 64,
+      "source_bytes": 1359,
+      "wall_ns": 60834
+    }
+  },
+  {
+    "family": "trace",
+    "size": 64,
+    "phase": "closure",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 159916,
+      "median": 167167,
+      "max": 188292
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3506176,
+      "median": 3522560,
+      "max": 3538944
+    },
+    "details": {
+      "atoms": 36,
+      "events": 64,
+      "family": "trace",
+      "fields": 46,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "pairs": 2016,
+      "phase": "closure",
+      "recording_units": 3134,
+      "rules": 2,
+      "size": 64,
+      "source_bytes": 1359,
+      "wall_ns": 163416
+    }
+  },
+  {
+    "family": "trace",
+    "size": 64,
+    "phase": "publish-1",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 17609542,
+      "median": 17676542,
+      "max": 17910334
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 16236544,
+      "median": 16285696,
+      "max": 16334848
+    },
+    "details": {
+      "atoms": 36,
+      "events": 64,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 641976,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-1",
+      "recording_units": 3134,
+      "rules": 2,
+      "size": 64,
+      "source_bytes": 1359,
+      "wall_ns": 17611417
+    }
+  },
+  {
+    "family": "trace",
+    "size": 64,
+    "phase": "publish-8",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 10465459,
+      "median": 10703208,
+      "max": 10812708
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6668288,
+      "median": 6717440,
+      "max": 6733824
+    },
+    "details": {
+      "atoms": 36,
+      "events": 64,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 175712,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-8",
+      "recording_units": 3134,
+      "rules": 2,
+      "size": 64,
+      "source_bytes": 1359,
+      "wall_ns": 10703208
+    }
+  },
+  {
+    "family": "trace",
+    "size": 64,
+    "phase": "publish-32",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 9671416,
+      "median": 9935625,
+      "max": 10013584
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5554176,
+      "median": 5570560,
+      "max": 5718016
+    },
+    "details": {
+      "atoms": 36,
+      "events": 64,
+      "family": "trace",
+      "fields": 46,
+      "json_bytes": 125746,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "publish-32",
+      "recording_units": 3134,
+      "rules": 2,
+      "size": 64,
+      "source_bytes": 1359,
+      "wall_ns": 9671416
+    }
+  },
+  {
+    "family": "trace",
+    "size": 64,
+    "phase": "replay-1",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 1666,
+      "median": 1750,
+      "max": 2042
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 17301504,
+      "median": 17317888,
+      "max": 17350656
+    },
+    "details": {
+      "atoms": 36,
+      "events": 64,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 63,
+      "json_bytes": 641976,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-1",
+      "recording_units": 3134,
+      "rules": 2,
+      "size": 64,
+      "source_bytes": 1359,
+      "wall_ns": 2042
+    }
+  },
+  {
+    "family": "trace",
+    "size": 64,
+    "phase": "replay-8",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 160833,
+      "median": 172417,
+      "max": 178167
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6832128,
+      "median": 6864896,
+      "max": 6930432
+    },
+    "details": {
+      "atoms": 36,
+      "events": 64,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 63,
+      "json_bytes": 175712,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-8",
+      "recording_units": 3134,
+      "rules": 2,
+      "size": 64,
+      "source_bytes": 1359,
+      "wall_ns": 178167
+    }
+  },
+  {
+    "family": "trace",
+    "size": 64,
+    "phase": "replay-32",
+    "failures": [],
+    "outcomes": [
+      "Completed"
+    ],
+    "wall_ns": {
+      "n": 5,
+      "min": 730750,
+      "median": 740834,
+      "max": 803500
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5603328,
+      "median": 5652480,
+      "max": 5701632
+    },
+    "details": {
+      "atoms": 36,
+      "events": 64,
+      "family": "trace",
+      "fields": 46,
+      "inspected_state": 63,
+      "json_bytes": 125746,
+      "max_lhs": 3,
+      "outcome": "Completed",
+      "phase": "replay-32",
+      "recording_units": 3134,
+      "rules": 2,
+      "size": 64,
+      "source_bytes": 1359,
+      "wall_ns": 732833
+    }
+  }
+]

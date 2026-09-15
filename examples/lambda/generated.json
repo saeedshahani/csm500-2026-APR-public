@@ -1,0 +1,295 @@
+{
+  "algorithm": "proptest 1.6.0 ChaCha",
+  "cases": [
+    {
+      "administrative_steps": 4,
+      "alpha_renamed": "(((\\a. (\\b. a)) (\\a. (a a))) ((\\a. (a a)) (\\a. (a a))))",
+      "beta_steps": 2,
+      "graph_steps": 6,
+      "source": "(((\\x. (\\y. x)) (\\x. (x x))) ((\\x. (x x)) (\\x. (x x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 4,
+      "alpha_renamed": "(((\\a. (\\b. a)) (\\a. (\\b. a))) ((\\a. (a a)) ((\\a. (a a)) (\\a. (a a)))))",
+      "beta_steps": 2,
+      "graph_steps": 6,
+      "source": "(((\\x. (\\y. x)) (\\x. (\\y. x))) ((\\x. (x x)) ((\\x. (x x)) (\\x. (x x)))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 7,
+      "alpha_renamed": "(((\\a. (a a)) (\\a. (\\b. a))) ((\\a. (a a)) (\\a. (\\b. a))))",
+      "beta_steps": 3,
+      "graph_steps": 10,
+      "source": "(((\\x. (x x)) (\\x. (\\y. x))) ((\\x. (x x)) (\\x. (\\y. x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 7,
+      "alpha_renamed": "(((\\a. (a a)) ((\\a. (\\b. a)) (\\a. (\\b. a)))) ((\\a. a) (\\a. (\\b. a))))",
+      "beta_steps": 4,
+      "graph_steps": 11,
+      "source": "(((\\x. (x x)) ((\\x. (\\y. x)) (\\x. (\\y. x)))) ((\\x. x) (\\x. (\\y. x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 7,
+      "alpha_renamed": "(((\\a. (\\b. a)) ((\\a. (a a)) (\\a. (\\b. a)))) (((\\a. (\\b. a)) (\\a. (\\b. a))) (\\a. (a a))))",
+      "beta_steps": 4,
+      "graph_steps": 11,
+      "source": "(((\\x. (\\y. x)) ((\\x. (x x)) (\\x. (\\y. x)))) (((\\x. (\\y. x)) (\\x. (\\y. x))) (\\x. (x x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 19,
+      "alpha_renamed": "(((\\a. (a a)) (\\a. (a a))) ((\\a. a) (\\a. a)))",
+      "beta_steps": 5,
+      "graph_steps": 24,
+      "source": "(((\\x. (x x)) (\\x. (x x))) ((\\x. x) (\\x. x)))",
+      "terminal": false
+    },
+    {
+      "administrative_steps": 17,
+      "alpha_renamed": "(((\\a. a) (\\a. (a a))) ((\\a. (a a)) (\\a. a)))",
+      "beta_steps": 7,
+      "graph_steps": 24,
+      "source": "(((\\x. x) (\\x. (x x))) ((\\x. (x x)) (\\x. x)))",
+      "terminal": false
+    },
+    {
+      "administrative_steps": 1,
+      "alpha_renamed": "((\\a. (\\b. a)) ((\\a. (a a)) ((\\a. (a a)) (\\a. (\\b. a)))))",
+      "beta_steps": 1,
+      "graph_steps": 2,
+      "source": "((\\x. (\\y. x)) ((\\x. (x x)) ((\\x. (x x)) (\\x. (\\y. x)))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 9,
+      "alpha_renamed": "(((\\a. a) (\\a. a)) ((\\a. (a a)) (\\a. a)))",
+      "beta_steps": 4,
+      "graph_steps": 13,
+      "source": "(((\\x. x) (\\x. x)) ((\\x. (x x)) (\\x. x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 17,
+      "alpha_renamed": "(((\\a. a) (\\a. (a a))) ((\\a. a) (\\a. (a a))))",
+      "beta_steps": 7,
+      "graph_steps": 24,
+      "source": "(((\\x. x) (\\x. (x x))) ((\\x. x) (\\x. (x x))))",
+      "terminal": false
+    },
+    {
+      "administrative_steps": 3,
+      "alpha_renamed": "(((\\a. a) (\\a. (\\b. a))) ((\\a. (\\b. a)) (\\a. a)))",
+      "beta_steps": 2,
+      "graph_steps": 5,
+      "source": "(((\\x. x) (\\x. (\\y. x))) ((\\x. (\\y. x)) (\\x. x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 3,
+      "alpha_renamed": "(((\\a. a) (\\a. (\\b. a))) ((\\a. (\\b. a)) (\\a. a)))",
+      "beta_steps": 2,
+      "graph_steps": 5,
+      "source": "(((\\x. x) (\\x. (\\y. x))) ((\\x. (\\y. x)) (\\x. x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 4,
+      "alpha_renamed": "(((\\a. (\\b. a)) (\\a. a)) ((\\a. (\\b. a)) (\\a. (a a))))",
+      "beta_steps": 2,
+      "graph_steps": 6,
+      "source": "(((\\x. (\\y. x)) (\\x. x)) ((\\x. (\\y. x)) (\\x. (x x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 7,
+      "alpha_renamed": "((\\a. (a a)) (((\\a. (\\b. a)) (\\a. (\\b. a))) (\\a. (\\b. a))))",
+      "beta_steps": 4,
+      "graph_steps": 11,
+      "source": "((\\x. (x x)) (((\\x. (\\y. x)) (\\x. (\\y. x))) (\\x. (\\y. x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 6,
+      "alpha_renamed": "((((\\a. (\\b. a)) (\\a. a)) (\\a. (a a))) (\\a. (a a)))",
+      "beta_steps": 3,
+      "graph_steps": 9,
+      "source": "((((\\x. (\\y. x)) (\\x. x)) (\\x. (x x))) (\\x. (x x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 1,
+      "alpha_renamed": "((\\a. (\\b. a)) (\\a. a))",
+      "beta_steps": 1,
+      "graph_steps": 2,
+      "source": "((\\x. (\\y. x)) (\\x. x))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 17,
+      "alpha_renamed": "((\\a. (a a)) ((\\a. a) (\\a. (a a))))",
+      "beta_steps": 7,
+      "graph_steps": 24,
+      "source": "((\\x. (x x)) ((\\x. x) (\\x. (x x))))",
+      "terminal": false
+    },
+    {
+      "administrative_steps": 4,
+      "alpha_renamed": "(((\\a. (\\b. a)) (\\a. (a a))) ((\\a. a) (\\a. (a a))))",
+      "beta_steps": 2,
+      "graph_steps": 6,
+      "source": "(((\\x. (\\y. x)) (\\x. (x x))) ((\\x. x) (\\x. (x x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 1,
+      "alpha_renamed": "((\\a. (\\b. a)) ((\\a. (a a)) (\\a. (\\b. a))))",
+      "beta_steps": 1,
+      "graph_steps": 2,
+      "source": "((\\x. (\\y. x)) ((\\x. (x x)) (\\x. (\\y. x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 5,
+      "alpha_renamed": "(((\\a. a) ((\\a. a) (\\a. (\\b. a)))) (((\\a. (\\b. a)) (\\a. (a a))) (\\a. a)))",
+      "beta_steps": 3,
+      "graph_steps": 8,
+      "source": "(((\\x. x) ((\\x. x) (\\x. (\\y. x)))) (((\\x. (\\y. x)) (\\x. (x x))) (\\x. x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 4,
+      "alpha_renamed": "(((\\a. (\\b. a)) (\\a. (\\b. a))) (\\a. (a a)))",
+      "beta_steps": 2,
+      "graph_steps": 6,
+      "source": "(((\\x. (\\y. x)) (\\x. (\\y. x))) (\\x. (x x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 3,
+      "alpha_renamed": "(((\\a. a) (\\a. (\\b. a))) ((\\a. a) (\\a. (a a))))",
+      "beta_steps": 2,
+      "graph_steps": 5,
+      "source": "(((\\x. x) (\\x. (\\y. x))) ((\\x. x) (\\x. (x x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 6,
+      "alpha_renamed": "(((\\a. a) (\\a. a)) ((\\a. a) (\\a. (\\b. a))))",
+      "beta_steps": 3,
+      "graph_steps": 9,
+      "source": "(((\\x. x) (\\x. x)) ((\\x. x) (\\x. (\\y. x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 18,
+      "alpha_renamed": "((\\a. a) ((\\a. (a a)) (\\a. (a a))))",
+      "beta_steps": 6,
+      "graph_steps": 24,
+      "source": "((\\x. x) ((\\x. (x x)) (\\x. (x x))))",
+      "terminal": false
+    },
+    {
+      "administrative_steps": 3,
+      "alpha_renamed": "((\\a. (a a)) (\\a. (\\b. a)))",
+      "beta_steps": 2,
+      "graph_steps": 5,
+      "source": "((\\x. (x x)) (\\x. (\\y. x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 4,
+      "alpha_renamed": "(((\\a. (\\b. a)) (\\a. (a a))) ((\\a. (a a)) (\\a. (\\b. a))))",
+      "beta_steps": 2,
+      "graph_steps": 6,
+      "source": "(((\\x. (\\y. x)) (\\x. (x x))) ((\\x. (x x)) (\\x. (\\y. x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 7,
+      "alpha_renamed": "((\\a. (a a)) (((\\a. (\\b. a)) (\\a. (\\b. a))) (\\a. (a a))))",
+      "beta_steps": 4,
+      "graph_steps": 11,
+      "source": "((\\x. (x x)) (((\\x. (\\y. x)) (\\x. (\\y. x))) (\\x. (x x))))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 3,
+      "alpha_renamed": "(((\\a. a) (\\a. (\\b. a))) (\\a. (\\b. a)))",
+      "beta_steps": 2,
+      "graph_steps": 5,
+      "source": "(((\\x. x) (\\x. (\\y. x))) (\\x. (\\y. x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 1,
+      "alpha_renamed": "((\\a. (\\b. a)) ((\\a. (a a)) (\\a. a)))",
+      "beta_steps": 1,
+      "graph_steps": 2,
+      "source": "((\\x. (\\y. x)) ((\\x. (x x)) (\\x. x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 16,
+      "alpha_renamed": "(((\\a. (a a)) ((\\a. a) (\\a. a))) ((\\a. (a a)) (\\a. a)))",
+      "beta_steps": 7,
+      "graph_steps": 23,
+      "source": "(((\\x. (x x)) ((\\x. x) (\\x. x))) ((\\x. (x x)) (\\x. x)))",
+      "terminal": true
+    },
+    {
+      "administrative_steps": 17,
+      "alpha_renamed": "((((\\a. (\\b. a)) (\\a. (a a))) (\\a. (\\b. a))) ((\\a. (a a)) (\\a. a)))",
+      "beta_steps": 7,
+      "graph_steps": 24,
+      "source": "((((\\x. (\\y. x)) (\\x. (x x))) (\\x. (\\y. x))) ((\\x. (x x)) (\\x. x)))",
+      "terminal": false
+    },
+    {
+      "administrative_steps": 6,
+      "alpha_renamed": "(((\\a. (\\b. a)) ((\\a. a) (\\a. a))) ((\\a. (\\b. a)) (\\a. (\\b. a))))",
+      "beta_steps": 3,
+      "graph_steps": 9,
+      "source": "(((\\x. (\\y. x)) ((\\x. x) (\\x. x))) ((\\x. (\\y. x)) (\\x. (\\y. x))))",
+      "terminal": true
+    }
+  ],
+  "seed_bytes": [
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53,
+    53
+  ]
+}

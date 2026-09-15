@@ -3,6 +3,17 @@ import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 const root=path.resolve('..');
+test('lambda source prepares one graph and historical interpretation follows recorded steps',async({page})=>{
+ await page.goto('/');await expect(page.getByTestId('status')).toHaveText('No program loaded');
+ await page.getByText('Lambda program',{exact:true}).click();await page.getByLabel('Lambda source',{exact:true}).fill('((\\x. x) (\\y. y))');
+ await page.getByRole('button',{name:'Prepare lambda graph'}).click();await expect(page.getByRole('textbox',{name:'Program source'})).toContainText('lc.Machine');
+ await page.getByRole('button',{name:'Load program',exact:true}).click();await expect(page.getByTestId('lambda-term')).toHaveText('((λ.0) (λ.0))');
+ await page.getByRole('button',{name:'Run',exact:true}).click();await expect(page.getByTestId('status')).toHaveText('NormalForm');await expect(page.getByTestId('lambda-term')).toHaveText('(λ.0)');
+ await page.getByRole('button',{name:'First',exact:true}).click();await expect(page.getByTestId('lambda-term')).toHaveText('((λ.0) (λ.0))');
+ await page.getByRole('button',{name:'Next',exact:true}).click();await expect(page.getByTestId('lambda-term')).toHaveText('((λ.0) (λ.0))');
+ await page.getByRole('button',{name:'Next',exact:true}).click();await expect(page.getByTestId('lambda-term')).toHaveText('(λ.0)');
+ await page.getByLabel('Lambda source',{exact:true}).fill('(\\x. free)');await page.getByRole('button',{name:'Prepare lambda graph'}).click();await expect(page.getByRole('alert').first()).toContainText('free variable');await expect(page.getByTestId('lambda-term')).toHaveText('(λ.0)');
+});
 test('reflective changes preserve historical rule inspection and graph controls',async({page})=>{
   await page.goto('/');await expect(page.getByTestId('status')).toHaveText('No program loaded');await page.getByLabel('Example',{exact:true}).selectOption({label:'programs/self-modify'});await page.getByRole('button',{name:'Load program',exact:true}).click();await expect(page.getByTestId('status')).toHaveText('Ready');await page.getByRole('button',{name:'Internal',exact:true}).click();await expect(page.locator('svg .quoted').first()).toBeVisible();
   await page.getByLabel('Select atom',{exact:true}).selectOption('0');await page.getByRole('button',{name:'Focus selected'}).click();await page.getByRole('button',{name:'Expand neighbourhood'}).click();await page.getByRole('button',{name:'Zoom in'}).click();await page.getByRole('button',{name:'Fit',exact:true}).click();await page.getByLabel('Pin layout').check();

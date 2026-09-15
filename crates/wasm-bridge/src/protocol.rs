@@ -37,6 +37,10 @@ impl Default for Config {
 #[derive(Debug, Deserialize)]
 #[serde(tag = "command", rename_all = "snake_case", deny_unknown_fields)]
 enum Command {
+    LambdaCompile {
+        source: String,
+        max_work: Option<Number>,
+    },
     Load {
         source: String,
         #[serde(default)]
@@ -123,6 +127,7 @@ pub struct RuleData {
 }
 #[derive(Clone, Debug, Serialize)]
 pub struct State {
+    pub lambda: Option<LambdaReadback>,
     pub graph: GraphData,
     pub rules: Vec<RuleData>,
     pub quoted: BTreeMap<AtomId, AtomId>,
@@ -139,6 +144,11 @@ pub struct State {
     pub names: BTreeMap<AtomId, String>,
     pub observer: String,
     pub settings: Settings,
+}
+#[derive(Clone, Debug, Serialize)]
+pub struct LambdaReadback {
+    pub term: Option<String>,
+    pub error: Option<String>,
 }
 #[derive(Clone, Debug, Serialize)]
 pub struct DatasetPreview {
@@ -161,6 +171,7 @@ pub struct Analysis {
 }
 #[derive(Clone, Debug, Serialize)]
 pub struct Reply {
+    pub compiled: Option<String>,
     pub ok: bool,
     pub error: Option<BridgeError>,
     pub state: Option<State>,
@@ -172,6 +183,7 @@ pub struct Reply {
 impl Reply {
     fn empty() -> Self {
         Self {
+            compiled: None,
             ok: true,
             error: None,
             state: None,
@@ -263,6 +275,17 @@ impl Session {
             })
             .collect();
         let state = State {
+            lambda: match parser::lambda::interpret(&graph, Default::default()) {
+                Ok(Some(term)) => Some(LambdaReadback {
+                    term: Some(term),
+                    error: None,
+                }),
+                Ok(None) => None,
+                Err(e) => Some(LambdaReadback {
+                    term: None,
+                    error: Some(e.to_string()),
+                }),
+            },
             graph: GraphData::from_graph(&graph),
             rules,
             quoted: view
@@ -295,6 +318,7 @@ impl Session {
         let trace = String::from_utf8(doc.to_json(TraceLimits::default().max_bytes)?)
             .map_err(|_| error("internal UTF-8 failure"))?;
         let reply = Reply {
+            compiled: None,
             ok: true,
             error: None,
             state: Some(state),
@@ -335,6 +359,7 @@ impl Workbench {
             self.execute(command)
         })();
         result.unwrap_or_else(|error| Reply {
+            compiled: None,
             ok: false,
             error: Some(error),
             state: None,
@@ -351,6 +376,29 @@ impl Workbench {
     }
     fn execute(&mut self, command: Command) -> Result<Reply> {
         match command {
+            Command::LambdaCompile { source, max_work } => {
+                let mut limits = parser::lambda::Limits::default();
+                if let Some(work) = max_work {
+                    limits.max_work = limits.max_work.min(work.size()?);
+                }
+                let translated = parser::lambda::parse(&source, limits)
+                    .and_then(|term| parser::lambda::encode(&term, limits))
+                    .map_err(|e| {
+                        if matches!(e, parser::lambda::Error::ResourceLimit)
+                            || matches!(&e, parser::lambda::Error::Core(d) if d.kind() == ErrorKind::ResourceExhaustion) {
+                            resource(&e.to_string())
+                        } else {
+                            error(&e.to_string())
+                        }
+                    })?;
+                let mut reply = Reply::empty();
+                reply.compiled = Some(format!(
+                    "// Lambda source: {}\n{}",
+                    source.trim().replace(['\n', '\r'], " "),
+                    parser::print(&translated.graph)?
+                ));
+                Ok(reply)
+            }
             Command::Dataset { data } => {
                 if data.len() > 1024 * 1024 {
                     return Err(resource("dataset input limit: 1 MiB"));

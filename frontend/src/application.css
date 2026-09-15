@@ -9,4 +9,5 @@
 .rules-view dl{display:block;margin:12px 0}.rules-view dl>div{gap:12px;margin:8px 0}.rules-view dd{min-width:0}.rules-view .text-button{max-width:100%;overflow-wrap:anywhere;text-align:left}
 /* Theme changes apply foreground and background together. */
 button{transition:border-color .15s}
+.lambda-input,.lambda-result{padding:16px;border-bottom:1px solid var(--border);overflow-wrap:anywhere}.lambda-input label{display:block;margin:12px 0}.lambda-input textarea{display:block;width:100%;min-height:90px;font-family:monospace}.lambda-result pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px}.lambda-input p,.lambda-result p{font-size:13px;line-height:1.6}
 @media print{.app-header,.workbench-content,.reader-guide button{display:none!important}.reader-guide{display:block!important;color:#111;background:white;max-width:none;padding:0}.reader-guide a{color:#111}.reader-guide table{break-inside:avoid}body{background:white!important;color:#111!important}}
