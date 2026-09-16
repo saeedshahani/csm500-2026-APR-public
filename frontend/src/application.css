@@ -16,3 +16,4 @@ button{transition:border-color .15s}
 .source-related{text-decoration:underline dotted var(--muted);text-underline-offset:3px}
 .source-diagnostics{max-height:18rem;overflow:auto;font-size:12px;overflow-wrap:anywhere}
 .source-diagnostics li{margin:8px 0}
+.breakpoint-choice { display: inline-flex; align-items: center; gap: .4rem; margin: .3rem 1rem .3rem 0; }

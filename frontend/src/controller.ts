@@ -17,6 +17,8 @@ export class EngineClient {
   private failed=false;
   private recovery:string|null=null;
   private recoveryPosition:string|null=null;
+  private breakpoints:string[]=[];
+  private breakpoint:import('./types.ts').EventRecord['redex']|null=null;
   constructor(factory:()=>WorkerPort){this.factory=factory;this.worker=this.start();}
   private start(){
     const worker=this.factory();
@@ -24,7 +26,7 @@ export class EngineClient {
       const pending=this.pending;
       if(this.dead||!pending||data.generation!==this.generation||data.generation!==pending.generation||data.id!==pending.id)return;
       this.pending=null;
-      if(data.reply.ok&&data.reply.trace){this.recovery=data.reply.trace;this.recoveryPosition=data.reply.state?.position??null;}
+      if(data.reply.ok&&data.reply.trace){this.recovery=data.reply.trace;this.recoveryPosition=data.reply.state?.position??null;this.breakpoints=data.reply.state?.breakpoints??[];this.breakpoint=data.reply.state?.breakpoint??null;}
       pending.resolve(data.reply);
     };
     worker.onerror=({message})=>{if(worker!==this.worker)return;this.failed=true;const p=this.pending;this.pending=null;p?.reject(new Error(message));};
@@ -43,10 +45,23 @@ export class EngineClient {
     this.worker.terminate();this.failed=false;this.worker=this.start();
     if(!this.recovery)return null;
     const position=this.recoveryPosition;
+    const heads=[...this.breakpoints],paused=this.breakpoint;
+    const savedTrace=this.recovery;
+    try {
     let reply=await this.request({command:'import',trace:this.recovery});
     if(!reply.ok)throw new Error(`Recovery failed: ${reply.error?.message}`);
+    const restoreHeads=paused?[paused.source]:heads;
+    if(restoreHeads.length){reply=await this.request({command:'breakpoints',heads:restoreHeads});if(!reply.ok)throw new Error(`Breakpoint recovery failed: ${reply.error?.message}`);}
+    if(paused){reply=await this.request({command:'advance',batch:'1'});if(!reply.ok||JSON.stringify(reply.state?.breakpoint)!==JSON.stringify(paused))throw new Error('Breakpoint continuation could not be recovered');}
+    if(paused&&(heads.length!==1||heads[0]!==paused.source)){reply=await this.request({command:'breakpoints',heads});if(!reply.ok)throw new Error(`Breakpoint recovery failed: ${reply.error?.message}`);}
     if(position!==null&&position!==reply.state?.position){reply=await this.request({command:'jump',state:position});if(!reply.ok)throw new Error(`Recovery inspection failed: ${reply.error?.message}`);}
     return reply;
+    } catch(error) {
+      // Intermediate restoration replies are not a new acknowledged UI session.
+      this.recovery=savedTrace;this.recoveryPosition=position;this.breakpoints=heads;this.breakpoint=paused;
+      this.failed=true;
+      throw error;
+    }
   }
   dispose(){if(this.dead)return;this.dead=true;this.generation++;this.pending?.reject(new Error('Engine client disposed'));this.pending=null;this.worker.terminate();this.recovery=null;}
 }

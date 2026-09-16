@@ -23,6 +23,8 @@ pub fn candidate_key(step: &PreparedStep) -> CandidateKey {
 /// Custom implementations must clone their mutable state independently and
 /// perform no external side effects during selection. Rust's Clone trait alone
 /// cannot enforce that contract; the supplied Scheduler satisfies it.
+/// Selection must also be reproducible from identical cloned state and input;
+/// debugger yields may discard and recompute an uncommitted selection.
 pub trait SchedulingStrategy: Clone {
     fn select(&mut self, candidates: &[PreparedStep]) -> Option<usize>;
     fn description(&self) -> String;

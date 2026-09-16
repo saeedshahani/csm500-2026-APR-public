@@ -73,6 +73,9 @@ enum Command {
     Advance {
         batch: Number,
     },
+    Breakpoints {
+        heads: Vec<AtomId>,
+    },
     Stop,
     Reset,
     State,
@@ -156,6 +159,8 @@ pub struct RuleData {
 }
 #[derive(Clone, Debug, Serialize)]
 pub struct State {
+    pub breakpoints: Vec<AtomId>,
+    pub breakpoint: Option<engine::recording::RedexId>,
     pub lambda: Option<LambdaReadback>,
     pub graph: GraphData,
     pub rules: Vec<RuleData>,
@@ -224,6 +229,8 @@ impl Reply {
     }
 }
 struct Session {
+    breakpoints: Vec<AtomId>,
+    breakpoint: Option<engine::recording::RedexId>,
     runner: Option<Runner<Scheduler>>,
     verified: VerifiedTrace,
     position: usize,
@@ -245,6 +252,8 @@ impl Session {
         let verified = VerifiedTrace::verify(doc, Default::default())?;
         let position = verified.document().events.len();
         Ok(Self {
+            breakpoints: vec![],
+            breakpoint: None,
             runner: Some(runner),
             verified,
             position,
@@ -271,6 +280,8 @@ impl Session {
             |r| r.outcome.clone(),
         );
         Ok(Self {
+            breakpoints: vec![],
+            breakpoint: None,
             runner,
             verified,
             position,
@@ -304,6 +315,8 @@ impl Session {
             })
             .collect();
         let state = State {
+            breakpoints: self.breakpoints.clone(),
+            breakpoint: self.breakpoint.clone(),
             lambda: match parser::lambda::interpret(&graph, Default::default()) {
                 Ok(Some(term)) => Some(LambdaReadback {
                     term: Some(term),
@@ -666,9 +679,37 @@ impl Workbench {
                         }
                         Ok(reply)
                     }
+                    Command::Breakpoints { mut heads } => {
+                        if heads.len() > 1024 {
+                            return Err(resource("at most 1024 breakpoint heads"));
+                        }
+                        heads.sort();
+                        heads.dedup();
+                        let doc = current.verified.document();
+                        for head in &heads {
+                            let atom = doc
+                                .initial
+                                .atoms
+                                .get(head)
+                                .or_else(|| doc.events.iter().find_map(|e| e.fresh.get(head)));
+                            if !atom.is_some_and(|a| a.kind == graph_core::Kind::RuleHead) {
+                                return Err(error(
+                                    "breakpoint identity must name a rule head in this execution",
+                                ));
+                            }
+                        }
+                        let old = std::mem::replace(&mut current.breakpoints, heads);
+                        let reply = current.reply();
+                        if reply.is_err() {
+                            current.breakpoints = old;
+                        }
+                        reply
+                    }
                     Command::Stop => {
                         let old = current.status.clone();
-                        if current.runner.as_ref().is_some_and(Runner::is_active) {
+                        if current.breakpoint.is_none()
+                            && current.runner.as_ref().is_some_and(Runner::is_active)
+                        {
                             current.status = "Paused".into();
                         }
                         let reply = current.reply();
@@ -703,7 +744,36 @@ impl Workbench {
                             .as_ref()
                             .ok_or_else(|| error("trace endpoint is not resumable"))?
                             .fork();
-                        let status = match runner.advance(batch.0, || false)? {
+                        let mut resume = current.breakpoint.is_some();
+                        let mut breakpoint = None;
+                        let mut step = current.verified.document().events.len() as u64;
+                        let status = match runner.advance_guarded(
+                            batch.0,
+                            || false,
+                            |candidate| {
+                                if std::mem::take(&mut resume)
+                                    || !current
+                                        .breakpoints
+                                        .contains(&candidate.event().source.into())
+                                {
+                                    step += 1;
+                                    true
+                                } else {
+                                    breakpoint = Some(engine::recording::RedexId {
+                                        state: step,
+                                        source: candidate.event().source.into(),
+                                        revision: candidate.event().source_revision.into(),
+                                        binding: candidate
+                                            .binding()
+                                            .assignments()
+                                            .iter()
+                                            .map(|(a, b)| ((*a).into(), (*b).into()))
+                                            .collect(),
+                                    });
+                                    false
+                                }
+                            },
+                        )? {
                             RunProgress::Yielded => "Yielded".into(),
                             RunProgress::Finished(report) => format!("{:?}", report.outcome),
                         };
@@ -712,6 +782,11 @@ impl Workbench {
                             current.verified.document().source_sha256.clone(),
                             status,
                         )?;
+                        if breakpoint.is_some() {
+                            next.status = "Breakpoint".into();
+                        }
+                        next.breakpoint = breakpoint;
+                        next.breakpoints = current.breakpoints.clone();
                         next.names = current.names.clone();
                         self.publish(next)
                     }

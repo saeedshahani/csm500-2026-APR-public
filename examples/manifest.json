@@ -53,7 +53,7 @@
   },
   {
     "file": "independent/shared-read.graph",
-    "purpose": "Two rules read one shared item.",
+    "purpose": "Two applications of one rule share unchanged endpoints.",
     "expected": "Two commits, then NormalForm; shared reads alone impose no order.",
     "observer": "complete carrier",
     "limit": "6 steps; seeded scheduler 42; recurrence off",

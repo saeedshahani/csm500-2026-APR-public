@@ -1,6 +1,8 @@
 export type Atom = {kind: string | {Constructor?: string; Record?:{role:string;label:string|null}; PatternVariable?:{admits:unknown[];binding:string}};fields:string[]};
 export type EventRecord = {id:string;redex:{state:string;source:string;revision:string;binding:[string,string][]};post_state:string;footprint:Record<string,string[]>;fresh:Record<string,Atom>};
 export type EngineState = {
+  breakpoints?:string[];
+  breakpoint?:EventRecord['redex']|null;
   lambda?:{term:string|null;error:string|null}|null;
   graph:{next_identity:string;atoms:Record<string,Atom>};
   rules:{head:string;revision:string;rank:string;active:boolean;meta:boolean;lhs?:string[];rhs?:string[];preserved?:string[];representation?:string[]}[];quoted:Record<string,string>;

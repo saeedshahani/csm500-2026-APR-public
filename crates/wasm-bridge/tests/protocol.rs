@@ -39,6 +39,163 @@ fn source_diagnostics_preserve_every_parser_span_and_related_location_atomically
 fn request(w: &mut Workbench, v: Value) -> Value {
     serde_json::to_value(w.dispatch(&v.to_string())).unwrap()
 }
+
+#[test]
+fn breakpoints_preserve_selected_occurrences_rng_recurrence_and_portable_traces() {
+    for source in [
+        include_str!("../../../examples/behaviour/oscillating.graph"),
+        include_str!("../../../examples/programs/self-modify.graph"),
+        include_str!("../../../examples/practical/policy-enable.graph"),
+        include_str!("../../../examples/independent/shared-read.graph"),
+    ] {
+        for seed in [Value::Null, json!("42")] {
+            let input = json!({"command":"load","source":source,"config":{"max_steps":"12","seed":seed,"detect_cycles":true}});
+            let mut plain = Workbench::default();
+            request(&mut plain, input.clone());
+            let expected = request(&mut plain, json!({"command":"advance","batch":"100"}));
+            assert_eq!(expected["ok"], true);
+            for batch in ["1", "10"] {
+                let mut debug = Workbench::default();
+                let start = request(&mut debug, input.clone());
+                let heads: Vec<_> = start["state"]["rules"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .map(|r| r["head"].clone())
+                    .collect();
+                let configured =
+                    request(&mut debug, json!({"command":"breakpoints","heads":heads}));
+                assert_eq!(configured["trace"], start["trace"]);
+                let mut last = configured;
+                for _ in 0..40 {
+                    let next = request(&mut debug, json!({"command":"advance","batch":batch}));
+                    assert_eq!(next["ok"], true, "{next}");
+                    if next["state"]["status"] == "Breakpoint" {
+                        let count = next["state"]["events"].as_array().unwrap().len();
+                        assert_eq!(
+                            next["state"]["breakpoint"],
+                            expected["state"]["events"][count]["redex"]
+                        );
+                        assert!(next["state"]["report"].is_null());
+                        let retained = request(&mut debug, json!({"command":"state"}));
+                        assert_eq!(retained["trace"], next["trace"]);
+                        assert_eq!(retained["state"]["breakpoint"], next["state"]["breakpoint"]);
+                        // Independently verify and resume the ordinary trace, without debugger metadata.
+                        let mut imported = Workbench::default();
+                        let replay = request(
+                            &mut imported,
+                            json!({"command":"import","trace":next["trace"]}),
+                        );
+                        assert_eq!(replay["ok"], true);
+                        assert_eq!(replay["state"]["breakpoints"], json!([]));
+                        let resumed =
+                            request(&mut imported, json!({"command":"advance","batch":"100"}));
+                        assert_eq!(resumed["trace"], expected["trace"]);
+                    }
+                    last = next;
+                    if last["state"]["can_advance"] == false {
+                        break;
+                    }
+                }
+                assert_eq!(last["trace"], expected["trace"]);
+                let reset = request(&mut debug, json!({"command":"reset"}));
+                assert_eq!(reset["state"]["breakpoints"], json!([]));
+                assert!(reset["state"]["breakpoint"].is_null());
+            }
+        }
+    }
+}
+
+#[test]
+fn breakpoints_do_not_pause_on_unscheduled_alternatives_and_invalid_changes_are_atomic() {
+    let mut w = Workbench::default();
+    let source = include_str!("../../../examples/behaviour/oscillating.graph");
+    let start = request(&mut w, json!({"command":"load","source":source}));
+    let later = start["state"]["rules"][1]["head"].clone();
+    request(&mut w, json!({"command":"breakpoints","heads":[later]}));
+    let paused = request(&mut w, json!({"command":"advance","batch":"10"}));
+    assert_eq!(paused["state"]["status"], "Breakpoint");
+    assert_eq!(paused["state"]["events"].as_array().unwrap().len(), 1);
+    for heads in [json!(["999999"]), json!(["1"]), json!(vec!["0"; 1025])] {
+        assert_eq!(
+            request(&mut w, json!({"command":"breakpoints","heads":heads}))["ok"],
+            false
+        );
+        assert_eq!(request(&mut w, json!({"command":"state"})), paused);
+    }
+    request(&mut w, json!({"command":"jump","state":"0"}));
+    assert_eq!(
+        request(&mut w, json!({"command":"advance","batch":"1"}))["ok"],
+        false
+    );
+    request(&mut w, json!({"command":"jump","state":"1"}));
+    request(&mut w, json!({"command":"breakpoints","heads":[]}));
+    let next = request(&mut w, json!({"command":"advance","batch":"1"}));
+    assert_eq!(
+        next["state"]["events"][1]["redex"],
+        paused["state"]["breakpoint"]
+    );
+    assert!(next["state"]["breakpoint"].is_null());
+}
+
+#[test]
+fn breakpoint_heads_survive_deactivation_and_deletion_without_spurious_stops() {
+    for delete in [false, true] {
+        let preserved = if delete {
+            "rp: permit;"
+        } else {
+            "rh: h; rz: z; rrank: rr; rm: mm; rp: permit; rf: fresh;"
+        };
+        let fresh = if delete {
+            ""
+        } else {
+            "atom fresh = Record[Revision](h);"
+        };
+        let source = format!(
+            r#"program {{
+          rule disable {{
+            atom zero = Nat(); atom one = Nat(zero); rank level = one;
+            mode m = ModeMeta; revision version; active enabled;
+            atom h = PatternVariable[RuleHead] Free;
+            atom z = Nat(); atom rr = Record[Rank](h,z);
+            atom mm = Record[ModeObject](h); atom aa = Record[Active](h);
+            atom rev = Record[Revision](h); {fresh}
+            atom permit = Constructor("Permit"); atom token = Record[ObjectLink]("permit",permit,permit);
+            lhs {{ lh: h; lz: z; lr: rr; lm: mm; la: aa; lv: rev; lp: permit; lt: token; }}
+            rhs {{ {preserved} }}
+          }}
+          rule target {{ atom tz = Nat(); rank tr = tz; mode tm = ModeObject; revision tv; active ta; }}
+          atom permission = Constructor("Permit"); atom tok = Record[ObjectLink]("permit",permission,permission);
+        }}"#
+        );
+        let mut w = Workbench::default();
+        let loaded = request(&mut w, json!({"command":"load","source":source}));
+        assert_eq!(loaded["ok"], true, "{loaded}");
+        let head = loaded["state"]["rules"][1]["head"].clone();
+        let configured = request(&mut w, json!({"command":"breakpoints","heads":[head]}));
+        assert_eq!(configured["ok"], true);
+        let done = request(&mut w, json!({"command":"advance","batch":"10"}));
+        assert_eq!(done["state"]["status"], "NormalForm", "{done}");
+        assert_eq!(done["state"]["events"].as_array().unwrap().len(), 1);
+        assert!(done["state"]["breakpoint"].is_null());
+        assert_eq!(done["state"]["breakpoints"], json!([head]));
+        assert_eq!(
+            done["state"]["rules"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .any(|r| r["head"] == head),
+            !delete
+        );
+        if !delete {
+            assert_eq!(done["state"]["rules"][1]["active"], false);
+        }
+        assert_eq!(
+            request(&mut w, json!({"command":"breakpoints","heads":[head]}))["ok"],
+            true
+        );
+    }
+}
 fn load(w: &mut Workbench) -> Value {
     request(
         w,

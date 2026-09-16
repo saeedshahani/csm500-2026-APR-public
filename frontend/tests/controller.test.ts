@@ -9,6 +9,30 @@ class Fake implements WorkerPort {
   answer(reply:Reply,index=this.messages.length-1){const request=this.messages[index];this.onmessage?.({data:{generation:request.generation,id:request.id,reply}});}
 }
 const ok=(trace:string|null=null):Reply=>({ok:true,error:null,state:null,trace});
+test('failed debugger recovery retains the original acknowledged settings for retry',async()=>{
+ const workers:Fake[]=[];const client=new EngineClient(()=>{const w=new Fake();workers.push(w);return w;});
+ const state:EngineState={graph:{next_identity:'8',atoms:{}},rules:[],quoted:{},events:[],dependencies:[],relation:'positive_resource_order',limitation:'',position:'0',endpoint:'0',status:'Ready',can_advance:true,report:null,breakpoints:['7']};
+ const initial=client.request({command:'state'});workers[0].answer({...ok('prefix'),state});await initial;
+ const attempt=client.interrupt(),failure=assert.rejects(attempt,/Breakpoint recovery failed/);
+ workers[1].answer({...ok('prefix'),state:{...state,breakpoints:[]}});await Promise.resolve();
+ workers[1].answer({ok:false,error:{kind:'ResourceExhaustion',message:'test limit',line:null,column:null},state:null,trace:null});await failure;
+ await assert.rejects(client.request({command:'state'}),/Recover engine/);
+ const retry=client.interrupt();workers[2].answer({...ok('prefix'),state:{...state,breakpoints:[]}});await Promise.resolve();
+ assert.deepEqual(workers[2].messages.at(-1)?.payload,{command:'breakpoints',heads:['7']});workers[2].answer({...ok('prefix'),state});assert.deepEqual((await retry)?.state?.breakpoints,['7']);client.dispose();
+});
+test('recovery restores breakpoints and rediscovers the same paused occurrence even after its checkbox is cleared',async()=>{
+ for(const heads of [['7'],[]]){
+  const workers:Fake[]=[];const client=new EngineClient(()=>{const w=new Fake();workers.push(w);return w;});
+  const breakpoint={state:'0',source:'7',revision:'9',binding:[]};
+  const state:EngineState={graph:{next_identity:'10',atoms:{}},rules:[],quoted:{},events:[],dependencies:[],relation:'positive_resource_order',limitation:'',position:'0',endpoint:'0',status:'Breakpoint',can_advance:true,report:null,breakpoints:heads,breakpoint};
+  const initial=client.request({command:'state'});workers[0].answer({...ok('prefix'),state});await initial;
+  const recovery=client.interrupt();workers[1].answer({...ok('prefix'),state:{...state,status:'Paused',breakpoint:null,breakpoints:[]}});await Promise.resolve();
+  assert.deepEqual(workers[1].messages.at(-1)?.payload,{command:'breakpoints',heads:['7']});workers[1].answer({...ok('prefix'),state:{...state,breakpoint:null,breakpoints:['7']}});await Promise.resolve();
+  assert.deepEqual(workers[1].messages.at(-1)?.payload,{command:'advance',batch:'1'});workers[1].answer({...ok('prefix'),state:{...state,breakpoints:['7']}});await Promise.resolve();
+  if(!heads.length){assert.deepEqual(workers[1].messages.at(-1)?.payload,{command:'breakpoints',heads:[]});workers[1].answer({...ok('prefix'),state});}
+  assert.deepEqual((await recovery)?.state?.breakpoint,breakpoint);client.dispose();
+ }
+});
 test('synchronous worker send failure releases the request and permits recovery',async()=>{let first=true;const client=new EngineClient(()=>{const w=new Fake();if(first){w.postMessage=()=>{throw Error('send failed');};first=false;}return w;});await assert.rejects(client.request({command:'state'}),/send failed/);await assert.rejects(client.request({command:'state'}),/Recover engine/);assert.equal(await client.interrupt(),null);client.dispose();});
 test('recovery restores a historical inspection cursor, not just the endpoint',async()=>{
   const workers:Fake[]=[];const client=new EngineClient(()=>{const w=new Fake();workers.push(w);return w;});

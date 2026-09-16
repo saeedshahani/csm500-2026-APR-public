@@ -32,6 +32,16 @@ test('complete catalogue has exact CLI/native/WASM execution, trace and historic
  assert.equal(verifyExamples(compare),22);
 });
 function compare(commands){const native=execFileSync(fileURLToPath(new URL('target/debug/examples/protocol',root)),[],{input:commands.map(c=>JSON.stringify(c)).join('\n')+'\n',encoding:'utf8',maxBuffer:64*1024*1024}).trim().split('\n').map(JSON.parse);const handle=new WorkbenchHandle();try{const wasm=commands.map(c=>handle.dispatch(JSON.stringify(c)));assert.deepEqual(wasm,native);return wasm;}finally{handle.free();}}
+test('breakpoint pause, revision, resume and reset agree exactly across native and WASM',()=>{
+ for(const file of ['behaviour/oscillating.graph','programs/self-modify.graph','practical/policy-enable.graph']){
+  const load={command:'load',source:source(file),config:{max_steps:'4',seed:'42',detect_cycles:true}};
+  const initial=compare([load])[0],heads=initial.state.rules.map(r=>r.head);
+  const replies=compare([load,{command:'breakpoints',heads},...Array.from({length:10},()=>({command:'advance',batch:'1'})),{command:'export'},{command:'reset'}]);
+  assert.equal(replies[2].state.status,'Breakpoint');assert.equal(replies[2].trace,initial.trace);
+  const expected=compare([load,{command:'advance',batch:'100'}])[1];assert.equal(replies.at(-2).trace,expected.trace);
+  assert.deepEqual(replies.at(-1).state.breakpoints,[]);
+ }
+});
 for(const [policy,file,events] of [['fixed','work-items',10],['guarded_enable','policy-enable',11]])test(`practical ${policy} CLI/WASM and project parity`,()=>{
  const preview=compare([{command:'generate_dataset',count:'10',seed:'42',policy}])[0];assert.equal(preview.ok,true);assert.equal(preview.dataset.source,source(`practical/${file}.graph`));
  const src=preview.dataset.source;const commands=[{command:'load',source:src,config:{max_steps:'20'}},{command:'advance',batch:'20'},{command:'inspect',query:'WorkItem:',offset:'5',limit:'5'}];const replies=compare(commands);assert.equal(replies[1].state.status,'NormalForm');assert.equal(replies[1].state.events.length,events);

@@ -252,7 +252,21 @@ impl<S: SchedulingStrategy> Runner<S> {
     pub fn advance(
         &mut self,
         batch_steps: u64,
+        cancelled: impl FnMut() -> bool,
+    ) -> Result<RunProgress> {
+        self.advance_guarded(batch_steps, cancelled, |_| true)
+    }
+    /// Transaction-boundary debugger gate, evaluated only for the scheduler's
+    /// selected candidate after terminal checks. False yields without committing,
+    /// advancing the scheduler, or retaining an endpoint observation. Selection
+    /// is recomputed on continuation from the unchanged scheduler and carrier;
+    /// strategies must select identically from identical cloned state and input.
+    /// The gate is external control, not part of graph or trace semantics.
+    pub fn advance_guarded(
+        &mut self,
+        batch_steps: u64,
         mut cancelled: impl FnMut() -> bool,
+        mut allow: impl FnMut(&crate::PreparedStep) -> bool,
     ) -> Result<RunProgress> {
         if !self.active || batch_steps == 0 {
             return Err(Diagnostic::new(
@@ -322,6 +336,7 @@ impl<S: SchedulingStrategy> Runner<S> {
                 };
                 break;
             }
+            let history_boundary = (self.history.len(), self.history_units);
             if limits.detect_cycles {
                 match self.observe(limits.observation) {
                     Ok((payload, recurrence)) => {
@@ -348,13 +363,22 @@ impl<S: SchedulingStrategy> Runner<S> {
                 report.outcome = Outcome::Cancelled;
                 break;
             }
-            let committed = match self.select_commit(enabled.into_steps(), &mut cancelled) {
+            let committed = match self.select_commit_guarded(
+                enabled.into_steps(),
+                &mut cancelled,
+                &mut allow,
+            ) {
                 Err(error) if error.kind() == ErrorKind::ResourceExhaustion => {
                     report.outcome = Outcome::ResourceLimit;
                     report.diagnostic = Some(error);
                     break;
                 }
                 other => other?,
+            };
+            let Some(committed) = committed else {
+                self.history.truncate(history_boundary.0);
+                self.history_units = history_boundary.1;
+                return Ok(RunProgress::Yielded);
             };
             if !committed {
                 report.outcome = Outcome::Cancelled;
@@ -369,11 +393,21 @@ impl<S: SchedulingStrategy> Runner<S> {
         self.last_report = Some(report.clone());
         Ok(RunProgress::Finished(report))
     }
+    #[cfg(test)]
     fn select_commit(
+        &mut self,
+        steps: Vec<crate::PreparedStep>,
+        cancelled: &mut impl FnMut() -> bool,
+    ) -> Result<bool> {
+        self.select_commit_guarded(steps, cancelled, &mut |_| true)
+            .map(|v| v.unwrap())
+    }
+    fn select_commit_guarded(
         &mut self,
         mut steps: Vec<crate::PreparedStep>,
         cancelled: &mut impl FnMut() -> bool,
-    ) -> Result<bool> {
+        allow: &mut impl FnMut(&crate::PreparedStep) -> bool,
+    ) -> Result<Option<bool>> {
         steps.sort_by_cached_key(candidate_key);
         let mut next_scheduler = self.scheduler.clone();
         let index = next_scheduler
@@ -386,16 +420,19 @@ impl<S: SchedulingStrategy> Runner<S> {
                 )
             })?;
         if cancelled() {
-            return Ok(false);
+            return Ok(Some(false));
         }
         let prepared = steps.swap_remove(index);
+        if !allow(&prepared) {
+            return Ok(None);
+        }
         if let Some(recording) = &mut self.recording {
             recording.commit(&mut self.execution, prepared)?;
         } else {
             self.execution.commit(prepared)?;
         }
         self.scheduler = next_scheduler;
-        Ok(true)
+        Ok(Some(true))
     }
     fn observe(&mut self, limits: ObservationLimits) -> Result<(usize, Option<Recurrence>)> {
         let view = self.execution.view()?;
