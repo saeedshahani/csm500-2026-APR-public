@@ -13,7 +13,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",
-    "test:unit": "node --experimental-strip-types --test tests/controller.test.ts tests/presentation.test.ts tests/projects.test.ts",
+    "test:unit": "node --experimental-strip-types --test tests/controller.test.ts tests/presentation.test.ts tests/projects.test.ts tests/diagnostics.test.ts",
     "test:parity": "npm run wasm:node && node --test tests/parity.test.mjs",
     "test:browser": "playwright test"
   },

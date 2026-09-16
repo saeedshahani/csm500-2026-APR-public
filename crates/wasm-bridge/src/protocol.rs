@@ -90,11 +90,39 @@ enum Command {
     Dispose,
 }
 #[derive(Clone, Debug, Serialize)]
+pub struct SourceSpan {
+    pub start: Number,
+    pub end: Number,
+}
+impl From<parser::Span> for SourceSpan {
+    fn from(span: parser::Span) -> Self {
+        Self {
+            start: Number(span.start as u64),
+            end: Number(span.end as u64),
+        }
+    }
+}
+#[derive(Clone, Debug, Serialize)]
+pub struct RelatedSource {
+    pub message: String,
+    pub span: SourceSpan,
+}
+#[derive(Clone, Debug, Serialize)]
+pub struct SourceIssue {
+    pub kind: String,
+    pub message: String,
+    pub span: SourceSpan,
+    pub related: Vec<RelatedSource>,
+}
+#[derive(Clone, Debug, Serialize)]
 pub struct BridgeError {
     pub kind: String,
     pub message: String,
     pub line: Option<Number>,
     pub column: Option<Number>,
+    /// Half-open UTF-8 byte ranges in the submitted graph source, not JSON input.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub diagnostics: Vec<SourceIssue>,
 }
 impl From<Diagnostic> for BridgeError {
     fn from(e: Diagnostic) -> Self {
@@ -103,6 +131,7 @@ impl From<Diagnostic> for BridgeError {
             message: e.to_string(),
             line: None,
             column: None,
+            diagnostics: Vec::new(),
         }
     }
 }
@@ -355,6 +384,7 @@ impl Workbench {
                 message: e.to_string(),
                 line: Some(Number(e.line() as u64)),
                 column: Some(Number(e.column() as u64)),
+                diagnostics: Vec::new(),
             })?;
             self.execute(command)
         })();
@@ -758,6 +788,22 @@ fn load(source: &str) -> Result<parser::LoadedProgram> {
                 .join("\n"),
             line: position.map(|p| Number(p.line as u64)),
             column: position.map(|p| Number(p.column as u64)),
+            diagnostics: errors
+                .iter()
+                .map(|e| SourceIssue {
+                    kind: format!("{:?}", e.diagnostic.kind()),
+                    message: e.diagnostic.to_string(),
+                    span: e.span.into(),
+                    related: e
+                        .related
+                        .iter()
+                        .map(|r| RelatedSource {
+                            message: r.message.clone(),
+                            span: r.span.into(),
+                        })
+                        .collect(),
+                })
+                .collect(),
         }
     })
 }

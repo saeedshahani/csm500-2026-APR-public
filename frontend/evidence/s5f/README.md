@@ -1,0 +1,8 @@
+# Integrated workbench captures
+
+These images show real engine outputs from the production Chromium acceptance suite on 16 September 2026. They are illustrative functional evidence, not designs, pixel-diff goldens, controlled timing measurements or a participant usability study. Layout coordinates are transient and do not enter trace comparison.
+
+- [Source ranges](source-ranges.png): duplicate declaration after Unicode text, primary error and related earlier declaration. The independently loaded shared-read graph and its empty history are preserved while the draft is invalid.
+- [Hundred-item completion](hundred-items.png): one hundred fixed-policy items generated with dataset seed 42, deterministic execution, 101-step bound, recurrence disabled and ten commits per batch. State 100 has zero pending and one hundred processed items; all 100 events are checked by the native trace verifier. The crowded overview is complemented by paginated tables and focused inspection, not represented as a readable unbounded diagram.
+
+Reproduce from frontend with `npm run build` and `npx playwright test tests/browser/sprint5.spec.ts`. The tests write fresh source-range, dark/narrow error, lambda-history, exact-revision and hundred-item captures under output/playwright; committed images are reviewed specimens, not overwritten by routine runs. Desktop viewport is 1440×1000; the narrow test is 390×844. Chromium is Playwright revision 1243; local Node is 24.21.0 and CI pins 25.4.0. Semantic assertions and portable exports, rather than screenshots alone, establish the stated outcomes. Browser CI also retains generated images and failure traces as workflow artifacts.

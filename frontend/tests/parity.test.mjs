@@ -8,6 +8,12 @@ import {createHash} from 'node:crypto';
 import {verifyExamples} from '../../scripts/verify-examples.mjs';
 const require=createRequire(import.meta.url);const {WorkbenchHandle}=require('../pkg-node/wasm_bridge.js');
 const root=new URL('../../',import.meta.url);
+test('all source ranges and related locations agree across native and WASM without changing history',()=>{
+ const sources=['program {\r\n atom a = Constructor("λ 🐈");\r atom a = Constructor("duplicate");\n}', 'program { atom x = Nat(missing); atom y = Nat(other); }', 'program { atom x = Constructor("猫");'];
+ const replies=compare([{command:'load',source:'program {}'},...sources.flatMap(source=>[{command:'validate',source},{command:'load',source},{command:'state'}])]);
+ for(let i=1;i<replies.length;i+=3){assert.equal(replies[i].ok,false);assert.ok(replies[i].error.diagnostics.length);assert.deepEqual(replies[i].error,replies[i+1].error);assert.deepEqual(replies[i+2].state,replies[0].state);}
+ assert.ok(replies[1].error.diagnostics.some(e=>e.related.length));assert.equal(replies[4].error.diagnostics.length,2);
+});
 test('lambda translation, interpretation, history and failures share native/WASM semantics',()=>{
  const input='((\\x. x) (\\y. y))';
  const preview=compare([{command:'lambda_compile',source:input}])[0];assert.equal(preview.ok,true);

@@ -35,12 +35,12 @@ The fixture contains no external work service, side effects or business transact
 
 Attempted sizes are 10, 100 and 1,000; dataset seed 42, fixed policy, complete-carrier observer, recurrence detection off, deterministic native scheduling and browser scheduler seed 42. The browser uses a 20-step absolute bound, 1,000,000 matching-work units per query, 1,000 candidates and single-commit batches for stepping. Ten-item guarded cases use the same allowances. Source selection and loaded settings must be retained when reproducing a run.
 
-Local checks on 2026-09-14 with Rust 1.85.0, Node 25.4.0 and Playwright Chromium 1243 establish:
+Local acceptance through 2026-09-16 uses Rust 1.85.0 and Playwright Chromium 1243. The initial checks used Node 25.4.0; the integrated rerun also passes with local Node 24.21.0, while CI remains pinned to 25.4.0. The hundred-item completion profile overrides the initial 20-step browser bound with 101, uses a blank execution seed (deterministic), disables recurrence and advances ten commits per batch. These checks establish:
 
 | Attempt | Observation | Not established |
 |---|---|---|
 | 10 fixed / 10 guarded | NormalForm after 10 / 11 commits; whole-carrier oracle; exact CLI/native/WASM trace agreement; browser counts and historical navigation | Arbitrary scheduling or modified-source correctness |
-| 100 fixed | Load, pagination, one committed step, 99 pending / 1 processed, state-zero and endpoint navigation | Full hundred-item completion or throughput |
+| 100 fixed | NormalForm after 100 commits; CLI validation of exported history; pending/processed counts 100/0, 50/50 and 0/100 at states 0/50/100; pagination and unchanged exports after navigation | Controlled browser throughput or memory cost |
 | 1,000 fixed | Load and complete-identity search; focused rendering; stop/recovery; attempted step reaches ResourceLimit with zero events | Successful processing or arbitrary scale |
 
 The first two datasets have 33 and 213 initial atoms; the thousand-item fixed dataset has 2,013. Large input admission is distinct from feasible complete matching. The matching algorithm enumerates candidates before selection, while replay and publication reconstruct and copy graph/history data. The canvas limits layout to 250 atoms and 500 connections, the item table to 25 rows and atom selection to 100 entries per page. All admitted identities remain searchable. The bridge's separate inspect query returns at most 200 matching records; full state responses and verified exports remain bounded but are not streaming.

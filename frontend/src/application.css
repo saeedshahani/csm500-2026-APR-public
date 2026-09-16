@@ -11,3 +11,8 @@
 button{transition:border-color .15s}
 .lambda-input,.lambda-result{padding:16px;border-bottom:1px solid var(--border);overflow-wrap:anywhere}.lambda-input label{display:block;margin:12px 0}.lambda-input textarea{display:block;width:100%;min-height:90px;font-family:monospace}.lambda-result pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px}.lambda-input p,.lambda-result p{font-size:13px;line-height:1.6}
 @media print{.app-header,.workbench-content,.reader-guide button{display:none!important}.reader-guide{display:block!important;color:#111;background:white;max-width:none;padding:0}.reader-guide a{color:#111}.reader-guide table{break-inside:avoid}body{background:white!important;color:#111!important}}
+/* Source ranges are textual distinctions as well as colour: solid error and dotted related underline. */
+.source-error{text-decoration:underline wavy var(--warning);text-underline-offset:3px}
+.source-related{text-decoration:underline dotted var(--muted);text-underline-offset:3px}
+.source-diagnostics{max-height:18rem;overflow:auto;font-size:12px;overflow-wrap:anywhere}
+.source-diagnostics li{margin:8px 0}

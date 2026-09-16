@@ -1,5 +1,41 @@
 use serde_json::{json, Value};
 use wasm_bridge::Workbench;
+
+#[test]
+fn source_diagnostics_preserve_every_parser_span_and_related_location_atomically() {
+    let mut w = Workbench::default();
+    let initial = request(&mut w, json!({"command":"load","source":"program {}"}));
+    for source in [
+        "program {\r\n atom a = Constructor(\"λ 🐈\");\r atom a = Constructor(\"duplicate\");\n}",
+        "program { atom x = Nat(missing); atom y = Nat(other); }",
+        "program {\n atom x = Constructor(\"猫\");",
+    ] {
+        let expected = parser::load(source).unwrap_err();
+        let validation = request(&mut w, json!({"command":"validate","source":source}));
+        let loading = request(&mut w, json!({"command":"load","source":source}));
+        assert_eq!(validation["error"], loading["error"]);
+        let actual = validation["error"]["diagnostics"].as_array().unwrap();
+        assert_eq!(actual.len(), expected.len());
+        for (actual, expected) in actual.iter().zip(expected) {
+            assert_eq!(actual["span"]["start"], expected.span.start.to_string());
+            assert_eq!(actual["span"]["end"], expected.span.end.to_string());
+            assert_eq!(actual["message"], expected.diagnostic.to_string());
+            let related = actual["related"].as_array().unwrap();
+            assert_eq!(related.len(), expected.related.len());
+            for (actual, expected) in related.iter().zip(expected.related.iter()) {
+                assert_eq!(actual["span"]["start"], expected.span.start.to_string());
+                assert_eq!(actual["span"]["end"], expected.span.end.to_string());
+                assert_eq!(actual["message"], expected.message);
+            }
+        }
+        assert_eq!(
+            request(&mut w, json!({"command":"state"}))["state"],
+            initial["state"]
+        );
+    }
+    let malformed = serde_json::to_value(w.dispatch("{broken")).unwrap();
+    assert!(malformed["error"].get("diagnostics").is_none());
+}
 fn request(w: &mut Workbench, v: Value) -> Value {
     serde_json::to_value(w.dispatch(&v.to_string())).unwrap()
 }
