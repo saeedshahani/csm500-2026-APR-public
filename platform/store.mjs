@@ -34,11 +34,20 @@ function validate(state) {
     if (!uuid.test(entry.id) || ids.has(entry.id)) throw Error('Invalid or duplicate stored identity');
     ids.add(entry.id);
   }
+  const seenVersions = new Set(), seenJobs = new Set();
   for (const version of state.versions) {
     if (!state.projects.some(p => p.id === version.project_id) || !digest.test(version.source_sha256))
       throw Error('Invalid stored version');
+    if (version.parent_version_id != null && (!seenVersions.has(version.parent_version_id)
+        || !state.versions.some(v => v.id === version.parent_version_id && v.project_id === version.project_id)))
+      throw Error('Invalid stored version parent');
+    seenVersions.add(version.id);
   }
   for (const job of state.jobs) {
+    if (job.parent_job_id != null && (!seenJobs.has(job.parent_job_id)
+        || !state.jobs.some(j => j.id === job.parent_job_id && j.project_id === job.project_id && terminal.has(j.status))))
+      throw Error('Invalid stored job parent');
+    seenJobs.add(job.id);
     if (!state.versions.some(v => v.id === job.version_id && v.project_id === job.project_id)
         || !['queued', 'running', ...terminal].includes(job.status)
         || !digest.test(job.request_sha256) || !digest.test(job.engine_sha256)

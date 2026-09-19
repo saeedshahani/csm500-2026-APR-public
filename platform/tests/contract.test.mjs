@@ -17,6 +17,15 @@ test('OpenAPI routes, operation identities and local schema references are compl
     for (const child of Object.values(value)) visit(child);
   };
   visit(doc);
+  for (const [route, requestField, response] of [
+    ['/v1/projects/{project}/versions', 'parent_version_id', 'Version'],
+    ['/v1/projects/{project}/jobs', 'parent_job_id', 'Job']
+  ]) {
+    const input = doc.paths[route].post.requestBody.content['application/json'].schema;
+    assert.deepEqual(input.properties[requestField].type, ['string', 'null']);
+    assert.ok(!input.required.includes(requestField));
+    assert.deepEqual(doc.components.schemas[response].properties[requestField].type, ['string', 'null']);
+  }
   for (const [route, methods] of Object.entries(doc.paths)) for (const operation of Object.values(methods)) {
     for (const [, parameter] of route.matchAll(/\{(\w+)\}/g))
       assert.ok(operation.parameters.some(p => p.name === parameter && p.in === 'path' && p.required));

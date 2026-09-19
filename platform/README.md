@@ -1,8 +1,8 @@
 # Local developer API
 
-This first developer-platform slice is a loopback HTTP API backed by the existing native Rust CLI. It saves projects and immutable graph-source versions, queues bounded jobs, publishes replay-verified traces and recovers metadata after restart. The Node adapter implements transport and orchestration, not graph semantics. It has no third-party Node dependencies.
+The developer service is a loopback HTTP API backed by the existing native Rust CLI and connected to the browser's Projects interface. It saves projects and immutable graph-source versions, queues bounded jobs, publishes replay-verified traces and recovers metadata after restart. The Node adapter implements transport and orchestration, not graph semantics. It has no third-party Node dependencies.
 
-This is **local, single-owner software**, not a Firebase deployment, multi-user service, browser integration or general-purpose job sandbox. Do not bind it publicly, proxy it onto a network or share its store directory. Hosted identity, project-user permissions, Firebase adapters and production resource isolation remain separate work.
+This is **local, single-owner software**, not a Firebase deployment, multi-user service or general-purpose job sandbox. Do not bind it publicly, proxy it onto a network or share its store directory. Hosted identity, project-user permissions, Firebase adapters and production resource isolation remain separate work.
 
 ## Run and test
 
@@ -11,10 +11,15 @@ Run from the repository root with Node 24 or later and the pinned Rust toolchain
 ```sh
 cargo build --release --locked -p cli
 export GRAPH_API_TOKEN="$(node -e 'process.stdout.write(require("node:crypto").randomBytes(32).toString("hex"))')"
+export GRAPH_BROWSER_ORIGINS="http://127.0.0.1:4173"
 node platform/server.mjs
 ```
 
 The service listens on `http://127.0.0.1:8787`. Private files go under ignored `output/platform`. `GRAPH_STORE`, `GRAPH_ENGINE` and `GRAPH_PORT` override the local directory, native binary and port. Paths are operator configuration, never HTTP arguments. Do not commit or log the token. No Node packages need installing.
+
+To use the browser, build and start the frontend in another terminal (`cd frontend`, `npm ci`, `npm run build`, `npm run preview`). Open `http://127.0.0.1:4173/#projects`, enter the API address and transfer the token privately into the password field. On macOS, `printf %s "$GRAPH_API_TOKEN" | pbcopy` copies the token without printing it; use this in the terminal where the variable is set before starting the server. Clear the clipboard afterwards. The browser retains the token only in memory; reconnect after a page reload. If using the Vite development server instead, allow its actual origin, normally `http://127.0.0.1:5173`, and restart the API. `GRAPH_BROWSER_ORIGINS` accepts comma-separated exact loopback HTTP origins, not wildcards or arbitrary websites.
+
+Create a project, use **Save a new version → Use workspace draft**, name and save it, then submit a bounded job. The selected saved version, not the unsaved editor, is executed. **Inspect graph and history** checks the downloaded hash and then imports through the existing WASM verifier. Opening source changes only the editor after confirmation; importing a run changes only the loaded execution after confirmation. Neither silently replaces both. Projects and jobs survive leaving the page; the browser does not need to remain open for native execution.
 
 In another terminal at the root, set `GRAPH_API_TOKEN` to the same value (transfer it privately), then run:
 
@@ -28,7 +33,7 @@ The example refuses to overwrite an existing output; each invocation creates a p
 
 ## API contract
 
-The machine-readable contract is [openapi.json](openapi.json). Every route requires `Authorization: Bearer TOKEN`; browser `Origin` requests are denied. This token represents one owner of the whole store, not separate project tenants. Lists accept `offset` and `limit` (maximum 100). Responses are not cached.
+The machine-readable contract is [openapi.json](openapi.json). Every application route requires `Authorization: Bearer TOKEN`. Browser `Origin` requests are denied unless the operator explicitly allows their exact origin. Allowed preflight requests need no token but grant only GET/POST and Authorization/Content-Type headers; actual requests still require the token. Cookies are not used. Source/trace responses expose their SHA-256 header. This token represents one owner of the whole store, not separate project tenants. Lists accept `offset` and `limit` (maximum 100). Responses are not cached.
 
 | Operation | Route |
 |---|---|
@@ -43,6 +48,10 @@ The machine-readable contract is [openapi.json](openapi.json). Every route requi
 | Download verified trace | `GET /v1/jobs/{job}/trace` |
 
 A version contains the complete authored graph program, including data and rules. Separate dataset uploads and client-supplied file paths are not supported. Source is well-formed text capped at 256 KiB UTF-8; request bodies are capped at 1 MiB. Checked-loader errors return 422 without creating a version. Unknown fields/settings are rejected. One native slot is used: validation while another validation/job is active returns 429; jobs can queue.
+
+Saving a version accepts optional `parent_version_id`: an existing version in the same project. The browser's **Fork version** copies verified source into an editable form and records that parent when saved. This external authoring operation is not graph-resident self-modification. Submission accepts optional `parent_job_id`: a terminal job in the same project, included in idempotent request identity. **Prepare retry / what-if** copies the old settings and version into the submission form; the user can change them and submit a new history with that parent. Older stores without these fields remain readable. Parent links must point to earlier records and are checked at startup. Metadata comparison does not establish graph equivalence.
+
+The browser retains a submission key after an uncertain response, reusing it for the same project/version/settings/parent request until success. It never automatically repeats POST requests. After reload or disconnect, inspect the durable run list before submitting again: in-memory pending keys do not survive. Creating projects and versions is not idempotent; after an uncertain response, refresh/reconnect and inspect the list before repeating the action.
 
 Submission requires `version_id`, `idempotency_key` and optional `settings`. Normalised defaults are `max_steps: 100`, `max_work: 1000000`, `max_candidates: 1000`, `seed: null`, `detect_cycles: false`, `deadline_ms: 10000`. Steps are capped at 1000, deadlines at 30000 ms, and search settings cannot exceed their defaults. A seed is a decimal u64 string. The observer is complete-carrier; custom observers are not yet exposed. Other native/recording limits retain the pinned CLI defaults. Trace output is capped at 16 MiB.
 
@@ -64,4 +73,4 @@ Abrupt crashes leave `owner.lock`. Once the old service is confirmed stopped, ru
 
 ## Firebase boundary
 
-The API/job contract supports the selected Firebase direction, but this file-store adapter is not a cloud database. Hosted authentication, Firestore/Storage adapters, distributed dispatch/fencing, resource quotas, deployment tests and UI integration remain open. Never reuse the local token as hosted authentication. Graph interpretation remains in the native engine.
+The API/job contract and browser workflow support the selected Firebase direction, but this file-store adapter is not a cloud database. Hosted authentication, Firestore/Storage adapters, distributed dispatch/fencing, resource quotas and deployment tests remain open. Never reuse the local token as hosted authentication. Graph interpretation remains in the native engine. Before hosted setup, agree on the Firebase project, region, authentication providers, project roles, intended audience and cost limits. Service credentials must not be placed in the frontend or shared in chat. Emulator-backed implementation precedes any separately authorised deployment or billing activation.

@@ -15,9 +15,9 @@ const token = 'local_test_token_012345678901234567890';
 const program = fs.readFileSync('examples/programs/arithmetic.graph', 'utf8');
 const oscillator = fs.readFileSync('examples/behaviour/oscillating.graph', 'utf8');
 
-async function fixture(t) {
+async function fixture(t, options = {}) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'graph-platform-test-'));
-  let app = await start({ directory, binary, token });
+  let app = await start({ directory, binary, token, ...options });
   t.after(async () => { await app.close(); fs.rmSync(directory, { recursive: true, force: true }); });
   const request = async (route, data, { auth = true, headers = {}, raw = false } = {}) => {
     const response = await fetch(app.url + route, { method: data === undefined ? 'GET' : 'POST',
@@ -40,8 +40,45 @@ async function fixture(t) {
     throw Error('Job did not finish');
   };
   return { request, create, submit, wait, directory, get app() { return app; },
-    restart: async () => { await app.close(); app = await start({ directory, binary, token }); } };
+    restart: async () => { await app.close(); app = await start({ directory, binary, token, ...options }); } };
 }
+
+test('browser access is opt-in, exact-origin and still requires the bearer token', async t => {
+  const origin = 'http://127.0.0.1:4173', f = await fixture(t, { origins: [origin] });
+  const preflight = await fetch(f.app.url + '/v1/projects', { method: 'OPTIONS', headers: { Origin: origin,
+    'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'authorization, content-type' } });
+  assert.equal(preflight.status, 204); assert.equal(preflight.headers.get('Access-Control-Allow-Origin'), origin);
+  assert.equal(preflight.headers.get('Access-Control-Allow-Credentials'), null);
+  assert.equal((await f.request('/v1/health', undefined, { auth: false, headers: { Origin: origin } })).status, 401);
+  const allowed = await f.request('/v1/health', undefined, { headers: { Origin: origin } });
+  assert.equal(allowed.status, 200); assert.equal(allowed.headers.get('Access-Control-Expose-Headers'), 'X-Content-SHA256');
+  for (const Origin of ['null', 'http://127.0.0.1:4174', 'https://evil.invalid'])
+    assert.equal((await f.request('/v1/health', undefined, { headers: { Origin } })).status, 403);
+  const denied = await fetch(f.app.url + '/v1/projects', { method: 'OPTIONS', headers: { Origin: origin,
+    'Access-Control-Request-Method': 'POST', 'Access-Control-Request-Headers': 'x-unapproved' } });
+  assert.equal(denied.status, 403);
+  await assert.rejects(start({ directory: f.directory, binary, token, origins: ['*'] }), /Browser origins/);
+  await assert.rejects(start({ directory: f.directory, binary, token, origins: ['https://example.com'] }), /Browser origins/);
+});
+
+test('fork and retry provenance is project-scoped, immutable, durable and included in idempotency', async t => {
+  const f = await fixture(t), { project, version } = await f.create();
+  const fork = await f.request(`/v1/projects/${project.id}/versions`, { name: 'fork', source: program, parent_version_id: version.id });
+  assert.equal(fork.status, 201); assert.equal(fork.body.parent_version_id, version.id); assert.notEqual(fork.body.id, version.id);
+  const original = await f.submit(project, version); const first = await f.wait(original.body.id);
+  const input = { version_id: fork.body.id, settings: { max_steps: 0 }, idempotency_key: 'branch', parent_job_id: first.id };
+  const branch = await f.request(`/v1/projects/${project.id}/jobs`, input); assert.equal(branch.status, 202);
+  const result = await f.wait(branch.body.id); assert.equal(result.parent_job_id, first.id); assert.equal(result.commits, 0);
+  assert.equal((await f.request(`/v1/projects/${project.id}/jobs`, { ...input, parent_job_id: null })).status, 409);
+  const other = await f.request('/v1/projects', { name: 'Other' });
+  assert.equal((await f.request(`/v1/projects/${other.body.id}/versions`, { name: 'bad', source: program, parent_version_id: version.id })).status, 404);
+  assert.equal((await f.request(`/v1/projects/${project.id}/jobs`, { ...input, parent_job_id: other.body.id, idempotency_key: 'bad' })).status, 409);
+  await f.restart();
+  assert.equal((await f.request(`/v1/projects/${project.id}/jobs`, input)).body.id, result.id);
+  assert.deepEqual((await f.request(`/v1/jobs/${first.id}`)).body, first);
+  assert.throws(() => f.app.store.update(s => { s.versions[0].parent_version_id = fork.body.id; }), /version parent/);
+  assert.throws(() => f.app.store.update(s => { s.jobs[0].parent_job_id = result.id; }), /job parent/);
+});
 
 test('real native job exports a verified trace with pinned identities and recovers after restart', async t => {
   const f = await fixture(t), { project, version } = await f.create();

@@ -1,0 +1,23 @@
+.platform{color:var(--ink);background:var(--surface);min-height:70vh}
+.app-header a[aria-current=page]{color:var(--ink);font-weight:600;text-decoration-thickness:2px;text-underline-offset:6px}
+.platform-heading{display:flex;justify-content:space-between;gap:24px;align-items:center;padding:26px 32px;border-bottom:1px solid var(--border)}
+.platform-heading h1{font-size:24px}.platform-heading p{margin:4px 0 0;color:var(--muted)}
+.platform-connection,.platform-actions,.platform-section-heading{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.platform-connection{font-size:12px}
+.platform-layout{display:grid;grid-template-columns:240px minmax(0,1fr)}.project-sidebar{padding:24px;border-right:1px solid var(--border)}
+.project-sidebar nav{margin:18px -12px}.project-sidebar nav button{width:100%;display:flex;justify-content:space-between;text-align:left;border:0;border-radius:0;background:transparent;padding:12px;gap:12px;overflow-wrap:anywhere;transition:background .15s}
+.project-sidebar nav button[aria-pressed=true]{background:var(--soft);box-shadow:inset 3px 0 var(--focus)}.project-sidebar small{color:var(--muted);white-space:nowrap;flex-shrink:0}
+.platform label{display:flex;flex-direction:column;gap:6px;font-size:12px;margin:12px 0}.platform form>button{margin:8px 0}.platform input,.platform select{width:100%}
+.platform details{margin:16px 0}.platform summary{cursor:pointer}.platform code{overflow-wrap:anywhere;font-size:11px}.project-sidebar details{font-size:12px;margin-top:32px}
+.project-workspace{min-width:0;max-width:1440px}.project-title{padding:24px 32px;border-bottom:1px solid var(--border);display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}.project-title h2{font-size:21px}.project-title code{color:var(--muted)}
+.platform-section{padding:24px 32px;border-bottom:1px solid var(--border)}.platform-section-heading{justify-content:space-between}.platform-section-heading span{font-size:12px;color:var(--muted)}
+.platform p{font-size:13px;line-height:1.65}.platform-section>p,.platform-section form>p{color:var(--muted);max-width:85ch}
+.platform-connect{max-width:620px;padding:32px}.platform-connect h2{margin-bottom:20px}.platform textarea{font:12px/1.6 ui-monospace,monospace;min-height:220px;width:100%;resize:vertical;padding:14px;background:var(--input);color:var(--ink);border:1px solid var(--border);border-radius:4px}
+.platform-actions{margin:16px 0}.platform-actions span{font-size:12px}.version-composer{padding-top:16px}.platform fieldset{border:0;padding:0;margin:0}.platform legend{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.job-settings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 20px}.platform .platform-checkbox{flex-direction:row;align-items:center}.platform-checkbox input{width:auto}
+.platform-message{margin:0;padding:12px 32px;border-bottom:1px solid var(--border);white-space:pre-wrap;overflow-wrap:anywhere}.platform-error{background:var(--warning-bg);color:var(--warning)}
+.platform-empty{padding:24px 32px}.platform th{font-weight:600}.platform td{font-variant-numeric:tabular-nums}.selected-run{background:var(--soft)}.run-inspector{animation:run-reveal .16s ease-out}.run-inspector pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}.platform dl{margin:16px 0}.run-comparison{margin-top:28px}.run-comparison table{table-layout:fixed}.run-comparison td{overflow-wrap:anywhere}.run-comparison th{overflow-wrap:anywhere}
+@keyframes run-reveal{from{opacity:.5;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:900px){.platform-layout{grid-template-columns:200px minmax(0,1fr)}.job-settings{grid-template-columns:repeat(2,minmax(0,1fr))}.platform-section,.project-title{padding:20px}}
+@media(max-width:650px){.platform-layout{grid-template-columns:1fr}.project-sidebar{border-right:0;border-bottom:1px solid var(--border)}.project-sidebar nav{max-height:220px;overflow:auto}.platform-heading{align-items:flex-start;flex-direction:column;padding:20px}.platform-connect{padding:20px}.platform-connection{overflow-wrap:anywhere}.platform-message{padding:12px 20px}.platform dl{grid-template-columns:110px minmax(0,1fr)}}
+@media(prefers-reduced-motion:reduce){.run-inspector{animation:none}.project-sidebar nav button{transition:none}}
+@media print{.platform{display:none!important}}

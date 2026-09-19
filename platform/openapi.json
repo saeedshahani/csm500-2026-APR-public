@@ -292,6 +292,10 @@
                   "source": {
                     "type": "string",
                     "description": "Well-formed text, at most 262144 UTF-8 bytes"
+                  },
+                  "parent_version_id": {
+                    "type": ["string", "null"],
+                    "description": "Optional existing version in the same project; a fork is a new immutable source, not a graph rewrite."
                   }
                 },
                 "required": [
@@ -517,6 +521,10 @@
                   "idempotency_key": {
                     "type": "string",
                     "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                  },
+                  "parent_job_id": {
+                    "type": ["string", "null"],
+                    "description": "Optional terminal job in the same project. Included in request identity. New execution, not continuation."
                   },
                   "settings": {
                     "$ref": "#/components/schemas/Settings"
@@ -817,6 +825,10 @@
           "validated_engine_sha256": {
             "type": "string"
           },
+          "parent_version_id": {
+            "type": ["string", "null"],
+            "description": "Absent in older stores; absence and null mean no parent."
+          },
           "created_at": {
             "type": "string"
           }
@@ -852,6 +864,10 @@
           },
           "version_id": {
             "type": "string"
+          },
+          "parent_job_id": {
+            "type": ["string", "null"],
+            "description": "Absent in older stores; absence and null mean no parent."
           },
           "settings": {
             "$ref": "#/components/schemas/Settings"

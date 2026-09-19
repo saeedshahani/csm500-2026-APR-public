@@ -11,6 +11,7 @@ import {EventList} from './EventList';
 import {DatasetInput,WorkItems} from './Datasets';
 import {LambdaInput,LambdaResult} from './Lambda';
 import {Guide} from './Guide';
+import {Platform} from './Platform';
 import {parseProject,readLocal,readUtf8,saveLocal,type Theme,type Project} from './projects';
 import manifest from '../../examples/manifest.json';
 import './workspace.css';
@@ -23,19 +24,19 @@ const all=observers[Object.keys(observers).find(k=>k.endsWith('/all.observer'))!
 const valueObserver=observers[Object.keys(observers).find(k=>k.endsWith('/value.observer'))!];
 function download(text:string,name:string){const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 export default function App(){
-  const client=useRef<EngineClient|null>(null),loop=useRef(false),epoch=useRef(0);
+  const client=useRef<EngineClient|null>(null),loop=useRef(false),epoch=useRef(0),workspaceGuard=useRef({locked:true,hasSession:false});
   const [source,setSource]=useState(examples[initial]),[example,setExample]=useState(initial),[state,setState]=useState<EngineState|null>(null),[trace,setTrace]=useState<string|null>(null);
   const [busy,setBusy]=useState(false),[initialising,setInitialising]=useState(true),[diagnostic,setDiagnostic]=useState(''),[selected,setSelected]=useState<string|null>(null),[selectedEvent,setSelectedEvent]=useState<string|null>(null);
   const [maxSteps,setMaxSteps]=useState('20'),[seed,setSeed]=useState('42'),[cycles,setCycles]=useState(false),[observer,setObserver]=useState('all'),[batch,setBatch]=useState('1'),[dataset,setDataset]=useState(0),[sessionSource,setSessionSource]=useState('');
   const [atomSearch,setAtomSearch]=useState('');
   const [atomPage,setAtomPage]=useState(0),[inspected,setInspected]=useState<Reply['inspection']>(null);
   const [maxWork,setMaxWork]=useState('1000000'),[maxCandidates,setMaxCandidates]=useState('1000');
-  const [theme,setTheme]=useState<Theme>('system'),[guide,setGuide]=useState(location.hash==='#guide'),[storageError,setStorageError]=useState(''),[savedDraft,setSavedDraft]=useState<string|null>(null);
+  const [theme,setTheme]=useState<Theme>('system'),[guide,setGuide]=useState(location.hash==='#guide'),[platform,setPlatform]=useState(location.hash==='#projects'),[storageError,setStorageError]=useState(''),[savedDraft,setSavedDraft]=useState<string|null>(null);
   const [sourceError,setSourceError]=useState<Reply['error']>(null),[jumpError,setJumpError]=useState(0);
   const [diagnosticTarget,setDiagnosticTarget]=useState<string|null>(null);
   const draft=useRef(source),sourceVersion=useRef(0);
   function edit(text:string){draft.current=text;sourceVersion.current++;setSource(text);setExample(choices.find(k=>examples[k]===text)??'');setSourceError(null);}
-  useEffect(()=>{const t=readLocal('reflective-theme'),d=readLocal('reflective-draft');if(['light','dark','system'].includes(t.value??''))setTheme(t.value as Theme);setSavedDraft(d.value);setStorageError(t.error??d.error??'');const navigate=()=>setGuide(location.hash==='#guide');window.addEventListener('hashchange',navigate);return()=>window.removeEventListener('hashchange',navigate);},[]);
+  useEffect(()=>{const t=readLocal('reflective-theme'),d=readLocal('reflective-draft');if(['light','dark','system'].includes(t.value??''))setTheme(t.value as Theme);setSavedDraft(d.value);setStorageError(t.error??d.error??'');const navigate=()=>{setGuide(location.hash==='#guide');setPlatform(location.hash==='#projects');};window.addEventListener('hashchange',navigate);return()=>window.removeEventListener('hashchange',navigate);},[]);
   useEffect(()=>{const media=matchMedia('(prefers-color-scheme: dark)');const apply=()=>{document.documentElement.dataset.theme=theme==='system'?(media.matches?'dark':'light'):theme;};apply();media.addEventListener('change',apply);return()=>media.removeEventListener('change',apply);},[theme]);
   function chooseTheme(t:Theme){setTheme(t);const error=saveLocal('reflective-theme',t);if(error)setStorageError(error);}
   const pendingConfig=()=>({max_steps:maxSteps,max_work:maxWork,max_candidates:maxCandidates,seed:seed.trim()?seed:null,detect_cycles:cycles,observer:observer==='all'?all:observer==='value'?valueObserver:observer});
@@ -77,6 +78,15 @@ export default function App(){
     catch(e){if(token===epoch.current)setAnalysisError(String(e));}finally{if(token===epoch.current)setBusy(false);}
   }
   const locked=busy||initialising||seeking||playing;
+  workspaceGuard.current={locked,hasSession:!!state};
+  function openPlatformSource(text:string){if(workspaceGuard.current.locked)throw Error('Stop workspace execution before opening source.');if(text!==draft.current&&!window.confirm('Replace the workspace editor draft? The loaded graph and history will not change.'))return;edit(text);location.hash='workspace';}
+  async function openPlatformTrace(text:string){
+    if(workspaceGuard.current.locked)throw Error('Stop workspace execution before importing a result.');
+    if(workspaceGuard.current.hasSession&&!window.confirm('Replace the loaded graph and history with this verified run? The editor draft will be kept.'))return;
+    const reply=await command({command:'import',trace:text});
+    if(!reply?.ok)throw Error(reply?.error?.message??'Trace import failed; the previous session was retained.');
+    setSelected(null);setSelectedEvent(null);setDataset(n=>n+1);setSessionSource('');location.hash='workspace';
+  }
   const atom=selected&&state?(state.graph.atoms[selected]??state.previous?.atoms[selected]):null;
   const event=state?.events.find(e=>e.id===selectedEvent);
   const rule=state?.rules.find(r=>r.head===selected);
@@ -84,8 +94,9 @@ export default function App(){
   const lastPage=Math.max(0,Math.ceil(matches.length/100)-1),currentPage=Math.min(atomPage,lastPage),labels=matches.slice(currentPage*100,currentPage*100+100);
   const exampleInfo=manifest.find(m=>example.endsWith(m.file));
   return <main>
-    <header className="app-header"><div className="wordmark">Reflective Graph</div><nav aria-label="Application"><a href="#workspace">Workspace</a> <a href="#guide">Guide</a> <label>Theme <select aria-label="Theme" value={theme} onChange={e=>chooseTheme(e.target.value as Theme)}><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label></nav></header>
-    {guide&&<Guide/>}<div hidden={guide} className="workbench-content">
+    <header className="app-header"><div className="wordmark">Reflective Graph</div><nav aria-label="Application"><a href="#projects" aria-current={platform?'page':undefined}>Projects</a> <a href="#workspace" aria-current={!platform&&!guide?'page':undefined}>Workspace</a> <a href="#guide" aria-current={guide?'page':undefined}>Guide</a> <label>Theme <select aria-label="Theme" value={theme} onChange={e=>chooseTheme(e.target.value as Theme)}><option value="system">System</option><option value="light">Light</option><option value="dark">Dark</option></select></label></nav></header>
+    <Platform active={platform} draft={source} inspectorBusy={locked} onSource={openPlatformSource} onTrace={openPlatformTrace}/>
+    {guide&&<Guide/>}<div hidden={guide||platform} className="workbench-content">
     <section className="toolbar" aria-label="Execution controls">
       <button className="primary" onClick={()=>void load()} disabled={locked}>Load program</button>
       <button onClick={()=>command({command:'advance',batch:'1'})} disabled={locked||!state?.can_advance}>Step</button>
