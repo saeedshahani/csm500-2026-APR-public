@@ -15,6 +15,10 @@ docs/dissertation.md
 /target/
 **/.DS_Store
 /frontend/node_modules/
+/platform/node_modules/
+firebase-debug.log*
+/.firebase/
+/platform/.firebase/
 /frontend/dist/
 /frontend/pkg/
 /frontend/pkg-node/

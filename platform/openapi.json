@@ -3,7 +3,7 @@
   "info": {
     "title": "Reflective Graph Local Developer API",
     "version": "0.1.0",
-    "description": "Local single-owner adapter, not a deployed or multi-tenant Firebase API. Delegates semantics to the pinned Rust CLI."
+    "description": "Loopback developer API using either a local owner token or Firebase Authentication emulator identities with project roles. Not a hosted or production-authenticated service. Delegates semantics to the pinned Rust CLI."
   },
   "servers": [
     {
@@ -13,9 +13,36 @@
   "security": [
     {
       "LocalBearer": []
+    },
+    {
+      "EmulatorBearer": []
     }
   ],
   "paths": {
+    "/v1/projects/{project}/members": {
+      "get": {
+        "operationId": "members",
+        "description": "Emulator mode only. Requires project owner; no membership list is exposed to editors or viewers.",
+        "parameters": [{ "name": "project", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": {
+          "200": { "description": "Project membership", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Members" } } } },
+          "default": { "description": "401 identity rejected; 403 not owner; 404 inaccessible or unsupported in local-token mode", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      },
+      "post": {
+        "operationId": "setMember",
+        "description": "Emulator mode only. Owner grants or changes viewer/editor membership; null removes membership. The owner cannot be changed. Maximum 32 members.",
+        "parameters": [{ "name": "project", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "required": true, "content": { "application/json": { "schema": {
+          "type": "object", "additionalProperties": false, "required": ["uid", "role"],
+          "properties": { "uid": { "type": "string", "minLength": 1, "maxLength": 128 }, "role": { "enum": ["viewer", "editor", null] } }
+        } } } },
+        "responses": {
+          "200": { "description": "Updated membership", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Members" } } } },
+          "default": { "description": "Structured error; invalid membership, missing access or capacity reached", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+        }
+      }
+    },
     "/v1/health": {
       "get": {
         "operationId": "health",
@@ -35,6 +62,8 @@
                     "mode": {
                       "type": "string"
                     },
+                    "uid": { "type": "string", "description": "Authenticated UID in emulator mode" },
+                    "project_id": { "type": "string", "description": "Firebase demo project in emulator mode" },
                     "engine_sha256": {
                       "type": "string"
                     }
@@ -715,10 +744,27 @@
     "securitySchemes": {
       "LocalBearer": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "description": "Only accepted when configured for local-single-owner mode."
+      },
+      "EmulatorBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Firebase emulator ID token; only accepted in explicit firebase-emulator mode. Development tokens are unsigned and are not production credentials."
       }
     },
     "schemas": {
+      "Members": {
+        "type": "object", "additionalProperties": false, "required": ["owner_uid", "members"],
+        "properties": {
+          "owner_uid": { "type": "string" },
+          "members": { "type": "array", "maxItems": 32, "items": {
+            "type": "object", "additionalProperties": false, "required": ["uid", "role"],
+            "properties": { "uid": { "type": "string" }, "role": { "enum": ["viewer", "editor"] } }
+          } }
+        }
+      },
       "Error": {
         "type": "object",
         "additionalProperties": false,
@@ -790,6 +836,8 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
+          "owner_uid": { "type": "string", "description": "Emulator mode only" },
+          "role": { "enum": ["owner", "editor", "viewer"], "description": "Requester's project role in emulator mode" },
           "id": {
             "type": "string"
           },
@@ -856,6 +904,7 @@
           "source_sha256"
         ],
         "properties": {
+          "submitted_by": { "type": "string", "description": "Emulator UID; idempotency is scoped to this submitter and project" },
           "id": {
             "type": "string"
           },

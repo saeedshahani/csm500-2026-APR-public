@@ -41,3 +41,14 @@ test('structured API errors are preserved without automatic retries',async t=>{
   let calls=0;t.mock.method(globalThis,'fetch',async()=>{calls++;return Response.json({error:{code:'busy',message:'Native slot busy'}},{status:429});});
   const client=new PlatformClient('http://127.0.0.1:8787',token);await assert.rejects(client.validate('program {}'),/busy: Native slot busy/);assert.equal(calls,1);client.close();
 });
+
+test('refreshable identities are obtained per request and never sent after disconnect',async t=>{
+  let count=0;const headers:string[]=[];
+  t.mock.method(globalThis,'fetch',async(_url:unknown,options:RequestInit)=>{headers.push((options.headers as Record<string,string>).Authorization);return Response.json({api:'v1'});});
+  const client=new PlatformClient('http://127.0.0.1:8787',async()=>`token.${++count}.`);
+  await client.health();await client.projects();assert.deepEqual(headers,['Bearer token.1.','Bearer token.2.']);client.close();
+  let resolve!:(token:string)=>void;
+  const pendingClient=new PlatformClient('http://127.0.0.1:8787',()=>new Promise(yes=>{resolve=yes;}));
+  const pending=pendingClient.health();pendingClient.close();resolve('token.3.');
+  await assert.rejects(pending,/disconnected/);assert.equal(headers.length,2);
+});

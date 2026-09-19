@@ -3,9 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
     "start": "cd .. && node platform/server.mjs",
-    "test": "cd .. && node --test platform/tests/*.test.mjs"
+    "test": "cd .. && node --test platform/tests/*.test.mjs",
+    "emulator": "node emulator.mjs",
+    "test:emulator": "node emulator.mjs --test"
+  },
+  "dependencies": {
+    "firebase-admin": "14.4.0"
+  },
+  "devDependencies": {
+    "firebase-tools": "15.30.2"
+  },
+  "overrides": {
+    "gaxios@6.7.1": { "uuid": "11.1.1" }
   }
 }

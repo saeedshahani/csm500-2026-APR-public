@@ -1,4 +1,7 @@
-export type ProjectRecord = {id:string;name:string;created_at:string};
+export type ProjectRole = 'owner'|'editor'|'viewer';
+export type ProjectRecord = {id:string;name:string;created_at:string;owner_uid?:string;role?:ProjectRole};
+export type Members = {owner_uid:string;members:{uid:string;role:'editor'|'viewer'}[]};
+export type TokenProvider = ()=>Promise<string>;
 export type VersionRecord = ProjectRecord & {project_id:string;source_sha256:string;validated_engine_sha256:string;parent_version_id?:string|null};
 export type JobSettings = {max_steps:number;max_work:number;max_candidates:number;seed:string|null;detect_cycles:boolean;deadline_ms:number};
 export type JobRecord = {id:string;project_id:string;version_id:string;source_sha256:string;engine_sha256:string;settings:JobSettings;status:string;outcome:string|null;commits:number|null;trace_sha256:string|null;failure:string|null;created_at:string;started_at:string|null;finished_at:string|null;parent_job_id?:string|null;idempotency_key:string};
@@ -29,15 +32,15 @@ export async function readBounded(response:Response, maximum:number):Promise<Uin
 // Transport only. No graph semantics, credentials in persistent storage, or automatic POST retries.
 export class PlatformClient {
   readonly url:string;
-  #token:string;
+  #token:string|TokenProvider;
   #closed=false;
   #pending=new Set<AbortController>();
   #submissions=new Map<string,string>();
-  constructor(url:string,token:string) {
+  constructor(url:string,token:string|TokenProvider) {
     const parsed=new URL(url);
     if(parsed.protocol!=='http:'||parsed.hostname!=='127.0.0.1'||parsed.username||parsed.password||parsed.search||parsed.hash||parsed.pathname!=='/')
       throw Error('Use the local API address: http://127.0.0.1:8787');
-    if(!/^[A-Za-z0-9_-]{32,128}$/.test(token))throw Error('The API token must contain 32–128 letters, digits, underscores or hyphens');
+    if(typeof token!=='function'&&!/^[A-Za-z0-9_-]{32,128}$/.test(token))throw Error('The API token must contain 32–128 letters, digits, underscores or hyphens');
     this.url=parsed.origin;this.#token=token;
   }
   close(){this.#closed=true;this.#token='';for(const request of this.#pending)request.abort();this.#pending.clear();this.#submissions.clear();}
@@ -46,8 +49,11 @@ export class PlatformClient {
     const control=new AbortController();this.#pending.add(control);
     const timeout=setTimeout(()=>control.abort(),35000);
     try {
+      const token=typeof this.#token==='function'?await this.#token():this.#token;
+      if(this.#closed||control.signal.aborted)throw Error('API disconnected or token refresh timed out');
+      if(!/^[A-Za-z0-9_.-]{1,16384}$/.test(token))throw Error('Invalid authentication token');
       const response=await fetch(this.url+route,{method:data===undefined?'GET':'POST',credentials:'omit',redirect:'error',cache:'no-store',signal:control.signal,
-        headers:{Authorization:`Bearer ${this.#token}`,...(data===undefined?{}:{'Content-Type':'application/json'})},...(data===undefined?{}:{body:JSON.stringify(data)})});
+        headers:{Authorization:`Bearer ${token}`,...(data===undefined?{}:{'Content-Type':'application/json'})},...(data===undefined?{}:{body:JSON.stringify(data)})});
       const bytes=await readBounded(response,response.ok?maximum:65536);
       if(this.#closed)throw Error('API disconnected');
       if(!response.ok){let message=`API request failed (${response.status})`;try{const error=JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes)).error;if(typeof error?.message==='string')message=`${error.code}: ${error.message}`;}catch{/* Keep status if the error body is malformed. */}throw Error(message);}
@@ -60,9 +66,11 @@ export class PlatformClient {
     } finally {clearTimeout(timeout);this.#pending.delete(control);}
   }
   async #json<T>(route:string,data?:unknown):Promise<T>{const {bytes}=await this.#request(route,data);return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes)) as T;}
-  health(){return this.#json<{api:string;mode:string;engine_sha256:string}>('/v1/health');}
+  health(){return this.#json<{api:string;mode:string;engine_sha256:string;uid?:string;project_id?:string}>('/v1/health');}
   projects(){return this.#json<Page<ProjectRecord>>('/v1/projects?limit=100');}
   createProject(name:string){return this.#json<ProjectRecord>('/v1/projects',{name});}
+  members(project:string){return this.#json<Members>(`/v1/projects/${id(project)}/members`);}
+  setMember(project:string,uid:string,role:'viewer'|'editor'|null){return this.#json<Members>(`/v1/projects/${id(project)}/members`,{uid,role});}
   async versions(project:string):Promise<VersionRecord[]>{
     const first=await this.#json<Page<VersionRecord>>(`/v1/projects/${id(project)}/versions?limit=100`);
     if(first.next_offset===null)return first.items;

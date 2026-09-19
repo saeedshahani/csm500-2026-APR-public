@@ -18,7 +18,9 @@ jobs:
       - name: Local developer API and recovery acceptance
         run: |
           cargo build --release --locked -p cli
+          npm ci --prefix platform --ignore-scripts
           node --test platform/tests/*.test.mjs
+          npm run test:emulator --prefix platform
       - name: Large-data importer and experimental matching smoke
         run: |
           node --test scripts/import-study-data.test.mjs

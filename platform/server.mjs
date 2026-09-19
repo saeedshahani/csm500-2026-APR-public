@@ -1,9 +1,10 @@
 import http from 'node:http';
-import { randomUUID, timingSafeEqual } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { Store, ApiError, fail, hash, terminal } from './store.mjs';
 import { Worker, settings } from './worker.mjs';
+import { identity, authorize, role, validUid } from './identity.mjs';
 
 const MAX_BODY = 1024 * 1024;
 function object(value, allowed, required = allowed) {
@@ -39,15 +40,16 @@ function page(items, url) {
   return { items: items.slice(offset, offset + limit), total: items.length, next_offset: offset + limit < items.length ? offset + limit : null };
 }
 
-export async function start({ directory, binary, token, port = 0, recover = false, origins = [] }) {
-  if (typeof token !== 'string' || !/^[A-Za-z0-9_-]{32,128}$/.test(token)) throw Error('A 32–128 character local bearer token is required');
+export async function start({ directory, binary, token, port = 0, recover = false, origins = [], authMode = 'local-single-owner', projectId, authHost }) {
   if (!Array.isArray(origins) || origins.some(origin => {
     try { const url = new URL(origin); return url.origin !== origin || url.protocol !== 'http:' || !['127.0.0.1', 'localhost'].includes(url.hostname); }
     catch { return true; }
   })) throw Error('Browser origins must be exact http://127.0.0.1 or http://localhost origins with an optional port');
-  const store = new Store(directory, { recover });
+  const auth = await identity({ mode: authMode, token, projectId, host: authHost });
+  let store;
+  try { store = new Store(directory, { recover, namespace: auth.namespace }); } catch (e) { await auth.close(); throw e; }
   let worker;
-  try { worker = new Worker(store, resolve(binary)); } catch (e) { store.close(); throw e; }
+  try { worker = new Worker(store, resolve(binary)); } catch (e) { store.close(); await auth.close(); throw e; }
   let validating = false, closing = false;
   const validate = async text => {
     if (validating || worker.active) fail(429, 'busy', 'Native slot busy; retry validation later');
@@ -76,35 +78,59 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         res.writeHead(204, { 'Access-Control-Allow-Methods': 'GET, POST', 'Access-Control-Allow-Headers': 'Authorization, Content-Type' });
         res.end(); return;
       }
-      const supplied = Buffer.from(req.headers.authorization ?? ''), expected = Buffer.from(`Bearer ${token}`);
-      if (supplied.length !== expected.length || !timingSafeEqual(supplied, expected)) fail(401, 'unauthorized', 'Local bearer token required');
+      const uid = await auth.authenticate(req.headers.authorization);
+      const access = (id, required) => authorize(project(id), uid, auth.mode, required);
+      const visible = p => ({ id: p.id, name: p.name, created_at: p.created_at,
+        ...(auth.mode === 'firebase-emulator' ? { owner_uid: p.owner_uid, role: role(p, uid, auth.mode) } : {}) });
       const url = new URL(req.url, 'http://127.0.0.1');
       const parts = url.pathname.split('/').filter(Boolean);
       if (parts[0] !== 'v1') fail(404, 'not_found', 'Unknown API version or route');
       const method = req.method;
-      if (method === 'GET' && url.pathname === '/v1/health') return send(200, { api: 'v1', mode: 'local-single-owner', engine_sha256: worker.identity });
+      if (method === 'GET' && url.pathname === '/v1/health') return send(200, { api: 'v1', mode: auth.mode, engine_sha256: worker.identity,
+        ...(auth.mode === 'firebase-emulator' ? { uid, project_id: auth.projectId } : {}) });
       if (method === 'POST' && url.pathname === '/v1/validate') {
         const b = await body(req); object(b, ['source']); return send(200, await validate(source(b.source)));
       }
       if (parts[1] === 'projects' && parts.length === 2) {
-        if (method === 'GET') return send(200, page(store.state.projects, url));
+        if (method === 'GET') return send(200, page(store.state.projects.filter(p => role(p, uid, auth.mode)).map(visible), url));
         if (method === 'POST') {
           const b = await body(req); object(b, ['name']);
-          const p = { id: randomUUID(), name: name(b.name), created_at: new Date().toISOString() };
+          const p = { id: randomUUID(), name: name(b.name), created_at: new Date().toISOString(),
+            ...(auth.mode === 'firebase-emulator' ? { owner_uid: uid, members: [] } : {}) };
           store.update(s => { if (s.projects.length >= 32) fail(409, 'capacity', 'Project capacity reached'); s.projects.push(p); });
-          return send(201, p);
+          return send(201, visible(p));
         }
       }
       if (parts[1] === 'projects' && parts.length === 4) {
-        const p = project(parts[2]);
+        const p = access(parts[2]);
+        if (parts[3] === 'members' && auth.mode === 'firebase-emulator') {
+          access(p.id, 'owner');
+          if (method === 'GET') return send(200, { owner_uid: p.owner_uid, members: p.members });
+          if (method === 'POST') {
+            const b = await body(req); object(b, ['uid', 'role']);
+            const current = access(p.id, 'owner');
+            if (!validUid(b.uid) || b.uid === current.owner_uid || !['viewer', 'editor', null].includes(b.role))
+              fail(400, 'invalid_member', 'Use a non-owner UID and viewer, editor or null (remove) role');
+            store.update(s => {
+              const target = s.projects.find(item => item.id === p.id);
+              target.members = target.members.filter(m => m.uid !== b.uid);
+              if (b.role !== null) target.members.push({ uid: b.uid, role: b.role });
+              if (target.members.length > 32) fail(409, 'capacity', 'Project member capacity reached');
+            });
+            const updated = project(p.id); return send(200, { owner_uid: updated.owner_uid, members: updated.members });
+          }
+        }
         if (parts[3] === 'versions') {
           if (method === 'GET') return send(200, page(store.state.versions.filter(v => v.project_id === p.id), url));
           if (method === 'POST') {
+            access(p.id, 'editor');
             const b = await body(req); object(b, ['name', 'source', 'parent_version_id'], ['name', 'source']); const label = name(b.name), text = source(b.source);
+            access(p.id, 'editor');
             if (b.parent_version_id != null && !store.state.versions.some(v => v.id === b.parent_version_id && v.project_id === p.id))
               fail(404, 'not_found', 'Parent version not found in project');
             if (store.state.versions.length >= 128) fail(409, 'capacity', 'Version capacity reached');
             const validation = await validate(text);
+            access(p.id, 'editor'); // A role can be revoked while native validation is pending.
             const v = { id: randomUUID(), project_id: p.id, name: label, source_sha256: store.put(text),
               validated_engine_sha256: validation.engine_sha256, parent_version_id: b.parent_version_id ?? null, created_at: new Date().toISOString() };
             store.update(s => s.versions.push(v)); return send(201, v);
@@ -113,7 +139,9 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         if (parts[3] === 'jobs') {
           if (method === 'GET') return send(200, page(store.state.jobs.filter(j => j.project_id === p.id), url));
           if (method === 'POST') {
+            access(p.id, 'editor');
             const b = await body(req); object(b, ['version_id', 'settings', 'idempotency_key', 'parent_job_id'], ['version_id', 'idempotency_key']);
+            access(p.id, 'editor');
             if (typeof b.idempotency_key !== 'string' || !/^[A-Za-z0-9_-]{1,100}$/.test(b.idempotency_key)) fail(400, 'invalid_key', 'Invalid idempotency key');
             const v = store.state.versions.find(v => v.id === b.version_id && v.project_id === p.id);
             if (!v) fail(404, 'not_found', 'Version not found in project');
@@ -121,7 +149,8 @@ export async function start({ directory, binary, token, port = 0, recover = fals
               fail(409, 'invalid_parent', 'Parent job must be a finished job in this project');
             const config = settings(b.settings), request = hash(JSON.stringify({ version: v.id, settings: config,
               ...(b.parent_job_id != null ? { parent_job_id: b.parent_job_id } : {}) }));
-            const existing = store.state.jobs.find(j => j.project_id === p.id && j.idempotency_key === b.idempotency_key);
+            const existing = store.state.jobs.find(j => j.project_id === p.id && j.idempotency_key === b.idempotency_key
+              && (auth.mode === 'local-single-owner' || j.submitted_by === uid));
             if (existing) {
               if (existing.request_sha256 !== request) fail(409, 'idempotency_conflict', 'Key already used with another request');
               return send(200, existing);
@@ -129,7 +158,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
             worker.assertBinary();
             const j = { id: randomUUID(), project_id: p.id, version_id: v.id, source_sha256: v.source_sha256,
               idempotency_key: b.idempotency_key, request_sha256: request, engine_sha256: worker.identity,
-              settings: config, parent_job_id: b.parent_job_id ?? null, status: 'queued', outcome: null, commits: null, trace_sha256: null,
+              settings: config, parent_job_id: b.parent_job_id ?? null, ...(auth.mode === 'firebase-emulator' ? { submitted_by: uid } : {}), status: 'queued', outcome: null, commits: null, trace_sha256: null,
               failure: null, created_at: new Date().toISOString(), started_at: null, finished_at: null };
             store.update(s => {
               if (s.jobs.length >= 256 || s.jobs.filter(j => !terminal.has(j.status)).length >= 32) fail(429, 'capacity', 'Job capacity reached');
@@ -140,7 +169,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         }
       }
       if (method === 'GET' && parts[1] === 'projects' && parts.length === 6 && parts[3] === 'versions' && parts[5] === 'source') {
-        project(parts[2]);
+        access(parts[2]);
         const v = store.state.versions.find(v => v.id === parts[4] && v.project_id === parts[2]);
         if (!v) fail(404, 'not_found', 'Version not found');
         const bytes = store.read(v.source_sha256);
@@ -149,9 +178,11 @@ export async function start({ directory, binary, token, port = 0, recover = fals
       }
       if (parts[1] === 'jobs' && [3, 4].includes(parts.length)) {
         const j = job(parts[2]);
+        access(j.project_id);
         if (method === 'GET' && parts.length === 3) return send(200, j);
         if (method === 'POST' && parts[3] === 'cancel') {
           object(await body(req), []);
+          access(j.project_id, 'editor');
           if (!terminal.has(j.status)) worker.cancel(j.id);
           return send(202, job(j.id));
         }
@@ -173,13 +204,13 @@ export async function start({ directory, binary, token, port = 0, recover = fals
   server.requestTimeout = 15000; server.headersTimeout = 10000;
   server.maxConnections = 32;
   try { await new Promise((yes, no) => { server.once('error', no); server.listen(port, '127.0.0.1', yes); }); }
-  catch (e) { store.close(); throw e; }
+  catch (e) { store.close(); await auth.close(); throw e; }
   worker.kick();
   return { url: `http://127.0.0.1:${server.address().port}`, store, worker,
     async close() {
       closing = true;
       const stopped = new Promise(resolve => server.close(resolve));
-      try { await worker.close(); } finally { await stopped; store.close(); }
+      try { await worker.close(); } finally { await stopped; store.close(); await auth.close(); }
     } };
 }
 
@@ -190,8 +221,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   if (!Number.isSafeInteger(port) || port < 0 || port > 65535) throw Error('Invalid GRAPH_PORT');
   const app = await start({ directory: process.env.GRAPH_STORE ?? 'output/platform', binary: process.env.GRAPH_ENGINE ?? 'target/release/cli',
     token: process.env.GRAPH_API_TOKEN, port, recover: args.includes('--recover'),
+    authMode: process.env.GRAPH_AUTH_MODE, projectId: process.env.GRAPH_FIREBASE_PROJECT, authHost: process.env.FIREBASE_AUTH_EMULATOR_HOST,
     origins: process.env.GRAPH_BROWSER_ORIGINS?.split(',').map(s => s.trim()).filter(Boolean) ?? [] });
-  console.log(JSON.stringify({ url: app.url, mode: 'local-single-owner' }));
+  console.log(JSON.stringify({ url: app.url, mode: process.env.GRAPH_AUTH_MODE ?? 'local-single-owner' }));
   let stopping = false;
   for (const event of ['SIGINT', 'SIGTERM']) process.on(event, async () => {
     if (stopping) return; stopping = true; await app.close();

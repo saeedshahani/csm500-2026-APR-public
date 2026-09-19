@@ -11,6 +11,7 @@ export const fail = (status, code, message) => { throw new ApiError(status, code
 export const terminal = new Set(['completed', 'cancelled', 'timed_out', 'failed', 'interrupted']);
 const uuid = /^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/;
 const digest = /^[0-9a-f]{64}$/;
+const uid = value => typeof value === 'string' && value.length > 0 && value.length <= 128 && !/[\x00-\x1f\x7f]/.test(value);
 
 function syncDirectory(dir) {
   const fd = fs.openSync(dir, 'r');
@@ -30,6 +31,17 @@ function validate(state) {
       || state.projects.length > 32 || state.versions.length > 128 || state.jobs.length > 256)
     throw Error('Invalid store schema or capacity');
   const ids = new Set();
+  const shared = state.identity_namespace?.startsWith('firebase-emulator:');
+  if (state.identity_namespace != null && state.identity_namespace !== 'local-single-owner'
+      && !/^firebase-emulator:demo-[a-z0-9-]{1,24}$/.test(state.identity_namespace)) throw Error('Invalid store identity namespace');
+  for (const project of state.projects) {
+    if (shared) {
+      if (!uid(project.owner_uid) || !Array.isArray(project.members) || project.members.length > 32
+          || new Set(project.members.map(m => m.uid)).size !== project.members.length
+          || project.members.some(m => !uid(m.uid) || m.uid === project.owner_uid || !['viewer', 'editor'].includes(m.role)))
+        throw Error('Invalid stored project access');
+    } else if (project.owner_uid != null || project.members != null) throw Error('Shared project in local identity store');
+  }
   for (const entry of [...state.projects, ...state.versions, ...state.jobs]) {
     if (!uuid.test(entry.id) || ids.has(entry.id)) throw Error('Invalid or duplicate stored identity');
     ids.add(entry.id);
@@ -44,6 +56,7 @@ function validate(state) {
     seenVersions.add(version.id);
   }
   for (const job of state.jobs) {
+    if (shared && !uid(job.submitted_by)) throw Error('Invalid stored job submitter');
     if (job.parent_job_id != null && (!seenJobs.has(job.parent_job_id)
         || !state.jobs.some(j => j.id === job.parent_job_id && j.project_id === job.project_id && terminal.has(j.status))))
       throw Error('Invalid stored job parent');
@@ -59,7 +72,7 @@ function validate(state) {
 }
 
 export class Store {
-  constructor(directory, { recover = false } = {}) {
+  constructor(directory, { recover = false, namespace = 'local-single-owner' } = {}) {
     this.directory = path.resolve(directory);
     fs.mkdirSync(this.directory, { recursive: true, mode: 0o700 });
     this.lock = path.join(this.directory, 'owner.lock');
@@ -81,7 +94,9 @@ export class Store {
       fs.mkdirSync(this.blobs, { recursive: true, mode: 0o700 });
       if (fs.existsSync(this.file) && fs.statSync(this.file).size > 8 * 1024 * 1024) throw Error('Store too large');
       this.state = fs.existsSync(this.file) ? JSON.parse(fs.readFileSync(this.file, 'utf8'))
-        : { schema: 'reflective-local-store-v1', projects: [], versions: [], jobs: [] };
+        : { schema: 'reflective-local-store-v1', identity_namespace: namespace, projects: [], versions: [], jobs: [] };
+      if ((this.state.identity_namespace ?? 'local-single-owner') !== namespace) throw Error('Store identity namespace mismatch; use a separate store directory');
+      this.state.identity_namespace = namespace;
       validate(this.state);
       // Reject corrupted referenced bytes before serving any state. Orphans are not results.
       for (const v of this.state.versions) this.read(v.source_sha256);
