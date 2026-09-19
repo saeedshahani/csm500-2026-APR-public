@@ -1,6 +1,6 @@
 # Closed lambda examples
 
-All inputs use the closed, pure, untyped lambda fragment. Application is binary and fully parenthesised; abstractions use ASCII `\`. Bound names may be renamed. Free names, constants and effects are excluded. Evaluation is call-by-name to weak head form, not reduction under lambdas. The compiler creates the eleven graph-resident rules documented in [the encoding](../../docs/lambda-encoding.md).
+All inputs use the closed, pure, untyped lambda fragment. Application is binary and fully parenthesised; abstractions use ASCII `\`. Bound names may be renamed. Free names, constants and effects are excluded. Evaluation is call-by-name to weak head form, not reduction under lambdas. The compiler creates the eleven graph-resident rules documented in [the encoding](../../docs/reference/lambda-encoding.md).
 
 Write `I = (\x. x)`, `K = (\x. (\y. x))`, `D = (\x. (x x))`, `Ω = (D D)`. Independent hand calculations are:
 

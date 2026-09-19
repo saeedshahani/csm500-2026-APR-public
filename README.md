@@ -4,7 +4,7 @@ MSc Computer Science dissertation project exploring graph-resident rewrite rules
 
 ## Documentation
 
-For the browser's concepts and practical views, read [Understanding the graph workbench](docs/workbench-guide.md). It explains data, rules, execution history, stopping conditions and large-dataset limits without requiring source-code knowledge.
+For the browser's concepts and practical views, read [Understanding the graph workbench](docs/guides/workbench.md). It explains data, rules, execution history, stopping conditions and large-dataset limits without requiring source-code knowledge.
 
 The [example catalogue and capability audit](examples/README.md) indexes eighteen complete programs across all seven required research categories and the practical work-item profiles. It records exact run settings, expected results, independent evidence and limitations. The browser uses the same manifest: choose an example, apply its settings, then load and run it.
 
@@ -12,22 +12,27 @@ New to the project? Start with [`docs/explainers/simple.md`](docs/explainers/sim
 
 - [`docs/project-proposal.md`](docs/project-proposal.md) — approved research baseline and fixed six-sprint timeline.
 - [`docs/dissertation.md`](docs/dissertation.md) — condensed, standalone submission paper covering the formalism, software and research evidence.
-- [`docs/archive/dissertation-full.md`](docs/archive/dissertation-full.md) — maintained full-length paper retaining the detailed arguments, implementation account and appendices; kept consistent with the condensed paper under the [manuscript maintenance policy](docs/archive/README.md).
-- [`docs/scalability-study.md`](docs/scalability-study.md) — opt-in indexed/compact query experiment, bounded native data study, import contracts and reproduction instructions; not a change to browser defaults or portable trace replay.
 - [`docs/formalism.md`](docs/formalism.md) — normative mathematical definitions and open proof obligations.
-- [`docs/worked-examples.md`](docs/worked-examples.md) — hand-traced constructions and counterexamples behind the formalism.
 - [`docs/architecture.md`](docs/architecture.md) — technical architecture implementing the formalism.
 - [`docs/research-plan.md`](docs/research-plan.md) — RQ-to-evidence plan and live evidence log.
 - [`docs/sprint-plan.md`](docs/sprint-plan.md) — high-level plan retaining the proposal's original sprint numbers and dates.
 - [`docs/task-list.md`](docs/task-list.md) — granular execution checklist within those fixed sprints.
 - [`docs/decisions.md`](docs/decisions.md) — append-only architecture decision record.
-- [`docs/literature.md`](docs/literature.md) — annotated literature map and working bibliography.
+
+Supporting material is grouped by purpose:
+
+- **Research:** [evaluation and scalability](docs/research/evaluation.md), [reflective-recovery methods and experiments](docs/research/reflective-recovery.md), and [claim/evidence audit](docs/research/claim-audit.md).
+- **Reference:** [worked examples](docs/reference/worked-examples.md), [lambda encoding](docs/reference/lambda-encoding.md), [trace format](docs/reference/trace-format.md), [workbench command contract](docs/reference/workbench.md), and [figure descriptions](docs/reference/figures.md).
+- **Guides:** [using and understanding the workbench](docs/guides/workbench.md); the local `docs/explainers/` folder retains the simple explanation, terminology and reading notes.
+- **Archive:** the maintained [full-length dissertation](docs/archive/dissertation-full.md), its [maintenance policy](docs/archive/README.md), and the [annotated literature map](docs/archive/literature.md).
+
+Keep the eight core documents at `docs/` level. Extend the relevant research collection for subsequent cycles instead of adding a separate study document each time. Contracts belong under `reference/`, user instructions under `guides/`, and operational progress in the research/sprint/task plans. Frozen experiment protocols and source bundles remain with their original results; consolidation does not rewrite historical evidence.
 
 ## Build and check
 
 Install Rust through rustup; `rust-toolchain.toml` pins Rust/Cargo 1.85.0. Native commands do not require Node. The browser uses Node 25.4.0 and npm 11.7.0.
 
-The engine-backed browser workspace supports editing, stepping/running, rule inspection and verified trace import/export. Its build and lifecycle contract is [docs/workbench.md](docs/workbench.md).
+The engine-backed browser workspace supports editing, stepping/running, rule inspection and verified trace import/export. Its build and lifecycle contract is [docs/reference/workbench.md](docs/reference/workbench.md).
 
 ```sh
 rustup target add wasm32-unknown-unknown --toolchain 1.85.0
@@ -66,7 +71,7 @@ cargo run --locked -p cli -- --help
 
 Use `-` instead of a filename to read standard input. Output is loadable graph text with outcome, committed-step, selection-policy and limit comments; diagnostics go to stderr. `--output new.graph` publishes a complete new file and refuses to overwrite an existing destination. Input/output failure codes are documented in [architecture §21](docs/architecture.md#21-native-command-interface). Check the exit code before consuming stdout: an I/O failure may interrupt a write. Loading or final-report size failure publishes no graph.
 
-Every run requires `--max-steps`, including zero. `--max-candidates` and `--max-work` bound each complete search; graph and input bounds are also configurable. The input-byte limit covers the final report too. Selection uses the shared deterministic or seeded scheduler in explicit identity-relative candidate order; neither fairness nor renaming invariance is implied. `--rule` restricts execution to one initially named head and cannot establish global normality. JSON trace export, validation and checked replay are implemented; see the [trace contract](docs/trace-format.md).
+Every run requires `--max-steps`, including zero. `--max-candidates` and `--max-work` bound each complete search; graph and input bounds are also configurable. The input-byte limit covers the final report too. Selection uses the shared deterministic or seeded scheduler in explicit identity-relative candidate order; neither fairness nor renaming invariance is implied. `--rule` restricts execution to one initially named head and cannot establish global normality. JSON trace export, validation and checked replay are implemented; see the [trace contract](docs/reference/trace-format.md).
 
 See the [example guide](examples/programs/README.md) for independently derived expected states, explicit witness selections and research limits. Printing/reloading preserves graph structure, not source names, allocation history or an execution trace.
 
@@ -92,7 +97,7 @@ cargo run -p cli -- trace-check stable.trace.json
 cargo run -p cli -- replay stable.trace.json --at 1
 ```
 
-A trace saves the starting graph and what each rewrite did. Loading it checks the steps again instead of trusting the file. Checkpoints let the engine revisit earlier states while keeping the right identity numbers. A paused run can continue with the same random choices and memory of earlier states; simply looking at an old state does not change the original run. Existing output files are never overwritten. A saved run may have stopped at a limit, so successful file validation does not mean the program finished its work. See the [full contract](docs/trace-format.md) and [annotated example](examples/traces/README.md).
+A trace saves the starting graph and what each rewrite did. Loading it checks the steps again instead of trusting the file. Checkpoints let the engine revisit earlier states while keeping the right identity numbers. A paused run can continue with the same random choices and memory of earlier states; simply looking at an old state does not change the original run. Existing output files are never overwritten. A saved run may have stopped at a limit, so successful file validation does not mean the program finished its work. See the [full contract](docs/reference/trace-format.md) and [annotated example](examples/traces/README.md).
 
 ### Core interfaces
 
@@ -108,6 +113,6 @@ The [behavioural examples](examples/behaviour/README.md) use the same test for u
 
 The suite currently passes 311 unit/integration tests plus thirteen documentation tests, including eight compile-fail API checks. See [architecture §20](docs/architecture.md#20-checked-construction-and-execution-interfaces) for defaults, error categories and the source-level commit argument. The parser uses pinned Logos 0.16.1; engine and parser remain independent production siblings.
 
-The shared library provides `parser::lambda::{parse, Term, Node, Limits, encode, readback, interpret}` for closed weak-head lambda evaluation through graph-resident rules. Use `cargo run -p cli -- lambda-compile examples/lambda/identity.lambda` to translate source, or open **Lambda program** in the browser, prepare its graph and load it. The result panel follows the timeline. [Examples and hand reductions](examples/lambda/README.md) and the [encoding contract](docs/lambda-encoding.md) explain administrative steps and limits. Run `cargo test -p cli --test lambda --locked` for independent source/graph checks. The [controlled performance study](docs/performance-study.md) retains native time/memory data and distinguishes 100-item completion from 1,000-item search exhaustion.
+The shared library provides `parser::lambda::{parse, Term, Node, Limits, encode, readback, interpret}` for closed weak-head lambda evaluation through graph-resident rules. Use `cargo run -p cli -- lambda-compile examples/lambda/identity.lambda` to translate source, or open **Lambda program** in the browser, prepare its graph and load it. The result panel follows the timeline. [Examples and hand reductions](examples/lambda/README.md) and the [encoding contract](docs/reference/lambda-encoding.md) explain administrative steps and limits. Run `cargo test -p cli --test lambda --locked` for independent source/graph checks. The [controlled performance study](docs/research/evaluation.md#performance) retains native time/memory data and distinguishes 100-item completion from 1,000-item search exhaustion.
 
-For a practical browser walkthrough, select `practical/work-items`, load it and run: ten pending items become processed. `practical/policy-enable` first changes the processing rule's activation and revision, then processes those items. The [Guide](docs/workbench-guide.md) is available inside the application and explains the timeline, linked views, themes and source/project/trace files. [Dataset recipes and tested limits](examples/practical/README.md) distinguish successful processing from a resource-limited attempt. Sprint 4 includes expanded acceptance of the local workbench. Sprint 5 retains the RQ5 expressiveness study, controlled time/memory measurements and final-library integration.
+For a practical browser walkthrough, select `practical/work-items`, load it and run: ten pending items become processed. `practical/policy-enable` first changes the processing rule's activation and revision, then processes those items. The [Guide](docs/guides/workbench.md) is available inside the application and explains the timeline, linked views, themes and source/project/trace files. [Dataset recipes and tested limits](examples/practical/README.md) distinguish successful processing from a resource-limited attempt. Sprint 4 includes expanded acceptance of the local workbench. Sprint 5 retains the RQ5 expressiveness study, controlled time/memory measurements and final-library integration.

@@ -1,0 +1,19 @@
+{
+  "schema": "recovery-study-v1",
+  "date": "2026-09-19T21:04:14.646Z",
+  "commit": "316a9ee7e89cc670c51267b262d58968526c81a6",
+  "dirty_status": " M docs/.DS_Store\n D docs/literature.md\n?? benchmarks/results/recovery-c01-rss/\n?? benchmarks/results/recovery-c01/\n?? crates/engine/examples/recovery_probe.rs\n?? crates/engine/examples/support/\n?? crates/engine/tests/recovery.rs\n?? docs/recovery-study.md\n?? scripts/recovery-study.mjs\n?? scripts/verify-recovery-study.mjs\n",
+  "source_bundle_sha256": "59a31027c3d59a1d2b60cfe3a1d8e0847497f96b2f1f784e5668cb0b218de245",
+  "protocol_sha256": "7f90bc5d67c922cfb6af749f19587579af23945dc82d95b4f242cf71a5f72e40",
+  "binary_sha256": "27edcca3c0b59060e6fd1a9416b28dd05d15da695d9535f792ca0a0e38f9f5ae",
+  "os": "25.6.0",
+  "cpu": "Apple M4 Pro",
+  "memory": 51539607552,
+  "node": "v24.21.0",
+  "rust": "rustc 1.85.0 (4d91de4e4 2025-02-17)\nbinary: rustc\ncommit-hash: 4d91de4e48198da2e33413efdcd9cd2cc0c46688\ncommit-date: 2025-02-17\nhost: aarch64-apple-darwin\nrelease: 1.85.0\nLLVM version: 19.1.7\n",
+  "samples": 1,
+  "warmups": 0,
+  "timeout_ms": 30000,
+  "memory_ceiling": null,
+  "output_limit_bytes": 1048576
+}

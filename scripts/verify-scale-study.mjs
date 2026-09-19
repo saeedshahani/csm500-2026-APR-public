@@ -11,7 +11,9 @@ assert.equal(environment.schema,'scale-study-v1');assert.equal(environment.repet
 const bundle=readFileSync(resolve(dir,'sources.json.gz'));assert.equal(hash(bundle),environment.source_bundle_sha256);
 const sources=JSON.parse(gunzipSync(bundle));assert.equal(sources.schema,'source-bundle-v1');
 assert.equal(hash(readFileSync(resolve(dir,'protocol.md'))),environment.protocol_sha256);
-assert.equal(hash(Buffer.from(sources.files['docs/scalability-study.md'],'base64')),environment.protocol_sha256);
+const protocolPath=environment.protocol_source_path??'docs/scalability-study.md';
+assert.ok(['docs/scalability-study.md','docs/research/evaluation.md'].includes(protocolPath));
+assert.equal(hash(Buffer.from(sources.files[protocolPath],'base64')),environment.protocol_sha256);
 assert.equal(raw.length,matrix.length*6);assert.equal(summary.length,matrix.length);
 const key=a=>JSON.stringify(a);
 assert.equal(new Set(matrix.map(key)).size,matrix.length);

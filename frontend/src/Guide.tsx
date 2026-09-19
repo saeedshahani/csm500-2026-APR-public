@@ -1,4 +1,4 @@
-import guide from '../../docs/workbench-guide.md?raw';
+import guide from '../../docs/guides/workbench.md?raw';
 // Render this repository-owned Markdown as React text, never as executable HTML.
 export function Guide(){
  const lines=guide.split('\n');const blocks=[];

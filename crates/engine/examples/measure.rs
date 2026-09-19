@@ -1,5 +1,5 @@
 //! Native controlled-region probe. stdout is one JSON result, never a timing claim
-//! about a failed workload's throughput. See docs/performance-study.md.
+//! about a failed workload's throughput. See docs/research/evaluation.md.
 #[path = "../benches/support/mod.rs"]
 mod support;
 use engine::{

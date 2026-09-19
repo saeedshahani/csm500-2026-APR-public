@@ -1,4 +1,4 @@
-//! Bounded native experimental profile. See docs/scalability-study.md.
+//! Bounded native experimental profile. See docs/research/evaluation.md.
 #[path = "../benches/support/mod.rs"]
 mod support;
 use engine::observation::{isomorphic, Observer};

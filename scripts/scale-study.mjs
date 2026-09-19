@@ -11,8 +11,8 @@ if(process.platform!=='darwin')throw Error('This measurement protocol requires m
 mkdirSync(directory,{recursive:true});
 const hash=x=>createHash('sha256').update(x).digest('hex');
 const binary=resolve('target/release/examples/scale_probe');
-const protocol=readFileSync('docs/scalability-study.md');
-const files=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>existsSync(p)&&(/^(Cargo\.(lock|toml)|rust-toolchain.toml|rustfmt.toml)$/.test(p)||/^crates\/.*\.(rs|toml)$/.test(p)||/^examples\//.test(p)||['scripts/scale-study.mjs','scripts/import-study-data.mjs','scripts/import-study-data.test.mjs','docs/scalability-study.md'].includes(p))).sort();
+const protocol=readFileSync('docs/research/evaluation.md');
+const files=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>existsSync(p)&&(/^(Cargo\.(lock|toml)|rust-toolchain.toml|rustfmt.toml)$/.test(p)||/^crates\/.*\.(rs|toml)$/.test(p)||/^examples\//.test(p)||['scripts/scale-study.mjs','scripts/import-study-data.mjs','scripts/import-study-data.test.mjs','docs/research/evaluation.md'].includes(p))).sort();
 const bundle=gzipSync(JSON.stringify({schema:'source-bundle-v1',encoding:'base64',files:Object.fromEntries(files.map(p=>[p,readFileSync(p).toString('base64')]))}));
 writeFileSync(resolve(directory,'sources.json.gz'),bundle,{flag:'wx'});
 writeFileSync(resolve(directory,'protocol.md'),protocol,{flag:'wx'});
@@ -29,7 +29,7 @@ for(const p of ['run-reference','run-compact','record-reference','record-compact
 for(const f of ['oscillating','restoration'])for(const e of [20,100])for(const p of ['record-reference','record-compact'])add(f,1000,p,e);
 for(const data of manifest.datasets)for(const subset of data.subsets)add(`import:${resolve(imports,subset.file)}`,0,'import',0);
 writeFileSync(resolve(directory,'matrix.json'),JSON.stringify(matrix,null,2)+'\n',{flag:'wx'});
-writeFileSync(resolve(directory,'environment.json'),JSON.stringify({schema:'scale-study-v1',date:new Date().toISOString(),platform:process.platform,os:os.release(),cpu:os.cpus()[0].model,memory:os.totalmem(),node:process.version,rust:execFileSync('rustc',['-Vv'],{encoding:'utf8'}),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),dirty_status:execFileSync('git',['status','--porcelain'],{encoding:'utf8'}),source_bundle_sha256:hash(bundle),binary_sha256:hash(readFileSync(binary)),protocol_sha256:hash(protocol),timeout_ms:30000,sampled_group_rss_ceiling_bytes:512*1024*1024,sampling_ms:100,warmups:1,repetitions:5,seed:42},null,2)+'\n',{flag:'wx'});
+writeFileSync(resolve(directory,'environment.json'),JSON.stringify({schema:'scale-study-v1',date:new Date().toISOString(),platform:process.platform,os:os.release(),cpu:os.cpus()[0].model,memory:os.totalmem(),node:process.version,rust:execFileSync('rustc',['-Vv'],{encoding:'utf8'}),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),dirty_status:execFileSync('git',['status','--porcelain'],{encoding:'utf8'}),source_bundle_sha256:hash(bundle),binary_sha256:hash(readFileSync(binary)),protocol_sha256:hash(protocol),protocol_source_path:'docs/research/evaluation.md',timeout_ms:30000,sampled_group_rss_ceiling_bytes:512*1024*1024,sampling_ms:100,warmups:1,repetitions:5,seed:42},null,2)+'\n',{flag:'wx'});
 let activeKill=null,interrupted=false;
 process.on('SIGINT',()=>{interrupted=true;activeKill?.('Cancelled');});
 async function sample(args){return await new Promise(resolveResult=>{

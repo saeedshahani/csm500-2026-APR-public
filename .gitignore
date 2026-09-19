@@ -6,6 +6,7 @@ docs/papers/
 docs/archive/*
 !docs/archive/README.md
 !docs/archive/dissertation-full.md
+!docs/archive/literature.md
 docs/worked-examples.md
 docs/simple.md
 docs/decisions.md

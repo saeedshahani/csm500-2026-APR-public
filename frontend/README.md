@@ -11,7 +11,7 @@ For a production build use npm run build, then npm run preview. The build script
 
 Verification: npm run lint, npm run test:unit, npm run test:parity, and npm run test:browser (after npx playwright install chromium). Browser tests use the production build, which must be rebuilt after Rust or frontend changes.
 
-See [the workbench contract](../docs/workbench.md) for commands, limits, interruption, replay and research boundaries.
+See [the workbench contract](../docs/reference/workbench.md) for commands, limits, interruption, replay and research boundaries.
 
 ## UI reference for future work
 
