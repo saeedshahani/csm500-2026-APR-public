@@ -5,6 +5,7 @@ import { pathToFileURL } from 'node:url';
 import { Store, ApiError, fail, hash, terminal } from './store.mjs';
 import { Worker, settings } from './worker.mjs';
 import { identity, authorize, role, validUid } from './identity.mjs';
+import { summarize } from './report.mjs';
 
 const MAX_BODY = 1024 * 1024;
 function object(value, allowed, required = allowed) {
@@ -51,10 +52,10 @@ export async function start({ directory, binary, token, port = 0, recover = fals
   let worker;
   try { worker = new Worker(store, resolve(binary)); } catch (e) { store.close(); await auth.close(); throw e; }
   let validating = false, closing = false;
-  const validate = async text => {
+  const validate = async (text, dataset = false) => {
     if (validating || worker.active) fail(429, 'busy', 'Native slot busy; retry validation later');
     validating = true;
-    try { return await worker.validate(text); } finally { validating = false; worker.kick(); }
+    try { return await (dataset ? worker.compileDataset(text) : worker.validate(text)); } finally { validating = false; worker.kick(); }
   };
   const project = id => store.state.projects.find(p => p.id === id) ?? fail(404, 'not_found', 'Project not found');
   const job = id => store.state.jobs.find(j => j.id === id) ?? fail(404, 'not_found', 'Job not found');
@@ -120,11 +121,34 @@ export async function start({ directory, binary, token, port = 0, recover = fals
             const updated = project(p.id); return send(200, { owner_uid: updated.owner_uid, members: updated.members });
           }
         }
+        if (parts[3] === 'datasets') {
+          if (method === 'GET') return send(200, page(store.state.datasets.filter(d => d.project_id === p.id), url));
+          if (method === 'POST') {
+            access(p.id, 'editor');
+            const b = await body(req); object(b, ['name', 'document', 'parent_dataset_id'], ['name', 'document']);
+            const label = name(b.name), text = source(b.document);
+            access(p.id, 'editor');
+            if (b.parent_dataset_id != null && !store.state.datasets.some(d => d.id === b.parent_dataset_id && d.project_id === p.id))
+              fail(404, 'not_found', 'Parent dataset not found in project');
+            if (store.state.datasets.length >= 128) fail(409, 'capacity', 'Dataset capacity reached');
+            const compiled = await validate(text, true);
+            access(p.id, 'editor');
+            const input = JSON.parse(text);
+            const d = { id: randomUUID(), project_id: p.id, name: label, schema: input.schema, items: input.items.length,
+              document_sha256: store.put(text), source_sha256: store.put(compiled.source), validated_engine_sha256: compiled.engine_sha256,
+              parent_dataset_id: b.parent_dataset_id ?? null, created_at: new Date().toISOString() };
+            store.update(s => s.datasets.push(d)); return send(201, d);
+          }
+        }
         if (parts[3] === 'versions') {
           if (method === 'GET') return send(200, page(store.state.versions.filter(v => v.project_id === p.id), url));
           if (method === 'POST') {
             access(p.id, 'editor');
-            const b = await body(req); object(b, ['name', 'source', 'parent_version_id'], ['name', 'source']); const label = name(b.name), text = source(b.source);
+            const b = await body(req); object(b, ['name', 'source', 'dataset_id', 'parent_version_id'], ['name']);
+            if (Object.hasOwn(b, 'source') === Object.hasOwn(b, 'dataset_id')) fail(400, 'invalid_request', 'Provide exactly one of source or dataset_id');
+            const data = Object.hasOwn(b, 'dataset_id') ? store.state.datasets.find(d => d.id === b.dataset_id && d.project_id === p.id) : null;
+            if (Object.hasOwn(b, 'dataset_id') && !data) fail(404, 'not_found', 'Dataset not found in project');
+            const label = name(b.name), text = data ? store.read(data.source_sha256).toString('utf8') : source(b.source);
             access(p.id, 'editor');
             if (b.parent_version_id != null && !store.state.versions.some(v => v.id === b.parent_version_id && v.project_id === p.id))
               fail(404, 'not_found', 'Parent version not found in project');
@@ -132,7 +156,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
             const validation = await validate(text);
             access(p.id, 'editor'); // A role can be revoked while native validation is pending.
             const v = { id: randomUUID(), project_id: p.id, name: label, source_sha256: store.put(text),
-              validated_engine_sha256: validation.engine_sha256, parent_version_id: b.parent_version_id ?? null, created_at: new Date().toISOString() };
+              validated_engine_sha256: validation.engine_sha256, ...(data ? { dataset_id: data.id } : {}), parent_version_id: b.parent_version_id ?? null, created_at: new Date().toISOString() };
             store.update(s => s.versions.push(v)); return send(201, v);
           }
         }
@@ -168,6 +192,13 @@ export async function start({ directory, binary, token, port = 0, recover = fals
           }
         }
       }
+      if (method === 'GET' && parts[1] === 'projects' && parts.length === 6 && parts[3] === 'datasets' && parts[5] === 'document') {
+        access(parts[2]);
+        const d = store.state.datasets.find(d => d.id === parts[4] && d.project_id === parts[2]);
+        if (!d) fail(404, 'not_found', 'Dataset not found');
+        const bytes = store.read(d.document_sha256);
+        res.writeHead(200, { 'Content-Type': 'application/json', 'X-Content-SHA256': d.document_sha256 }); res.end(bytes); return;
+      }
       if (method === 'GET' && parts[1] === 'projects' && parts.length === 6 && parts[3] === 'versions' && parts[5] === 'source') {
         access(parts[2]);
         const v = store.state.versions.find(v => v.id === parts[4] && v.project_id === parts[2]);
@@ -191,6 +222,17 @@ export async function start({ directory, binary, token, port = 0, recover = fals
           const bytes = store.read(j.trace_sha256);
           res.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': bytes.length,
             'X-Content-SHA256': j.trace_sha256 }); res.end(bytes); return;
+        }
+        if (method === 'GET' && parts[3] === 'events') {
+          if (!j.trace_sha256) fail(409, 'no_trace', 'No verified trace published');
+          const trace = JSON.parse(store.read(j.trace_sha256));
+          const result = { schema: 'reflective-event-page-v1', trace_sha256: j.trace_sha256, ...page(trace.events, url) };
+          if (Buffer.byteLength(JSON.stringify(result)) > 1024 * 1024) fail(413, 'page_limit', 'Event page exceeds 1 MiB; request fewer events or download the bounded trace');
+          return send(200, result);
+        }
+        if (method === 'GET' && parts[3] === 'report') {
+          if (!j.trace_sha256) fail(409, 'no_trace', 'No verified trace published');
+          return send(200, summarize(JSON.parse(store.read(j.trace_sha256)), j.trace_sha256));
         }
       }
       fail(404, 'not_found', 'Unknown route or method');

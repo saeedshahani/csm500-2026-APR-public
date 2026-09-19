@@ -68,9 +68,12 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["export", "--help"]
         || args == ["replay", "--help"]
         || args == ["trace-check", "--help"]
+        || args == ["trace-conditions", "--help"]
+        || args == ["dataset-compile", "--help"]
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
     {
+        io::stdout().lock().write_all(b"Dataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Lambda adapters: cli lambda-compile SOURCE | cli lambda-readback GRAPH\nBoth accept a file or -; compilation emits ordinary graph source.\nUse cli replay TRACE --at N | cli lambda-readback - for recorded terms.\n\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout()
             .lock()
@@ -78,8 +81,30 @@ pub(crate) fn main_command() -> Result<u8> {
             .map_err(|e| Failure::new(1, format!("output: {e}")))?;
         return Ok(0);
     }
-    if matches!(args[0].as_str(), "replay" | "trace-check") {
+    if matches!(
+        args[0].as_str(),
+        "replay" | "trace-check" | "trace-conditions"
+    ) {
         return trace_command(&args);
+    }
+    if args[0] == "dataset-compile" {
+        if args.len() != 2 {
+            return Err(Failure::new(
+                2,
+                "usage: cli dataset-compile JSON (file or -)",
+            ));
+        }
+        let text = read_source(&args[1], 1024 * 1024)?;
+        let dataset: parser::dataset::Dataset =
+            serde_json::from_str(&text).map_err(|e| Failure::new(2, e.to_string()))?;
+        let source = parser::dataset::source(&dataset).map_err(|e| Failure::new(2, e))?;
+        parser::load(&source)
+            .map_err(|e| Failure::new(2, format!("dataset compilation: {e:?}")))?;
+        io::stdout()
+            .lock()
+            .write_all(source.as_bytes())
+            .map_err(|e| Failure::new(1, e.to_string()))?;
+        return Ok(0);
     }
     if matches!(args[0].as_str(), "lambda-compile" | "lambda-readback") {
         if args.len() != 2 {
@@ -315,7 +340,15 @@ fn trace_command(args: &[String]) -> Result<u8> {
             e.to_string(),
         )
     })?;
-    let result = if args[0] == "trace-check" {
+    let result = if args[0] == "trace-conditions" {
+        let report = engine::conditions::extract(&trace, engine::causal::AnalysisLimits::default())
+            .map_err(engine_failure)?;
+        let value = serde_json::json!({"source_trace_sha256": engine::trace::sha256(text.as_bytes()), "analysis": report});
+        format!(
+            "{}\n",
+            serde_json::to_string_pretty(&value).map_err(|e| Failure::new(1, e.to_string()))?
+        )
+    } else if args[0] == "trace-check" {
         format!(
             "Verified {} events; status={}; relation={}\n",
             trace.document().events.len(),

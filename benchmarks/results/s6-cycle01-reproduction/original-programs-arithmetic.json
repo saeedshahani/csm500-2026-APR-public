@@ -1,0 +1,1086 @@
+{
+  "schema": "reflective-trace-v1",
+  "profile": "checked-binding-positive-resources-v1",
+  "implementation": "engine-0.1.0-source-sha256=f0c7a9a4e84899fb0480a5b9f0ae1433de2b81996f5e7a8e0cd3c905c0ff8a99",
+  "source_sha256": "59ab1d8d263750dfd15425fcd4abbde91518eb1836ea42c84deff7ca1e6e25bf",
+  "initial_sha256": "3ed080911db3ade2ee18ba15b4e71667ca9fbb7e003159ca64898225074b73bf",
+  "initial": {
+    "next_identity": "31",
+    "atoms": {
+      "0": {
+        "kind": "RuleHead",
+        "fields": []
+      },
+      "1": {
+        "kind": "Nat",
+        "fields": []
+      },
+      "2": {
+        "kind": {
+          "Record": {
+            "role": "Active",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "3": {
+        "kind": {
+          "Record": {
+            "role": "ModeObject",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "4": {
+        "kind": {
+          "Record": {
+            "role": "Rank",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "1"
+        ]
+      },
+      "5": {
+        "kind": {
+          "Record": {
+            "role": "Revision",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "6": {
+        "kind": {
+          "Constructor": "Eval"
+        },
+        "fields": []
+      },
+      "7": {
+        "kind": {
+          "Constructor": "Add"
+        },
+        "fields": []
+      },
+      "8": {
+        "kind": {
+          "Constructor": "Zero"
+        },
+        "fields": []
+      },
+      "9": {
+        "kind": {
+          "PatternVariable": {
+            "admits": [
+              "Constructor"
+            ],
+            "binding": "Free"
+          }
+        },
+        "fields": []
+      },
+      "10": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "expr"
+          }
+        },
+        "fields": [
+          "6",
+          "7"
+        ]
+      },
+      "11": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "arg1"
+          }
+        },
+        "fields": [
+          "7",
+          "8"
+        ]
+      },
+      "12": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "arg2"
+          }
+        },
+        "fields": [
+          "7",
+          "9"
+        ]
+      },
+      "13": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "expr"
+          }
+        },
+        "fields": [
+          "6",
+          "9"
+        ]
+      },
+      "14": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "6"
+        ]
+      },
+      "15": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "7"
+        ]
+      },
+      "16": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "8"
+        ]
+      },
+      "17": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "9"
+        ]
+      },
+      "18": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "10"
+        ]
+      },
+      "19": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "11"
+        ]
+      },
+      "20": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "12"
+        ]
+      },
+      "21": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "6"
+        ]
+      },
+      "22": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "9"
+        ]
+      },
+      "23": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "13"
+        ]
+      },
+      "24": {
+        "kind": {
+          "Constructor": "Eval"
+        },
+        "fields": []
+      },
+      "25": {
+        "kind": {
+          "Constructor": "Add"
+        },
+        "fields": []
+      },
+      "26": {
+        "kind": {
+          "Constructor": "Zero"
+        },
+        "fields": []
+      },
+      "27": {
+        "kind": {
+          "Constructor": "Value"
+        },
+        "fields": []
+      },
+      "28": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "expr"
+          }
+        },
+        "fields": [
+          "24",
+          "25"
+        ]
+      },
+      "29": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "arg1"
+          }
+        },
+        "fields": [
+          "25",
+          "26"
+        ]
+      },
+      "30": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "arg2"
+          }
+        },
+        "fields": [
+          "25",
+          "27"
+        ]
+      }
+    }
+  },
+  "relation": "positive_resource_order",
+  "limitation": "Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.",
+  "settings": {
+    "graph": {
+      "max_input_bytes": "4194304",
+      "max_atoms": "10000",
+      "max_fields": "20000",
+      "max_label_bytes": "1048576",
+      "max_package_depth": "32",
+      "max_validation_work": "10000000"
+    },
+    "search": {
+      "max_candidates": "1000",
+      "max_work": "1000000"
+    },
+    "recording": {
+      "max_events": "10000",
+      "max_units": "2000000",
+      "max_work": "2000000"
+    },
+    "analysis": {
+      "max_work": "2000000",
+      "max_units": "2000000"
+    },
+    "observer": {
+      "declaration": "observer-v1\nall\n",
+      "inputs": {},
+      "nontriviality_threshold": "2"
+    },
+    "plan": {
+      "max_steps": "1",
+      "detect_cycles": false,
+      "observation": {
+        "max_work": "1000000",
+        "max_comparison_work": "1000000",
+        "max_history_units": "1000000"
+      },
+      "requested": null,
+      "seed": null
+    }
+  },
+  "status": "finished",
+  "report": {
+    "outcome": "NormalForm",
+    "payload": null,
+    "recurrence": null,
+    "scheduler": "deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0"
+  },
+  "events": [
+    {
+      "id": "0",
+      "redex": {
+        "state": "0",
+        "source": "0",
+        "revision": "5",
+        "binding": [
+          [
+            "6",
+            "24"
+          ],
+          [
+            "7",
+            "25"
+          ],
+          [
+            "8",
+            "26"
+          ],
+          [
+            "9",
+            "27"
+          ],
+          [
+            "10",
+            "28"
+          ],
+          [
+            "11",
+            "29"
+          ],
+          [
+            "12",
+            "30"
+          ]
+        ]
+      },
+      "post_state": "1",
+      "footprint": {
+        "consumed": [
+          "25",
+          "26",
+          "28",
+          "29",
+          "30"
+        ],
+        "preserved": [
+          "24",
+          "27"
+        ],
+        "produced": [
+          "31"
+        ],
+        "read": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18",
+          "19",
+          "20",
+          "21",
+          "22",
+          "23",
+          "24",
+          "25",
+          "26",
+          "27",
+          "28",
+          "29",
+          "30"
+        ],
+        "entered": [],
+        "exited": [],
+        "altered": []
+      },
+      "fresh": {
+        "31": {
+          "kind": {
+            "Record": {
+              "role": "ObjectLink",
+              "label": "expr"
+            }
+          },
+          "fields": [
+            "24",
+            "27"
+          ]
+        }
+      }
+    }
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "checkpoint_interval": "32",
+  "checkpoints": [
+    {
+      "state": "0",
+      "graph": {
+        "next_identity": "31",
+        "atoms": {
+          "0": {
+            "kind": "RuleHead",
+            "fields": []
+          },
+          "1": {
+            "kind": "Nat",
+            "fields": []
+          },
+          "2": {
+            "kind": {
+              "Record": {
+                "role": "Active",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "3": {
+            "kind": {
+              "Record": {
+                "role": "ModeObject",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "4": {
+            "kind": {
+              "Record": {
+                "role": "Rank",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "1"
+            ]
+          },
+          "5": {
+            "kind": {
+              "Record": {
+                "role": "Revision",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "6": {
+            "kind": {
+              "Constructor": "Eval"
+            },
+            "fields": []
+          },
+          "7": {
+            "kind": {
+              "Constructor": "Add"
+            },
+            "fields": []
+          },
+          "8": {
+            "kind": {
+              "Constructor": "Zero"
+            },
+            "fields": []
+          },
+          "9": {
+            "kind": {
+              "PatternVariable": {
+                "admits": [
+                  "Constructor"
+                ],
+                "binding": "Free"
+              }
+            },
+            "fields": []
+          },
+          "10": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "expr"
+              }
+            },
+            "fields": [
+              "6",
+              "7"
+            ]
+          },
+          "11": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "arg1"
+              }
+            },
+            "fields": [
+              "7",
+              "8"
+            ]
+          },
+          "12": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "arg2"
+              }
+            },
+            "fields": [
+              "7",
+              "9"
+            ]
+          },
+          "13": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "expr"
+              }
+            },
+            "fields": [
+              "6",
+              "9"
+            ]
+          },
+          "14": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "15": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "7"
+            ]
+          },
+          "16": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "8"
+            ]
+          },
+          "17": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "9"
+            ]
+          },
+          "18": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "10"
+            ]
+          },
+          "19": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "11"
+            ]
+          },
+          "20": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "12"
+            ]
+          },
+          "21": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "22": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "9"
+            ]
+          },
+          "23": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "13"
+            ]
+          },
+          "24": {
+            "kind": {
+              "Constructor": "Eval"
+            },
+            "fields": []
+          },
+          "25": {
+            "kind": {
+              "Constructor": "Add"
+            },
+            "fields": []
+          },
+          "26": {
+            "kind": {
+              "Constructor": "Zero"
+            },
+            "fields": []
+          },
+          "27": {
+            "kind": {
+              "Constructor": "Value"
+            },
+            "fields": []
+          },
+          "28": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "expr"
+              }
+            },
+            "fields": [
+              "24",
+              "25"
+            ]
+          },
+          "29": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "arg1"
+              }
+            },
+            "fields": [
+              "25",
+              "26"
+            ]
+          },
+          "30": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "arg2"
+              }
+            },
+            "fields": [
+              "25",
+              "27"
+            ]
+          }
+        }
+      },
+      "scheduler": "deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0",
+      "continuation_sha256": "2156a9c674973a708482bb0c6735f33699404527d097797dbec54218132a9cb4"
+    },
+    {
+      "state": "1",
+      "graph": {
+        "next_identity": "32",
+        "atoms": {
+          "0": {
+            "kind": "RuleHead",
+            "fields": []
+          },
+          "1": {
+            "kind": "Nat",
+            "fields": []
+          },
+          "2": {
+            "kind": {
+              "Record": {
+                "role": "Active",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "3": {
+            "kind": {
+              "Record": {
+                "role": "ModeObject",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "4": {
+            "kind": {
+              "Record": {
+                "role": "Rank",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "1"
+            ]
+          },
+          "5": {
+            "kind": {
+              "Record": {
+                "role": "Revision",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "6": {
+            "kind": {
+              "Constructor": "Eval"
+            },
+            "fields": []
+          },
+          "7": {
+            "kind": {
+              "Constructor": "Add"
+            },
+            "fields": []
+          },
+          "8": {
+            "kind": {
+              "Constructor": "Zero"
+            },
+            "fields": []
+          },
+          "9": {
+            "kind": {
+              "PatternVariable": {
+                "admits": [
+                  "Constructor"
+                ],
+                "binding": "Free"
+              }
+            },
+            "fields": []
+          },
+          "10": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "expr"
+              }
+            },
+            "fields": [
+              "6",
+              "7"
+            ]
+          },
+          "11": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "arg1"
+              }
+            },
+            "fields": [
+              "7",
+              "8"
+            ]
+          },
+          "12": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "arg2"
+              }
+            },
+            "fields": [
+              "7",
+              "9"
+            ]
+          },
+          "13": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "expr"
+              }
+            },
+            "fields": [
+              "6",
+              "9"
+            ]
+          },
+          "14": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "15": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "7"
+            ]
+          },
+          "16": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "8"
+            ]
+          },
+          "17": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "9"
+            ]
+          },
+          "18": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "10"
+            ]
+          },
+          "19": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "11"
+            ]
+          },
+          "20": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "12"
+            ]
+          },
+          "21": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "22": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "9"
+            ]
+          },
+          "23": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "13"
+            ]
+          },
+          "24": {
+            "kind": {
+              "Constructor": "Eval"
+            },
+            "fields": []
+          },
+          "27": {
+            "kind": {
+              "Constructor": "Value"
+            },
+            "fields": []
+          },
+          "31": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "expr"
+              }
+            },
+            "fields": [
+              "24",
+              "27"
+            ]
+          }
+        }
+      },
+      "scheduler": "deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0",
+      "continuation_sha256": "01d79badfa64a390df11c722ff75c8ddb70152855107d07d211508964dab1908"
+    }
+  ]
+}

@@ -28,6 +28,7 @@ function atomic(file, value) {
 function validate(state) {
   if (state?.schema !== 'reflective-local-store-v1' || !Array.isArray(state.projects)
       || !Array.isArray(state.versions) || !Array.isArray(state.jobs)
+      || !Array.isArray(state.datasets) || state.datasets.length > 128
       || state.projects.length > 32 || state.versions.length > 128 || state.jobs.length > 256)
     throw Error('Invalid store schema or capacity');
   const ids = new Set();
@@ -42,14 +43,28 @@ function validate(state) {
         throw Error('Invalid stored project access');
     } else if (project.owner_uid != null || project.members != null) throw Error('Shared project in local identity store');
   }
-  for (const entry of [...state.projects, ...state.versions, ...state.jobs]) {
+  for (const entry of [...state.projects, ...state.datasets, ...state.versions, ...state.jobs]) {
     if (!uuid.test(entry.id) || ids.has(entry.id)) throw Error('Invalid or duplicate stored identity');
     ids.add(entry.id);
   }
   const seenVersions = new Set(), seenJobs = new Set();
+  const seenDatasets = new Set();
+  for (const data of state.datasets) {
+    if (!state.projects.some(p => p.id === data.project_id) || !digest.test(data.document_sha256)
+        || !digest.test(data.source_sha256) || !digest.test(data.validated_engine_sha256)
+        || data.schema !== 'work-items-v1' || !Number.isSafeInteger(data.items) || data.items < 0 || data.items > 1000)
+      throw Error('Invalid stored dataset');
+    if (data.parent_dataset_id != null && (!seenDatasets.has(data.parent_dataset_id)
+        || !state.datasets.some(d => d.id === data.parent_dataset_id && d.project_id === data.project_id)))
+      throw Error('Invalid stored dataset parent');
+    seenDatasets.add(data.id);
+  }
   for (const version of state.versions) {
     if (!state.projects.some(p => p.id === version.project_id) || !digest.test(version.source_sha256))
       throw Error('Invalid stored version');
+    if (version.dataset_id != null && !state.datasets.some(d => d.id === version.dataset_id
+        && d.project_id === version.project_id && d.source_sha256 === version.source_sha256))
+      throw Error('Invalid version dataset identity');
     if (version.parent_version_id != null && (!seenVersions.has(version.parent_version_id)
         || !state.versions.some(v => v.id === version.parent_version_id && v.project_id === version.project_id)))
       throw Error('Invalid stored version parent');
@@ -97,9 +112,11 @@ export class Store {
         : { schema: 'reflective-local-store-v1', identity_namespace: namespace, projects: [], versions: [], jobs: [] };
       if ((this.state.identity_namespace ?? 'local-single-owner') !== namespace) throw Error('Store identity namespace mismatch; use a separate store directory');
       this.state.identity_namespace = namespace;
+      this.state.datasets ??= []; // Additive migration; existing sources and jobs stay immutable.
       validate(this.state);
       // Reject corrupted referenced bytes before serving any state. Orphans are not results.
       for (const v of this.state.versions) this.read(v.source_sha256);
+      for (const d of this.state.datasets) { this.read(d.document_sha256); this.read(d.source_sha256); }
       for (const j of this.state.jobs) if (j.trace_sha256) {
         const trace = JSON.parse(this.read(j.trace_sha256));
         if (trace.source_sha256 !== j.source_sha256 || trace.report?.outcome !== j.outcome

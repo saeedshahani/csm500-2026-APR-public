@@ -43,6 +43,38 @@ async function fixture(t, options = {}) {
     restart: async () => { await app.close(); app = await start({ directory, binary, token, ...options }); } };
 }
 
+test('named datasets compile to immutable native inputs, retain parents and survive restart', async t => {
+  const f = await fixture(t), {project} = await f.create();
+  const document = JSON.stringify({schema:'work-items-v1',policy:'guarded_enable',items:[{id:'one',status:'pending'},{id:'two',status:'processed'}]});
+  const saved = await f.request(`/v1/projects/${project.id}/datasets`, {name:'tasks',document});
+  assert.equal(saved.status,201); assert.equal(saved.body.items,2);
+  assert.equal(saved.body.document_sha256,hash(document));
+  const fork = await f.request(`/v1/projects/${project.id}/datasets`, {name:'fork',document,parent_dataset_id:saved.body.id});
+  assert.equal(fork.status,201); assert.equal(fork.body.parent_dataset_id,saved.body.id);
+  const version = await f.request(`/v1/projects/${project.id}/versions`, {name:'compiled',dataset_id:saved.body.id});
+  assert.equal(version.status,201); assert.equal(version.body.dataset_id,saved.body.id);
+  const compiled = spawnSync(binary,['dataset-compile','-'],{input:document,encoding:'utf8'});
+  assert.equal(compiled.status,0,compiled.stderr); assert.equal(hash(compiled.stdout),version.body.source_sha256);
+  const submitted = await f.submit(project,version.body), job = await f.wait(submitted.body.id);
+  assert.equal(job.outcome,'NormalForm'); assert.equal(job.commits,2);
+  const report = await f.request(`/v1/jobs/${job.id}/report`);
+  assert.equal(report.status,200); assert.equal(report.body.commits,2); assert.equal(report.body.altered_rule_identities.length,1);
+  assert.equal(report.body.final.atoms,report.body.initial.atoms-report.body.consumed_total+report.body.produced_total);
+  const page = await f.request(`/v1/jobs/${job.id}/events?limit=1`);
+  assert.equal(page.body.total,2); assert.equal(page.body.next_offset,1); assert.equal(page.body.items[0].id,'0');
+  assert.equal((await f.request(`/v1/jobs/${job.id}/events?limit=1&offset=1`)).body.items[0].id,'1');
+  await f.restart();
+  assert.equal((await f.request(`/v1/projects/${project.id}/datasets/${saved.body.id}/document`,undefined,{raw:true})).body,document);
+  assert.equal((await f.request(`/v1/projects/${project.id}/datasets`)).body.total,2);
+  const other = await f.request('/v1/projects',{name:'other'});
+  assert.equal((await f.request(`/v1/projects/${other.body.id}/versions`,{name:'bad',dataset_id:saved.body.id})).status,404);
+  assert.equal((await f.request(`/v1/projects/${project.id}/versions`,{name:'bad',source:program,dataset_id:saved.body.id})).status,400);
+  for(const bad of ['broken',JSON.stringify({schema:'work-items-v1',policy:'fixed',items:[{id:'same',status:'pending'},{id:'same',status:'pending'}]}),JSON.stringify({schema:'work-items-v1',policy:'fixed',items:[],extra:true})])
+    assert.equal((await f.request(`/v1/projects/${project.id}/datasets`,{name:'bad',document:bad})).status,422);
+  assert.equal(f.app.store.state.datasets.length,2);
+  assert.throws(()=>f.app.store.update(s=>{s.versions.find(v=>v.id===version.body.id).source_sha256=hash('bad');}),/dataset identity/);
+});
+
 test('browser access is opt-in, exact-origin and still requires the bearer token', async t => {
   const origin = 'http://127.0.0.1:4173', f = await fixture(t, { origins: [origin] });
   const preflight = await fetch(f.app.url + '/v1/projects', { method: 'OPTIONS', headers: { Origin: origin,

@@ -1,6 +1,8 @@
 export type ProjectRole = 'owner'|'editor'|'viewer';
 export type ProjectRecord = {id:string;name:string;created_at:string;owner_uid?:string;role?:ProjectRole};
 export type Members = {owner_uid:string;members:{uid:string;role:'editor'|'viewer'}[]};
+export type DatasetRecord = {id:string;project_id:string;name:string;schema:string;items:number;document_sha256:string;source_sha256:string;validated_engine_sha256:string;parent_dataset_id:string|null;created_at:string};
+export type RunSummary = {schema:string;trace_sha256:string;outcome:string|null;commits:number;initial:{atoms:number;fields:number};final:{atoms:number;fields:number};consumed_total:number;produced_total:number;altered_rule_identities:string[];limitation:string};
 export type TokenProvider = ()=>Promise<string>;
 export type VersionRecord = ProjectRecord & {project_id:string;source_sha256:string;validated_engine_sha256:string;parent_version_id?:string|null};
 export type JobSettings = {max_steps:number;max_work:number;max_candidates:number;seed:string|null;detect_cycles:boolean;deadline_ms:number};
@@ -80,6 +82,17 @@ export class PlatformClient {
   }
   validate(source:string){return this.#json<{valid:true;source_sha256:string;engine_sha256:string}>('/v1/validate',{source});}
   saveVersion(project:string,name:string,source:string,parent:string|null){return this.#json<VersionRecord>(`/v1/projects/${id(project)}/versions`,{name,source,parent_version_id:parent});}
+  async datasets(project:string):Promise<DatasetRecord[]>{
+    const first=await this.#json<Page<DatasetRecord>>(`/v1/projects/${id(project)}/datasets?limit=100`);
+    if(first.next_offset===null)return first.items;
+    const second=await this.#json<Page<DatasetRecord>>(`/v1/projects/${id(project)}/datasets?limit=100&offset=${first.next_offset}`);
+    if(second.next_offset!==null)throw Error('Dataset collection exceeds this client’s limit');
+    return [...first.items,...second.items];
+  }
+  saveDataset(project:string,name:string,document:string,parent:string|null){return this.#json<DatasetRecord>(`/v1/projects/${id(project)}/datasets`,{name,document,parent_dataset_id:parent});}
+  datasetVersion(project:string,name:string,dataset:string){return this.#json<VersionRecord>(`/v1/projects/${id(project)}/versions`,{name,dataset_id:id(dataset)});}
+  report(job:JobRecord){return this.#json<RunSummary>(`/v1/jobs/${id(job.id)}/report`);}
+  events(job:JobRecord,offset=0){return this.#json<Page<unknown>&{trace_sha256:string}>(`/v1/jobs/${id(job.id)}/events?limit=10&offset=${offset}`);}
   jobs(project:string,offset=0){return this.#json<Page<JobRecord>>(`/v1/projects/${id(project)}/jobs?limit=25&offset=${offset}`);}
   job(job:string){return this.#json<JobRecord>(`/v1/jobs/${id(job)}`);}
   cancel(job:string){return this.#json<JobRecord>(`/v1/jobs/${id(job)}/cancel`,{});}
@@ -97,5 +110,6 @@ export class PlatformClient {
     return new TextDecoder('utf-8',{fatal:true}).decode(bytes);
   }
   source(version:VersionRecord){return this.#artifact(`/v1/projects/${id(version.project_id)}/versions/${id(version.id)}/source`,version.source_sha256,256*1024);}
+  dataset(data:DatasetRecord){return this.#artifact(`/v1/projects/${id(data.project_id)}/datasets/${id(data.id)}/document`,data.document_sha256,256*1024);}
   trace(job:JobRecord){if(!job.trace_sha256)throw Error('No verified trace is available');return this.#artifact(`/v1/jobs/${id(job.id)}/trace`,job.trace_sha256,16*1024*1024);}
 }

@@ -12,6 +12,7 @@
 //! ```
 
 mod ast;
+pub mod dataset;
 pub mod lambda;
 mod lexer;
 mod lowering;

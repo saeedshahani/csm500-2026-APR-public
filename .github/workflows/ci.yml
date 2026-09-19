@@ -26,6 +26,7 @@ jobs:
           node --test scripts/import-study-data.test.mjs
           node --test scripts/research-methods.test.mjs
           node --test scripts/documentation.test.mjs
+          node scripts/reproduce-cycle.mjs --verify benchmarks/results/s6-cycle01-reproduction
           node scripts/verify-scale-study.mjs
           node scripts/verify-recovery-study.mjs
           node scripts/verify-recovery-study.mjs benchmarks/results/recovery-c01

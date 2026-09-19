@@ -56,6 +56,13 @@ export class Worker {
     if (r.code !== 0) fail(422, r.code === 3 ? 'resource_limit' : 'invalid_program', r.stderr.slice(0, 8192));
     return { valid: true, source_sha256: hash(source), engine_sha256: this.identity };
   }
+  async compileDataset(document) {
+    this.assertBinary();
+    const r = await native(this.binary, ['dataset-compile', '-'], document, { maximum: 256 * 1024 });
+    if (r.cause) fail(422, r.cause, 'Dataset compilation did not complete');
+    if (r.code !== 0) fail(422, 'invalid_dataset', r.stderr.slice(0, 8192));
+    return { source: r.stdout, engine_sha256: this.identity };
+  }
   kick() {
     if (this.active || this.stopping) return;
     const job = this.store.state.jobs.find(j => j.status === 'queued');

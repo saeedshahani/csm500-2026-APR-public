@@ -52,6 +52,12 @@ test('real emulator users: project isolation, role matrix, immutable versions an
   }
   assert.equal((await f.request(owner, base + '/members', { uid: owner.uid, role: 'viewer' })).status, 400);
   assert.equal((await f.request(owner, base + '/members', { uid: stranger.uid, role: 'owner' })).status, 400);
+  const document=JSON.stringify({schema:'work-items-v1',policy:'fixed',items:[]});
+  assert.equal((await f.request(viewer,base+'/datasets',{name:'denied',document})).status,403);
+  const dataset=await f.request(editor,base+'/datasets',{name:'allowed',document});assert.equal(dataset.status,201);
+  assert.equal((await f.request(viewer,base+`/datasets/${dataset.body.id}/document`,undefined,true)).body,document);
+  assert.equal((await f.request(stranger,base+`/datasets/${dataset.body.id}/document`)).status,404);
+  assert.equal((await f.request(viewer,base+'/versions',{name:'denied',dataset_id:dataset.body.id})).status,403);
   assert.equal((await f.request(viewer, base + '/versions', { name: 'Denied', source })).status, 403);
   const saved = await f.request(editor, base + '/versions', { name: 'v1', source }); assert.equal(saved.status, 201);
   const v = saved.body, submission = { version_id: v.id, idempotency_key: 'same-key', settings: { max_steps: 100 } };
@@ -67,6 +73,10 @@ test('real emulator users: project isolation, role matrix, immutable versions an
   let done;
   for (let i = 0; i < 500; i++) { done = (await f.request(viewer, `/v1/jobs/${job.id}`)).body; if (terminal.has(done.status)) break; await delay(10); }
   assert.equal(done.status, 'completed'); assert.equal(done.outcome, 'NormalForm');
+  for(const suffix of ['report','events']){
+    assert.equal((await f.request(viewer,`/v1/jobs/${job.id}/${suffix}`)).status,200);
+    assert.equal((await f.request(stranger,`/v1/jobs/${job.id}/${suffix}`)).status,404);
+  }
   const trace = await f.request(viewer, `/v1/jobs/${job.id}/trace`, undefined, true);
   assert.equal(hash(trace.body), done.trace_sha256); assert.equal(trace.headers.get('X-Content-SHA256'), done.trace_sha256);
   assert.equal((await f.request(viewer, `${base}/versions/${v.id}/source`, undefined, true)).body, source);
@@ -79,19 +89,24 @@ test('real emulator users: project isolation, role matrix, immutable versions an
 });
 
 test('permission revocation during native validation prevents publication', async t => {
+  for (const [method, route, input] of [
+    ['validate', 'versions', { name: 'Revoked source', source }],
+    ['compileDataset', 'datasets', { name: 'Revoked data', document: JSON.stringify({ schema: 'work-items-v1', policy: 'fixed', items: [] }) }]
+  ]) {
   const f = await fixture(t), owner = await f.user(), editor = await f.user();
   const p = (await f.request(owner, '/v1/projects', { name: 'Race' })).body, base = `/v1/projects/${p.id}`;
   await f.request(owner, base + '/members', { uid: editor.uid, role: 'editor' });
   let release, entered;
   const waiting = new Promise(resolve => { entered = resolve; }), gate = new Promise(resolve => { release = resolve; });
-  const original = f.app.worker.validate.bind(f.app.worker);
-  f.app.worker.validate = async text => { const value = await original(text); entered(); await gate; return value; };
-  const pending = f.request(editor, base + '/versions', { name: 'Revoked while validating', source });
+  const original = f.app.worker[method].bind(f.app.worker);
+  f.app.worker[method] = async text => { const value = await original(text); entered(); await gate; return value; };
+  const pending = f.request(editor, base + '/' + route, input);
   try { await waiting; await f.request(owner, base + '/members', { uid: editor.uid, role: null }); }
   finally { release(); }
   assert.equal((await pending).status, 404);
-  assert.equal((await f.request(owner, base + '/versions')).body.total, 0);
+  assert.equal((await f.request(owner, base + '/' + route)).body.total, 0);
   assert.equal(fs.readdirSync(f.app.store.blobs).length, 0);
+  }
 });
 
 test('missing, wrong-audience, expired, disabled and revoked identities fail closed', async t => {

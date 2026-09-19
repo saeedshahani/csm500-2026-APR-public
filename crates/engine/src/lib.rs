@@ -2,6 +2,7 @@
 //! Reproducible scheduling and bounded observation are layered above admission.
 pub mod causal;
 mod checked;
+pub mod conditions;
 pub mod conflict;
 pub mod indexed;
 mod matching;

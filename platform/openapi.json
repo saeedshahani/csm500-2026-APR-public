@@ -23,23 +23,102 @@
       "get": {
         "operationId": "members",
         "description": "Emulator mode only. Requires project owner; no membership list is exposed to editors or viewers.",
-        "parameters": [{ "name": "project", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "responses": {
-          "200": { "description": "Project membership", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Members" } } } },
-          "default": { "description": "401 identity rejected; 403 not owner; 404 inaccessible or unsupported in local-token mode", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+          "200": {
+            "description": "Project membership",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Members"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "401 identity rejected; 403 not owner; 404 inaccessible or unsupported in local-token mode",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       },
       "post": {
         "operationId": "setMember",
         "description": "Emulator mode only. Owner grants or changes viewer/editor membership; null removes membership. The owner cannot be changed. Maximum 32 members.",
-        "parameters": [{ "name": "project", "in": "path", "required": true, "schema": { "type": "string" } }],
-        "requestBody": { "required": true, "content": { "application/json": { "schema": {
-          "type": "object", "additionalProperties": false, "required": ["uid", "role"],
-          "properties": { "uid": { "type": "string", "minLength": 1, "maxLength": 128 }, "role": { "enum": ["viewer", "editor", null] } }
-        } } } },
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "uid",
+                  "role"
+                ],
+                "properties": {
+                  "uid": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 128
+                  },
+                  "role": {
+                    "enum": [
+                      "viewer",
+                      "editor",
+                      null
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "200": { "description": "Updated membership", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Members" } } } },
-          "default": { "description": "Structured error; invalid membership, missing access or capacity reached", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Error" } } } }
+          "200": {
+            "description": "Updated membership",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Members"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; invalid membership, missing access or capacity reached",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -62,8 +141,14 @@
                     "mode": {
                       "type": "string"
                     },
-                    "uid": { "type": "string", "description": "Authenticated UID in emulator mode" },
-                    "project_id": { "type": "string", "description": "Firebase demo project in emulator mode" },
+                    "uid": {
+                      "type": "string",
+                      "description": "Authenticated UID in emulator mode"
+                    },
+                    "project_id": {
+                      "type": "string",
+                      "description": "Firebase demo project in emulator mode"
+                    },
                     "engine_sha256": {
                       "type": "string"
                     }
@@ -323,13 +408,40 @@
                     "description": "Well-formed text, at most 262144 UTF-8 bytes"
                   },
                   "parent_version_id": {
-                    "type": ["string", "null"],
+                    "type": [
+                      "string",
+                      "null"
+                    ],
                     "description": "Optional existing version in the same project; a fork is a new immutable source, not a graph rewrite."
+                  },
+                  "dataset_id": {
+                    "type": "string"
                   }
                 },
                 "required": [
-                  "name",
-                  "source"
+                  "name"
+                ],
+                "oneOf": [
+                  {
+                    "required": [
+                      "source"
+                    ],
+                    "not": {
+                      "required": [
+                        "dataset_id"
+                      ]
+                    }
+                  },
+                  {
+                    "required": [
+                      "dataset_id"
+                    ],
+                    "not": {
+                      "required": [
+                        "source"
+                      ]
+                    }
+                  }
                 ]
               }
             }
@@ -552,7 +664,10 @@
                     "pattern": "^[A-Za-z0-9_-]{1,100}$"
                   },
                   "parent_job_id": {
-                    "type": ["string", "null"],
+                    "type": [
+                      "string",
+                      "null"
+                    ],
                     "description": "Optional terminal job in the same project. Included in request identity. New execution, not continuation."
                   },
                   "settings": {
@@ -738,6 +853,354 @@
           }
         }
       }
+    },
+    "/v1/projects/{project}/datasets": {
+      "get": {
+        "operationId": "datasets",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "items",
+                    "total",
+                    "next_offset"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Dataset"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_offset": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; project access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "saveDataset",
+        "description": "Editor access. Immutable work-items-v1 document, 256 KiB, at most 1000 items. Compiled and validated by the shared native adapter; no execution.",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "document"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "document": {
+                    "type": "string"
+                  },
+                  "parent_dataset_id": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Dataset"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; project access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{project}/datasets/{dataset}/document": {
+      "get": {
+        "operationId": "datasetDocument",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "dataset",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exact saved JSON bytes; X-Content-SHA256 equals document_sha256",
+            "headers": {
+              "X-Content-SHA256": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; project access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job}/events": {
+      "get": {
+        "operationId": "eventPage",
+        "description": "Page from the hash-verified published trace, not a standalone replayable trace. Response capped at 1 MiB; 413 asks for a smaller page. Whole stored trace remains capped at 16 MiB.",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "items",
+                    "total",
+                    "next_offset"
+                  ],
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_offset": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "schema": {
+                      "const": "reflective-event-page-v1"
+                    },
+                    "trace_sha256": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; project access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job}/report": {
+      "get": {
+        "operationId": "runReport",
+        "description": "Descriptive before/after carrier counts, including quoted syntax; not graph equivalence or convergence. Requires a verified result.",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "schema",
+                    "trace_sha256",
+                    "initial",
+                    "final",
+                    "commits",
+                    "limitation"
+                  ],
+                  "properties": {
+                    "schema": {
+                      "const": "reflective-run-summary-v1"
+                    },
+                    "trace_sha256": {
+                      "type": "string"
+                    },
+                    "initial": {
+                      "type": "object"
+                    },
+                    "final": {
+                      "type": "object"
+                    },
+                    "commits": {
+                      "type": "integer"
+                    },
+                    "limitation": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; project access is required",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -756,13 +1219,39 @@
     },
     "schemas": {
       "Members": {
-        "type": "object", "additionalProperties": false, "required": ["owner_uid", "members"],
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "owner_uid",
+          "members"
+        ],
         "properties": {
-          "owner_uid": { "type": "string" },
-          "members": { "type": "array", "maxItems": 32, "items": {
-            "type": "object", "additionalProperties": false, "required": ["uid", "role"],
-            "properties": { "uid": { "type": "string" }, "role": { "enum": ["viewer", "editor"] } }
-          } }
+          "owner_uid": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "maxItems": 32,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "uid",
+                "role"
+              ],
+              "properties": {
+                "uid": {
+                  "type": "string"
+                },
+                "role": {
+                  "enum": [
+                    "viewer",
+                    "editor"
+                  ]
+                }
+              }
+            }
+          }
         }
       },
       "Error": {
@@ -836,8 +1325,18 @@
         "type": "object",
         "additionalProperties": false,
         "properties": {
-          "owner_uid": { "type": "string", "description": "Emulator mode only" },
-          "role": { "enum": ["owner", "editor", "viewer"], "description": "Requester's project role in emulator mode" },
+          "owner_uid": {
+            "type": "string",
+            "description": "Emulator mode only"
+          },
+          "role": {
+            "enum": [
+              "owner",
+              "editor",
+              "viewer"
+            ],
+            "description": "Requester's project role in emulator mode"
+          },
           "id": {
             "type": "string"
           },
@@ -874,11 +1373,18 @@
             "type": "string"
           },
           "parent_version_id": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "Absent in older stores; absence and null mean no parent."
           },
           "created_at": {
             "type": "string"
+          },
+          "dataset_id": {
+            "type": "string",
+            "description": "Present only for a version compiled from this immutable dataset; source digest must match."
           }
         },
         "required": [
@@ -904,7 +1410,10 @@
           "source_sha256"
         ],
         "properties": {
-          "submitted_by": { "type": "string", "description": "Emulator UID; idempotency is scoped to this submitter and project" },
+          "submitted_by": {
+            "type": "string",
+            "description": "Emulator UID; idempotency is scoped to this submitter and project"
+          },
           "id": {
             "type": "string"
           },
@@ -915,7 +1424,10 @@
             "type": "string"
           },
           "parent_job_id": {
-            "type": ["string", "null"],
+            "type": [
+              "string",
+              "null"
+            ],
             "description": "Absent in older stores; absence and null mean no parent."
           },
           "settings": {
@@ -989,6 +1501,59 @@
           },
           "cancellation_requested_at": {
             "type": "string"
+          }
+        }
+      },
+      "Dataset": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "project_id",
+          "name",
+          "schema",
+          "document_sha256",
+          "source_sha256",
+          "validated_engine_sha256",
+          "created_at",
+          "items",
+          "parent_dataset_id"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "schema": {
+            "type": "string"
+          },
+          "document_sha256": {
+            "type": "string"
+          },
+          "source_sha256": {
+            "type": "string"
+          },
+          "validated_engine_sha256": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000
+          },
+          "parent_dataset_id": {
+            "type": [
+              "string",
+              "null"
+            ]
           }
         }
       }

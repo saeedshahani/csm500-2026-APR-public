@@ -1,7 +1,9 @@
-import {useEffect,useRef,useState} from 'react';
+import {useCallback,useEffect,useRef,useState} from 'react';
 import {PlatformClient,defaultJobSettings,finished,type JobRecord,type JobSettings,type Page,type ProjectRecord,type VersionRecord} from './platform-client';
 import './platform.css';
 import {ProjectMembers} from './ProjectMembers';
+import {ProjectDatasets} from './ProjectDatasets';
+import {RunReport} from './RunReport';
 import type {EmulatorSession} from './emulator-session';
 
 function download(text:string,name:string){const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
@@ -10,14 +12,15 @@ const when=(value:string|null)=>value?new Date(value).toLocaleString():'—';
 const emptyPage:Page<JobRecord>={items:[],total:0,next_offset:null};
 
 export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:boolean;draft:string;inspectorBusy:boolean;onSource:(source:string)=>void;onTrace:(trace:string)=>Promise<void>}){
-  const client=useRef<PlatformClient|null>(null),generation=useRef(0),working=useRef(false),revision=useRef(0),unsaved=useRef(false);
+  const client=useRef<PlatformClient|null>(null),generation=useRef(0),working=useRef(false),revision=useRef(0),unsaved=useRef(false),datasetDirty=useRef(false);
+  const setDatasetDirty=useCallback((value:boolean)=>{datasetDirty.current=value;},[]);
   const [url,setUrl]=useState('http://127.0.0.1:8787'),[token,setToken]=useState(''),[connected,setConnected]=useState(false),[engine,setEngine]=useState('');
   const [busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
   const [projects,setProjects]=useState<ProjectRecord[]>([]),[project,setProject]=useState(''),[projectName,setProjectName]=useState('');
   const [versions,setVersions]=useState<VersionRecord[]>([]),[version,setVersion]=useState(''),[versionName,updateVersionName]=useState(''),[source,updateSource]=useState(''),[parent,setParent]=useState<string|null>(null);
   function setVersionName(value:string){unsaved.current=true;updateVersionName(value);}
   function setSource(value:string){unsaved.current=true;updateSource(value);}
-  const discard=()=>!unsaved.current||window.confirm('Discard the unsaved version form? The workspace draft and saved versions will be kept.');
+  const discard=()=>!(unsaved.current||datasetDirty.current)||window.confirm('Discard unsaved program or dataset forms? The workspace draft and saved versions will be kept.');
   const [jobs,setJobs]=useState<Page<JobRecord>>(emptyPage),[offset,setOffset]=useState(0),[selected,setSelected]=useState<JobRecord|null>(null),[comparison,setComparison]=useState<JobRecord|null>(null);
   const [config,setConfig]=useState<JobSettings>({...defaultJobSettings}),[parentJob,setParentJob]=useState<string|null>(null);
   const [refreshed,setRefreshed]=useState(''),[pollError,setPollError]=useState('');
@@ -26,7 +29,7 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
   const session=useRef<EmulatorSession|null>(null);
   const closeSession=()=>{const previous=session.current;session.current=null;void previous?.close().catch(()=>{});};
   useEffect(()=>()=>{generation.current++;client.current?.close();closeSession();},[]);
-  useEffect(()=>{const warn=(event:BeforeUnloadEvent)=>{if(unsaved.current){event.preventDefault();event.returnValue='';}};window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn);},[]);
+  useEffect(()=>{const warn=(event:BeforeUnloadEvent)=>{if(unsaved.current||datasetDirty.current){event.preventDefault();event.returnValue='';}};window.addEventListener('beforeunload',warn);return()=>window.removeEventListener('beforeunload',warn);},[]);
   async function action(operation:(api:PlatformClient,valid:()=>boolean)=>Promise<void>){
     if(!client.current||working.current)return;
     const epoch=generation.current,api=client.current,valid=()=>epoch===generation.current;
@@ -34,7 +37,7 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
     try{await operation(api,valid);}catch(e){if(valid())setError(e instanceof Error?e.message:String(e));}
     finally{if(valid()){revision.current++;working.current=false;setBusy(false);}}
   }
-  function disconnect(){if(!discard())return;generation.current++;client.current?.close();client.current=null;closeSession();working.current=false;setBusy(false);setConnected(false);setToken('');setPassword('');setUid('');setProjects([]);setProject('');setVersions([]);setVersion('');setSource('');setVersionName('');unsaved.current=false;setJobs(emptyPage);setSelected(null);setComparison(null);setParent(null);setParentJob(null);setError('');setPollError('');setNotice('Disconnected. Saved projects and submitted jobs remain on the server.');}
+  function disconnect(){if(!discard())return;datasetDirty.current=false;generation.current++;client.current?.close();client.current=null;closeSession();working.current=false;setBusy(false);setConnected(false);setToken('');setPassword('');setUid('');setProjects([]);setProject('');setVersions([]);setVersion('');setSource('');setVersionName('');unsaved.current=false;setJobs(emptyPage);setSelected(null);setComparison(null);setParent(null);setParentJob(null);setError('');setPollError('');setNotice('Disconnected. Saved projects and submitted jobs remain on the server.');}
   async function connect(){
     if(working.current)return;
     client.current?.close();closeSession();const epoch=++generation.current;
@@ -54,7 +57,7 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
     await action(async(api,valid)=>{const health=await api.health();if(health.api!=='v1'||health.mode!==authMode||(authMode==='firebase-emulator'&&(health.uid!==session.current?.uid||health.project_id!=='demo-reflective-graph')))throw Error('Unsupported or mismatched API identity');const list=await api.projects();if(valid()){accepted=true;setConnected(true);setUid(health.uid??'');setEngine(health.engine_sha256);setProjects(list.items);setNotice('Choose or create a project.');}});
     if(!accepted&&client.current===connection){connection?.close();client.current=null;closeSession();}
   }
-  function chooseProject(value:string){if(value===project||!discard())return;generation.current++;setProject(value);setVersions([]);setVersion('');setSource('');setVersionName('');unsaved.current=false;setParent(null);setParentJob(null);setSelected(null);setComparison(null);setOffset(0);setJobs(emptyPage);setNotice('');setError('');setPollError('');}
+  function chooseProject(value:string){if(value===project||!discard())return;datasetDirty.current=false;generation.current++;setProject(value);setVersions([]);setVersion('');setSource('');setVersionName('');unsaved.current=false;setParent(null);setParentJob(null);setSelected(null);setComparison(null);setOffset(0);setJobs(emptyPage);setNotice('');setError('');setPollError('');}
   useEffect(()=>{
     if(!connected||!project||!active||!client.current)return;
     const api=client.current,epoch=generation.current;let cancelled=false,timer:ReturnType<typeof setTimeout>;
@@ -93,6 +96,7 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
     <div className="project-workspace">{!chosenProject?<p className="platform-empty">{pollError||'Select a project to view its versions and runs.'}</p>:<>
       <header className="project-title"><h2>{chosenProject.name}</h2><code>{chosenProject.id}</code>{chosenProject.role&&<span>Your role: {chosenProject.role}</span>}</header>
       {chosenProject.role==='owner'&&client.current&&<ProjectMembers key={`${uid}:${project}`} api={client.current} project={project}/>}
+      {client.current&&<ProjectDatasets key={`data:${uid}:${project}`} api={client.current} project={project} canEdit={canEdit} onDirty={setDatasetDirty} onVersion={saved=>{setVersions(list=>[...list,saved]);setVersion(saved.id);}}/>}
       <section className="platform-section" aria-label="Program versions"><div className="platform-section-heading"><h2>Program versions</h2><span>{versions.length} saved</span></div><p>A version contains the data and rules together. Saving validates a new immutable source; it does not change a running graph.</p>
         <label>Saved version<select value={version} disabled={busy} onChange={e=>setVersion(e.target.value)}><option value="">Choose a version</option>{versions.map(v=><option key={v.id} value={v.id}>{v.name} · {short(v.id)}</option>)}</select></label>
         {currentVersion&&<><div className="platform-actions"><button disabled={busy||inspectorBusy} onClick={()=>void action(async(api,valid)=>{const text=await api.source(currentVersion);if(valid())onSource(text);})}>Open source in workspace</button><button disabled={busy||!canEdit} onClick={()=>{if(!discard())return;void action(async(api,valid)=>{const text=await api.source(currentVersion);if(valid()){setSource(text);setVersionName(`${currentVersion.name} fork`.slice(0,100));setParent(currentVersion.id);setComposerOpen(true);setNotice('Edit the source below, then save a new version.');}});}}>Fork version</button><button disabled={busy} onClick={()=>void action(async(api,valid)=>{const text=await api.source(currentVersion);if(valid())download(text,`${currentVersion.id}.graph`);})}>Download source</button></div><details><summary>Version identity</summary><dl><dt>Created</dt><dd>{when(currentVersion.created_at)}</dd><dt>Parent version</dt><dd>{currentVersion.parent_version_id??'None'}</dd><dt>Source SHA-256</dt><dd>{currentVersion.source_sha256}</dd><dt>Validation binary</dt><dd>{currentVersion.validated_engine_sha256}</dd></dl></details></>}
@@ -102,6 +106,7 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
       <section className="platform-section" aria-label="Job history"><div className="platform-section-heading"><h2>Runs</h2><span>{jobs.total} jobs · {refreshed?`refreshed ${refreshed}`:'loading'}</span></div>{pollError&&<p role="alert">{pollError}</p>}<div className="table-scroll"><table><thead><tr><th>Job</th><th>Version</th><th>Status</th><th>Outcome</th><th>Commits</th><th>Created</th></tr></thead><tbody>{jobs.items.map(j=><tr key={j.id} className={selected?.id===j.id?'selected-run':''}><td><button disabled={busy} aria-label={`Inspect job ${j.id}`} onClick={()=>setSelected(j)}>{short(j.id)}</button></td><td>{versions.find(v=>v.id===j.version_id)?.name??short(j.version_id)}</td><td>{j.status}</td><td>{j.outcome??'—'}</td><td>{j.commits??'—'}</td><td>{when(j.created_at)}</td></tr>)}</tbody></table></div>{jobs.total===0&&<p>No jobs yet. Select a saved version and submit a run.</p>}<div className="platform-actions"><button disabled={busy||offset===0} onClick={()=>setOffset(Math.max(0,offset-25))}>Previous runs</button><button disabled={busy||jobs.next_offset===null} onClick={()=>setOffset(jobs.next_offset!)}>Next runs</button><span>Showing {jobs.items.length?offset+1:0}–{offset+jobs.items.length} of {jobs.total}</span></div></section>
       {selected&&<section className="platform-section run-inspector" aria-label="Selected run"><h2>Run {short(selected.id)}</h2><p aria-live="polite">{selected.status}{selected.outcome?` · ${selected.outcome}`:''}{selected.commits!==null?` · ${selected.commits} commits`:''}</p>{selected.failure&&<pre role="alert">{selected.failure}</pre>}<div className="platform-actions"><button disabled={busy||!canEdit||finished(selected)} onClick={()=>void action(async(api,valid)=>{const job=await api.cancel(selected.id);if(valid())setSelected(job);})}>Cancel job</button><button disabled={busy||!canEdit||!finished(selected)} onClick={()=>{setVersion(selected.version_id);setConfig({...selected.settings});setParentJob(selected.id);setNotice('Settings copied. Adjust if needed, then submit a new job. This does not resume the old run.');}}>Prepare retry / what-if</button><button disabled={busy||!selected.trace_sha256||inspectorBusy} onClick={()=>void action(async(api,valid)=>{const text=await api.trace(selected);if(valid())await onTrace(text);})}>Inspect graph and history</button><button disabled={busy||!selected.trace_sha256} onClick={()=>void action(async(api,valid)=>{const text=await api.trace(selected);if(valid())download(text,`${selected.id}.trace.json`);})}>Download trace</button><button disabled={busy||!finished(selected)} onClick={()=>setComparison(selected)}>Use as comparison baseline</button></div><details><summary>Run provenance and settings</summary><dl><dt>Job</dt><dd>{selected.id}</dd><dt>Version</dt><dd>{selected.version_id}</dd><dt>Parent job</dt><dd>{selected.parent_job_id??'None'}</dd><dt>Submission key</dt><dd>{selected.idempotency_key}</dd><dt>Started / finished</dt><dd>{when(selected.started_at)} / {when(selected.finished_at)}</dd><dt>Source SHA-256</dt><dd>{selected.source_sha256}</dd><dt>Native binary</dt><dd>{selected.engine_sha256}</dd><dt>Trace SHA-256</dt><dd>{selected.trace_sha256??'No verified result'}</dd></dl><pre>{JSON.stringify(selected.settings,null,2)}</pre></details>
         {comparison&&<div className="run-comparison"><h3>Metadata comparison</h3><p>Matching outcomes or commit counts do not establish equivalent graphs. Inspect the traces for structural changes.</p><div className="table-scroll"><table><thead><tr><th>Field</th><th>Baseline {short(comparison.id)}</th><th>Selected {short(selected.id)}</th></tr></thead><tbody>{(['version_id','status','outcome','commits','source_sha256','engine_sha256','trace_sha256'] as const).map(key=><tr key={key}><th>{key}</th><td>{comparison[key]??'—'}</td><td>{selected[key]??'—'}</td></tr>)}{(Object.keys(config) as (keyof JobSettings)[]).map(key=><tr key={key}><th>{key}</th><td>{String(comparison.settings[key]??'deterministic')}</td><td>{String(selected.settings[key]??'deterministic')}</td></tr>)}</tbody></table></div><button onClick={()=>setComparison(null)}>Clear comparison</button></div>}
+      {client.current&&selected.trace_sha256&&<RunReport key={selected.id} api={client.current} job={selected}/>}
       </section>}
     </>}</div></div>}
   </section>;

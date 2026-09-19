@@ -1,0 +1,13 @@
+{
+  "schema": "reflective-deployment-target-v1",
+  "project_id": "reflective-graph-f1cd4",
+  "project_number": "463455802523",
+  "account_label": "dariusstyxedge",
+  "region_preference": ["UK", "EU"],
+  "proposed_region": "europe-west2",
+  "monthly_budget": { "currency": "GBP", "amount": 5 },
+  "audience": null,
+  "deployment_approved": false,
+  "billing_changes_approved": false,
+  "note": "Explicit project ID is mandatory for every cloud command. No default alias, account-wide mutations, or operations on other projects. Proposed region and service-level spending controls require confirmation; budget alerts are not a spending cap."
+}

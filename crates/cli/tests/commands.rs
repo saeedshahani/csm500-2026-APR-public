@@ -59,6 +59,41 @@ impl Drop for Directory {
 }
 
 #[test]
+fn dataset_adapter_and_condition_sidecar_are_checked_commands() {
+    let input =
+        br#"{"schema":"work-items-v1","policy":"fixed","items":[{"id":"a","status":"pending"}]}"#;
+    let compiled = stdin(&["dataset-compile", "-"], input);
+    assert!(
+        compiled.status.success(),
+        "{}",
+        String::from_utf8_lossy(&compiled.stderr)
+    );
+    parser::load(std::str::from_utf8(&compiled.stdout).unwrap()).unwrap();
+    let exported = stdin(&["export", "-", "--max-steps", "1"], &compiled.stdout);
+    assert!(exported.status.success());
+    let report = stdin(&["trace-conditions", "-"], &exported.stdout);
+    assert!(
+        report.status.success(),
+        "{}",
+        String::from_utf8_lossy(&report.stderr)
+    );
+    let json: serde_json::Value = serde_json::from_slice(&report.stdout).unwrap();
+    assert_eq!(
+        json["source_trace_sha256"],
+        engine::trace::sha256(&exported.stdout)
+    );
+    assert_eq!(json["analysis"]["schema"], engine::conditions::SCHEMA);
+    assert_eq!(json["analysis"]["witnesses"].as_array().unwrap().len(), 0);
+    assert!(!stdin(&["trace-conditions", "-"], b"{}").status.success());
+    assert!(!stdin(
+        &["dataset-compile", "-"],
+        br#"{"schema":"work-items-v1","policy":"fixed","items":[],"extra":1}"#
+    )
+    .status
+    .success());
+}
+
+#[test]
 fn help_documents_all_commands_and_exit_meanings() {
     for args in [
         vec!["--help"],
