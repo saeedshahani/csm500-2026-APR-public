@@ -64,13 +64,21 @@ impl Scheduler {
 }
 impl SchedulingStrategy for Scheduler {
     fn select(&mut self, candidates: &[PreparedStep]) -> Option<usize> {
-        if candidates.is_empty() {
+        self.select_count(candidates.len())
+    }
+    fn description(&self) -> String {
+        self.describe()
+    }
+}
+impl Scheduler {
+    pub(crate) fn select_count(&mut self, count: usize) -> Option<usize> {
+        if count == 0 {
             return None;
         }
         match self {
             Self::Deterministic => Some(0),
             Self::Seeded(SeededScheduler { rng, .. }) => {
-                let n = candidates.len() as u64;
+                let n = count as u64;
                 // Explicit unbiased rejection sampling, independent of rand's
                 // distribution implementation and of host pointer width.
                 let threshold = n.wrapping_neg() % n;
@@ -83,7 +91,7 @@ impl SchedulingStrategy for Scheduler {
             }
         }
     }
-    fn description(&self) -> String {
+    fn describe(&self) -> String {
         match self {
             Self::Deterministic => format!("deterministic-v1; order={CANDIDATE_ORDER}; engine={}", env!("CARGO_PKG_VERSION")),
             Self::Seeded(SeededScheduler { seed, rng }) => format!("seeded-v1; seed={seed}; seed-encoding=repeat-le-u64-v1; rng=ChaCha8Rng/rand_chacha-0.3.1/rand-0.8.5; stream={}; word-position={}; sampling=u64-rejection-v1; order={CANDIDATE_ORDER}; engine={}",rng.get_stream(),rng.get_word_pos(),env!("CARGO_PKG_VERSION")),

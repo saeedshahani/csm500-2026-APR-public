@@ -15,6 +15,11 @@ fn apply(
     let before = execution.view().unwrap();
     let source = before.rule(head).unwrap().clone();
     let expected = OperationalBinding::new(head, assignments);
+    // Query-local indexes must observe every lifecycle change exercised below,
+    // including mode/activity changes, quotation, deletion and installation.
+    let indexed = execution.enabled_compact().unwrap();
+    assert!(indexed.bindings().contains(&expected));
+    drop(indexed);
     let proposal = execution
         .enabled_for(head)
         .unwrap()

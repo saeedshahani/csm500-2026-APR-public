@@ -12,6 +12,19 @@ jobs:
       - run: cargo fmt --all -- --check
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - run: cargo test --workspace --locked
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - name: Local developer API and recovery acceptance
+        run: |
+          cargo build --release --locked -p cli
+          node --test platform/tests/*.test.mjs
+      - name: Large-data importer and experimental matching smoke
+        run: |
+          node --test scripts/import-study-data.test.mjs
+          node scripts/verify-scale-study.mjs
+          cargo run --release --locked -p engine --example scale_probe -- fixed 1000 bindings-indexed 1 42
+          cargo run --release --locked -p engine --example scale_probe -- guarded 10 run-compact 20 42
       - name: Benchmark correctness smoke (not performance evidence)
         run: |
           cargo bench --locked -p engine --bench scaling -- --test

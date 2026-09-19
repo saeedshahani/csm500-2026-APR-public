@@ -1,0 +1,21 @@
+{
+  "schema": "scale-study-v1",
+  "date": "2026-09-18T22:50:51.091Z",
+  "platform": "darwin",
+  "os": "25.6.0",
+  "cpu": "Apple M4 Pro",
+  "memory": 51539607552,
+  "node": "v24.21.0",
+  "rust": "rustc 1.85.0 (4d91de4e4 2025-02-17)\nbinary: rustc\ncommit-hash: 4d91de4e48198da2e33413efdcd9cd2cc0c46688\ncommit-date: 2025-02-17\nhost: aarch64-apple-darwin\nrelease: 1.85.0\nLLVM version: 19.1.7\n",
+  "commit": "0fb983591b524d54b4cc049b35bdfd87db91f4f7",
+  "dirty_status": " M .github/workflows/ci.yml\n M .gitignore\n M README.md\n M crates/cli/tests/decoding.rs\n M crates/engine/benches/support/mod.rs\n M crates/engine/src/lib.rs\n M crates/engine/src/matching.rs\n M crates/engine/src/scheduling.rs\n M crates/engine/tests/matching.rs\n M docs/.DS_Store\n M docs/architecture.md\n M docs/decisions.md\n M docs/dissertation.md\n M docs/figure-specifications.md\n D docs/literature.md\n M docs/performance-study.md\n M docs/research-plan.md\n M docs/scientific-audit.md\n M docs/sprint-plan.md\n M docs/task-list.md\n M scripts/fingerprint.mjs\n?? benchmarks/results/s6-cycle01-native/\n?? benchmarks/results/s6-cycle01-reproducible/\n?? benchmarks/results/s6-cycle01/\n?? benchmarks/results/s6-cycle02/\n?? crates/engine/examples/profile_work_items.rs\n?? crates/engine/examples/scale_probe.rs\n?? crates/engine/src/indexed.rs\n?? crates/engine/tests/indexed.rs\n?? docs/archive/\n?? docs/scalability-study.md\n?? platform/\n?? scripts/import-study-data.mjs\n?? scripts/import-study-data.test.mjs\n?? scripts/profile-work-items.mjs\n?? scripts/scale-study.mjs\n?? scripts/verify-work-item-profile.mjs\n",
+  "source_bundle_sha256": "f416b0aaa9ce7311d725da1bc03042253eabcc5460407cc471d2e1db789eba07",
+  "binary_sha256": "96d6f3b725d070a8bd85092a8a1098df8926e4ec348568c194e2f8da7d1d2b99",
+  "protocol_sha256": "c95234102c6e751a3bb25719d1316a8fe29b37b94c9c7c3fad08b2e60163eb07",
+  "timeout_ms": 30000,
+  "sampled_group_rss_ceiling_bytes": 536870912,
+  "sampling_ms": 100,
+  "warmups": 1,
+  "repetitions": 5,
+  "seed": 42
+}

@@ -3,6 +3,7 @@
 pub mod causal;
 mod checked;
 pub mod conflict;
+pub mod indexed;
 mod matching;
 pub mod observation;
 pub mod recording;

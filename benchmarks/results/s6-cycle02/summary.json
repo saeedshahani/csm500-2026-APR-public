@@ -1,0 +1,4064 @@
+[
+  {
+    "args": [
+      "fixed",
+      1000,
+      "validate",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 202958,
+      "median": 213834,
+      "max": 232958
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 4.055250000000001,
+      "median": 4.299041999999986,
+      "max": 4.593166999999994
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2949120,
+      "median": 2965504,
+      "max": 2981888
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "clone",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 79417,
+      "median": 82542,
+      "max": 93458
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.594250000000045,
+      "median": 3.7417500000000246,
+      "max": 3.961250000000007
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3047424,
+      "median": 3047424,
+      "max": 3063808
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "inspect",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 107416,
+      "median": 117542,
+      "max": 132708
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.841791999999998,
+      "median": 4.220250000000021,
+      "max": 4.465750000000014
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3506176,
+      "median": 3506176,
+      "max": 3522560
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "bindings-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 65209500,
+      "median": 65874167,
+      "max": 66603375
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 69.85841700000003,
+      "median": 70.611583,
+      "max": 70.8979169999999
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3391488,
+      "median": 3424256,
+      "max": 3440640
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "bindings-indexed",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1169333,
+      "median": 1280125,
+      "max": 1297250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 5.277958000000012,
+      "median": 5.795166999999992,
+      "max": 5.948332999999934
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3817472,
+      "median": 3866624,
+      "max": 3883008
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "enabled-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 717567917,
+      "median": 725340042,
+      "max": 733483167
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 726.159167,
+      "median": 733.1867500000003,
+      "max": 741.905667
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 274284544,
+      "median": 274464768,
+      "max": 274563072
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "enabled-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 608046208,
+      "median": 618785167,
+      "max": 624427416
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 613.0873330000004,
+      "median": 623.383749999999,
+      "max": 629.2387079999999
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4833280,
+      "median": 4849664,
+      "max": 4997120
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10000,
+      "validate",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 2313458,
+      "median": 2349625,
+      "max": 2355583
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 12.114999999999782,
+      "median": 12.783959000000323,
+      "max": 12.99974999999904
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 8650752,
+      "median": 8699904,
+      "max": 8716288
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10000,
+      "clone",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 896000,
+      "median": 931875,
+      "max": 950542
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 10.855916999998954,
+      "median": 11.172542000000249,
+      "max": 11.297207999999955
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 10813440,
+      "median": 10829824,
+      "max": 11010048
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10000,
+      "inspect",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 119917,
+      "median": 131625,
+      "max": 136458
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 9.916708000000654,
+      "median": 10.081082999999126,
+      "max": 10.373499999999694
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 9175040,
+      "median": 9224192,
+      "max": 9256960
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10000,
+      "bindings-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 181086875,
+      "median": 181512667,
+      "max": 182846208
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 191.05591600000116,
+      "median": 191.57170899999983,
+      "max": 193.4632500000007
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 9338880,
+      "median": 9371648,
+      "max": 9388032
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10000,
+      "bindings-indexed",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 12342041,
+      "median": 12758083,
+      "max": 13111541
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 22.147750000000087,
+      "median": 22.464124999998603,
+      "max": 23.188083999999435
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 15876096,
+      "median": 15941632,
+      "max": 15990784
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      10000,
+      10000,
+      10000,
+      10000,
+      10000
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10000,
+      "enabled-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1165301458,
+      "median": 1199656917,
+      "max": 1248172958
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 1179.4752499999995,
+      "median": 1216.272332999999,
+      "max": 1264.2260000000006
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 451100672,
+      "median": 451182592,
+      "max": 451248128
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10000,
+      "enabled-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Timeout",
+      "Timeout",
+      "Timeout",
+      "Timeout",
+      "Timeout"
+    ],
+    "phase_ns": null,
+    "elapsed_ms": null,
+    "peak_rss_bytes": null,
+    "commits": [],
+    "complete_count": []
+  },
+  {
+    "args": [
+      "fixed",
+      100000,
+      "validate",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 22283417,
+      "median": 22633541,
+      "max": 24778958
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 83.77529200000572,
+      "median": 85.20662500002072,
+      "max": 86.85250000000815
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 64421888,
+      "median": 64487424,
+      "max": 64552960
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100000,
+      "clone",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 7947208,
+      "median": 9332750,
+      "max": 9573167
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 72.16554200000246,
+      "median": 73.83324999999604,
+      "max": 80.06045799999265
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 74776576,
+      "median": 76365824,
+      "max": 80117760
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100000,
+      "inspect",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 135875,
+      "median": 142458,
+      "max": 155250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 61.887707999994745,
+      "median": 64.19470799999544,
+      "max": 65.69645800002036
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 64995328,
+      "median": 64995328,
+      "max": 65077248
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100000,
+      "bindings-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 238794500,
+      "median": 239699416,
+      "max": 241089250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 300.3191250000091,
+      "median": 301.3483750000014,
+      "max": 302.259584000014
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 65863680,
+      "median": 65929216,
+      "max": 65945600
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100000,
+      "bindings-indexed",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 134765166,
+      "median": 136091250,
+      "max": 136416834
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 196.08662499999627,
+      "median": 198.3994169999787,
+      "max": 200.47091699999874
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 131137536,
+      "median": 131153920,
+      "max": 133627904
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      100000,
+      100000,
+      100000,
+      100000,
+      100000
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100000,
+      "enabled-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion",
+      "ResourceExhaustion"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1157241666,
+      "median": 1167944167,
+      "max": 1169136167
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 1227.1561250000086,
+      "median": 1236.592875000002,
+      "max": 1239.005124999996
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 487882752,
+      "median": 487981056,
+      "max": 491241472
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100000,
+      "enabled-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Timeout",
+      "Timeout",
+      "Timeout",
+      "Timeout",
+      "Timeout"
+    ],
+    "phase_ns": null,
+    "elapsed_ms": null,
+    "peak_rss_bytes": null,
+    "commits": [],
+    "complete_count": []
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "observe",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 622208,
+      "median": 639542,
+      "max": 682459
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 4.084666999988258,
+      "median": 4.302083999966271,
+      "max": 4.6032499999855645
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3407872,
+      "median": 3457024,
+      "max": 3457024
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "compare",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 282495334,
+      "median": 288555834,
+      "max": 289305416
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 287.34641599998577,
+      "median": 293.3693750000093,
+      "max": 294.1307500000112
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4685824,
+      "median": 4718592,
+      "max": 4800512
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "prepare",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 610625,
+      "median": 649083,
+      "max": 656083
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 5.178750000020955,
+      "median": 5.412750000017695,
+      "max": 5.730500000005122
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4243456,
+      "median": 4308992,
+      "max": 4325376
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "baseline",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1292,
+      "median": 1458,
+      "max": 2250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.4163749999715947,
+      "median": 3.4852499999688007,
+      "max": 5.915458000032231
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2916352,
+      "median": 2949120,
+      "max": 2965504
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "symmetry",
+      1000,
+      "bindings-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 64826291,
+      "median": 65169167,
+      "max": 65611375
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 68.81233299995074,
+      "median": 69.22912500001257,
+      "max": 69.79350000002887
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3375104,
+      "median": 3407872,
+      "max": 3407872
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "symmetry",
+      1000,
+      "bindings-indexed",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 989542,
+      "median": 1013917,
+      "max": 1057250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 4.232541000004858,
+      "median": 4.338540999975521,
+      "max": 4.859333000029437
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3588096,
+      "median": 3620864,
+      "max": 3670016
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "star",
+      1000,
+      "bindings-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 65230542,
+      "median": 65410958,
+      "max": 65689875
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 69.78495800000383,
+      "median": 69.81879099999787,
+      "max": 70.0118749999674
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3735552,
+      "median": 3768320,
+      "max": 3833856
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "star",
+      1000,
+      "bindings-indexed",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1558291,
+      "median": 1587750,
+      "max": 1633375
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 5.4187910000327975,
+      "median": 5.465792000002693,
+      "max": 5.71879200002877
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4161536,
+      "median": 4227072,
+      "max": 4276224
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "degree",
+      1000,
+      "bindings-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 68111708,
+      "median": 68746958,
+      "max": 69021458
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 73.35487500001909,
+      "median": 74.07362499996088,
+      "max": 74.27654099999927
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4734976,
+      "median": 4751360,
+      "max": 4751360
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "degree",
+      1000,
+      "bindings-indexed",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 3099833,
+      "median": 3196959,
+      "max": 3225834
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 7.866499999945518,
+      "median": 7.990374999993946,
+      "max": 8.187291999987792
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5308416,
+      "median": 5341184,
+      "max": 5357568
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      1000,
+      1000,
+      1000,
+      1000,
+      1000
+    ]
+  },
+  {
+    "args": [
+      "rules",
+      1000,
+      "bindings-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 23864083,
+      "median": 24177375,
+      "max": 24602250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 28.17466700001387,
+      "median": 28.775416999997105,
+      "max": 28.93420800002059
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3096576,
+      "median": 3112960,
+      "max": 3145728
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      32,
+      32,
+      32,
+      32,
+      32
+    ]
+  },
+  {
+    "args": [
+      "rules",
+      1000,
+      "bindings-indexed",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 27475250,
+      "median": 27770791,
+      "max": 29495334
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 32.18387499998789,
+      "median": 32.45916700002272,
+      "max": 34.29770799999824
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3391488,
+      "median": 3457024,
+      "max": 3473408
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      32,
+      32,
+      32,
+      32,
+      32
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10,
+      "run-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 374708,
+      "median": 377667,
+      "max": 391291
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.075667000026442,
+      "median": 3.3395419999724254,
+      "max": 3.665333000011742
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2654208,
+      "median": 2686976,
+      "max": 2752512
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10,
+      "run-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 412000,
+      "median": 423500,
+      "max": 450583
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.428249999997206,
+      "median": 3.5512909999815747,
+      "max": 3.592000000004191
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2621440,
+      "median": 2654208,
+      "max": 2654208
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10,
+      "run-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 978458,
+      "median": 1044667,
+      "max": 1074750
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.6952499999897555,
+      "median": 3.819167000008747,
+      "max": 4.354916999989655
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2736128,
+      "median": 2752512,
+      "max": 2768896
+    },
+    "commits": [
+      10,
+      10,
+      10,
+      10,
+      10
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      10,
+      "run-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1178542,
+      "median": 1199208,
+      "max": 1230334
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.9509580000303686,
+      "median": 4.069917000015266,
+      "max": 4.294709000037983
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2703360,
+      "median": 2752512,
+      "max": 2768896
+    },
+    "commits": [
+      10,
+      10,
+      10,
+      10,
+      10
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "run-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1345860584,
+      "median": 1351710833,
+      "max": 1357848208
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 1351.4647500000428,
+      "median": 1357.3112079999992,
+      "max": 1363.7264580000192
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 276529152,
+      "median": 278069248,
+      "max": 374210560
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "run-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1166242708,
+      "median": 1185438041,
+      "max": 1188502708
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 1170.3166249999776,
+      "median": 1189.5722079999978,
+      "max": 1192.5560830000322
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4603904,
+      "median": 4685824,
+      "max": 4964352
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "run-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 13846071875,
+      "median": 13916384500,
+      "max": 13933868125
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 13854.123833999969,
+      "median": 13926.162833999959,
+      "max": 13942.571333000029
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 407453696,
+      "median": 412008448,
+      "max": 412647424
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      1000,
+      "run-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 12310479625,
+      "median": 12406985625,
+      "max": 12521009584
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 12315.103833000001,
+      "median": 12411.261791999917,
+      "max": 12525.867500000051
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5537792,
+      "median": 5586944,
+      "max": 5652480
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "guarded",
+      10,
+      "run-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 532667,
+      "median": 537792,
+      "max": 582334
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.357709000003524,
+      "median": 3.5579999999608845,
+      "max": 3.8544579999288544
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2883584,
+      "median": 2916352,
+      "max": 2949120
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "guarded",
+      10,
+      "run-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 589250,
+      "median": 622334,
+      "max": 627750
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.4387499999720603,
+      "median": 3.5832919999957085,
+      "max": 3.7641670000739396
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2785280,
+      "median": 2834432,
+      "max": 2883584
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "guarded",
+      10,
+      "run-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 2438458,
+      "median": 2481708,
+      "max": 2545208
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 5.328125,
+      "median": 5.501332999905571,
+      "max": 5.855666000046767
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2998272,
+      "median": 3031040,
+      "max": 3063808
+    },
+    "commits": [
+      11,
+      11,
+      11,
+      11,
+      11
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "guarded",
+      10,
+      "run-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 2803500,
+      "median": 2919167,
+      "max": 3123916
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 5.777832999941893,
+      "median": 6.293167000054382,
+      "max": 6.7862079999176785
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3031040,
+      "median": 3047424,
+      "max": 3080192
+    },
+    "commits": [
+      11,
+      11,
+      11,
+      11,
+      11
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "guarded",
+      1000,
+      "run-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 770820500,
+      "median": 772185250,
+      "max": 775834042
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 777.1867499999935,
+      "median": 778.3002910000505,
+      "max": 781.9227080000564
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 275759104,
+      "median": 276135936,
+      "max": 276250624
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "guarded",
+      1000,
+      "run-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 687547167,
+      "median": 689623042,
+      "max": 695497125
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 691.8220829999773,
+      "median": 694.0545829999028,
+      "max": 700.1447500000941
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4882432,
+      "median": 5160960,
+      "max": 5357568
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "guarded",
+      1000,
+      "run-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 15147337042,
+      "median": 15179630958,
+      "max": 15199299792
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 15157.92741699994,
+      "median": 15187.72637499997,
+      "max": 15208.139791999944
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 409632768,
+      "median": 413794304,
+      "max": 414072832
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "guarded",
+      1000,
+      "run-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 13795729209,
+      "median": 14106009083,
+      "max": 14229338834
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 13800.21637499996,
+      "median": 14110.300999999978,
+      "max": 14234.511458999943
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5554176,
+      "median": 5750784,
+      "max": 5832704
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      10,
+      "run-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 128375,
+      "median": 136417,
+      "max": 161541
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.092333000036888,
+      "median": 3.7081250000046566,
+      "max": 3.8317920000990853
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2539520,
+      "median": 2555904,
+      "max": 2605056
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      10,
+      "run-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 197417,
+      "median": 203458,
+      "max": 229208
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 2.9539579999400303,
+      "median": 3.1073750000214204,
+      "max": 3.165999999968335
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2605056,
+      "median": 2654208,
+      "max": 2670592
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      10,
+      "run-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 933042,
+      "median": 947000,
+      "max": 998042
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 3.8036660000216216,
+      "median": 3.909125000005588,
+      "max": 4.166542000020854
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2801664,
+      "median": 2818048,
+      "max": 2834432
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      10,
+      "run-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1486708,
+      "median": 1526042,
+      "max": 1571958
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 4.33704100002069,
+      "median": 4.642375000054017,
+      "max": 5.014083000016399
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2899968,
+      "median": 2965504,
+      "max": 2965504
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      1000,
+      "run-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 975333,
+      "median": 1008959,
+      "max": 1035250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 4.017957999953069,
+      "median": 4.128834000090137,
+      "max": 4.599166000029072
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3391488,
+      "median": 3489792,
+      "max": 3506176
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      1000,
+      "run-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1236792,
+      "median": 1259625,
+      "max": 1275000
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 4.273875000071712,
+      "median": 4.510875000036322,
+      "max": 4.645458000013605
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3620864,
+      "median": 3653632,
+      "max": 3719168
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      1000,
+      "run-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 9573083,
+      "median": 9631334,
+      "max": 9788209
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 13.011874999967404,
+      "median": 13.093875000020489,
+      "max": 13.31908399995882
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3637248,
+      "median": 3637248,
+      "max": 3702784
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      1000,
+      "run-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 11720375,
+      "median": 11851667,
+      "max": 12059875
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 15.276458000065759,
+      "median": 15.368790999986231,
+      "max": 15.623249999945983
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3915776,
+      "median": 3948544,
+      "max": 3948544
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      10,
+      "run-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 2434042,
+      "median": 2455667,
+      "max": 2512250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 5.51762499997858,
+      "median": 5.772624999983236,
+      "max": 6.041124999988824
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3194880,
+      "median": 3194880,
+      "max": 3211264
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      10,
+      "run-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1526625,
+      "median": 1580500,
+      "max": 1676291
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 4.511292000068352,
+      "median": 4.77483399992343,
+      "max": 4.92429200001061
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3211264,
+      "median": 3244032,
+      "max": 3276800
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      10,
+      "run-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 25234667,
+      "median": 25532458,
+      "max": 25978375
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 28.724374999990687,
+      "median": 29.103041999973357,
+      "max": 29.749540999997407
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3325952,
+      "median": 3358720,
+      "max": 3391488
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      10,
+      "run-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 14983750,
+      "median": 15079125,
+      "max": 15714209
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 18.25104200001806,
+      "median": 18.618665999965742,
+      "max": 18.959875000058673
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3375104,
+      "median": 3375104,
+      "max": 3407872
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      1000,
+      "run-reference",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 4692416,
+      "median": 4786333,
+      "max": 4827167
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 8.28187499998603,
+      "median": 8.465291999978945,
+      "max": 8.859916999936104
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4505600,
+      "median": 4505600,
+      "max": 4521984
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      1000,
+      "run-compact",
+      1,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 4135291,
+      "median": 4235750,
+      "max": 4371583
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 7.655291999923065,
+      "median": 7.846459000022151,
+      "max": 8.097833000007086
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4030464,
+      "median": 4046848,
+      "max": 4063232
+    },
+    "commits": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      1000,
+      "run-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 48396042,
+      "median": 48869125,
+      "max": 49487583
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 52.14841700007673,
+      "median": 52.83950000000186,
+      "max": 53.72533399995882
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4784128,
+      "median": 4800512,
+      "max": 4816896
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      1000,
+      "run-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 42647625,
+      "median": 43084125,
+      "max": 43792291
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 46.87841599993408,
+      "median": 47.006999999983236,
+      "max": 47.7568339999998
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4194304,
+      "median": 4259840,
+      "max": 4505600
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100,
+      "run-reference",
+      101,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 381694459,
+      "median": 385590666,
+      "max": 389251583
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 385.2292080000043,
+      "median": 389.4627079999773,
+      "max": 393.3670840000268
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6258688,
+      "median": 6389760,
+      "max": 6455296
+    },
+    "commits": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100,
+      "run-compact",
+      101,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 355140125,
+      "median": 355336208,
+      "max": 365565083
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 359.01095900009386,
+      "median": 359.31187500001397,
+      "max": 369.21683399996255
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3112960,
+      "median": 3162112,
+      "max": 3194880
+    },
+    "commits": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100,
+      "record-reference",
+      101,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 380021291,
+      "median": 390918625,
+      "max": 394817750
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 383.92479099996854,
+      "median": 394.5670829999726,
+      "max": 398.5836250000866
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 6504448,
+      "median": 6537216,
+      "max": 6619136
+    },
+    "commits": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100,
+      "record-compact",
+      101,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm",
+      "NormalForm"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 354169167,
+      "median": 357382459,
+      "max": 363615583
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 358.6189589999849,
+      "median": 361.19704200001433,
+      "max": 367.6183749999618
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3375104,
+      "median": 3424256,
+      "max": 3473408
+    },
+    "commits": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "fixed",
+      100,
+      "baseline",
+      101,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1042,
+      "median": 1291,
+      "max": 1792
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 2.909165999968536,
+      "median": 3.024250000016764,
+      "max": 3.1094160000793636
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 2244608,
+      "median": 2260992,
+      "max": 2260992
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      1000,
+      "record-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 9639250,
+      "median": 9744875,
+      "max": 9843875
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 12.921375000034459,
+      "median": 13.026042000041343,
+      "max": 13.527000000001863
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 3833856,
+      "median": 3866624,
+      "max": 3883008
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      1000,
+      "record-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 11966541,
+      "median": 12023708,
+      "max": 12059458
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 15.12424999999348,
+      "median": 15.314125000033528,
+      "max": 15.690917000058107
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4096000,
+      "median": 4128768,
+      "max": 4128768
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      1000,
+      "record-reference",
+      100,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 45623291,
+      "median": 46095583,
+      "max": 48794250
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 49.36545899999328,
+      "median": 50.307874999940395,
+      "max": 52.791709000011906
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4030464,
+      "median": 4063232,
+      "max": 4325376
+    },
+    "commits": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "oscillating",
+      1000,
+      "record-compact",
+      100,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 56774125,
+      "median": 56979750,
+      "max": 58981167
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 60.640416999929585,
+      "median": 61.352457999950275,
+      "max": 62.85375000000931
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4276224,
+      "median": 4325376,
+      "max": 4620288
+    },
+    "commits": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      1000,
+      "record-reference",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 47834292,
+      "median": 48228166,
+      "max": 48404625
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 51.83520800003316,
+      "median": 52.12508299993351,
+      "max": 52.71808300004341
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4915200,
+      "median": 4964352,
+      "max": 4997120
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      1000,
+      "record-compact",
+      20,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 41765000,
+      "median": 42440083,
+      "max": 43525792
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 45.43550000002142,
+      "median": 46.477332999929786,
+      "max": 47.145332999993116
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4358144,
+      "median": 4390912,
+      "max": 4505600
+    },
+    "commits": [
+      20,
+      20,
+      20,
+      20,
+      20
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      1000,
+      "record-reference",
+      100,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 234239625,
+      "median": 237864417,
+      "max": 243909041
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 238.4465420000488,
+      "median": 242.40508399996907,
+      "max": 248.64191700005904
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5767168,
+      "median": 5816320,
+      "max": 5898240
+    },
+    "commits": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "restoration",
+      1000,
+      "record-compact",
+      100,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit",
+      "StepLimit"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 209026458,
+      "median": 210860959,
+      "max": 213083708
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 214.51124999998137,
+      "median": 215.64120800001547,
+      "max": 217.90949999995064
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 4833280,
+      "median": 4898816,
+      "max": 4964352
+    },
+    "commits": [
+      100,
+      100,
+      100,
+      100,
+      100
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "import:/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/output/s6-imports-pinned/grqc-1000.graph",
+      0,
+      "import",
+      0,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 168416,
+      "median": 181791,
+      "max": 186875
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 5.432874999940395,
+      "median": 5.721459000022151,
+      "max": 5.972707999986596
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 5160960,
+      "median": 5193728,
+      "max": 5390336
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "import:/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/output/s6-imports-pinned/grqc-10000.graph",
+      0,
+      "import",
+      0,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 1698833,
+      "median": 1765459,
+      "max": 1869417
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 21.940082999994047,
+      "median": 22.06770899996627,
+      "max": 22.389499999932013
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 29097984,
+      "median": 29360128,
+      "max": 29409280
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "import:/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/output/s6-imports-pinned/grqc-full.graph",
+      0,
+      "import",
+      0,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 2336750,
+      "median": 2529000,
+      "max": 2625125
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 26.958000000100583,
+      "median": 27.739999999990687,
+      "max": 28.079540999955498
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 37699584,
+      "median": 37715968,
+      "max": 39452672
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "import:/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/output/s6-imports-pinned/shoppers-1000.graph",
+      0,
+      "import",
+      0,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 584833,
+      "median": 611583,
+      "max": 622375
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 11.22379100008402,
+      "median": 11.446417000028305,
+      "max": 11.683082999894395
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 14630912,
+      "median": 14647296,
+      "max": 14663680
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "import:/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/output/s6-imports-pinned/shoppers-10000.graph",
+      0,
+      "import",
+      0,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 6052042,
+      "median": 6373625,
+      "max": 6608875
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 86.73341700003948,
+      "median": 86.85570800001733,
+      "max": 90.01195800001733
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 121372672,
+      "median": 122077184,
+      "max": 123305984
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  },
+  {
+    "args": [
+      "import:/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/output/s6-imports-pinned/shoppers-full.graph",
+      0,
+      "import",
+      0,
+      42
+    ],
+    "attempts": 5,
+    "outcomes": [
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed",
+      "Completed"
+    ],
+    "phase_ns": {
+      "n": 5,
+      "min": 7302167,
+      "median": 7835750,
+      "max": 8070167
+    },
+    "elapsed_ms": {
+      "n": 5,
+      "min": 102.51833300001454,
+      "median": 107.04100000008475,
+      "max": 118.95600000000559
+    },
+    "peak_rss_bytes": {
+      "n": 5,
+      "min": 147128320,
+      "median": 150355968,
+      "max": 150437888
+    },
+    "commits": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "complete_count": [
+      null,
+      null,
+      null,
+      null,
+      null
+    ]
+  }
+]

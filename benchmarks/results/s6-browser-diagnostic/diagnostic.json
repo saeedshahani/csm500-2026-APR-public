@@ -1,0 +1,107 @@
+{
+  "schema": "browser-scale-diagnostic-v1",
+  "date": "2026-09-18T23:09:44.169Z",
+  "purpose": "Three local UI observations per size, not a controlled engine benchmark or latency guarantee",
+  "script_sha256": "b173208cffdddb718588f992a98e654cd2018ebe6e40c97bdaf00fd7f935dcca",
+  "assets": {
+    "engine.worker-BSdz7Bvn.js": "c9be1e728732fecdd8e9ca74e1543a14609ccdd9e498642fccf30cbbe91c51e5",
+    "index-iY_qLXpR.js": "cf279761e83b8adcc7922b73dd850d16b1f4bcd6b8790761244453c95b379c10",
+    "index-nFVv4Zch.css": "2787e25c1088b277dd2426d50f29bb47b20c575411f4fb25f1de73dc77d3f8bd",
+    "wasm_bridge_bg-BRD99B5K.wasm": "48cc5361933cdf147ba67b76ea44a1571e7f9ded3ce6eb12b23796d67e1c59d2"
+  },
+  "rows": [
+    {
+      "size": 10,
+      "repetition": 0,
+      "load_ms": 185.70000004768372,
+      "step_ms": 197.80000007152557,
+      "before": "10 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "9 pending · 1 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 10,
+      "status": "Yielded"
+    },
+    {
+      "size": 10,
+      "repetition": 1,
+      "load_ms": 180.70000004768372,
+      "step_ms": 198.19999992847443,
+      "before": "10 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "9 pending · 1 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 10,
+      "status": "Yielded"
+    },
+    {
+      "size": 10,
+      "repetition": 2,
+      "load_ms": 181.60000002384186,
+      "step_ms": 198.39999997615814,
+      "before": "10 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "9 pending · 1 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 10,
+      "status": "Yielded"
+    },
+    {
+      "size": 100,
+      "repetition": 0,
+      "load_ms": 184,
+      "step_ms": 196.39999997615814,
+      "before": "100 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "99 pending · 1 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 100,
+      "status": "Yielded"
+    },
+    {
+      "size": 100,
+      "repetition": 1,
+      "load_ms": 193.60000002384186,
+      "step_ms": 197.5,
+      "before": "100 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "99 pending · 1 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 100,
+      "status": "Yielded"
+    },
+    {
+      "size": 100,
+      "repetition": 2,
+      "load_ms": 176.10000002384186,
+      "step_ms": 199.29999995231628,
+      "before": "100 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "99 pending · 1 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 100,
+      "status": "Yielded"
+    },
+    {
+      "size": 1000,
+      "repetition": 0,
+      "load_ms": 210.09999990463257,
+      "step_ms": 597.5,
+      "before": "1000 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "1000 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 250,
+      "status": "ResourceLimit"
+    },
+    {
+      "size": 1000,
+      "repetition": 1,
+      "load_ms": 195.5,
+      "step_ms": 597.5999999046326,
+      "before": "1000 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "1000 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 250,
+      "status": "ResourceLimit"
+    },
+    {
+      "size": 1000,
+      "repetition": 2,
+      "load_ms": 190.60000002384186,
+      "step_ms": 598.7000000476837,
+      "before": "1000 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "after": "1000 pending · 0 processed · 0 unrecognised status. Domain counts, not the payload observation.",
+      "canvas_atoms": 250,
+      "status": "ResourceLimit"
+    }
+  ],
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+  "viewport": null,
+  "url": "http://127.0.0.1:4173/"
+}

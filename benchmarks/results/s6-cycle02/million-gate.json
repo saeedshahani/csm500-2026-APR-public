@@ -1,0 +1,5 @@
+{
+  "eligible": false,
+  "decision": "not attempted: predecessor complete-query forecast fails resource/headroom gate",
+  "interrupted": false
+}

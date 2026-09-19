@@ -86,6 +86,9 @@ fn differential(graph: &Graph, source: AtomKey) {
         "duplicate assignments"
     );
     assert_eq!(maps(found), exhaustive(graph, source));
+    let indexed = run.bindings_indexed(source).unwrap();
+    assert_eq!(indexed.len(), maps(indexed.clone()).len());
+    assert_eq!(maps(indexed), exhaustive(graph, source));
 }
 
 #[test]

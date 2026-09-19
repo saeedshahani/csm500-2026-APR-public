@@ -3,7 +3,9 @@
 CLAUDE.md
 
 docs/papers/
-docs/archive/
+docs/archive/*
+!docs/archive/README.md
+!docs/archive/dissertation-full.md
 docs/worked-examples.md
 docs/simple.md
 docs/decisions.md
@@ -18,3 +20,4 @@ docs/dissertation.md
 /frontend/playwright-report/
 /frontend/test-results/
 /output/
+/.playwright-cli/

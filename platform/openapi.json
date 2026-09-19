@@ -1,0 +1,932 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Reflective Graph Local Developer API",
+    "version": "0.1.0",
+    "description": "Local single-owner adapter, not a deployed or multi-tenant Firebase API. Delegates semantics to the pinned Rust CLI."
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8787"
+    }
+  ],
+  "security": [
+    {
+      "LocalBearer": []
+    }
+  ],
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "operationId": "health",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "api": {
+                      "type": "string"
+                    },
+                    "mode": {
+                      "type": "string"
+                    },
+                    "engine_sha256": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "api",
+                    "mode",
+                    "engine_sha256"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/validate": {
+      "post": {
+        "operationId": "validate",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "valid": {
+                      "const": true
+                    },
+                    "source_sha256": {
+                      "type": "string"
+                    },
+                    "engine_sha256": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "valid",
+                    "source_sha256",
+                    "engine_sha256"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "source": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "source"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects": {
+      "post": {
+        "operationId": "createProject",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Project"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "name"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listProjects",
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Project"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_offset": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "total",
+                    "next_offset"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{project}/versions": {
+      "post": {
+        "operationId": "createVersion",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Version"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string",
+                    "description": "Well-formed text, at most 262144 UTF-8 bytes"
+                  }
+                },
+                "required": [
+                  "name",
+                  "source"
+                ]
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "listVersions",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Version"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_offset": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "total",
+                    "next_offset"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{project}/jobs": {
+      "get": {
+        "operationId": "listJobs",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Job"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "next_offset": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "total",
+                    "next_offset"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "submitJob",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Existing idempotent request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "version_id": {
+                    "type": "string"
+                  },
+                  "idempotency_key": {
+                    "type": "string",
+                    "pattern": "^[A-Za-z0-9_-]{1,100}$"
+                  },
+                  "settings": {
+                    "$ref": "#/components/schemas/Settings"
+                  }
+                },
+                "required": [
+                  "version_id",
+                  "idempotency_key"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job}": {
+      "get": {
+        "operationId": "getJob",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job}/cancel": {
+      "post": {
+        "operationId": "cancelJob",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job}/trace": {
+      "get": {
+        "operationId": "getTrace",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Verified, unchanged reflective-trace-v1 document"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/projects/{project}/versions/{version}/source": {
+      "get": {
+        "operationId": "getSource",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "LocalBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "code",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "error"
+        ]
+      },
+      "Settings": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "max_steps": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000,
+            "default": 100
+          },
+          "max_work": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000000,
+            "default": 1000000
+          },
+          "max_candidates": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000,
+            "default": 1000
+          },
+          "deadline_ms": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30000,
+            "default": 10000
+          },
+          "seed": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Decimal u64 string up to 18446744073709551615"
+          },
+          "detect_cycles": {
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "required": []
+      },
+      "Project": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "created_at"
+        ]
+      },
+      "Version": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "source_sha256": {
+            "type": "string"
+          },
+          "validated_engine_sha256": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "project_id",
+          "name",
+          "source_sha256",
+          "validated_engine_sha256",
+          "created_at"
+        ]
+      },
+      "Job": {
+        "type": "object",
+        "required": [
+          "id",
+          "project_id",
+          "version_id",
+          "settings",
+          "status",
+          "outcome",
+          "trace_sha256",
+          "engine_sha256",
+          "source_sha256"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "project_id": {
+            "type": "string"
+          },
+          "version_id": {
+            "type": "string"
+          },
+          "settings": {
+            "$ref": "#/components/schemas/Settings"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "running",
+              "completed",
+              "cancelled",
+              "timed_out",
+              "failed",
+              "interrupted"
+            ]
+          },
+          "outcome": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Engine outcome of verified trace, not synonymous with platform completion."
+          },
+          "trace_sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "commits": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "source_sha256": {
+            "type": "string"
+          },
+          "engine_sha256": {
+            "type": "string"
+          },
+          "request_sha256": {
+            "type": "string"
+          },
+          "idempotency_key": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "started_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "finished_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "failure": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "implementation": {
+            "type": "string"
+          },
+          "cancellation_requested_at": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

@@ -11,7 +11,9 @@ The [example catalogue and capability audit](examples/README.md) indexes eightee
 New to the project? Start with [`docs/explainers/simple.md`](docs/explainers/simple.md) — a plain-language explanation of what the work is and where it stands, written for a general reader rather than a marker.
 
 - [`docs/project-proposal.md`](docs/project-proposal.md) — approved research baseline and fixed six-sprint timeline.
-- [`docs/dissertation.md`](docs/dissertation.md) — standalone academic account of the formalism, software and research evidence.
+- [`docs/dissertation.md`](docs/dissertation.md) — condensed, standalone submission paper covering the formalism, software and research evidence.
+- [`docs/archive/dissertation-full.md`](docs/archive/dissertation-full.md) — maintained full-length paper retaining the detailed arguments, implementation account and appendices; kept consistent with the condensed paper under the [manuscript maintenance policy](docs/archive/README.md).
+- [`docs/scalability-study.md`](docs/scalability-study.md) — opt-in indexed/compact query experiment, bounded native data study, import contracts and reproduction instructions; not a change to browser defaults or portable trace replay.
 - [`docs/formalism.md`](docs/formalism.md) — normative mathematical definitions and open proof obligations.
 - [`docs/worked-examples.md`](docs/worked-examples.md) — hand-traced constructions and counterexamples behind the formalism.
 - [`docs/architecture.md`](docs/architecture.md) — technical architecture implementing the formalism.
@@ -48,7 +50,7 @@ RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 
 The repository's existing ignore policy for local documentation is preserved. Builds and tests use the source fixtures directly and do not require dissertation or explainer files.
 
-Completed implementation packages and their evidence are recorded in [research-plan.md](docs/research-plan.md); component contracts are in [architecture.md](docs/architecture.md), and remaining work is in [task-list.md](docs/task-list.md). Sprint 5 includes source integration, controlled native measurements, complete library acceptance and rule breakpoints. Sprint 6 retains the final research audit, dissertation synthesis and submission packaging. The explicit schema remains an input-contract trade-off, not a globally smallest representation.
+Completed implementation packages and their evidence are recorded in [research-plan.md](docs/research-plan.md); component contracts are in [architecture.md](docs/architecture.md), and remaining work is in [task-list.md](docs/task-list.md). Sprint 5 supplies source integration, controlled native measurements, complete library acceptance and rule breakpoints. Sprint 6 uses the completed audit/synthesis as a baseline for independent research cycles, scaling and a developer platform with a versioned API. A [local developer API](platform/README.md) now provides saved program versions, bounded asynchronous jobs, recovery and verified trace export. Firebase remains the selected hosted direction; cloud adapters, hosted identity and platform UI integration are not delivered. Workflow, data-quality and AI applications remain separate exploration avenues. The first cycle reproduced raw-search exhaustion at one thousand items and implemented the local API/job contract; [the research plan](docs/research-plan.md#first-path-reproducible-execution-and-the-developer-api-boundary) records its scope and outcome requirements. Sprint 7, 2–13 October, owns final figures, verification, packaging and submission readiness before the user-stated 14 October deadline. Proposed improvements are not implemented capabilities. The explicit schema remains an input-contract trade-off, not a globally smallest representation.
 
 ## Run an authored program
 

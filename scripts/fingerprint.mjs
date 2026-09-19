@@ -8,7 +8,7 @@ const files=[...new Set(candidates)].filter(p=>
  /^crates\/.*\.(rs|toml)$/.test(p)||/proptest-regressions\/.*\.txt$/.test(p)||
  /^examples\/.*\.(atoms|graph|observer|json|lambda|md)$/.test(p)||
  /^\.github\/workflows\/.*\.ya?ml$/.test(p)||
- /^(frontend|scripts|benchmarks)\//.test(p)||
+ /^(frontend|platform|scripts|benchmarks)\//.test(p)||
  /^docs\/(architecture|lambda-encoding|performance-study|trace-format|workbench|workbench-guide)\.md$/.test(p)
 ).sort();
 const hash=createHash('sha256');

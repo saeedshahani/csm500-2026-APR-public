@@ -138,12 +138,12 @@ impl CandidateSearch<'_> {
     }
 }
 
-fn source_rule(configuration: &Configuration, source: AtomKey) -> Result<&RuleView> {
+pub(crate) fn source_rule(configuration: &Configuration, source: AtomKey) -> Result<&RuleView> {
     configuration.rules.get(&source).ok_or_else(|| {
         Diagnostic::new(ErrorKind::InvalidBinding, "enumeration source is not live").at_atom(source)
     })
 }
-fn hidden(
+pub(crate) fn hidden(
     configuration: &Configuration,
     search: &mut CandidateSearch<'_>,
 ) -> Result<BTreeSet<AtomKey>> {
@@ -261,7 +261,7 @@ fn enumerate(
         }
     }
 }
-fn feasible(
+pub(crate) fn feasible(
     graph: &Graph,
     assignment: &BTreeMap<AtomKey, AtomKey>,
     search: &mut CandidateSearch<'_>,

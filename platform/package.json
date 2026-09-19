@@ -1,0 +1,11 @@
+{
+  "name": "reflective-graph-local-platform",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "cd .. && node platform/server.mjs",
+    "test": "cd .. && node --test platform/tests/*.test.mjs"
+  }
+}

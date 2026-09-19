@@ -1,0 +1,113 @@
+{
+  "schema": "study-import-v1",
+  "imported_at": "2026-09-18T22:48:32.164Z",
+  "importer_sha256": "82405dde4047509daa4da5f033261686d1bb2151b1286637b4c09561809268ba",
+  "datasets": [
+    {
+      "name": "grqc",
+      "url": "https://nrvis.com/download/data/ca/ca-GrQc.zip",
+      "licence": "Network Repository Attribution-ShareAlike policy (version unspecified)",
+      "attribution": "J. Leskovec, J. Kleinberg, C. Faloutsos; repository R. A. Rossi and N. K. Ahmed (AAAI 2015)",
+      "archive_sha256": "8e27388f036f9c1ba679f8993e5b8ec10abc4b2f7b5810a8eb596529db0d4fdd",
+      "member": "ca-GrQc.mtx",
+      "member_sha256": "b033e4e40a721043e5cba8d6d8f8f22e7c77f92f6c723754c8324f0f98168017",
+      "subsets": [
+        {
+          "file": "grqc-1000.graph",
+          "sha256": "b99540acd633b5c894e20c7468a582f7a768275f512e405c4e17efb8bc723f56",
+          "counts": {
+            "source_vertices": 4158,
+            "source_rows": 13422,
+            "duplicate_relations": 0,
+            "selected_vertices": 861,
+            "selected_relations": 1000,
+            "carrier_atoms": 1861,
+            "carrier_fields": 2000,
+            "rule_atoms": 0
+          },
+          "recipe": "canonical undirected pairs, deduplicate, numeric lexicographic edge prefix; one record per undirected relation"
+        },
+        {
+          "file": "grqc-10000.graph",
+          "sha256": "f43985a67de0a64513928c000bcf67a1a3f000d23159386fb32759b8a89b714b",
+          "counts": {
+            "source_vertices": 4158,
+            "source_rows": 13422,
+            "duplicate_relations": 0,
+            "selected_vertices": 3824,
+            "selected_relations": 10000,
+            "carrier_atoms": 13824,
+            "carrier_fields": 20000,
+            "rule_atoms": 0
+          },
+          "recipe": "canonical undirected pairs, deduplicate, numeric lexicographic edge prefix; one record per undirected relation"
+        },
+        {
+          "file": "grqc-full.graph",
+          "sha256": "9af7a24e6b4500ca11292170692cc5479b9807eff7f5e42ed720d924c3890995",
+          "counts": {
+            "source_vertices": 4158,
+            "source_rows": 13422,
+            "duplicate_relations": 0,
+            "selected_vertices": 4158,
+            "selected_relations": 13422,
+            "carrier_atoms": 17580,
+            "carrier_fields": 26844,
+            "rule_atoms": 0
+          },
+          "recipe": "canonical undirected pairs, deduplicate, numeric lexicographic edge prefix; one record per undirected relation"
+        }
+      ]
+    },
+    {
+      "name": "shoppers",
+      "url": "https://archive.ics.uci.edu/static/public/468/online%2Bshoppers%2Bpurchasing%2Bintention%2Bdataset.zip",
+      "licence": "CC-BY-4.0",
+      "attribution": "C. Sakar and Y. Kastro (2018), DOI 10.24432/C5F88Q",
+      "archive_sha256": "2972e6184d3ad7beaaa831d9fc2b059dc3ee29df69d1ec593c466a5cd8485d14",
+      "member": "online_shoppers_intention.csv",
+      "member_sha256": "b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9",
+      "subsets": [
+        {
+          "file": "shoppers-1000.graph",
+          "sha256": "e6e1df2c3bdfd42c9541c52bde07021745b935f67ff57821b43c023713efa05b",
+          "counts": {
+            "source_rows": 12330,
+            "selected_sessions": 1000,
+            "projected_attributes": 3,
+            "carrier_atoms": 7000,
+            "carrier_fields": 6000,
+            "rule_atoms": 0
+          },
+          "recipe": "source-order row prefix, row number identity, project Month/VisitorType/Revenue; identical rows remain distinct sessions"
+        },
+        {
+          "file": "shoppers-10000.graph",
+          "sha256": "7035f44146b729e3a0fa1f46c956822204e1900dd7d6d9d663238f08a18c5bce",
+          "counts": {
+            "source_rows": 12330,
+            "selected_sessions": 10000,
+            "projected_attributes": 3,
+            "carrier_atoms": 70000,
+            "carrier_fields": 60000,
+            "rule_atoms": 0
+          },
+          "recipe": "source-order row prefix, row number identity, project Month/VisitorType/Revenue; identical rows remain distinct sessions"
+        },
+        {
+          "file": "shoppers-full.graph",
+          "sha256": "096c9da05fdacaf41b08c0799eb5501388763732742e636a5942d857fce07f64",
+          "counts": {
+            "source_rows": 12330,
+            "selected_sessions": 12330,
+            "projected_attributes": 3,
+            "carrier_atoms": 86310,
+            "carrier_fields": 73980,
+            "rule_atoms": 0
+          },
+          "recipe": "source-order row prefix, row number identity, project Month/VisitorType/Revenue; identical rows remain distinct sessions"
+        }
+      ]
+    }
+  ]
+}

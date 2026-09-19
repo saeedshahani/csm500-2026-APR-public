@@ -7,7 +7,7 @@ use engine::{
 };
 use graph_core::{Binding, Graph, Kind, Role, Sort};
 #[path = "../../../wasm-bridge/src/dataset.rs"]
-mod dataset;
+pub mod dataset;
 
 pub fn fixture(family: &str, n: usize) -> Graph {
     if family == "practical" || family == "guarded" {
