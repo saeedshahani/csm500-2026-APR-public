@@ -22,6 +22,7 @@ jobs:
       - name: Large-data importer and experimental matching smoke
         run: |
           node --test scripts/import-study-data.test.mjs
+          node --test scripts/research-methods.test.mjs
           node scripts/verify-scale-study.mjs
           cargo run --release --locked -p engine --example scale_probe -- fixed 1000 bindings-indexed 1 42
           cargo run --release --locked -p engine --example scale_probe -- guarded 10 run-compact 20 42
