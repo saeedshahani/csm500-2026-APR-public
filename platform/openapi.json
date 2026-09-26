@@ -1,11 +1,15 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Reflective Graph Local Developer API",
+    "title": "Reflective Graph Developer API",
     "version": "0.1.0",
-    "description": "Loopback developer API using a local owner token, Firebase emulator identities, or signed Firebase identities for the pinned live project. Production mode requires a verified email/password identity and applies pilot submission reservations. This is not a hosted service or a billing cap. Delegates semantics to the pinned Rust CLI."
+    "description": "Versioned native developer API. Hosted access requires a verified Firebase email/password identity; local owner-token and demo-emulator modes remain available on loopback only. Production admission applies persistent request and execution allowances, not a monetary cap. Delegates semantics to the pinned Rust CLI."
   },
   "servers": [
+    {
+      "url": "https://reflective-graph-f1cd4.web.app/api",
+      "description": "Hosted pilot; FirebaseBearer only"
+    },
     {
       "url": "http://127.0.0.1:8787"
     }

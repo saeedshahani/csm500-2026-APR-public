@@ -35,12 +35,20 @@ test('backup validates hashes and restores only into an empty identity-matched s
   const directory=fs.mkdtempSync(path.join(os.tmpdir(),'graph-backup-'));
   t.after(()=>fs.rmSync(directory,{recursive:true,force:true}));
   const store=new Store(directory);t.after(()=>store.close());
-  const project=randomUUID(),bytes=Buffer.from('program {}'),sha=hash(bytes);
-  const state={schema:'reflective-local-store-v1',identity_namespace:'local-single-owner',projects:[{id:project,name:'Backup'}],datasets:[],jobs:[],
-    versions:[{id:randomUUID(),project_id:project,source_sha256:sha}]};
+  const project=randomUUID(),version=randomUUID(),bytes=Buffer.from('program {}'),sha=hash(bytes);
+  const jobs=['queued','running','paused'].map(status=>({id:randomUUID(),project_id:project,version_id:version,
+    source_sha256:sha,request_sha256:sha,engine_sha256:sha,trace_sha256:null,checkpoint_sha256:null,
+    status,elapsed_ms:10,settings:{deadline_ms:1000},attempts:status==='running'
+      ?[{number:1,status:'running',started_at:'2026-09-26T12:00:00Z',finished_at:null}]:[]}));
+  const state={schema:'reflective-local-store-v1',identity_namespace:'local-single-owner',projects:[{id:project,name:'Backup'}],datasets:[],jobs,
+    versions:[{id:version,project_id:project,source_sha256:sha}]};
   const data={schema:'reflective-backup-v1',state,artefacts:[{sha256:sha,base64:bytes.toString('base64')}]};
   const archive=gzipSync(JSON.stringify(data));assert.equal(decodeBackup(archive).blobs.size,1);
   await restore(store,archive);assert.equal(store.state.projects[0].name,'Backup');assert.deepEqual(store.read(sha),bytes);
+  assert.deepEqual(store.state.jobs.map(j=>j.status),['interrupted','interrupted','paused']);
+  assert.equal(store.state.jobs[1].attempts[0].status,'interrupted');
+  assert.equal(store.state.jobs[1].elapsed_ms,1000); // Unknown execution is charged conservatively.
+  assert.equal(store.state.jobs[0].elapsed_ms,10);
   await assert.rejects(restore(store,archive),/empty/);
   data.artefacts[0].base64=Buffer.from('corrupt').toString('base64');assert.throws(()=>decodeBackup(gzipSync(JSON.stringify(data))),/checksum/);
 });

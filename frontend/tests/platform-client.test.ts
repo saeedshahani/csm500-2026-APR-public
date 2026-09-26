@@ -4,6 +4,18 @@ import {PlatformClient,readBounded,defaultJobSettings,type VersionRecord} from '
 const token='local_test_token_012345678901234567890';
 const identity='00000000-0000-0000-0000-000000000001';
 
+test('hosted panel requests are serialised and queued work stops on disconnect',async t=>{
+  let release!:(response:Response)=>void,calls=0;
+  t.mock.method(globalThis,'fetch',async()=>{calls++;return new Promise<Response>(resolve=>{release=resolve;});});
+  const client=new PlatformClient('https://reflective-graph-f1cd4.web.app/api',async()=> 'id.token');
+  const first=client.health(),second=client.projects();
+  await new Promise(resolve=>setImmediate(resolve));assert.equal(calls,1);
+  release(Response.json({api:'v1'}));await first;
+  await new Promise(resolve=>setImmediate(resolve));assert.equal(calls,2);
+  const third=client.health();client.close();release(Response.json({items:[]}));
+  await assert.rejects(second,/disconnected/);await assert.rejects(third,/disconnected/);assert.equal(calls,2);
+});
+
 test('hosted transport pins Firebase origins and requires refreshable identity',async t=>{
   const url='https://reflective-graph-f1cd4.web.app/api';
   assert.throws(()=>new PlatformClient(url,token),/Firebase/);

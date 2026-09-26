@@ -1,9 +1,9 @@
 {
-  "firestore": { "rules": "firestore.rules" },
-  "storage": { "rules": "storage.rules" },
+  "firestore": { "rules": "platform/firestore.rules" },
+  "storage": { "rules": "platform/storage.rules" },
   "hosting": {
     "site": "reflective-graph-f1cd4",
-    "public": "../frontend/dist",
+    "public": "frontend/dist",
     "ignore": ["**/.*", "**/node_modules/**"],
     "headers": [
       { "source": "**", "headers": [{ "key": "X-Content-Type-Options", "value": "nosniff" }, { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }] },

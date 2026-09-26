@@ -39,9 +39,12 @@ export class PlatformClient {
   #closed=false;
   #pending=new Set<AbortController>();
   #submissions=new Map<string,string>();
+  #serial:Promise<void>=Promise.resolve();
+  #hosted:boolean;
   constructor(url:string,token:string|TokenProvider) {
     const parsed=new URL(url);
     const hosted=hostedOrigins.includes(parsed.origin)&&parsed.pathname==='/api';
+    this.#hosted=hosted;
     if((!hosted&&(parsed.protocol!=='http:'||parsed.hostname!=='127.0.0.1'||parsed.pathname!=='/'))||parsed.username||parsed.password||parsed.search||parsed.hash)
       throw Error('Use the local API address: http://127.0.0.1:8787');
     if(typeof token!=='function'&&!/^[A-Za-z0-9_-]{32,128}$/.test(token))throw Error('The API token must contain 32–128 letters, digits, underscores or hyphens');
@@ -49,7 +52,14 @@ export class PlatformClient {
     this.url=parsed.origin+(hosted?'/api':'');this.#token=token;
   }
   close(){this.#closed=true;this.#token='';for(const request of this.#pending)request.abort();this.#pending.clear();this.#submissions.clear();}
-  async #request(route:string,data?:unknown,maximum=1024*1024):Promise<{bytes:Uint8Array<ArrayBuffer>;headers:Headers}> {
+  #request(route:string,data?:unknown,maximum=1024*1024):Promise<{bytes:Uint8Array<ArrayBuffer>;headers:Headers}> {
+    if(!this.#hosted)return this.#send(route,data,maximum);
+    // The hosted pilot has one fenced metadata owner. Do not make its own
+    // parallel UI panels compete for that lease. Mutations are never retried.
+    const result=this.#serial.then(()=>this.#send(route,data,maximum));
+    this.#serial=result.then(()=>{},()=>{});return result;
+  }
+  async #send(route:string,data?:unknown,maximum=1024*1024):Promise<{bytes:Uint8Array<ArrayBuffer>;headers:Headers}> {
     if(this.#closed)throw Error('API disconnected');
     const control=new AbortController();this.#pending.add(control);
     const timeout=setTimeout(()=>control.abort(),35000);

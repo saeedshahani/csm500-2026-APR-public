@@ -1,6 +1,8 @@
 # A Minimal Self-Referential Graph Formalism
 
-MSc Computer Science dissertation project exploring graph-resident rewrite rules, guarded rule modification, semantic stability, and causal order derived from rewrite-event dependencies. The planned software artifact is a Rust rewriting engine with a concrete syntax, CLI, WebAssembly bridge, property-based tests, reproducible traces, and a browser visualiser.
+MSc Computer Science dissertation project exploring graph-resident rewrite rules, guarded rule modification, semantic stability, and causal order derived from rewrite-event dependencies. The software includes a Rust engine, concrete syntax, CLI, WebAssembly workspace and a hosted developer platform with durable projects, native jobs and verified traces.
+
+Open the [hosted application](https://reflective-graph-f1cd4.web.app/#projects), create an email account and verify your address before signing in. The [user guide](docs/guides/workbench.md) explains both hosted and local use; the [platform guide](platform/README.md) documents the API, pilot limits and recovery.
 
 ## Documentation
 
@@ -55,7 +57,7 @@ RUSTDOCFLAGS="-D warnings" cargo doc --workspace --no-deps --locked
 
 The repository's existing ignore policy for local documentation is preserved. Builds and tests use the source fixtures directly and do not require dissertation or explainer files.
 
-Completed implementation packages and their evidence are recorded in [research-plan.md](docs/research-plan.md); component contracts are in [architecture.md](docs/architecture.md), and remaining work is in [task-list.md](docs/task-list.md). Sprint 5 supplies source integration, controlled native measurements, complete library acceptance and rule breakpoints. Sprint 6 uses the completed audit/synthesis as a baseline for independent research cycles, scaling and a developer platform with a versioned API. The browser's Projects interface connects to a [local developer API](platform/README.md) for immutable program versions, bounded asynchronous jobs, fork/retry provenance, metadata comparison and verified graph/history inspection. Firebase remains the selected hosted direction; Authentication emulator sign-in and project owner/editor/viewer roles are implemented locally; production identity, cloud storage and distributed execution are not delivered. Workflow, data-quality and AI applications remain separate exploration avenues. The first cycle reproduced raw-search exhaustion at one thousand items and implemented the local API/job contract; [the research plan](docs/research-plan.md#first-path-reproducible-execution-and-the-developer-api-boundary) records the subsequent investigations and their scope. Sprint 7, 2–13 October, owns final figures, verification and packaging. Proposed improvements are not implemented capabilities. The explicit schema remains an input-contract trade-off, not a globally smallest representation.
+Completed work and evidence are recorded in [research-plan.md](docs/research-plan.md), component contracts in [architecture.md](docs/architecture.md), and remaining work in [task-list.md](docs/task-list.md). The first Sprint 6 loop delivers the bounded Firebase developer platform, restricted reflective recovery, condition-sensitive provenance and further scalability/reproducibility experiments. It does not establish unrestricted convergence, global minimality or million-item execution. Workflow, data-quality and AI applications remain separately selectable avenues. Sprint 7, 2–13 October, owns final figures, verification and packaging; closing one improvement loop does not complete those tasks or later research cycles.
 
 ## Run an authored program
 

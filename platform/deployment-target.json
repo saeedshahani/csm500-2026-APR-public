@@ -17,5 +17,5 @@
   "intended_users": "author, testing collaborators and university assessor",
   "service_budget_user_reported_gbp": 3,
   "billing_changes_approved": false,
-  "note": "Explicit project ID is mandatory for every cloud command. No default alias, account-wide mutations, or operations on other projects. Proposed region and service-level spending controls require confirmation; budget alerts are not a spending cap."
+  "note": "Explicit project ID is mandatory for every cloud command. No default alias, account-wide mutations, or operations on other projects. London deployment and paid pilot operation are authorised. The owner reports £3 service limits; budget alerts are not themselves a spending cap."
 }
