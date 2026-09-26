@@ -25,7 +25,7 @@ function atomic(file, value) {
   finally { if (fs.existsSync(temporary)) fs.unlinkSync(temporary); }
 }
 
-function validate(state) {
+export function validate(state) {
   if (state?.schema !== 'reflective-local-store-v1' || !Array.isArray(state.projects)
       || !Array.isArray(state.versions) || !Array.isArray(state.jobs)
       || !Array.isArray(state.datasets) || state.datasets.length > 128
@@ -77,12 +77,22 @@ function validate(state) {
       throw Error('Invalid stored job parent');
     seenJobs.add(job.id);
     if (!state.versions.some(v => v.id === job.version_id && v.project_id === job.project_id)
-        || !['queued', 'running', ...terminal].includes(job.status)
+        || !['queued', 'running', 'paused', ...terminal].includes(job.status)
         || !digest.test(job.request_sha256) || !digest.test(job.engine_sha256)
         || (job.trace_sha256 !== null && !digest.test(job.trace_sha256))) throw Error('Invalid stored job');
     const version = state.versions.find(v => v.id === job.version_id);
     if (job.source_sha256 !== version.source_sha256 || (job.status === 'completed' && !job.trace_sha256))
       throw Error('Invalid job input/result identity');
+    if (!Array.isArray(job.attempts) || job.attempts.length > 256
+        || !Number.isSafeInteger(job.elapsed_ms) || job.elapsed_ms < 0
+        || (job.checkpoint_sha256 !== null && !digest.test(job.checkpoint_sha256)))
+      throw Error('Invalid job continuation metadata');
+    for (const [index, attempt] of job.attempts.entries()) {
+      if (attempt.number !== index + 1 || !Number.isFinite(Date.parse(attempt.started_at))
+          || !['running', 'yielded', 'completed', 'cancelled', 'timed_out', 'failed', 'interrupted'].includes(attempt.status)
+          || (attempt.finished_at !== null && !Number.isFinite(Date.parse(attempt.finished_at))))
+        throw Error('Invalid job attempt');
+    }
   }
 }
 
@@ -113,6 +123,9 @@ export class Store {
       if ((this.state.identity_namespace ?? 'local-single-owner') !== namespace) throw Error('Store identity namespace mismatch; use a separate store directory');
       this.state.identity_namespace = namespace;
       this.state.datasets ??= []; // Additive migration; existing sources and jobs stay immutable.
+      for (const job of this.state.jobs) {
+        job.attempts ??= []; job.elapsed_ms ??= 0; job.checkpoint_sha256 ??= null;
+      }
       validate(this.state);
       // Reject corrupted referenced bytes before serving any state. Orphans are not results.
       for (const v of this.state.versions) this.read(v.source_sha256);
@@ -123,10 +136,24 @@ export class Store {
             || trace.events?.length !== j.commits || trace.implementation !== j.implementation)
           throw Error('Stored result metadata disagrees with trace');
       }
+      for (const j of this.state.jobs) if (j.checkpoint_sha256) {
+        const trace = JSON.parse(this.read(j.checkpoint_sha256));
+        if (trace.status !== 'yielded' || trace.source_sha256 !== j.source_sha256
+            || trace.events?.length !== j.checkpoint_commits || trace.implementation !== j.implementation)
+          throw Error('Stored checkpoint metadata disagrees with trace');
+      }
       this.update(next => {
         for (const job of next.jobs) if (job.status === 'running') {
+          const attempt = job.attempts.at(-1);
+          if (attempt?.status === 'running') {
+            // A crash loses the monotonic clock. Charge downtime conservatively; a
+            // backwards wall clock consumes the entire remaining execution allowance.
+            const delta = Date.now() - Date.parse(attempt.started_at);
+            job.elapsed_ms += Math.min(Math.max(0, job.settings.deadline_ms - job.elapsed_ms), delta < 0 ? job.settings.deadline_ms : Math.ceil(delta));
+            attempt.status = 'interrupted'; attempt.finished_at = new Date().toISOString();
+          }
           job.status = job.cancellation_requested_at ? 'cancelled' : 'interrupted'; job.finished_at = new Date().toISOString();
-          job.failure = 'Server stopped before verified publication; submit a new job to retry.';
+          job.failure = 'Server stopped before verified publication. Only the last verified checkpoint can be recovered.';
         }
       });
     } catch (e) { this.close(); throw e; }

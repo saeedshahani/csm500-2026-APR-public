@@ -15,7 +15,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24.21.0'
-      - name: Local developer API and recovery acceptance
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Local developer API and Firebase persistence acceptance
         run: |
           cargo build --release --locked -p cli
           npm ci --prefix platform --ignore-scripts

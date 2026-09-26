@@ -13,9 +13,9 @@ const saved = path.join(root, 'output/auth-emulator');
 const args = test ? ['emulators:exec', 'node --test platform/tests/emulator/*.test.mjs']
   : ['emulators:start', `--export-on-exit=${saved}`, ...(fs.existsSync(saved) ? [`--import=${saved}`] : [])];
 const child = spawn(process.execPath, [path.join(root, 'platform/node_modules/firebase-tools/lib/bin/firebase.js'),
-  ...args, '--only', 'auth', '--project', 'demo-reflective-graph', '--config', path.join(root, 'platform/firebase.json'), '--non-interactive'],
+  ...args, '--only', 'auth,firestore,storage', '--project', 'demo-reflective-graph', '--config', path.join(root, 'platform/firebase.json'), '--non-interactive'],
 { cwd: root, stdio: 'inherit', env: { PATH: process.env.PATH, TMPDIR: os.tmpdir(), LANG: 'en_US.UTF-8',
-  XDG_CONFIG_HOME: config, CI: 'true', DEBUG: '', FIREBASE_CLI_DISABLE_UPDATE_CHECK: 'true' } });
+  XDG_CONFIG_HOME: config, CLOUDSDK_CONFIG: config, METADATA_SERVER_DETECTION: 'none', CI: 'true', DEBUG: '', FIREBASE_CLI_DISABLE_UPDATE_CHECK: 'true' } });
 // Forward termination so interactive development can export emulator users.
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => child.kill(signal));
 child.on('error', error => { console.error(error.message); process.exitCode = 1; fs.rmSync(config, { recursive: true, force: true }); });

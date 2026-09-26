@@ -67,6 +67,11 @@ test('real emulator users: project isolation, role matrix, immutable versions an
   assert.equal((await f.request(editor, base + '/jobs', submission)).body.id, job.id);
   const ownerJob = (await f.request(owner, base + '/jobs', submission)).body; assert.notEqual(ownerJob.id, job.id);
   assert.equal((await f.request(viewer, `/v1/jobs/${job.id}/cancel`, {})).status, 403);
+  for (const action of ['pause','resume']) {
+    assert.equal((await f.request(viewer, `/v1/jobs/${job.id}/${action}`, {})).status,403);
+    assert.equal((await f.request(stranger, `/v1/jobs/${job.id}/${action}`, {})).status,404);
+  }
+  assert.equal((await f.request(stranger, `/v1/jobs/${job.id}/checkpoint`)).status,404);
   for (const route of [`${base}/versions/${v.id}/source`, base + '/jobs', `/v1/jobs/${job.id}`, `/v1/jobs/${job.id}/trace`])
     assert.equal((await f.request(stranger, route)).status, 404);
   assert.equal((await f.request(stranger, `/v1/jobs/${job.id}/cancel`, {})).status, 404);

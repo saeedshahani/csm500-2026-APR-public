@@ -41,16 +41,22 @@ function page(items, url) {
   return { items: items.slice(offset, offset + limit), total: items.length, next_offset: offset + limit < items.length ? offset + limit : null };
 }
 
-export async function start({ directory, binary, token, port = 0, recover = false, origins = [], authMode = 'local-single-owner', projectId, authHost }) {
+export async function start({ directory, binary, token, port = 0, recover = false, origins = [], authMode = 'local-single-owner', projectId, authHost, storageMode = 'local', storeId = 'default' }) {
   if (!Array.isArray(origins) || origins.some(origin => {
     try { const url = new URL(origin); return url.origin !== origin || url.protocol !== 'http:' || !['127.0.0.1', 'localhost'].includes(url.hostname); }
     catch { return true; }
   })) throw Error('Browser origins must be exact http://127.0.0.1 or http://localhost origins with an optional port');
   const auth = await identity({ mode: authMode, token, projectId, host: authHost });
   let store;
-  try { store = new Store(directory, { recover, namespace: auth.namespace }); } catch (e) { await auth.close(); throw e; }
+  try {
+    if(storageMode==='firebase-emulator') {
+      const {FirebaseStore}=await import('./firebase-store.mjs');
+      store=await FirebaseStore.open({projectId,namespace:auth.namespace,storeId});
+    }else if(storageMode==='local')store = new Store(directory, { recover, namespace: auth.namespace });
+    else throw Error('Unsupported storage mode');
+  } catch (e) { await auth.close(); throw e; }
   let worker;
-  try { worker = new Worker(store, resolve(binary)); } catch (e) { store.close(); await auth.close(); throw e; }
+  try { worker = new Worker(store, resolve(binary)); } catch (e) { await store.close(); await auth.close(); throw e; }
   let validating = false, closing = false;
   const validate = async (text, dataset = false) => {
     if (validating || worker.active) fail(429, 'busy', 'Native slot busy; retry validation later');
@@ -80,6 +86,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         res.end(); return;
       }
       const uid = await auth.authenticate(req.headers.authorization);
+      if(store.checkLease)await store.checkLease();
       const access = (id, required) => authorize(project(id), uid, auth.mode, required);
       const visible = p => ({ id: p.id, name: p.name, created_at: p.created_at,
         ...(auth.mode === 'firebase-emulator' ? { owner_uid: p.owner_uid, role: role(p, uid, auth.mode) } : {}) });
@@ -98,7 +105,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
           const b = await body(req); object(b, ['name']);
           const p = { id: randomUUID(), name: name(b.name), created_at: new Date().toISOString(),
             ...(auth.mode === 'firebase-emulator' ? { owner_uid: uid, members: [] } : {}) };
-          store.update(s => { if (s.projects.length >= 32) fail(409, 'capacity', 'Project capacity reached'); s.projects.push(p); });
+          await store.update(s => { if (s.projects.length >= 32) fail(409, 'capacity', 'Project capacity reached'); s.projects.push(p); });
           return send(201, visible(p));
         }
       }
@@ -112,7 +119,8 @@ export async function start({ directory, binary, token, port = 0, recover = fals
             const current = access(p.id, 'owner');
             if (!validUid(b.uid) || b.uid === current.owner_uid || !['viewer', 'editor', null].includes(b.role))
               fail(400, 'invalid_member', 'Use a non-owner UID and viewer, editor or null (remove) role');
-            store.update(s => {
+            await store.update(s => {
+              access(p.id, 'owner');
               const target = s.projects.find(item => item.id === p.id);
               target.members = target.members.filter(m => m.uid !== b.uid);
               if (b.role !== null) target.members.push({ uid: b.uid, role: b.role });
@@ -135,9 +143,9 @@ export async function start({ directory, binary, token, port = 0, recover = fals
             access(p.id, 'editor');
             const input = JSON.parse(text);
             const d = { id: randomUUID(), project_id: p.id, name: label, schema: input.schema, items: input.items.length,
-              document_sha256: store.put(text), source_sha256: store.put(compiled.source), validated_engine_sha256: compiled.engine_sha256,
+              document_sha256: await store.put(text), source_sha256: await store.put(compiled.source), validated_engine_sha256: compiled.engine_sha256,
               parent_dataset_id: b.parent_dataset_id ?? null, created_at: new Date().toISOString() };
-            store.update(s => s.datasets.push(d)); return send(201, d);
+            await store.update(s => { access(p.id, 'editor');s.datasets.push(d); }); return send(201, d);
           }
         }
         if (parts[3] === 'versions') {
@@ -148,16 +156,16 @@ export async function start({ directory, binary, token, port = 0, recover = fals
             if (Object.hasOwn(b, 'source') === Object.hasOwn(b, 'dataset_id')) fail(400, 'invalid_request', 'Provide exactly one of source or dataset_id');
             const data = Object.hasOwn(b, 'dataset_id') ? store.state.datasets.find(d => d.id === b.dataset_id && d.project_id === p.id) : null;
             if (Object.hasOwn(b, 'dataset_id') && !data) fail(404, 'not_found', 'Dataset not found in project');
-            const label = name(b.name), text = data ? store.read(data.source_sha256).toString('utf8') : source(b.source);
+            const label = name(b.name), text = data ? (await store.read(data.source_sha256)).toString('utf8') : source(b.source);
             access(p.id, 'editor');
             if (b.parent_version_id != null && !store.state.versions.some(v => v.id === b.parent_version_id && v.project_id === p.id))
               fail(404, 'not_found', 'Parent version not found in project');
             if (store.state.versions.length >= 128) fail(409, 'capacity', 'Version capacity reached');
             const validation = await validate(text);
             access(p.id, 'editor'); // A role can be revoked while native validation is pending.
-            const v = { id: randomUUID(), project_id: p.id, name: label, source_sha256: store.put(text),
+            const v = { id: randomUUID(), project_id: p.id, name: label, source_sha256: await store.put(text),
               validated_engine_sha256: validation.engine_sha256, ...(data ? { dataset_id: data.id } : {}), parent_version_id: b.parent_version_id ?? null, created_at: new Date().toISOString() };
-            store.update(s => s.versions.push(v)); return send(201, v);
+            await store.update(s => { access(p.id, 'editor');s.versions.push(v); }); return send(201, v);
           }
         }
         if (parts[3] === 'jobs') {
@@ -184,11 +192,16 @@ export async function start({ directory, binary, token, port = 0, recover = fals
               idempotency_key: b.idempotency_key, request_sha256: request, engine_sha256: worker.identity,
               settings: config, parent_job_id: b.parent_job_id ?? null, ...(auth.mode === 'firebase-emulator' ? { submitted_by: uid } : {}), status: 'queued', outcome: null, commits: null, trace_sha256: null,
               failure: null, created_at: new Date().toISOString(), started_at: null, finished_at: null };
-            store.update(s => {
+            Object.assign(j, { attempts: [], elapsed_ms: 0, checkpoint_sha256: null });
+            const accepted = await store.update(s => {
+              access(p.id, 'editor');
+              const duplicate=s.jobs.find(item=>item.project_id===p.id&&item.idempotency_key===b.idempotency_key
+                &&(auth.mode==='local-single-owner'||item.submitted_by===uid));
+              if(duplicate){if(duplicate.request_sha256!==request)fail(409,'idempotency_conflict','Key already used with another request');return duplicate;}
               if (s.jobs.length >= 256 || s.jobs.filter(j => !terminal.has(j.status)).length >= 32) fail(429, 'capacity', 'Job capacity reached');
-              s.jobs.push(j);
+              s.jobs.push(j);return j;
             });
-            send(202, j); if (!validating) worker.kick(); return;
+            send(accepted.id===j.id?202:200, accepted); if (!validating) worker.kick(); return;
           }
         }
       }
@@ -196,14 +209,14 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         access(parts[2]);
         const d = store.state.datasets.find(d => d.id === parts[4] && d.project_id === parts[2]);
         if (!d) fail(404, 'not_found', 'Dataset not found');
-        const bytes = store.read(d.document_sha256);
+        const bytes = await store.read(d.document_sha256);
         res.writeHead(200, { 'Content-Type': 'application/json', 'X-Content-SHA256': d.document_sha256 }); res.end(bytes); return;
       }
       if (method === 'GET' && parts[1] === 'projects' && parts.length === 6 && parts[3] === 'versions' && parts[5] === 'source') {
         access(parts[2]);
         const v = store.state.versions.find(v => v.id === parts[4] && v.project_id === parts[2]);
         if (!v) fail(404, 'not_found', 'Version not found');
-        const bytes = store.read(v.source_sha256);
+        const bytes = await store.read(v.source_sha256);
         res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8', 'X-Content-SHA256': v.source_sha256 });
         res.end(bytes); return;
       }
@@ -211,28 +224,38 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         const j = job(parts[2]);
         access(j.project_id);
         if (method === 'GET' && parts.length === 3) return send(200, j);
+        if (method === 'POST' && ['pause', 'resume'].includes(parts[3])) {
+          object(await body(req), []); access(j.project_id, 'editor');
+          await worker[parts[3]](j.id, () => access(j.project_id, 'editor'));
+          send(202, job(j.id)); if (!validating) worker.kick(); return;
+        }
+        if (method === 'GET' && parts[3] === 'checkpoint') {
+          if (!j.checkpoint_sha256) fail(409, 'no_checkpoint', 'No verified checkpoint published');
+          const bytes = await store.read(j.checkpoint_sha256);
+          res.writeHead(200, { 'Content-Type': 'application/json', 'X-Content-SHA256': j.checkpoint_sha256 }); res.end(bytes); return;
+        }
         if (method === 'POST' && parts[3] === 'cancel') {
           object(await body(req), []);
           access(j.project_id, 'editor');
-          if (!terminal.has(j.status)) worker.cancel(j.id);
+          if (!terminal.has(j.status)) await worker.cancel(j.id, () => access(j.project_id, 'editor'));
           return send(202, job(j.id));
         }
         if (method === 'GET' && parts[3] === 'trace') {
           if (!j.trace_sha256) fail(409, 'no_trace', 'No verified trace published');
-          const bytes = store.read(j.trace_sha256);
+          const bytes = await store.read(j.trace_sha256);
           res.writeHead(200, { 'Content-Type': 'application/json', 'Content-Length': bytes.length,
             'X-Content-SHA256': j.trace_sha256 }); res.end(bytes); return;
         }
         if (method === 'GET' && parts[3] === 'events') {
           if (!j.trace_sha256) fail(409, 'no_trace', 'No verified trace published');
-          const trace = JSON.parse(store.read(j.trace_sha256));
+          const trace = JSON.parse(await store.read(j.trace_sha256));
           const result = { schema: 'reflective-event-page-v1', trace_sha256: j.trace_sha256, ...page(trace.events, url) };
           if (Buffer.byteLength(JSON.stringify(result)) > 1024 * 1024) fail(413, 'page_limit', 'Event page exceeds 1 MiB; request fewer events or download the bounded trace');
           return send(200, result);
         }
         if (method === 'GET' && parts[3] === 'report') {
           if (!j.trace_sha256) fail(409, 'no_trace', 'No verified trace published');
-          return send(200, summarize(JSON.parse(store.read(j.trace_sha256)), j.trace_sha256));
+          return send(200, summarize(JSON.parse(await store.read(j.trace_sha256)), j.trace_sha256));
         }
       }
       fail(404, 'not_found', 'Unknown route or method');
@@ -246,13 +269,13 @@ export async function start({ directory, binary, token, port = 0, recover = fals
   server.requestTimeout = 15000; server.headersTimeout = 10000;
   server.maxConnections = 32;
   try { await new Promise((yes, no) => { server.once('error', no); server.listen(port, '127.0.0.1', yes); }); }
-  catch (e) { store.close(); await auth.close(); throw e; }
+  catch (e) { await store.close(); await auth.close(); throw e; }
   worker.kick();
   return { url: `http://127.0.0.1:${server.address().port}`, store, worker,
     async close() {
       closing = true;
       const stopped = new Promise(resolve => server.close(resolve));
-      try { await worker.close(); } finally { await stopped; store.close(); await auth.close(); }
+      try { await worker.close(); } finally { await stopped; await store.close(); await auth.close(); }
     } };
 }
 
@@ -264,6 +287,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   const app = await start({ directory: process.env.GRAPH_STORE ?? 'output/platform', binary: process.env.GRAPH_ENGINE ?? 'target/release/cli',
     token: process.env.GRAPH_API_TOKEN, port, recover: args.includes('--recover'),
     authMode: process.env.GRAPH_AUTH_MODE, projectId: process.env.GRAPH_FIREBASE_PROJECT, authHost: process.env.FIREBASE_AUTH_EMULATOR_HOST,
+    storageMode: process.env.GRAPH_STORAGE_MODE, storeId: process.env.GRAPH_STORE_ID,
     origins: process.env.GRAPH_BROWSER_ORIGINS?.split(',').map(s => s.trim()).filter(Boolean) ?? [] });
   console.log(JSON.stringify({ url: app.url, mode: process.env.GRAPH_AUTH_MODE ?? 'local-single-owner' }));
   let stopping = false;

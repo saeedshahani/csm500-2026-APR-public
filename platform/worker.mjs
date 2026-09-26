@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { hash, fail } from './store.mjs';
+import { hash, fail, terminal } from './store.mjs';
 
 export const DEFAULTS = Object.freeze({ max_steps: 100, max_work: 1000000, max_candidates: 1000,
   seed: null, detect_cycles: false, deadline_ms: 10000 });
@@ -18,9 +18,19 @@ export function settings(value = {}) {
   return s;
 }
 
-export function native(binary, args, input, { signal, deadline = 10000, maximum = 16 * 1024 * 1024 } = {}) {
+export function processLimits(env = process.env) {
+  if (env.GRAPH_NATIVE_MEMORY_BYTES === undefined && env.GRAPH_NATIVE_CPU_SECONDS === undefined) return null;
+  const memory = Number(env.GRAPH_NATIVE_MEMORY_BYTES), cpu = Number(env.GRAPH_NATIVE_CPU_SECONDS);
+  if (process.platform !== 'linux' || !Number.isSafeInteger(memory) || memory < 64 * 1024 * 1024 || memory > 512 * 1024 * 1024
+      || !Number.isSafeInteger(cpu) || cpu < 1 || cpu > 30) throw Error('Native process limits require Linux, 64–512 MiB address space and 1–30 CPU seconds');
+  return { memory, cpu };
+}
+
+export function native(binary, args, input, { signal, deadline = 10000, maximum = 16 * 1024 * 1024, limits = null } = {}) {
   return new Promise((resolve, reject) => {
-    const child = spawn(binary, args, { stdio: ['pipe', 'pipe', 'pipe'], shell: false });
+    const command = limits ? '/usr/bin/prlimit' : binary;
+    const argv = limits ? [`--as=${limits.memory}`, `--cpu=${limits.cpu}`, '--', binary, ...args] : args;
+    const child = spawn(command, argv, { stdio: ['pipe', 'pipe', 'pipe'], shell: false });
     let cause = null, size = 0, errors = 0;
     const chunks = [], messages = [];
     const stop = why => { cause ??= why; child.kill('SIGKILL'); };
@@ -43,6 +53,7 @@ export function native(binary, args, input, { signal, deadline = 10000, maximum 
 export class Worker {
   constructor(store, binary) {
     this.store = store; this.binary = binary; this.identity = hash(readFileSync(binary));
+    this.limits = processLimits();
     this.active = null; this.stopping = false;
     for (const j of store.state.jobs) settings(j.settings);
   }
@@ -51,14 +62,14 @@ export class Worker {
   }
   async validate(source) {
     this.assertBinary();
-    const r = await native(this.binary, ['check', '-'], source, { maximum: 4 * 1024 * 1024 });
+    const r = await native(this.binary, ['check', '-'], source, { maximum: 4 * 1024 * 1024, limits: this.limits });
     if (r.cause) fail(422, r.cause, 'Validation did not complete');
     if (r.code !== 0) fail(422, r.code === 3 ? 'resource_limit' : 'invalid_program', r.stderr.slice(0, 8192));
     return { valid: true, source_sha256: hash(source), engine_sha256: this.identity };
   }
   async compileDataset(document) {
     this.assertBinary();
-    const r = await native(this.binary, ['dataset-compile', '-'], document, { maximum: 256 * 1024 });
+    const r = await native(this.binary, ['dataset-compile', '-'], document, { maximum: 256 * 1024, limits: this.limits });
     if (r.cause) fail(422, r.cause, 'Dataset compilation did not complete');
     if (r.code !== 0) fail(422, 'invalid_dataset', r.stderr.slice(0, 8192));
     return { source: r.stdout, engine_sha256: this.identity };
@@ -76,52 +87,108 @@ export class Worker {
     this.active.promise.catch(e => { this.stopping = true; console.error('Worker stopped:', e.message); });
   }
   async execute(job, signal) {
-    const update = patch => this.store.update(s => Object.assign(s.jobs.find(j => j.id === job.id), patch));
-    update({ status: 'running', started_at: new Date().toISOString() });
+    const number = job.attempts.length + 1, started = performance.now();
+    if (number > 256) {
+      await this.store.update(s => Object.assign(s.jobs.find(j => j.id === job.id), { status: 'failed', failure: 'Attempt capacity reached', finished_at: new Date().toISOString() }));
+      return;
+    }
+    await this.store.update(s => {
+      const j = s.jobs.find(j => j.id === job.id);
+      if (j.status !== 'queued' || j.attempts.length + 1 !== number) throw Error('Dispatch fence rejected');
+      j.status = 'running'; j.started_at ??= new Date().toISOString(); j.finished_at = null;
+      j.attempts.push({ number, status: 'running', started_at: new Date().toISOString(), finished_at: null,
+        input_checkpoint_sha256: j.checkpoint_sha256 });
+    });
     let patch;
     try {
       this.assertBinary();
       if (job.engine_sha256 !== this.identity) throw Error('Queued job requires a different native binary');
       const s = settings(job.settings);
       const version = this.store.state.versions.find(v => v.id === job.version_id);
-      const input = this.store.read(version.source_sha256);
+      const input = await this.store.read(job.checkpoint_sha256 ?? version.source_sha256);
       const args = ['export', '-', '--max-steps', String(s.max_steps), '--max-work', String(s.max_work),
-        '--max-candidates', String(s.max_candidates), '--detect-cycles', String(s.detect_cycles)];
+        '--max-candidates', String(s.max_candidates), '--detect-cycles', String(s.detect_cycles), '--batch-steps', '10'];
       if (s.seed !== null) args.push('--strategy', 'seeded', '--seed', s.seed);
-      const start = Date.now();
-      const run = await native(this.binary, args, input, { signal, deadline: s.deadline_ms });
+      const remainingTime = () => Math.max(0, s.deadline_ms - job.elapsed_ms - Math.ceil(performance.now() - started));
+      if (!remainingTime()) throw Object.assign(Error('Execution allowance exhausted'), { code: 'timed_out' });
+      const run = await native(this.binary, job.checkpoint_sha256 ? ['resume', '-', '--batch-steps', '10'] : args,
+        input, { signal, deadline: remainingTime(), limits: this.limits });
       if (run.cause) {
         patch = { status: ['cancelled', 'timed_out', 'interrupted'].includes(run.cause) ? run.cause : 'failed', failure: run.cause };
       } else if (![0, 3, 4, 5, 6].includes(run.code)) {
         patch = { status: 'failed', failure: run.stderr.slice(0, 8192) || 'Native execution failed' };
       } else {
         // JSON is not trusted until the engine validates replay and scheduler claims.
-        const remaining = s.deadline_ms - (Date.now() - start);
+        const remaining = remainingTime();
         if (remaining <= 0) { patch = { status: 'timed_out', failure: 'No time left for replay verification' }; }
         else {
-          const checked = await native(this.binary, ['trace-check', '-'], run.stdout, { signal, deadline: remaining });
+          const checked = await native(this.binary, ['trace-check', '-'], run.stdout, { signal, deadline: remaining, limits: this.limits });
           if (checked.cause) patch = { status: ['cancelled', 'timed_out', 'interrupted'].includes(checked.cause) ? checked.cause : 'failed', failure: checked.cause };
           else if (checked.code !== 0) throw Error('Native result failed replay verification');
           else {
             const trace = JSON.parse(run.stdout);
             const expected = { NormalForm: 0, ResourceLimit: 3, StepLimit: 3, RequestedRuleUnavailable: 4, Cancelled: 5, CycleDetected: 6 };
-            if (trace.source_sha256 !== version.source_sha256 || trace.status !== 'finished'
-                || expected[trace.report?.outcome] !== run.code) throw Error('Trace identity/outcome mismatch');
+            if (trace.source_sha256 !== version.source_sha256
+                || !['yielded', 'finished'].includes(trace.status)
+                || (trace.status === 'yielded' ? run.code !== 0 : expected[trace.report?.outcome] !== run.code))
+              throw Error('Trace identity/outcome mismatch');
             if (signal.aborted) patch = { status: signal.reason === 'interrupted' ? 'interrupted' : 'cancelled', failure: 'Stopped before publication' };
+            else if (trace.status === 'yielded') patch = { status: 'queued', checkpoint_sha256: await this.store.put(run.stdout),
+              checkpoint_commits: trace.events.length, commits: trace.events.length, implementation: trace.implementation, failure: null };
             else patch = { status: 'completed', outcome: trace.report.outcome, commits: trace.events.length,
-              trace_sha256: this.store.put(run.stdout), implementation: trace.implementation };
+              trace_sha256: await this.store.put(run.stdout), implementation: trace.implementation, failure: null };
           }
         }
       }
-    } catch (e) { patch = { status: 'failed', failure: e.message }; }
-    update({ ...patch, finished_at: new Date().toISOString() });
+    } catch (e) { patch = { status: e.code === 'timed_out' ? 'timed_out' : 'failed', failure: e.message }; }
+    await this.store.update(s => {
+      const j = s.jobs.find(j => j.id === job.id), attempt = j.attempts.at(-1);
+      if (j.status !== 'running' || attempt?.number !== number || attempt.status !== 'running') throw Error('Publication fence rejected');
+      if(signal.aborted || j.cancellation_requested_at)
+        patch={status:!j.cancellation_requested_at&&signal.reason==='interrupted'?'interrupted':'cancelled',failure:'Stopped before publication'};
+      j.elapsed_ms += Math.ceil(performance.now() - started);
+      if (patch.status === 'queued' && j.elapsed_ms >= j.settings.deadline_ms) patch.status = 'timed_out';
+      if (patch.status === 'completed' && j.elapsed_ms >= j.settings.deadline_ms)
+        patch={status:'timed_out',failure:'Execution allowance exhausted before result publication'};
+      attempt.status = patch.status === 'queued' ? 'yielded' : patch.status;
+      attempt.finished_at = new Date().toISOString();
+      attempt.output_sha256 = patch.trace_sha256 ?? patch.checkpoint_sha256 ?? null;
+      if (patch.status === 'queued' && j.pause_requested_at) patch.status = 'paused';
+      Object.assign(j, patch, { finished_at: ['queued', 'paused'].includes(patch.status) ? null : new Date().toISOString() });
+    });
   }
-  cancel(id) {
+  async pause(id, authorize = () => {}) {
+    await this.store.update(s => {
+      authorize();
+      const j = s.jobs.find(j => j.id === id);
+      if (!['queued', 'running', 'paused'].includes(j.status)) fail(409, 'not_pausable', 'Only queued or running jobs can pause');
+      j.pause_requested_at ??= new Date().toISOString();
+      if (j.status === 'queued') j.status = 'paused';
+    });
+  }
+  async resume(id, authorize = () => {}) {
+    this.assertBinary();
+    await this.store.update(s => {
+      authorize();
+      const j = s.jobs.find(j => j.id === id);
+      if (['queued', 'running'].includes(j.status) && !j.pause_requested_at) return;
+      if (!['paused', 'interrupted'].includes(j.status)) fail(409, 'not_resumable', 'Only paused or interrupted jobs can resume');
+      if (j.status === 'interrupted' && !j.checkpoint_sha256) fail(409, 'no_checkpoint', 'No verified checkpoint; submit a new job');
+      if (j.status === 'interrupted' && s.jobs.filter(item=>!terminal.has(item.status)).length>=32)
+        fail(429, 'capacity', 'Outstanding job capacity reached');
+      if (s.jobs.some(child => child.parent_job_id === id)) fail(409, 'frozen_parent', 'A retry already references this interrupted run; submit a new job');
+      if (j.engine_sha256 !== this.identity) fail(409, 'engine_changed', 'Continuation requires the original native binary');
+      if (j.elapsed_ms >= j.settings.deadline_ms || j.attempts.length >= 256) fail(409, 'budget_exhausted', 'Continuation allowance exhausted');
+      j.status = 'queued'; j.pause_requested_at = null; j.finished_at = null; j.failure = null;
+    });
+  }
+  async cancel(id, authorize = () => {}) {
     if (this.active?.id === id) {
-      this.store.update(s => { s.jobs.find(j => j.id === id).cancellation_requested_at = new Date().toISOString(); });
-      this.active.control.abort('cancelled');
+      const active=this.active;
+      await this.store.update(s => { authorize();s.jobs.find(j => j.id === id).cancellation_requested_at = new Date().toISOString(); });
+      active.control.abort('cancelled');
     }
-    else this.store.update(s => { const j = s.jobs.find(j => j.id === id); if (j.status === 'queued') {
+    else await this.store.update(s => { authorize();const j = s.jobs.find(j => j.id === id); if (['queued', 'paused'].includes(j.status)) {
       j.status = 'cancelled'; j.finished_at = new Date().toISOString(); j.failure = 'Cancelled before dispatch';
     } });
   }

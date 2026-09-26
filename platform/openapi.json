@@ -1051,6 +1051,147 @@
         }
       }
     },
+    "/v1/jobs/{job}/pause": {
+      "post": {
+        "operationId": "pauseJob",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        },
+        "description": "Pause after verified batch publication. Editor role required."
+      }
+    },
+    "/v1/jobs/{job}/resume": {
+      "post": {
+        "operationId": "resumeJob",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Job"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {},
+                "required": []
+              }
+            }
+          }
+        },
+        "description": "Resume a paused or interrupted checkpoint with the original binary and remaining cumulative deadline. Editor role required."
+      }
+    },
+    "/v1/jobs/{job}/checkpoint": {
+      "get": {
+        "operationId": "downloadCheckpoint",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "description": "Verified, unchanged reflective-trace-v1 document"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Structured error; limits and codes described in README",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "description": "Latest verified yielded checkpoint, not a final result. Project visibility required."
+      }
+    },
     "/v1/jobs/{job}/events": {
       "get": {
         "operationId": "eventPage",
@@ -1436,7 +1577,8 @@
           "status": {
             "enum": [
               "queued",
-              "running",
+            "running",
+            "paused",
               "completed",
               "cancelled",
               "timed_out",
@@ -1499,9 +1641,16 @@
           "implementation": {
             "type": "string"
           },
-          "cancellation_requested_at": {
-            "type": "string"
-          }
+        "cancellation_requested_at": {
+          "type": "string"
+        },
+        "checkpoint_sha256": { "type": ["string", "null"] },
+        "checkpoint_commits": { "type": "integer", "minimum": 0 },
+        "elapsed_ms": { "type": "integer", "minimum": 0 },
+        "pause_requested_at": { "type": ["string", "null"] },
+        "attempts": { "type": "array", "maxItems": 256, "items": { "type": "object", "required": ["number", "status", "started_at", "finished_at"], "properties": {
+          "number": { "type": "integer", "minimum": 1 }, "status": { "type": "string" }, "started_at": { "type": "string" }, "finished_at": { "type": ["string", "null"] }, "input_checkpoint_sha256": { "type": ["string", "null"] }, "output_sha256": { "type": ["string", "null"] }
+        } } }
         }
       },
       "Dataset": {

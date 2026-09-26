@@ -8,6 +8,14 @@ test('client refuses external, credential-bearing and path-bearing API addresses
   for(const url of ['https://example.com','http://localhost:8787','http://127.0.0.1:8787/other','http://name:pass@127.0.0.1:8787','http://127.0.0.1:8787/?token=x'])assert.throws(()=>new PlatformClient(url,token));
   assert.throws(()=>new PlatformClient('http://127.0.0.1:8787','short'));
 });
+test('pause and resume are explicit authenticated requests without changed settings',async t=>{
+  const calls:{url:string;body:string;authorization:string}[]=[];
+  t.mock.method(globalThis,'fetch',async(url:unknown,options:RequestInit)=>{calls.push({url:String(url),body:options.body as string,authorization:(options.headers as Record<string,string>).Authorization});return Response.json({id:identity,status:'paused'});});
+  const client=new PlatformClient('http://127.0.0.1:8787',token);
+  await client.pause(identity);await client.resume(identity);
+  assert.deepEqual(calls.map(c=>c.url),[`http://127.0.0.1:8787/v1/jobs/${identity}/pause`,`http://127.0.0.1:8787/v1/jobs/${identity}/resume`]);
+  assert.ok(calls.every(c=>c.body==='{}'&&c.authorization===`Bearer ${token}`));client.close();
+});
 test('submission reuses its key after an uncertain response but deliberate new jobs receive new keys',async t=>{
   const requests:RequestInit[]=[];let calls=0;
   t.mock.method(globalThis,'fetch',async(_url:unknown,options:RequestInit)=>{requests.push(options);if(calls++===0)throw new TypeError('network');return Response.json({id:identity});});

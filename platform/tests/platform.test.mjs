@@ -8,7 +8,7 @@ import { once } from 'node:events';
 import { setTimeout as delay } from 'node:timers/promises';
 import { start } from '../server.mjs';
 import { Store, hash, terminal } from '../store.mjs';
-import { settings, native } from '../worker.mjs';
+import { settings, native, processLimits } from '../worker.mjs';
 
 const binary = path.resolve('target/release/cli');
 const token = 'local_test_token_012345678901234567890';
@@ -73,6 +73,67 @@ test('named datasets compile to immutable native inputs, retain parents and surv
     assert.equal((await f.request(`/v1/projects/${project.id}/datasets`,{name:'bad',document:bad})).status,422);
   assert.equal(f.app.store.state.datasets.length,2);
   assert.throws(()=>f.app.store.update(s=>{s.versions.find(v=>v.id===version.body.id).source_sha256=hash('bad');}),/dataset identity/);
+});
+
+test('verified checkpoint pause, restart and continuation preserve the full native history', async t => {
+  const f = await fixture(t), {project, version} = await f.create(oscillator);
+  const submission = await f.submit(project, version, {max_steps:30, seed:'42', deadline_ms:30000});
+  const id = submission.body.id, route = `/v1/jobs/${id}`;
+  assert.equal((await f.request(route+'/pause',{})).status,202);
+  let paused;
+  for(let i=0;i<1000;i++) {
+    paused=(await f.request(route)).body;
+    if(paused.status==='paused')break;
+    await delay(10);
+  }
+  assert.equal(paused.status,'paused'); assert.equal(paused.commits,10);
+  assert.equal(paused.attempts[0].status,'yielded'); assert.ok(paused.elapsed_ms>0);
+  const checkpoint=await f.request(route+'/checkpoint',undefined,{raw:true});
+  assert.equal(hash(checkpoint.body),paused.checkpoint_sha256);
+  assert.equal(spawnSync(binary,['trace-check','-'],{input:checkpoint.body}).status,0);
+  await f.restart();
+  const saved=(await f.request(route)).body;
+  assert.equal(saved.status,'paused');assert.equal(saved.elapsed_ms,paused.elapsed_ms);
+  assert.equal((await f.request(route+'/resume',{})).status,202);
+  assert.equal((await f.request(route+'/resume',{})).status,202); // Duplicate delivery is harmless.
+  const completed=await f.wait(id);
+  assert.equal(completed.status,'completed');assert.equal(completed.outcome,'StepLimit');
+  assert.ok(completed.elapsed_ms>=paused.elapsed_ms); assert.equal(completed.attempts.length,4);
+  const trace=await f.request(route+'/trace',undefined,{raw:true});
+  const direct=spawnSync(binary,['export','-','--max-steps','30','--strategy','seeded','--seed','42'],{input:oscillator,encoding:'utf8'});
+  assert.equal(trace.body,direct.stdout);
+  assert.equal((await f.request(route+'/resume',{})).status,409);
+});
+
+test('interrupted checkpoint recovery is distinct from cancellation and exhausted budgets', async t => {
+  const f = await fixture(t), {project,version}=await f.create(oscillator);
+  const r=await f.submit(project,version,{max_steps:30,deadline_ms:30000});
+  const route=`/v1/jobs/${r.body.id}`;
+  await f.request(route+'/pause',{});
+  for(let i=0;i<1000;i++){if((await f.request(route)).body.status==='paused')break;await delay(10);}
+  // Exact crash boundary injection; the separate subprocess test covers owner death.
+  f.app.store.update(s=>{const j=s.jobs.find(j=>j.id===r.body.id);j.status='running';j.attempts.push({number:j.attempts.length+1,status:'running',started_at:new Date().toISOString(),finished_at:null});});
+  await f.restart();
+  assert.equal((await f.request(route)).body.status,'interrupted');
+  assert.equal((await f.request(route+'/resume',{})).status,202);
+  await f.request(route+'/pause',{});
+  for(let i=0;i<1000;i++){if((await f.request(route)).body.status==='paused')break;await delay(10);}
+  f.app.store.update(s=>{const j=s.jobs.find(j=>j.id===r.body.id);j.elapsed_ms=j.settings.deadline_ms;});
+  assert.equal((await f.request(route+'/resume',{})).status,409);
+  assert.equal((await f.request(route+'/cancel',{})).status,202);
+  assert.equal((await f.request(route)).body.status,'cancelled');
+  assert.equal((await f.request(route+'/resume',{})).status,409);
+});
+
+test('superseded attempt cannot publish a result and stops dispatch',async t=>{
+  const f=await fixture(t),{project,version}=await f.create(oscillator);
+  const submitted=await f.submit(project,version,{max_steps:30});
+  const active=f.app.worker.active;assert.ok(active);
+  f.app.store.update(s=>{s.jobs.find(j=>j.id===submitted.body.id).attempts.at(-1).status='interrupted';});
+  await assert.rejects(active.promise,/Publication fence/);
+  assert.equal(f.app.worker.stopping,true);
+  assert.equal(f.app.store.state.jobs[0].trace_sha256,null);
+  assert.equal(f.app.store.state.jobs[0].checkpoint_sha256,null);
 });
 
 test('browser access is opt-in, exact-origin and still requires the bearer token', async t => {
@@ -232,6 +293,18 @@ test('subprocess output limit and timeout are separate from engine outcomes', as
   const timeout = await native(process.execPath, ['-e', 'setTimeout(()=>{},10000)'], '', { deadline: 10 });
   assert.equal(timeout.cause, 'timed_out');
   assert.deepEqual(settings({ seed: '0' }).seed, '0');
+});
+
+test('process limits reject incomplete configuration and enforce Linux CPU bounds', async () => {
+  assert.equal(processLimits({}),null);
+  assert.throws(()=>processLimits({GRAPH_NATIVE_MEMORY_BYTES:'1'}));
+  if(process.platform !== 'linux') {
+    assert.throws(()=>processLimits({GRAPH_NATIVE_MEMORY_BYTES:'536870912',GRAPH_NATIVE_CPU_SECONDS:'1'}));
+    return; // Linux enforcement is also exercised by the container CI job.
+  }
+  const limits=processLimits({GRAPH_NATIVE_MEMORY_BYTES:'536870912',GRAPH_NATIVE_CPU_SECONDS:'1'});
+  const result=await native('/bin/sh',['-c','while :; do :; done'],'',{limits,deadline:5000});
+  assert.equal(result.cause,null);assert.equal(result.signal,'SIGKILL');
 });
 
 test('real server crash requires explicit dead-owner recovery; queued jobs survive', { timeout: 15000 }, async t => {

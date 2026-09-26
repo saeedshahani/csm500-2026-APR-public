@@ -6,7 +6,7 @@ export type RunSummary = {schema:string;trace_sha256:string;outcome:string|null;
 export type TokenProvider = ()=>Promise<string>;
 export type VersionRecord = ProjectRecord & {project_id:string;source_sha256:string;validated_engine_sha256:string;parent_version_id?:string|null};
 export type JobSettings = {max_steps:number;max_work:number;max_candidates:number;seed:string|null;detect_cycles:boolean;deadline_ms:number};
-export type JobRecord = {id:string;project_id:string;version_id:string;source_sha256:string;engine_sha256:string;settings:JobSettings;status:string;outcome:string|null;commits:number|null;trace_sha256:string|null;failure:string|null;created_at:string;started_at:string|null;finished_at:string|null;parent_job_id?:string|null;idempotency_key:string};
+export type JobRecord = {id:string;project_id:string;version_id:string;source_sha256:string;engine_sha256:string;settings:JobSettings;status:string;outcome:string|null;commits:number|null;trace_sha256:string|null;failure:string|null;created_at:string;started_at:string|null;finished_at:string|null;parent_job_id?:string|null;idempotency_key:string;checkpoint_sha256?:string|null;elapsed_ms?:number;pause_requested_at?:string|null;attempts?:{number:number;status:string;started_at:string;finished_at:string|null}[]};
 export type Page<T> = {items:T[];total:number;next_offset:number|null};
 export const defaultJobSettings:JobSettings = {max_steps:100,max_work:1000000,max_candidates:1000,seed:null,detect_cycles:false,deadline_ms:10000};
 export const finished = (job:JobRecord) => ['completed','cancelled','timed_out','failed','interrupted'].includes(job.status);
@@ -96,6 +96,9 @@ export class PlatformClient {
   jobs(project:string,offset=0){return this.#json<Page<JobRecord>>(`/v1/projects/${id(project)}/jobs?limit=25&offset=${offset}`);}
   job(job:string){return this.#json<JobRecord>(`/v1/jobs/${id(job)}`);}
   cancel(job:string){return this.#json<JobRecord>(`/v1/jobs/${id(job)}/cancel`,{});}
+  pause(job:string){return this.#json<JobRecord>(`/v1/jobs/${id(job)}/pause`,{});}
+  resume(job:string){return this.#json<JobRecord>(`/v1/jobs/${id(job)}/resume`,{});}
+  checkpoint(job:JobRecord){if(!job.checkpoint_sha256)throw Error('No verified checkpoint is available');return this.#artifact(`/v1/jobs/${id(job.id)}/checkpoint`,job.checkpoint_sha256,16*1024*1024);}
   async submit(project:string,version:string,settings:JobSettings,parent:string|null=null){
     const signature=JSON.stringify({project,version,settings,parent});
     const key=this.#submissions.get(signature)??crypto.randomUUID();this.#submissions.set(signature,key);

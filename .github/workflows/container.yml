@@ -1,0 +1,18 @@
+name: Native platform container
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  container:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build pinned-toolchain native platform
+        run: docker build -f platform/Dockerfile -t reflective-native-test .
+      - name: Platform lifecycle within container limits
+        run: docker run --rm --network=none --memory=512m --cpus=1 --pids-limit=128 --read-only --tmpfs=/tmp:rw,noexec,nosuid,size=128m reflective-native-test node --test platform/tests/platform.test.mjs
+      - name: Record actual image and binary identity
+        run: |
+          docker image inspect reflective-native-test --format '{{.Id}}'
+          docker run --rm --network=none --entrypoint sha256sum reflective-native-test target/release/cli

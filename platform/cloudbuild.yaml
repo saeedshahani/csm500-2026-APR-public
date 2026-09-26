@@ -1,0 +1,10 @@
+# Build/test only. No deployment, IAM or billing mutation is included.
+# Submit only after authorisation, using the explicit approved project ID.
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args: ['build', '-f', 'platform/Dockerfile', '-t', 'reflective-native-test', '.']
+  - name: gcr.io/cloud-builders/docker
+    args: ['run', '--rm', '--network=none', '--memory=512m', '--cpus=1', '--pids-limit=128', '--read-only', '--tmpfs=/tmp:rw,noexec,nosuid,size=128m', 'reflective-native-test', 'node', '--test', 'platform/tests/platform.test.mjs']
+timeout: 1200s
+options:
+  logging: CLOUD_LOGGING_ONLY
