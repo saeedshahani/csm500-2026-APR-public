@@ -3,7 +3,7 @@
   "info": {
     "title": "Reflective Graph Local Developer API",
     "version": "0.1.0",
-    "description": "Loopback developer API using either a local owner token or Firebase Authentication emulator identities with project roles. Not a hosted or production-authenticated service. Delegates semantics to the pinned Rust CLI."
+    "description": "Loopback developer API using a local owner token, Firebase emulator identities, or signed Firebase identities for the pinned live project. Production mode requires a verified email/password identity and applies pilot submission reservations. This is not a hosted service or a billing cap. Delegates semantics to the pinned Rust CLI."
   },
   "servers": [
     {
@@ -16,13 +16,16 @@
     },
     {
       "EmulatorBearer": []
+    },
+    {
+      "FirebaseBearer": []
     }
   ],
   "paths": {
     "/v1/projects/{project}/members": {
       "get": {
         "operationId": "members",
-        "description": "Emulator mode only. Requires project owner; no membership list is exposed to editors or viewers.",
+        "description": "Firebase identity modes only. Requires project owner; no membership list is exposed to editors or viewers.",
         "parameters": [
           {
             "name": "project",
@@ -58,7 +61,7 @@
       },
       "post": {
         "operationId": "setMember",
-        "description": "Emulator mode only. Owner grants or changes viewer/editor membership; null removes membership. The owner cannot be changed. Maximum 32 members.",
+        "description": "Firebase identity modes only. Owner grants or changes viewer/editor membership; null removes membership. The owner cannot be changed. Maximum 32 members.",
         "parameters": [
           {
             "name": "project",
@@ -143,11 +146,11 @@
                     },
                     "uid": {
                       "type": "string",
-                      "description": "Authenticated UID in emulator mode"
+                      "description": "Authenticated UID in Firebase identity modes"
                     },
                     "project_id": {
                       "type": "string",
-                      "description": "Firebase demo project in emulator mode"
+                      "description": "Explicit Firebase project for the configured identity mode"
                     },
                     "engine_sha256": {
                       "type": "string"
@@ -1351,6 +1354,12 @@
         "scheme": "bearer",
         "description": "Only accepted when configured for local-single-owner mode."
       },
+      "FirebaseBearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Signed Firebase ID token from reflective-graph-f1cd4; accepted only in firebase-production mode. Requires verified email and password sign-in provider. Revoked, disabled, expired and invalid credentials fail closed. Admission limits return 429; verified-email policy failures return 403."
+      },
       "EmulatorBearer": {
         "type": "http",
         "scheme": "bearer",
@@ -1476,7 +1485,7 @@
               "editor",
               "viewer"
             ],
-            "description": "Requester's project role in emulator mode"
+            "description": "Requester's project role in Firebase identity modes"
           },
           "id": {
             "type": "string"

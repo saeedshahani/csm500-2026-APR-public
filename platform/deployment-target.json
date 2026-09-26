@@ -6,7 +6,11 @@
   "region_preference": ["UK", "EU"],
   "proposed_region": "europe-west2",
   "monthly_budget": { "currency": "GBP", "amount": 5 },
-  "audience": null,
+  "audience": "public-email-signup",
+  "identity_provider": "email-password",
+  "require_verified_email": true,
+  "billing_status": "blaze-user-confirmed",
+  "budget_enforcement": "unverified",
   "deployment_approved": false,
   "billing_changes_approved": false,
   "note": "Explicit project ID is mandatory for every cloud command. No default alias, account-wide mutations, or operations on other projects. Proposed region and service-level spending controls require confirmation; budget alerts are not a spending cap."

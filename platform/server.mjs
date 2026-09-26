@@ -6,6 +6,7 @@ import { Store, ApiError, fail, hash, terminal } from './store.mjs';
 import { Worker, settings } from './worker.mjs';
 import { identity, authorize, role, validUid } from './identity.mjs';
 import { summarize } from './report.mjs';
+import { admitProject, admitJob, admitOutstanding } from './admission.mjs';
 
 const MAX_BODY = 1024 * 1024;
 function object(value, allowed, required = allowed) {
@@ -90,13 +91,13 @@ export async function start({ directory, binary, token, port = 0, recover = fals
       if(store.checkLease)await store.checkLease();
       const access = (id, required) => authorize(project(id), uid, auth.mode, required);
       const visible = p => ({ id: p.id, name: p.name, created_at: p.created_at,
-        ...(auth.mode === 'firebase-emulator' ? { owner_uid: p.owner_uid, role: role(p, uid, auth.mode) } : {}) });
+        ...(auth.mode !== 'local-single-owner' ? { owner_uid: p.owner_uid, role: role(p, uid, auth.mode) } : {}) });
       const url = new URL(req.url, 'http://127.0.0.1');
       const parts = url.pathname.split('/').filter(Boolean);
       if (parts[0] !== 'v1') fail(404, 'not_found', 'Unknown API version or route');
       const method = req.method;
       if (method === 'GET' && url.pathname === '/v1/health') return send(200, { api: 'v1', mode: auth.mode, engine_sha256: worker.identity,
-        ...(auth.mode === 'firebase-emulator' ? { uid, project_id: auth.projectId } : {}) });
+        ...(auth.mode !== 'local-single-owner' ? { uid, project_id: auth.projectId } : {}) });
       if (method === 'POST' && url.pathname === '/v1/validate') {
         const b = await body(req); object(b, ['source']); return send(200, await validate(source(b.source)));
       }
@@ -105,14 +106,17 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         if (method === 'POST') {
           const b = await body(req); object(b, ['name']);
           const p = { id: randomUUID(), name: name(b.name), created_at: new Date().toISOString(),
-            ...(auth.mode === 'firebase-emulator' ? { owner_uid: uid, members: [] } : {}) };
-          await store.update(s => { if (s.projects.length >= 32) fail(409, 'capacity', 'Project capacity reached'); s.projects.push(p); });
+            ...(auth.mode !== 'local-single-owner' ? { owner_uid: uid, members: [] } : {}) };
+          await store.update(s => {
+            if (auth.mode === 'firebase-production') admitProject(s, uid);
+            if (s.projects.length >= 32) fail(409, 'capacity', 'Project capacity reached'); s.projects.push(p);
+          });
           return send(201, visible(p));
         }
       }
       if (parts[1] === 'projects' && parts.length === 4) {
         const p = access(parts[2]);
-        if (parts[3] === 'members' && auth.mode === 'firebase-emulator') {
+        if (parts[3] === 'members' && auth.mode !== 'local-single-owner') {
           access(p.id, 'owner');
           if (method === 'GET') return send(200, { owner_uid: p.owner_uid, members: p.members });
           if (method === 'POST') {
@@ -191,7 +195,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
             worker.assertBinary();
             const j = { id: randomUUID(), project_id: p.id, version_id: v.id, source_sha256: v.source_sha256,
               idempotency_key: b.idempotency_key, request_sha256: request, engine_sha256: worker.identity,
-              settings: config, parent_job_id: b.parent_job_id ?? null, ...(auth.mode === 'firebase-emulator' ? { submitted_by: uid } : {}), status: 'queued', outcome: null, commits: null, trace_sha256: null,
+              settings: config, parent_job_id: b.parent_job_id ?? null, ...(auth.mode !== 'local-single-owner' ? { submitted_by: uid } : {}), status: 'queued', outcome: null, commits: null, trace_sha256: null,
               failure: null, created_at: new Date().toISOString(), started_at: null, finished_at: null };
             Object.assign(j, { attempts: [], elapsed_ms: 0, checkpoint_sha256: null });
             const accepted = await store.update(s => {
@@ -199,6 +203,9 @@ export async function start({ directory, binary, token, port = 0, recover = fals
               const duplicate=s.jobs.find(item=>item.project_id===p.id&&item.idempotency_key===b.idempotency_key
                 &&(auth.mode==='local-single-owner'||item.submitted_by===uid));
               if(duplicate){if(duplicate.request_sha256!==request)fail(409,'idempotency_conflict','Key already used with another request');return duplicate;}
+              const admittedAt = new Date();
+              if (auth.mode === 'firebase-production') admitJob(s, uid, config, admittedAt);
+              j.created_at = admittedAt.toISOString();
               if (s.jobs.length >= 256 || s.jobs.filter(j => !terminal.has(j.status)).length >= 32) fail(429, 'capacity', 'Job capacity reached');
               s.jobs.push(j);return j;
             });
@@ -227,7 +234,12 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         if (method === 'GET' && parts.length === 3) return send(200, j);
         if (method === 'POST' && ['pause', 'resume'].includes(parts[3])) {
           object(await body(req), []); access(j.project_id, 'editor');
-          await worker[parts[3]](j.id, () => access(j.project_id, 'editor'));
+          await worker[parts[3]](j.id, () => {
+            access(j.project_id, 'editor');
+            const current = job(j.id);
+            if (auth.mode === 'firebase-production' && parts[3] === 'resume' && current.status === 'interrupted')
+              admitOutstanding(store.state, current.submitted_by, current.id);
+          });
           send(202, job(j.id)); if (!validating) worker.kick(); return;
         }
         if (method === 'GET' && parts[3] === 'checkpoint') {

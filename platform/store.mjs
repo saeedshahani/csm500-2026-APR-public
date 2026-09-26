@@ -32,8 +32,10 @@ export function validate(state) {
       || state.projects.length > 32 || state.versions.length > 128 || state.jobs.length > 256)
     throw Error('Invalid store schema or capacity');
   const ids = new Set();
-  const shared = state.identity_namespace?.startsWith('firebase-emulator:');
+  const shared = state.identity_namespace?.startsWith('firebase-emulator:')
+    || state.identity_namespace === 'firebase-production:reflective-graph-f1cd4';
   if (state.identity_namespace != null && state.identity_namespace !== 'local-single-owner'
+      && state.identity_namespace !== 'firebase-production:reflective-graph-f1cd4'
       && !/^firebase-emulator:demo-[a-z0-9-]{1,24}$/.test(state.identity_namespace)) throw Error('Invalid store identity namespace');
   for (const project of state.projects) {
     if (shared) {

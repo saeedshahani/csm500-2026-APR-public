@@ -1,6 +1,35 @@
 // Emulator identities are a development boundary, not production credentials.
 import { randomUUID, timingSafeEqual } from 'node:crypto';
 import { fail } from './store.mjs';
+import { target } from './deployment-target.mjs';
+
+export function productionConfig(projectId, env = process.env) {
+  target(projectId);
+  for (const key of ['FIREBASE_AUTH_EMULATOR_HOST', 'FIRESTORE_EMULATOR_HOST', 'FIREBASE_STORAGE_EMULATOR_HOST'])
+    if (env[key] !== undefined) throw Error('Production identity refuses emulator configuration');
+  for (const key of ['GOOGLE_CLOUD_PROJECT', 'GCLOUD_PROJECT', 'GCP_PROJECT'])
+    if (env[key] !== undefined && env[key] !== projectId) throw Error('Conflicting production project environment');
+  return projectId;
+}
+
+// The caller must supply the Admin SDK verifier, never client-decoded JWT claims.
+export function firebaseAuthenticator(auth, { projectId, production }) {
+  return async header => {
+    if (typeof header !== 'string' || !/^Bearer [A-Za-z0-9_.-]{1,16384}$/.test(header))
+      fail(401, 'unauthorized', 'Firebase ID token required');
+    let decoded;
+    try {
+      decoded = await auth.verifyIdToken(header.slice(7), true);
+      if (!validUid(decoded.uid)) throw Error('Invalid UID');
+      if (production && (decoded.aud !== projectId || decoded.iss !== `https://securetoken.google.com/${projectId}`
+          || decoded.sub !== decoded.uid)) throw Error('Mismatched token identity');
+    } catch { fail(401, 'unauthorized', 'Invalid, revoked or unavailable Firebase identity'); }
+    if (production && (decoded.email_verified !== true || typeof decoded.email !== 'string' || !decoded.email
+        || decoded.firebase?.sign_in_provider !== 'password'))
+      fail(403, 'verified_email_required', 'Sign in with a verified email/password account');
+    return decoded.uid;
+  };
+}
 
 export const validUid = uid => typeof uid === 'string' && uid.length > 0 && uid.length <= 128 && !/[\x00-\x1f\x7f]/.test(uid);
 export function emulatorConfig(projectId, host) {
@@ -19,22 +48,19 @@ export async function identity({ mode = 'local-single-owner', token, projectId, 
       return 'local-owner';
     } };
   }
-  if (mode !== 'firebase-emulator') throw Error('Unsupported authentication mode');
-  emulatorConfig(projectId, host);
+  if (!['firebase-emulator', 'firebase-production'].includes(mode)) throw Error('Unsupported authentication mode');
+  const production = mode === 'firebase-production';
+  if (production) {
+    productionConfig(projectId);
+    if (host !== undefined || token !== undefined) throw Error('Production identity refuses emulator hosts and local tokens');
+  } else emulatorConfig(projectId, host);
   // Admin reads this process-wide setting. Refuse mismatches rather than silently redirecting it.
-  if (process.env.FIREBASE_AUTH_EMULATOR_HOST !== host) throw Error('FIREBASE_AUTH_EMULATOR_HOST must match the configured emulator host');
+  if (!production && process.env.FIREBASE_AUTH_EMULATOR_HOST !== host) throw Error('FIREBASE_AUTH_EMULATOR_HOST must match the configured emulator host');
   const { initializeApp, deleteApp } = await import('firebase-admin/app');
   const { getAuth } = await import('firebase-admin/auth');
-  const app = initializeApp({ projectId }, `graph-emulator-${randomUUID()}`), auth = getAuth(app);
-  return { mode, projectId, namespace: `firebase-emulator:${projectId}`, close: () => deleteApp(app), async authenticate(header) {
-    if (typeof header !== 'string' || !/^Bearer [A-Za-z0-9_.-]{1,16384}$/.test(header)) fail(401, 'unauthorized', 'Firebase emulator ID token required');
-    try {
-      // Revocation/disabled-account checking contacts the emulator; an outage fails closed.
-      const decoded = await auth.verifyIdToken(header.slice(7), true);
-      if (!validUid(decoded.uid)) throw Error('Invalid UID');
-      return decoded.uid;
-    } catch { fail(401, 'unauthorized', 'Invalid, revoked or unavailable Firebase emulator identity'); }
-  } };
+  const app = initializeApp({ projectId }, `graph-${mode}-${randomUUID()}`), auth = getAuth(app);
+  return { mode, projectId, namespace: `${mode}:${projectId}`, close: () => deleteApp(app),
+    authenticate: firebaseAuthenticator(auth, { projectId, production }) };
 }
 
 export function role(project, uid, mode) {
