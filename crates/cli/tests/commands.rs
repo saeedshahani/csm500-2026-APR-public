@@ -59,6 +59,119 @@ impl Drop for Directory {
 }
 
 #[test]
+fn native_checkpoint_continuation_matches_uninterrupted_history() {
+    for (fixture, extra) in [
+        ("programs/arithmetic.graph", vec![]),
+        (
+            "programs/self-modify.graph",
+            vec!["--strategy", "seeded", "--seed", "42"],
+        ),
+        (
+            "behaviour/oscillating.graph",
+            vec!["--detect-cycles", "true"],
+        ),
+        ("behaviour/oscillating.graph", vec![]),
+        ("programs/arithmetic.graph", vec!["--max-work", "0"]),
+    ] {
+        let source = std::fs::read(
+            Path::new(env!("CARGO_MANIFEST_DIR"))
+                .join("../../examples")
+                .join(fixture),
+        )
+        .unwrap();
+        let mut args = vec![
+            "export",
+            "-",
+            "--max-steps",
+            "4",
+            "--checkpoint-interval",
+            "1",
+        ];
+        if !extra.contains(&"--max-work") {
+            args.extend(["--conflict-state", "0"]);
+        }
+        args.extend(extra);
+        let full = stdin(&args, &source);
+        args.extend(["--batch-steps", "1"]);
+        let mut batch = stdin(&args, &source);
+        for _ in 0..6 {
+            let doc: serde_json::Value =
+                serde_json::from_slice(&batch.stdout).unwrap_or_else(|e| {
+                    panic!("{fixture}: {e}: {}", String::from_utf8_lossy(&batch.stderr))
+                });
+            assert!(stdin(&["trace-check", "-"], &batch.stdout).status.success());
+            if doc["status"] == "finished" {
+                break;
+            }
+            assert_eq!(doc["status"], "yielded");
+            assert!(batch.status.success());
+            batch = stdin(&["resume", "-", "--batch-steps", "1"], &batch.stdout);
+        }
+        assert_eq!(batch.status.code(), full.status.code(), "{fixture}");
+        assert_eq!(batch.stdout, full.stdout, "{fixture}");
+        assert!(
+            !stdin(&["resume", "-", "--batch-steps", "1"], &batch.stdout)
+                .status
+                .success()
+        );
+    }
+}
+
+#[test]
+fn native_checkpoint_rejects_mutation_and_preserves_files() {
+    let source = std::fs::read(program("self-modify")).unwrap();
+    let checkpoint = stdin(
+        &["export", "-", "--max-steps", "8", "--batch-steps", "1"],
+        &source,
+    );
+    let doc: serde_json::Value = serde_json::from_slice(&checkpoint.stdout).unwrap();
+    assert_eq!(doc["status"], "yielded");
+    for args in [
+        vec!["resume", "-", "--batch-steps", "0"],
+        vec!["resume", "-", "--batch-steps", "1", "--seed", "3"],
+        vec!["resume", "-", "--batch-steps", "1", "--at", "0"],
+        vec!["resume", "-", "--batch-steps", "1", "--batch-steps", "2"],
+    ] {
+        let result = stdin(&args, &checkpoint.stdout);
+        assert_eq!(result.status.code(), Some(2));
+        assert!(result.stdout.is_empty());
+    }
+    let mut tampered = doc;
+    tampered["initial_sha256"] = serde_json::json!("0".repeat(64));
+    let rejected = stdin(
+        &["resume", "-", "--batch-steps", "1"],
+        &serde_json::to_vec(&tampered).unwrap(),
+    );
+    assert!(!rejected.status.success());
+    assert!(rejected.stdout.is_empty());
+    let dir = Directory::new();
+    let path = dir.0.join("checkpoint.json");
+    let args = [
+        "resume",
+        "-",
+        "--batch-steps",
+        "1",
+        "--output",
+        path.to_str().unwrap(),
+    ];
+    let first = stdin(&args, &checkpoint.stdout);
+    assert!(first.stdout.is_empty());
+    let saved = std::fs::read(&path).unwrap();
+    assert!(stdin(&["trace-check", "-"], &saved).status.success());
+    assert!(!stdin(&args, &checkpoint.stdout).status.success());
+    assert_eq!(std::fs::read(path).unwrap(), saved);
+    assert_eq!(
+        stdin(
+            &["export", "-", "--max-steps", "8", "--batch-steps", "0"],
+            &source
+        )
+        .status
+        .code(),
+        Some(2)
+    );
+}
+
+#[test]
 fn dataset_adapter_and_condition_sidecar_are_checked_commands() {
     let input =
         br#"{"schema":"work-items-v1","policy":"fixed","items":[{"id":"a","status":"pending"}]}"#;
@@ -99,6 +212,7 @@ fn help_documents_all_commands_and_exit_meanings() {
         vec!["--help"],
         vec!["run", "--help"],
         vec!["check", "--help"],
+        vec!["resume", "--help"],
     ] {
         let out = command().args(args).output().unwrap();
         assert!(out.status.success());
@@ -110,6 +224,8 @@ fn help_documents_all_commands_and_exit_meanings() {
             "normal form",
             "never overwritten",
             "export",
+            "--batch-steps",
+            "yielded",
         ] {
             assert!(help.contains(word));
         }

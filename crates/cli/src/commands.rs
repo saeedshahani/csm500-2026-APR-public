@@ -35,6 +35,7 @@ fn lambda_failure(error: parser::lambda::Error) -> Failure {
 struct Options {
     run: bool,
     export: bool,
+    batch_steps: Option<u64>,
     trace_options: engine::trace::TraceOptions,
     input: String,
     output: Option<PathBuf>,
@@ -66,6 +67,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["run", "--help"]
         || args == ["check", "--help"]
         || args == ["export", "--help"]
+        || args == ["resume", "--help"]
         || args == ["replay", "--help"]
         || args == ["trace-check", "--help"]
         || args == ["trace-conditions", "--help"]
@@ -73,6 +75,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
     {
+        io::stdout().lock().write_all(b"Continuation: cli export INPUT --max-steps N --batch-steps N [export options]\n              cli resume TRACE --batch-steps N [--output PATH]\nA yielded checkpoint exits 0 without claiming completion. Resume preserves the original run limits and only accepts a verified yielded endpoint.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Dataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Lambda adapters: cli lambda-compile SOURCE | cli lambda-readback GRAPH\nBoth accept a file or -; compilation emits ordinary graph source.\nUse cli replay TRACE --at N | cli lambda-readback - for recorded terms.\n\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout()
@@ -80,6 +83,9 @@ pub(crate) fn main_command() -> Result<u8> {
             .write_all(format!("{HELP}\nScheduling: --strategy deterministic (default), or --strategy seeded --seed U64.\nOrdering: source identity, then (template identity, host identity) tuples.\nObservers: --observer FILE (observer-v1); --detect-cycles true|false (default false).\nBounds: --max-observation-work N, --max-comparison-work N, --max-history-units N.\nRecurrence is diagnostic, not proof of infinite behaviour; exit 6 CycleDetected.\nShared API cancellation stops at transaction boundaries (exit 5); CLI does not install a signal handler.\nNormal form takes precedence over recurrence and step limits; recurrence precedes step limit.\n").as_bytes())
             .map_err(|e| Failure::new(1, format!("output: {e}")))?;
         return Ok(0);
+    }
+    if args[0] == "resume" {
+        return resume_command(&args);
     }
     if matches!(
         args[0].as_str(),
@@ -217,7 +223,17 @@ pub(crate) fn main_command() -> Result<u8> {
     let mut rejected = 0;
     let mut last_diagnostic = None;
     let mut details = String::new();
-    if options.run {
+    if let Some(batch) = options.batch_steps {
+        runner
+            .begin_run(options.run_limits, requested)
+            .map_err(engine_failure)?;
+        if let engine::runner::RunProgress::Finished(report) =
+            runner.advance(batch, || false).map_err(engine_failure)?
+        {
+            code = outcome_code(report.outcome);
+            last_diagnostic = report.diagnostic;
+        }
+    } else if options.run {
         let report = runner
             .run(options.run_limits, requested, || false)
             .map_err(engine_failure)?;
@@ -308,6 +324,80 @@ fn position(source: &str, offset: usize) -> (usize, usize) {
     source_position(source, offset).map_or((1, 1), |p| (p.line, p.column))
 }
 
+fn outcome_code(outcome: Outcome) -> u8 {
+    match outcome {
+        Outcome::NormalForm => 0,
+        Outcome::ResourceLimit | Outcome::StepLimit => 3,
+        Outcome::RequestedRuleUnavailable => 4,
+        Outcome::Cancelled => 5,
+        Outcome::CycleDetected => 6,
+    }
+}
+
+fn resume_command(args: &[String]) -> Result<u8> {
+    if args.len() < 4 {
+        return Err(Failure::new(
+            2,
+            "usage: cli resume TRACE --batch-steps N [--output PATH]",
+        ));
+    }
+    let mut batch = None;
+    let mut output = None;
+    let mut seen = BTreeSet::new();
+    for pair in args[2..].chunks(2) {
+        if pair.len() != 2 || !seen.insert(&pair[0]) {
+            return Err(Failure::new(2, "missing or duplicate resume option"));
+        }
+        match pair[0].as_str() {
+            "--batch-steps" => batch = Some(number::<u64>(&pair[1], "--batch-steps")?),
+            "--output" => output = Some(PathBuf::from(&pair[1])),
+            _ => {
+                return Err(Failure::new(
+                    2,
+                    "unsupported resume option; run settings cannot be changed",
+                ))
+            }
+        }
+    }
+    let batch = batch
+        .filter(|n| *n > 0)
+        .ok_or_else(|| Failure::new(2, "positive --batch-steps required"))?;
+    let limits = engine::trace::TraceLimits::default();
+    let text = read_source(&args[1], limits.max_bytes)?;
+    let verified =
+        engine::trace::VerifiedTrace::import(text.as_bytes(), limits).map_err(engine_failure)?;
+    let document = verified.document();
+    let mut runner = verified
+        .resume_at(document.events.len())
+        .map_err(engine_failure)?;
+    let code = match runner.advance(batch, || false).map_err(engine_failure)? {
+        engine::runner::RunProgress::Yielded => 0,
+        engine::runner::RunProgress::Finished(report) => outcome_code(report.outcome),
+    };
+    let options = engine::trace::TraceOptions {
+        checkpoint_interval: document.checkpoint_interval.0,
+        conflict_states: document.conflicts.iter().map(|c| c.state.0).collect(),
+    };
+    let bytes = engine::trace::TraceDocument::from_runner(
+        &runner,
+        document.source_sha256.clone(),
+        options,
+        limits,
+    )
+    .map_err(engine_failure)?
+    .to_json(limits.max_bytes)
+    .map_err(engine_failure)?;
+    if let Some(path) = output {
+        publish_new(&path, &bytes)?;
+    } else {
+        io::stdout()
+            .lock()
+            .write_all(&bytes)
+            .map_err(|e| Failure::new(1, e.to_string()))?;
+    }
+    Ok(code)
+}
+
 fn trace_command(args: &[String]) -> Result<u8> {
     if args.len() < 2 {
         return Err(Failure::new(
@@ -383,6 +473,7 @@ fn options(args: &[String]) -> Result<Options> {
     let mut result = Options {
         run,
         export: args[0] == "export",
+        batch_steps: None,
         trace_options: Default::default(),
         input: String::new(),
         output: None,
@@ -414,6 +505,7 @@ fn options(args: &[String]) -> Result<Options> {
                 .ok_or_else(|| Failure::new(2, format!("missing value for {arg}")))?;
             i += 1;
             match arg.as_str() {
+                "--batch-steps" if result.export => result.batch_steps = Some(number(value, arg)?),
                 "--checkpoint-interval" if result.export => {
                     result.trace_options.checkpoint_interval = number(value, arg)?
                 }
@@ -475,6 +567,9 @@ fn options(args: &[String]) -> Result<Options> {
         return Err(Failure::new(2, HELP));
     }
     result.execution.graph = result.parse.graph;
+    if result.batch_steps == Some(0) {
+        return Err(Failure::new(2, "--batch-steps must be positive"));
+    }
     result.run_limits.max_steps = result.max_steps;
     match (result.scheduler.as_str(), result.seed) {
         ("deterministic", None) | ("seeded", Some(_)) => {}
