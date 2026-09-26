@@ -136,6 +136,24 @@ test('superseded attempt cannot publish a result and stops dispatch',async t=>{
   assert.equal(f.app.store.state.jobs[0].checkpoint_sha256,null);
 });
 
+test('deferred batch dispatch cannot bypass the active validation slot',async t=>{
+  const f=await fixture(t),{project,version}=await f.create();
+  const original=f.app.worker.validate.bind(f.app.worker);
+  let release,entered;
+  const gate=new Promise(resolve=>{release=resolve;}),started=new Promise(resolve=>{entered=resolve;});
+  f.app.worker.validate=async source=>{entered();await gate;return original(source);};
+  const validation=f.request('/v1/validate',{source:program});await started;
+  let job;
+  try {
+    job=(await f.submit(project,version)).body;
+    f.app.worker.kick(); // Models the queued setImmediate callback from a prior batch.
+    assert.equal(f.app.worker.active,null);
+    assert.equal((await f.request(`/v1/jobs/${job.id}`)).body.status,'queued');
+  } finally {release();}
+  assert.equal((await validation).status,200);
+  assert.equal((await f.wait(job.id)).status,'completed');
+});
+
 test('browser access is opt-in, exact-origin and still requires the bearer token', async t => {
   const origin = 'http://127.0.0.1:4173', f = await fixture(t, { origins: [origin] });
   const preflight = await fetch(f.app.url + '/v1/projects', { method: 'OPTIONS', headers: { Origin: origin,

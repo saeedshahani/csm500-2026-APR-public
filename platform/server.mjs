@@ -58,6 +58,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
   let worker;
   try { worker = new Worker(store, resolve(binary)); } catch (e) { await store.close(); await auth.close(); throw e; }
   let validating = false, closing = false;
+  worker.canDispatch = () => !validating && !closing;
   const validate = async (text, dataset = false) => {
     if (validating || worker.active) fail(429, 'busy', 'Native slot busy; retry validation later');
     validating = true;

@@ -75,7 +75,7 @@ export class Worker {
     return { source: r.stdout, engine_sha256: this.identity };
   }
   kick() {
-    if (this.active || this.stopping) return;
+    if (this.active || this.stopping || this.canDispatch?.() === false) return;
     const job = this.store.state.jobs.find(j => j.status === 'queued');
     if (!job) return;
     const control = new AbortController();
