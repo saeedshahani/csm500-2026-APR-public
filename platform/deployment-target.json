@@ -8,10 +8,14 @@
   "monthly_budget": { "currency": "GBP", "amount": 5 },
   "audience": "public-email-signup",
   "identity_provider": "email-password",
+  "web_app_id": "1:463455802523:web:765223b9b6bf186ebb623e",
   "require_verified_email": true,
-  "billing_status": "blaze-user-confirmed",
-  "budget_enforcement": "unverified",
-  "deployment_approved": false,
+  "billing_status": "billing-enabled-verified",
+  "budget_enforcement": "no-hard-cap-verified",
+  "budget_verified": { "project_only": true, "period": "MONTH", "alert_thresholds": [0.5, 0.9, 1] },
+  "deployment_approved": true,
+  "intended_users": "author, testing collaborators and university assessor",
+  "service_budget_user_reported_gbp": 3,
   "billing_changes_approved": false,
   "note": "Explicit project ID is mandatory for every cloud command. No default alias, account-wide mutations, or operations on other projects. Proposed region and service-level spending controls require confirmation; budget alerts are not a spending cap."
 }

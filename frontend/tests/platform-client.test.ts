@@ -4,6 +4,18 @@ import {PlatformClient,readBounded,defaultJobSettings,type VersionRecord} from '
 const token='local_test_token_012345678901234567890';
 const identity='00000000-0000-0000-0000-000000000001';
 
+test('hosted transport pins Firebase origins and requires refreshable identity',async t=>{
+  const url='https://reflective-graph-f1cd4.web.app/api';
+  assert.throws(()=>new PlatformClient(url,token),/Firebase/);
+  for(const address of [url+'/other',url+'?x=y',url.replace('.web.app','.web.app.attacker.test'),url.replace('https:','http:')])
+    assert.throws(()=>new PlatformClient(address,async()=> 'id.token'));
+  t.mock.method(globalThis,'fetch',async(address:unknown,options:RequestInit)=>{
+    assert.equal(address,url+'/v1/health');assert.equal(options.redirect,'error');assert.equal(options.credentials,'omit');
+    return Response.json({api:'v1'});
+  });
+  const client=new PlatformClient(url,async()=> 'id.token');await client.health();client.close();
+});
+
 test('client refuses external, credential-bearing and path-bearing API addresses',()=>{
   for(const url of ['https://example.com','http://localhost:8787','http://127.0.0.1:8787/other','http://name:pass@127.0.0.1:8787','http://127.0.0.1:8787/?token=x'])assert.throws(()=>new PlatformClient(url,token));
   assert.throws(()=>new PlatformClient('http://127.0.0.1:8787','short'));

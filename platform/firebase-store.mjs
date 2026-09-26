@@ -5,21 +5,26 @@ import {initializeApp, deleteApp} from 'firebase-admin/app';
 import {getFirestore} from 'firebase-admin/firestore';
 import {getStorage} from 'firebase-admin/storage';
 import {validate, hash, fail} from './store.mjs';
-import {emulatorConfig} from './identity.mjs';
+import {emulatorConfig, productionConfig} from './identity.mjs';
 
 const collections=['projects','datasets','versions','jobs'];
 const capacities={projects:32,datasets:128,versions:128,jobs:256};
 const LEASE_MS=60000;
 
 export class FirebaseStore {
-  static async open({projectId,namespace,storeId='default'}) {
-    emulatorConfig(projectId,process.env.FIRESTORE_EMULATOR_HOST);
-    emulatorConfig(projectId,process.env.FIREBASE_STORAGE_EMULATOR_HOST);
-    if(namespace!==`firebase-emulator:${projectId}` || !/^[a-zA-Z0-9_-]{1,64}$/.test(storeId))
-      throw Error('Firebase storage requires matching emulator identity and a simple store ID');
-    const app=initializeApp({projectId,storageBucket:`${projectId}.appspot.com`},`graph-store-${randomUUID()}`);
+  static async open({projectId,namespace,storeId='default',production=false,bucket,verifyArtefacts=true}) {
+    if(production){
+      productionConfig(projectId);
+      if(bucket!==`${projectId}.firebasestorage.app`)throw Error('Production bucket must be the pinned project default');
+    }else{
+      emulatorConfig(projectId,process.env.FIRESTORE_EMULATOR_HOST);
+      emulatorConfig(projectId,process.env.FIREBASE_STORAGE_EMULATOR_HOST);
+    }
+    if(namespace!==`firebase-${production?'production':'emulator'}:${projectId}` || !/^[a-zA-Z0-9_-]{1,64}$/.test(storeId))
+      throw Error('Firebase storage requires matching identity and a simple store ID');
+    const app=initializeApp({projectId,storageBucket:production?bucket:`${projectId}.appspot.com`},`graph-store-${randomUUID()}`);
     const store=new FirebaseStore(app,storeId,namespace);
-    try { await store.load();return store; }
+    try { await store.load({verifyArtefacts});return store; }
     catch(e){await store.close();throw e;}
   }
   constructor(app,id,namespace) {
@@ -40,13 +45,14 @@ export class FirebaseStore {
     try {this.assertOwner((await this.ref.get()).data());}
     catch(e){this.fault=true;throw e;}
   }
-  async load() {
+  async load({verifyArtefacts=true}={}) {
     await this.db.runTransaction(async tx=>{
       const prior=(await tx.get(this.ref)).data();
       if(prior && prior.namespace!==this.namespace)throw Error('Identity namespace mismatch');
-      if(prior?.expires_at>Date.now())throw Error('Store owner lease is still active');
+      if(prior?.expires_at>Date.now())fail(503,'store_busy','Store owner lease is still active; retry shortly');
       this.generation=(prior?.generation??0)+1;
       if(!Number.isSafeInteger(this.generation))throw Error('Lease generation exhausted');
+      if(prior && (!Number.isSafeInteger(prior.used_bytes)||prior.used_bytes<0||prior.used_bytes>64*1024*1024))throw Error('Invalid storage reservation');
       tx.set(this.ref,{namespace:this.namespace,owner:this.owner,generation:this.generation,
         expires_at:Date.now()+LEASE_MS,used_bytes:prior?.used_bytes??0});
     });
@@ -62,6 +68,7 @@ export class FirebaseStore {
       });
     }
     validate(this.state);
+    if(verifyArtefacts){
     for(const v of this.state.versions)await this.read(v.source_sha256);
     for(const d of this.state.datasets){await this.read(d.document_sha256);await this.read(d.source_sha256);}
     for(const j of this.state.jobs)for(const key of ['trace_sha256','checkpoint_sha256'])if(j[key]){
@@ -70,6 +77,7 @@ export class FirebaseStore {
           || trace.status!==(key==='trace_sha256'?'finished':'yielded')
           || trace.events.length!==(key==='trace_sha256'?j.commits:j.checkpoint_commits)
           || (key==='trace_sha256'&&trace.report?.outcome!==j.outcome))throw Error('Stored trace metadata mismatch');
+    }
     }
     await this.update(state=>{
       for(const j of state.jobs)if(j.status==='running'){

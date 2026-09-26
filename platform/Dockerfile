@@ -18,6 +18,5 @@ RUN mkdir -p /app/output && chown node:node /app/output
 USER node
 ENV GRAPH_NATIVE_MEMORY_BYTES=536870912
 ENV GRAPH_NATIVE_CPU_SECONDS=30
-# The default is intentionally the loopback/local adapter, not a cloud deployment.
-# A hosted adapter must supply durable storage and authenticated dispatch first.
+# Local default. Cloud Run explicitly selects platform/hosted.mjs with pinned configuration.
 CMD ["node", "platform/server.mjs"]

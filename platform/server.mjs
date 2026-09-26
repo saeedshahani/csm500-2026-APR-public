@@ -42,15 +42,16 @@ function page(items, url) {
   return { items: items.slice(offset, offset + limit), total: items.length, next_offset: offset + limit < items.length ? offset + limit : null };
 }
 
-export async function start({ directory, binary, token, port = 0, recover = false, origins = [], authMode = 'local-single-owner', projectId, authHost, storageMode = 'local', storeId = 'default' }) {
+export async function start({ directory, binary, token, port = 0, recover = false, origins = [], authMode = 'local-single-owner', projectId, authHost, storageMode = 'local', storeId = 'default', suppliedStore, suppliedAuth, background = true }) {
   if (!Array.isArray(origins) || origins.some(origin => {
     try { const url = new URL(origin); return url.origin !== origin || url.protocol !== 'http:' || !['127.0.0.1', 'localhost'].includes(url.hostname); }
     catch { return true; }
   })) throw Error('Browser origins must be exact http://127.0.0.1 or http://localhost origins with an optional port');
-  const auth = await identity({ mode: authMode, token, projectId, host: authHost });
+  const auth = suppliedAuth ?? await identity({ mode: authMode, token, projectId, host: authHost });
   let store;
   try {
-    if(storageMode==='firebase-emulator') {
+    if(suppliedStore)store=suppliedStore;
+    else if(storageMode==='firebase-emulator') {
       const {FirebaseStore}=await import('./firebase-store.mjs');
       store=await FirebaseStore.open({projectId,namespace:auth.namespace,storeId});
     }else if(storageMode==='local')store = new Store(directory, { recover, namespace: auth.namespace });
@@ -59,7 +60,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
   let worker;
   try { worker = new Worker(store, resolve(binary)); } catch (e) { await store.close(); await auth.close(); throw e; }
   let validating = false, closing = false;
-  worker.canDispatch = () => !validating && !closing;
+  worker.canDispatch = () => background && !validating && !closing;
   const validate = async (text, dataset = false) => {
     if (validating || worker.active) fail(429, 'busy', 'Native slot busy; retry validation later');
     validating = true;

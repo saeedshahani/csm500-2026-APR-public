@@ -7,7 +7,36 @@ import {setTimeout as delay} from 'node:timers/promises';
 import {FirebaseStore} from '../../firebase-store.mjs';
 import {start} from '../../server.mjs';
 import {hash,terminal} from '../../store.mjs';
+import {Worker} from '../../worker.mjs';
+import {backup,decodeBackup} from '../../backup.mjs';
 const projectId='demo-reflective-graph', namespace=`firebase-emulator:${projectId}`;
+
+test('request-scoped storage releases idle leases, executes one batch and preserves duplicate deliveries',async t=>{
+  const options={projectId,namespace,storeId:randomUUID(),verifyArtefacts:false};
+  let store=await FirebaseStore.open(options);
+  t.after(async()=>{await store.close();});
+  const project=randomUUID(),version=randomUUID(),jobId=randomUUID(),source=fs.readFileSync('examples/programs/arithmetic.graph');
+  const worker=new Worker(store,path.resolve('target/release/cli')),sha=await store.put(source);
+  await store.update(s=>{
+    s.projects.push({id:project,name:'Request-scoped',owner_uid:'test-owner',members:[]});
+    s.versions.push({id:version,project_id:project,source_sha256:sha});
+    s.jobs.push({id:jobId,project_id:project,version_id:version,source_sha256:sha,engine_sha256:worker.identity,request_sha256:hash('request'),
+      submitted_by:'test-owner',settings:{max_steps:20,max_work:1000000,max_candidates:1000,seed:null,detect_cycles:false,deadline_ms:30000},
+      status:'queued',attempts:[],elapsed_ms:0,checkpoint_sha256:null,trace_sha256:null,created_at:new Date().toISOString()});
+  });
+  await store.close();store=await FirebaseStore.open(options);
+  const w=new Worker(store,path.resolve('target/release/cli'));
+  await w.execute(store.state.jobs[0],new AbortController().signal);
+  assert.equal(store.state.jobs[0].status,'completed');const trace=store.state.jobs[0].trace_sha256;
+  await store.close();store=await FirebaseStore.open(options);
+  // Duplicate cloud delivery sees a terminal record and has no execution authority.
+  assert.notEqual(store.state.jobs[0].status,'queued');assert.equal(store.state.jobs[0].attempts.length,1);
+  assert.equal(store.state.jobs[0].trace_sha256,trace);
+  const saved=await backup(store);assert.equal(saved.created,true);
+  const [archive]=await store.bucket.file(saved.name).download();
+  const restored=decodeBackup(archive);assert.equal(restored.state.jobs[0].trace_sha256,trace);assert.ok(restored.blobs.has(trace));
+  assert.equal((await backup(store)).created,false);
+});
 
 test('Firestore/Storage adapters fence stale owners, reserve uploads and reject corruption',async t=>{
   const options={projectId,namespace,storeId:randomUUID()};

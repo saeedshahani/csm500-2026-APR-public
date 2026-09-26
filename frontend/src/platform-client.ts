@@ -1,3 +1,4 @@
+import {hostedOrigins} from './hosted-config.ts';
 export type ProjectRole = 'owner'|'editor'|'viewer';
 export type ProjectRecord = {id:string;name:string;created_at:string;owner_uid?:string;role?:ProjectRole};
 export type Members = {owner_uid:string;members:{uid:string;role:'editor'|'viewer'}[]};
@@ -40,10 +41,12 @@ export class PlatformClient {
   #submissions=new Map<string,string>();
   constructor(url:string,token:string|TokenProvider) {
     const parsed=new URL(url);
-    if(parsed.protocol!=='http:'||parsed.hostname!=='127.0.0.1'||parsed.username||parsed.password||parsed.search||parsed.hash||parsed.pathname!=='/')
+    const hosted=hostedOrigins.includes(parsed.origin)&&parsed.pathname==='/api';
+    if((!hosted&&(parsed.protocol!=='http:'||parsed.hostname!=='127.0.0.1'||parsed.pathname!=='/'))||parsed.username||parsed.password||parsed.search||parsed.hash)
       throw Error('Use the local API address: http://127.0.0.1:8787');
     if(typeof token!=='function'&&!/^[A-Za-z0-9_-]{32,128}$/.test(token))throw Error('The API token must contain 32–128 letters, digits, underscores or hyphens');
-    this.url=parsed.origin;this.#token=token;
+    if(hosted&&typeof token!=='function')throw Error('Hosted API requires Firebase sign-in');
+    this.url=parsed.origin+(hosted?'/api':'');this.#token=token;
   }
   close(){this.#closed=true;this.#token='';for(const request of this.#pending)request.abort();this.#pending.clear();this.#submissions.clear();}
   async #request(route:string,data?:unknown,maximum=1024*1024):Promise<{bytes:Uint8Array<ArrayBuffer>;headers:Headers}> {
@@ -62,7 +65,7 @@ export class PlatformClient {
       return {bytes,headers:response.headers};
     } catch(error) {
       if(this.#closed)throw Error('API disconnected');
-      if(error instanceof TypeError)throw Error('Cannot reach the local API. Check the server address and GRAPH_BROWSER_ORIGINS.');
+      if(error instanceof TypeError)throw Error('Cannot reach the API. Check your connection and server availability.');
       if(control.signal.aborted)throw Error('API request timed out. A submitted job may still exist; retry the same submission to reuse its key.');
       throw error;
     } finally {clearTimeout(timeout);this.#pending.delete(control);}

@@ -5,6 +5,7 @@ import {ProjectMembers} from './ProjectMembers';
 import {ProjectDatasets} from './ProjectDatasets';
 import {RunReport} from './RunReport';
 import type {EmulatorSession} from './emulator-session';
+import {hostedApi,hostedOrigins,hostedProject} from './hosted-config';
 
 function download(text:string,name:string){const url=URL.createObjectURL(new Blob([text],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
 const short=(value:string)=>value.slice(0,8);
@@ -14,7 +15,7 @@ const emptyPage:Page<JobRecord>={items:[],total:0,next_offset:null};
 export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:boolean;draft:string;inspectorBusy:boolean;onSource:(source:string)=>void;onTrace:(trace:string)=>Promise<void>}){
   const client=useRef<PlatformClient|null>(null),generation=useRef(0),working=useRef(false),revision=useRef(0),unsaved=useRef(false),datasetDirty=useRef(false);
   const setDatasetDirty=useCallback((value:boolean)=>{datasetDirty.current=value;},[]);
-  const [url,setUrl]=useState('http://127.0.0.1:8787'),[token,setToken]=useState(''),[connected,setConnected]=useState(false),[engine,setEngine]=useState('');
+  const [url,setUrl]=useState(hostedOrigins.includes(location.origin)?hostedApi:'http://127.0.0.1:8787'),[token,setToken]=useState(''),[connected,setConnected]=useState(false),[engine,setEngine]=useState('');
   const [busy,setBusy]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
   const [projects,setProjects]=useState<ProjectRecord[]>([]),[project,setProject]=useState(''),[projectName,setProjectName]=useState('');
   const [versions,setVersions]=useState<VersionRecord[]>([]),[version,setVersion]=useState(''),[versionName,updateVersionName]=useState(''),[source,updateSource]=useState(''),[parent,setParent]=useState<string|null>(null);
@@ -25,7 +26,7 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
   const [config,setConfig]=useState<JobSettings>({...defaultJobSettings}),[parentJob,setParentJob]=useState<string|null>(null);
   const [refreshed,setRefreshed]=useState(''),[pollError,setPollError]=useState('');
   const [composerOpen,setComposerOpen]=useState(false);
-  const [authMode,setAuthMode]=useState('local-single-owner'),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[newAccount,setNewAccount]=useState(false),[uid,setUid]=useState('');
+  const [authMode,setAuthMode]=useState(hostedOrigins.includes(location.origin)?'firebase-production':'local-single-owner'),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[newAccount,setNewAccount]=useState(false),[uid,setUid]=useState('');
   const session=useRef<EmulatorSession|null>(null);
   const closeSession=()=>{const previous=session.current;session.current=null;void previous?.close().catch(()=>{});};
   useEffect(()=>()=>{generation.current++;client.current?.close();closeSession();},[]);
@@ -38,29 +39,37 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
     finally{if(valid()){revision.current++;working.current=false;setBusy(false);}}
   }
   function disconnect(){if(!discard())return;datasetDirty.current=false;generation.current++;client.current?.close();client.current=null;closeSession();working.current=false;setBusy(false);setConnected(false);setToken('');setPassword('');setUid('');setProjects([]);setProject('');setVersions([]);setVersion('');setSource('');setVersionName('');unsaved.current=false;setJobs(emptyPage);setSelected(null);setComparison(null);setParent(null);setParentJob(null);setError('');setPollError('');setNotice('Disconnected. Saved projects and submitted jobs remain on the server.');}
+  async function sendAccountEmail(kind:'reset'|'verify'){
+    if(working.current)return;
+    working.current=true;setBusy(true);setError('');setNotice('');
+    const secret=password;setPassword('');
+    try{const {accountEmail}=await import('./hosted-session');await accountEmail(email,secret,kind);setNotice(kind==='reset'?'If this address has an account, a password-reset email has been requested.':'Verification email requested. Check your inbox, then sign in.');}
+    catch(e){setError(e instanceof Error?e.message:String(e));}
+    finally{working.current=false;setBusy(false);}
+  }
   async function connect(){
     if(working.current)return;
     client.current?.close();closeSession();const epoch=++generation.current;
     working.current=true;setBusy(true);setError('');
     const secret=password;setPassword('');
     try{
-      if(authMode==='firebase-emulator'){
+      if(authMode==='firebase-emulator'||authMode==='firebase-production'){
         const {emulatorSession}=await import('./emulator-session');
-        const created=await emulatorSession(email,secret,newAccount);
+        const created=authMode==='firebase-production'?await (await import('./hosted-session')).hostedSession(email,secret,newAccount):await emulatorSession(email,secret,newAccount);
         if(epoch!==generation.current){await created.close();return;}
         session.current=created;client.current=new PlatformClient(url,created.token);
       }else client.current=new PlatformClient(url,token);
-    }catch(e){if(epoch===generation.current){client.current=null;closeSession();setError(String(e));}return;}
+    }catch(e){if(epoch===generation.current){client.current=null;closeSession();const message=e instanceof Error?e.message:String(e);if(message.startsWith('Account created.')){setNewAccount(false);setNotice(message);}else setError(message);}return;}
     finally{if(epoch===generation.current){working.current=false;setBusy(false);setToken('');}}
     const connection=client.current;
     let accepted=false;
-    await action(async(api,valid)=>{const health=await api.health();if(health.api!=='v1'||health.mode!==authMode||(authMode==='firebase-emulator'&&(health.uid!==session.current?.uid||health.project_id!=='demo-reflective-graph')))throw Error('Unsupported or mismatched API identity');const list=await api.projects();if(valid()){accepted=true;setConnected(true);setUid(health.uid??'');setEngine(health.engine_sha256);setProjects(list.items);setNotice('Choose or create a project.');}});
+    await action(async(api,valid)=>{const health=await api.health();if(health.api!=='v1'||health.mode!==authMode||(authMode!=='local-single-owner'&&(health.uid!==session.current?.uid||health.project_id!==(authMode==='firebase-production'?hostedProject:'demo-reflective-graph'))))throw Error('Unsupported or mismatched API identity');const list=await api.projects();if(valid()){accepted=true;setConnected(true);setUid(health.uid??'');setEngine(health.engine_sha256);setProjects(list.items);setNotice('Choose or create a project.');}});
     if(!accepted&&client.current===connection){connection?.close();client.current=null;closeSession();}
   }
   function chooseProject(value:string){if(value===project||!discard())return;datasetDirty.current=false;generation.current++;setProject(value);setVersions([]);setVersion('');setSource('');setVersionName('');unsaved.current=false;setParent(null);setParentJob(null);setSelected(null);setComparison(null);setOffset(0);setJobs(emptyPage);setNotice('');setError('');setPollError('');}
   useEffect(()=>{
     if(!connected||!project||!active||!client.current)return;
-    const api=client.current,epoch=generation.current;let cancelled=false,timer:ReturnType<typeof setTimeout>;
+    const api=client.current,epoch=generation.current;let cancelled=false,timer:ReturnType<typeof setTimeout>,interval=authMode==='firebase-production'?30000:1500;
     const valid=()=>!cancelled&&generation.current===epoch;
     async function poll(){
       try{
@@ -69,13 +78,14 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
           const accessible=await api!.projects();
           if(!accessible.items.some(p=>p.id===project)){if(valid()&&!working.current&&snapshot===revision.current){setProjects(accessible.items);setJobs(emptyPage);setSelected(null);setComparison(null);setVersions([]);setPollError('Project access is no longer available.');}return;}
           const [list,saved,detail]=await Promise.all([api!.jobs(project,offset),api!.versions(project),selected?api!.job(selected.id):Promise.resolve(null)]);
+          interval=authMode==='firebase-production'?(list.items.some(j=>['queued','running'].includes(j.status))?5000:30000):1500;
           if(valid()&&!working.current&&snapshot===revision.current){setProjects(accessible.items);setJobs(list);setVersions(saved);if(detail)setSelected(detail);setRefreshed(new Date().toLocaleTimeString());setPollError('');}
         }
       }catch(e){if(valid())setPollError(`Status refresh failed: ${e instanceof Error?e.message:String(e)}`);}
-      finally{if(valid())timer=setTimeout(()=>void poll(),1500);}
+      finally{if(valid())timer=setTimeout(()=>void poll(),interval);}
     }
     void poll();return()=>{cancelled=true;clearTimeout(timer);};
-  },[connected,project,offset,active,selected?.id]);
+  },[connected,project,offset,active,selected?.id,authMode]);
   const currentVersion=versions.find(v=>v.id===version);
   const chosenProject=projects.find(p=>p.id===project);
   const canEdit=chosenProject?.role!=='viewer';
@@ -88,9 +98,9 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
   }
   const field=(key:'max_steps'|'max_work'|'max_candidates'|'deadline_ms',label:string,maximum:number)=><label>{label}<input type="number" min={key==='deadline_ms'?1:0} max={maximum} required value={Number.isNaN(config[key])?'':config[key]} onChange={e=>setConfig({...config,[key]:e.target.value===''?NaN:Number(e.target.value)})}/></label>;
   return <section className="platform" hidden={!active} aria-label="Developer projects">
-    <div className="platform-heading"><div><h1>Projects</h1><p>Saved programs and native execution jobs</p></div>{connected&&<div className="platform-connection"><span>{uid?`Emulator UID · ${uid}`:`Local API · ${url}`}</span><button onClick={disconnect}>Disconnect</button></div>}</div>
-    {!connected&&<form className="platform-connect" onSubmit={e=>{e.preventDefault();void connect();}}><h2>Connect to the developer API</h2><label>Sign-in mode<select value={authMode} disabled={busy} onChange={e=>{setAuthMode(e.target.value);setToken('');setPassword('');}}><option value="local-single-owner">Local API token</option><option value="firebase-emulator">Firebase test accounts</option></select></label><label>API address<input type="url" required value={url} onChange={e=>setUrl(e.target.value)} disabled={busy}/></label>{authMode==='local-single-owner'?<label>API token<input type="password" autoComplete="off" required value={token} onChange={e=>setToken(e.target.value)} disabled={busy}/></label>:<><label>Test email<input type="email" autoComplete="off" required value={email} onChange={e=>setEmail(e.target.value)} disabled={busy}/></label><label>Test password<input type="password" minLength={6} autoComplete="off" required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/></label><label className="platform-checkbox"><input type="checkbox" checked={newAccount} onChange={e=>setNewAccount(e.target.checked)} disabled={busy}/>Create a test account</label><p>Authentication emulator: 127.0.0.1:9099 · demo-reflective-graph. Use disposable test credentials, not a real password.</p></>}<button className="primary" disabled={busy}>Connect</button><p>The session stays in memory until disconnect or page reload. Start the server with this browser origin allowed: <code>{location.origin}</code>.</p><a href="#guide">Setup instructions</a></form>}
-    {uid&&<p className="platform-message">Test accounts use an unsigned local emulator. Do not use production credentials.</p>}
+    <div className="platform-heading"><div><h1>Projects</h1><p>Saved programs and native execution jobs</p></div>{connected&&<div className="platform-connection"><span>{uid?`${authMode==='firebase-production'?'Account':'Emulator UID'} · ${uid}`:`Local API · ${url}`}</span><button onClick={disconnect}>Disconnect</button></div>}</div>
+    {!connected&&<form className="platform-connect" onSubmit={e=>{e.preventDefault();void connect();}}><h2>Connect to the developer API</h2><label>Sign-in mode<select value={authMode} disabled={busy} onChange={e=>{setAuthMode(e.target.value);setUrl(e.target.value==='firebase-production'?hostedApi:'http://127.0.0.1:8787');setToken('');setPassword('');setNotice('');}}><option value="firebase-production">Email account</option><option value="local-single-owner">Local API token</option><option value="firebase-emulator">Firebase test accounts</option></select></label><label hidden={authMode==='firebase-production'}>API address<input type="url" required value={url} onChange={e=>setUrl(e.target.value)} disabled={busy}/></label>{authMode==='local-single-owner'?<label>API token<input type="password" autoComplete="off" required value={token} onChange={e=>setToken(e.target.value)} disabled={busy}/></label>:<><label>{authMode==='firebase-production'?'Email':'Test email'}<input type="email" autoComplete="off" required value={email} onChange={e=>setEmail(e.target.value)} disabled={busy}/></label><label>{authMode==='firebase-production'?'Password':'Test password'}<input type="password" minLength={newAccount&&authMode==='firebase-production'?12:6} autoComplete="off" required value={password} onChange={e=>setPassword(e.target.value)} disabled={busy}/></label><label className="platform-checkbox"><input type="checkbox" checked={newAccount} onChange={e=>setNewAccount(e.target.checked)} disabled={busy}/>{authMode==='firebase-production'?'Create an account':'Create a test account'}</label>{authMode==='firebase-emulator'&&<p>Authentication emulator: 127.0.0.1:9099 · demo-reflective-graph. Use disposable test credentials, not a real password.</p>}{authMode==='firebase-production'&&<div className="platform-actions"><button type="button" disabled={busy||!email} onClick={()=>void sendAccountEmail('reset')}>Reset password</button><button type="button" disabled={busy||!email||!password} onClick={()=>void sendAccountEmail('verify')}>Resend verification</button></div>}</>}<button className="primary" disabled={busy}>{authMode==='firebase-production'?(newAccount?'Create account':'Sign in'):'Connect'}</button><p>The session stays in memory until sign-out or page reload.</p>{authMode!=='firebase-production'&&<p>Start the server with this browser origin allowed: <code>{location.origin}</code>.</p>}<a href="#guide">Setup instructions</a></form>}
+    {uid&&authMode==='firebase-emulator'&&<p className="platform-message">Test accounts use an unsigned local emulator. Do not use production credentials.</p>}
     {error&&<p className="platform-message platform-error" role="alert">{error}</p>}{notice&&<p className="platform-message" role="status">{notice}</p>}
     {connected&&<div className="platform-layout"><aside className="project-sidebar"><h2>Your projects</h2><button disabled={busy} onClick={()=>void action(async(api,valid)=>{const list=await api.projects();if(valid())setProjects(list.items);})}>Refresh projects</button><nav aria-label="Saved projects">{projects.map(p=><button key={p.id} aria-pressed={project===p.id} disabled={busy} onClick={()=>chooseProject(p.id)}>{p.name}<small>{short(p.id)}</small></button>)}</nav>{projects.length===0&&<p>No saved projects.</p>}<form onSubmit={e=>{e.preventDefault();createProject();}}><label>New project name<input value={projectName} onChange={e=>setProjectName(e.target.value)} maxLength={100} required disabled={busy}/></label><button disabled={busy||!projectName.trim()}>Create project</button></form><details><summary>Execution identity</summary><p>Native binary SHA-256</p><code>{engine}</code></details></aside>
     <div className="project-workspace">{!chosenProject?<p className="platform-empty">{pollError||'Select a project to view its versions and runs.'}</p>:<>
