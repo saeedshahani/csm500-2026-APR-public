@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
 import {target} from '../deployment-target.mjs';
 test('deployment preflight refuses defaults and every non-authorised project',()=>{
   for(const id of [undefined,'','default','reflective-graph','demo-reflective-graph','another-project']) assert.throws(()=>target(id),/Explicit/);
@@ -14,4 +15,16 @@ test('deployment preflight refuses defaults and every non-authorised project',()
   assert.equal(config.web_app_id,'1:463455802523:web:765223b9b6bf186ebb623e');
   assert.equal(config.budget_enforcement,'no-hard-cap-verified');
   assert.deepEqual(config.budget_verified,{project_only:true,period:'MONTH',alert_thresholds:[0.5,0.9,1]});
+});
+test('container context includes the calendar importer without exposing other scripts or local data',()=>{
+  const patterns=readFileSync('.dockerignore','utf8').split(/\r?\n/).filter(line=>line&&!line.startsWith('#'));
+  assert.equal(patterns[0],'**','Build context is denied by default');
+  assert.ok(patterns.includes('!scripts/'),'Parent directory must be traversable');
+  assert.ok(patterns.includes('!scripts/import-study-data.mjs'),'Required runtime importer must be included');
+  assert.ok(!patterns.includes('!scripts/**'),'Do not broaden the context to operator/research scripts');
+  assert.ok(!patterns.some(line=>line.startsWith('!output')||line.startsWith('!.env')));
+  assert.ok(patterns.includes('platform/.env*'));
+  const dockerfile=readFileSync('platform/Dockerfile','utf8');
+  assert.match(dockerfile,/^COPY scripts\/import-study-data\.mjs \.\/scripts\/import-study-data\.mjs$/m);
+  assert.match(readFileSync('platform/months.mjs','utf8'),/from '\.\.\/scripts\/import-study-data\.mjs'/);
 });

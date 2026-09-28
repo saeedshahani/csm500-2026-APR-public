@@ -8,6 +8,8 @@
 !examples/**
 !platform/
 !platform/**
+!scripts/
+!scripts/import-study-data.mjs
 platform/node_modules
 platform/*debug.log
 platform/.env*
