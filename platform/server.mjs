@@ -6,6 +6,7 @@ import { Store, ApiError, fail, hash, terminal } from './store.mjs';
 import { Worker, settings } from './worker.mjs';
 import { identity, authorize, role, validUid } from './identity.mjs';
 import { summarize } from './report.mjs';
+import {compileMonths,monthResults,monthCsv} from './months.mjs';
 import { admitProject, admitJob, admitOutstanding } from './admission.mjs';
 
 const MAX_BODY = 1024 * 1024;
@@ -18,17 +19,17 @@ function name(value) {
   if (typeof value !== 'string' || !value.trim() || value.length > 100) fail(400, 'invalid_name', 'Name must contain 1–100 characters');
   return value.trim();
 }
-function source(value) {
-  if (typeof value !== 'string' || !value.length || Buffer.byteLength(value) > 256 * 1024 || !value.isWellFormed())
-    fail(400, 'invalid_source', 'Source must be well-formed text, 1–262144 UTF-8 bytes');
+function source(value, large = false) {
+  if (typeof value !== 'string' || !value.length || Buffer.byteLength(value) > (large?16384:256) * 1024 || !value.isWellFormed())
+    fail(400, 'invalid_source', `Source must be well-formed text, 1–${(large?16384:256)*1024} UTF-8 bytes`);
   return value;
 }
-async function body(req) {
+async function body(req, large = false) {
   if (req.headers['content-type']?.split(';')[0].trim() !== 'application/json') fail(415, 'content_type', 'Expected application/json');
   const chunks = []; let size = 0;
   for await (const chunk of req) {
     size += chunk.length;
-    if (size > MAX_BODY) fail(413, 'body_limit', 'Request exceeds 1 MiB');
+    if (size > (large?16*MAX_BODY:MAX_BODY)) fail(413, 'body_limit', `Request exceeds ${large?16:1} MiB`);
     chunks.push(chunk);
   }
   try { return JSON.parse(new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(chunks))); }
@@ -42,7 +43,8 @@ function page(items, url) {
   return { items: items.slice(offset, offset + limit), total: items.length, next_offset: offset + limit < items.length ? offset + limit : null };
 }
 
-export async function start({ directory, binary, token, port = 0, recover = false, origins = [], authMode = 'local-single-owner', projectId, authHost, storageMode = 'local', storeId = 'default', suppliedStore, suppliedAuth, background = true }) {
+export async function start({ directory, binary, token, port = 0, recover = false, origins = [], authMode = 'local-single-owner', projectId, authHost, storageMode = 'local', storeId = 'default', suppliedStore, suppliedAuth, background = true, large = false }) {
+  if(large && (authMode!=='local-single-owner'||storageMode!=='local'||suppliedStore||suppliedAuth))throw Error('Large local route requires local token authentication and local storage');
   if (!Array.isArray(origins) || origins.some(origin => {
     try { const url = new URL(origin); return url.origin !== origin || url.protocol !== 'http:' || !['127.0.0.1', 'localhost'].includes(url.hostname); }
     catch { return true; }
@@ -54,11 +56,11 @@ export async function start({ directory, binary, token, port = 0, recover = fals
     else if(storageMode==='firebase-emulator') {
       const {FirebaseStore}=await import('./firebase-store.mjs');
       store=await FirebaseStore.open({projectId,namespace:auth.namespace,storeId});
-    }else if(storageMode==='local')store = new Store(directory, { recover, namespace: auth.namespace });
+    }else if(storageMode==='local')store = new Store(directory, { recover, namespace: auth.namespace,large });
     else throw Error('Unsupported storage mode');
   } catch (e) { await auth.close(); throw e; }
   let worker;
-  try { worker = new Worker(store, resolve(binary)); } catch (e) { await store.close(); await auth.close(); throw e; }
+  try { worker = new Worker(store, resolve(binary),large); } catch (e) { await store.close(); await auth.close(); throw e; }
   let validating = false, closing = false;
   worker.canDispatch = () => background && !validating && !closing;
   const validate = async (text, dataset = false) => {
@@ -97,15 +99,15 @@ export async function start({ directory, binary, token, port = 0, recover = fals
       const parts = url.pathname.split('/').filter(Boolean);
       if (parts[0] !== 'v1') fail(404, 'not_found', 'Unknown API version or route');
       const method = req.method;
-      if (method === 'GET' && url.pathname === '/v1/health') return send(200, { api: 'v1', mode: auth.mode, engine_sha256: worker.identity,
+      if (method === 'GET' && url.pathname === '/v1/health') return send(200, { api: 'v1', mode: auth.mode, engine_sha256: worker.identity, execution_envelope:large?'large-local-v1':'pilot-v1',
         ...(auth.mode !== 'local-single-owner' ? { uid, project_id: auth.projectId } : {}) });
       if (method === 'POST' && url.pathname === '/v1/validate') {
-        const b = await body(req); object(b, ['source']); return send(200, await validate(source(b.source)));
+        const b = await body(req,large); object(b, ['source']); return send(200, await validate(source(b.source,large)));
       }
       if (parts[1] === 'projects' && parts.length === 2) {
         if (method === 'GET') return send(200, page(store.state.projects.filter(p => role(p, uid, auth.mode)).map(visible), url));
         if (method === 'POST') {
-          const b = await body(req); object(b, ['name']);
+          const b = await body(req,large); object(b, ['name']);
           const p = { id: randomUUID(), name: name(b.name), created_at: new Date().toISOString(),
             ...(auth.mode !== 'local-single-owner' ? { owner_uid: uid, members: [] } : {}) };
           await store.update(s => {
@@ -117,11 +119,24 @@ export async function start({ directory, binary, token, port = 0, recover = fals
       }
       if (parts[1] === 'projects' && parts.length === 4) {
         const p = access(parts[2]);
+        if(parts[3]==='month-imports' && method==='POST') {
+          access(p.id,'editor');
+          if(!large)fail(409,'large_route_required','Calendar normalisation requires the explicit large-local-v1 developer route');
+          const b=await body(req,large);object(b,['name','csv','policy']);
+          const label=name(b.name);let compiled;
+          try{compiled=compileMonths(b.csv,b.policy);}catch(e){fail(422,'invalid_dataset',e.message);}
+          if(store.state.versions.length>=128)fail(409,'capacity','Version capacity reached');
+          const validation=await validate(compiled.source);access(p.id,'editor');
+          const v={id:randomUUID(),project_id:p.id,name:label,source_sha256:await store.put(compiled.source),validated_engine_sha256:validation.engine_sha256,
+            parent_version_id:null,created_at:new Date().toISOString(),application:{schema:'shopping-months-v1',rows:compiled.rows,policy:b.policy,input_sha256:await store.put(b.csv)}};
+          await store.update(s=>{access(p.id,'editor');if(s.versions.length>=128)fail(409,'capacity','Version capacity reached');s.versions.push(v);});
+          return send(201,v);
+        }
         if (parts[3] === 'members' && auth.mode !== 'local-single-owner') {
           access(p.id, 'owner');
           if (method === 'GET') return send(200, { owner_uid: p.owner_uid, members: p.members });
           if (method === 'POST') {
-            const b = await body(req); object(b, ['uid', 'role']);
+            const b = await body(req,large); object(b, ['uid', 'role']);
             const current = access(p.id, 'owner');
             if (!validUid(b.uid) || b.uid === current.owner_uid || !['viewer', 'editor', null].includes(b.role))
               fail(400, 'invalid_member', 'Use a non-owner UID and viewer, editor or null (remove) role');
@@ -139,7 +154,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
           if (method === 'GET') return send(200, page(store.state.datasets.filter(d => d.project_id === p.id), url));
           if (method === 'POST') {
             access(p.id, 'editor');
-            const b = await body(req); object(b, ['name', 'document', 'parent_dataset_id'], ['name', 'document']);
+            const b = await body(req,large); object(b, ['name', 'document', 'parent_dataset_id'], ['name', 'document']);
             const label = name(b.name), text = source(b.document);
             access(p.id, 'editor');
             if (b.parent_dataset_id != null && !store.state.datasets.some(d => d.id === b.parent_dataset_id && d.project_id === p.id))
@@ -158,11 +173,11 @@ export async function start({ directory, binary, token, port = 0, recover = fals
           if (method === 'GET') return send(200, page(store.state.versions.filter(v => v.project_id === p.id), url));
           if (method === 'POST') {
             access(p.id, 'editor');
-            const b = await body(req); object(b, ['name', 'source', 'dataset_id', 'parent_version_id'], ['name']);
+            const b = await body(req,large); object(b, ['name', 'source', 'dataset_id', 'parent_version_id'], ['name']);
             if (Object.hasOwn(b, 'source') === Object.hasOwn(b, 'dataset_id')) fail(400, 'invalid_request', 'Provide exactly one of source or dataset_id');
             const data = Object.hasOwn(b, 'dataset_id') ? store.state.datasets.find(d => d.id === b.dataset_id && d.project_id === p.id) : null;
             if (Object.hasOwn(b, 'dataset_id') && !data) fail(404, 'not_found', 'Dataset not found in project');
-            const label = name(b.name), text = data ? (await store.read(data.source_sha256)).toString('utf8') : source(b.source);
+            const label = name(b.name), text = data ? (await store.read(data.source_sha256)).toString('utf8') : source(b.source,large);
             access(p.id, 'editor');
             if (b.parent_version_id != null && !store.state.versions.some(v => v.id === b.parent_version_id && v.project_id === p.id))
               fail(404, 'not_found', 'Parent version not found in project');
@@ -178,14 +193,14 @@ export async function start({ directory, binary, token, port = 0, recover = fals
           if (method === 'GET') return send(200, page(store.state.jobs.filter(j => j.project_id === p.id), url));
           if (method === 'POST') {
             access(p.id, 'editor');
-            const b = await body(req); object(b, ['version_id', 'settings', 'idempotency_key', 'parent_job_id'], ['version_id', 'idempotency_key']);
+            const b = await body(req,large); object(b, ['version_id', 'settings', 'idempotency_key', 'parent_job_id'], ['version_id', 'idempotency_key']);
             access(p.id, 'editor');
             if (typeof b.idempotency_key !== 'string' || !/^[A-Za-z0-9_-]{1,100}$/.test(b.idempotency_key)) fail(400, 'invalid_key', 'Invalid idempotency key');
             const v = store.state.versions.find(v => v.id === b.version_id && v.project_id === p.id);
             if (!v) fail(404, 'not_found', 'Version not found in project');
             if (b.parent_job_id != null && !store.state.jobs.some(j => j.id === b.parent_job_id && j.project_id === p.id && terminal.has(j.status)))
               fail(409, 'invalid_parent', 'Parent job must be a finished job in this project');
-            const config = settings(b.settings), request = hash(JSON.stringify({ version: v.id, settings: config,
+            const config = settings(b.settings,large), request = hash(JSON.stringify({ version: v.id, settings: config,
               ...(b.parent_job_id != null ? { parent_job_id: b.parent_job_id } : {}) }));
             const existing = store.state.jobs.find(j => j.project_id === p.id && j.idempotency_key === b.idempotency_key
               && (auth.mode === 'local-single-owner' || j.submitted_by === uid));
@@ -234,7 +249,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         access(j.project_id);
         if (method === 'GET' && parts.length === 3) return send(200, j);
         if (method === 'POST' && ['pause', 'resume'].includes(parts[3])) {
-          object(await body(req), []); access(j.project_id, 'editor');
+          object(await body(req,large), []); access(j.project_id, 'editor');
           await worker[parts[3]](j.id, () => {
             access(j.project_id, 'editor');
             const current = job(j.id);
@@ -249,7 +264,7 @@ export async function start({ directory, binary, token, port = 0, recover = fals
           res.writeHead(200, { 'Content-Type': 'application/json', 'X-Content-SHA256': j.checkpoint_sha256 }); res.end(bytes); return;
         }
         if (method === 'POST' && parts[3] === 'cancel') {
-          object(await body(req), []);
+          object(await body(req,large), []);
           access(j.project_id, 'editor');
           if (!terminal.has(j.status)) await worker.cancel(j.id, () => access(j.project_id, 'editor'));
           return send(202, job(j.id));
@@ -270,6 +285,20 @@ export async function start({ directory, binary, token, port = 0, recover = fals
         if (method === 'GET' && parts[3] === 'report') {
           if (!j.trace_sha256) fail(409, 'no_trace', 'No verified trace published');
           return send(200, summarize(JSON.parse(await store.read(j.trace_sha256)), j.trace_sha256));
+        }
+        if(method==='GET' && ['month-results','month-csv'].includes(parts[3])) {
+          if(!j.trace_sha256)fail(409,'no_trace','No verified result published');
+          const v=store.state.versions.find(v=>v.id===j.version_id);
+          if(v.application?.schema!=='shopping-months-v1')fail(409,'wrong_application','This job is not a calendar normalisation import');
+          const result=monthResults(JSON.parse(await store.read(j.trace_sha256)),(await store.read(v.application.input_sha256)).toString('utf8'));
+          if(parts[3]==='month-csv') {
+            if(!result.complete)fail(409,'incomplete_domain_result','Graph execution has not produced a complete oracle-accepted result');
+            res.writeHead(200,{'Content-Type':'text/csv; charset=utf-8','Content-Disposition':'attachment; filename="normalised-sessions.csv"'});res.end(monthCsv(result));return;
+          }
+          const {rows,...summary}=result;
+          const response={...summary,trace_sha256:j.trace_sha256,...page(rows,url)};
+          if(Buffer.byteLength(JSON.stringify(response))>1024*1024)fail(413,'page_limit','Result page exceeds 1 MiB; request fewer rows');
+          return send(200,response);
         }
       }
       fail(404, 'not_found', 'Unknown route or method');
@@ -297,9 +326,10 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   const args = process.argv.slice(2);
   if (args.some(a => a !== '--recover')) throw Error('Only --recover is accepted; configuration uses GRAPH_* environment variables');
   const port = Number(process.env.GRAPH_PORT ?? 8787);
+  if(process.env.GRAPH_EXECUTION_ENVELOPE !== undefined && process.env.GRAPH_EXECUTION_ENVELOPE !== 'large-local-v1') throw Error('Unknown operator execution envelope');
   if (!Number.isSafeInteger(port) || port < 0 || port > 65535) throw Error('Invalid GRAPH_PORT');
   const app = await start({ directory: process.env.GRAPH_STORE ?? 'output/platform', binary: process.env.GRAPH_ENGINE ?? 'target/release/cli',
-    token: process.env.GRAPH_API_TOKEN, port, recover: args.includes('--recover'),
+    token: process.env.GRAPH_API_TOKEN, port, large:process.env.GRAPH_EXECUTION_ENVELOPE==='large-local-v1', recover: args.includes('--recover'),
     authMode: process.env.GRAPH_AUTH_MODE, projectId: process.env.GRAPH_FIREBASE_PROJECT, authHost: process.env.FIREBASE_AUTH_EMULATOR_HOST,
     storageMode: process.env.GRAPH_STORAGE_MODE, storeId: process.env.GRAPH_STORE_ID,
     origins: process.env.GRAPH_BROWSER_ORIGINS?.split(',').map(s => s.trim()).filter(Boolean) ?? [] });

@@ -4,15 +4,15 @@ import { hash, fail, terminal } from './store.mjs';
 
 export const DEFAULTS = Object.freeze({ max_steps: 100, max_work: 1000000, max_candidates: 1000,
   seed: null, detect_cycles: false, deadline_ms: 10000 });
-export function settings(value = {}) {
+export function settings(value = {}, large = false) {
   if (!value || typeof value !== 'object' || Array.isArray(value)
       || Object.keys(value).some(k => !Object.hasOwn(DEFAULTS, k) && k !== 'execution_profile')) fail(400, 'invalid_settings', 'Unknown settings');
   const s = { ...DEFAULTS, ...value };
-  if (Object.hasOwn(s, 'execution_profile') && !['reference-v1', 'indexed-v2', 'framed-v3'].includes(s.execution_profile))
+  if (Object.hasOwn(s, 'execution_profile') && !['reference-v1', 'indexed-v2', 'framed-v3', 'joined-v4'].includes(s.execution_profile))
     fail(400, 'invalid_settings', 'Unsupported execution profile');
   // Preserve the canonical pre-profile default settings and idempotency hashes.
   if (s.execution_profile === 'reference-v1') delete s.execution_profile;
-  for (const [key, maximum] of Object.entries({ max_steps: 1000, max_work: 1000000, max_candidates: 1000, deadline_ms: 30000 })) {
+  for (const [key, maximum] of Object.entries(large ? {max_steps:20000,max_work:10000000,max_candidates:20000,deadline_ms:120000} : { max_steps: 1000, max_work: 1000000, max_candidates: 1000, deadline_ms: 30000 })) {
     if (!Number.isSafeInteger(s[key]) || s[key] < (key === 'deadline_ms' ? 1 : 0) || s[key] > maximum)
       fail(400, 'invalid_settings', `Invalid ${key}; maximum ${maximum}`);
   }
@@ -30,11 +30,13 @@ export function processLimits(env = process.env) {
   return { memory, cpu };
 }
 
-export function native(binary, args, input, { signal, deadline = 10000, maximum = 16 * 1024 * 1024, limits = null } = {}) {
+export function native(binary, args, input, { signal, deadline = 10000, maximum = 16 * 1024 * 1024, limits = null, large = false } = {}) {
   return new Promise((resolve, reject) => {
     const command = limits ? '/usr/bin/prlimit' : binary;
     const argv = limits ? [`--as=${limits.memory}`, `--cpu=${limits.cpu}`, '--', binary, ...args] : args;
-    const child = spawn(command, argv, { stdio: ['pipe', 'pipe', 'pipe'], shell: false });
+    const env={...process.env};delete env.GRAPH_EXECUTION_ENVELOPE;
+    if(large)env.GRAPH_EXECUTION_ENVELOPE='large-local-v1';
+    const child = spawn(command, argv, { stdio: ['pipe', 'pipe', 'pipe'], shell: false,env });
     let cause = null, size = 0, errors = 0;
     const chunks = [], messages = [];
     const stop = why => { cause ??= why; child.kill('SIGKILL'); };
@@ -55,18 +57,19 @@ export function native(binary, args, input, { signal, deadline = 10000, maximum 
 }
 
 export class Worker {
-  constructor(store, binary) {
+  constructor(store, binary, large = false) {
     this.store = store; this.binary = binary; this.identity = hash(readFileSync(binary));
     this.limits = processLimits();
+    this.large=large;
     this.active = null; this.stopping = false;
-    for (const j of store.state.jobs) settings(j.settings);
+    for (const j of store.state.jobs) settings(j.settings,large);
   }
   assertBinary() {
     if (hash(readFileSync(this.binary)) !== this.identity) throw Error('Native binary changed; restart after rebuilding');
   }
   async validate(source) {
     this.assertBinary();
-    const r = await native(this.binary, ['check', '-'], source, { maximum: 4 * 1024 * 1024, limits: this.limits });
+    const r = await native(this.binary, ['check', '-'], source, { maximum: (this.large?16:4) * 1024 * 1024, limits: this.limits,large:this.large });
     if (r.cause) fail(422, r.cause, 'Validation did not complete');
     if (r.code !== 0) fail(422, r.code === 3 ? 'resource_limit' : 'invalid_program', r.stderr.slice(0, 8192));
     return { valid: true, source_sha256: hash(source), engine_sha256: this.identity };
@@ -107,17 +110,18 @@ export class Worker {
     try {
       this.assertBinary();
       if (job.engine_sha256 !== this.identity) throw Error('Queued job requires a different native binary');
-      const s = settings(job.settings);
+      const s = settings(job.settings,this.large);
       const version = this.store.state.versions.find(v => v.id === job.version_id);
       const input = await this.store.read(job.checkpoint_sha256 ?? version.source_sha256);
       const args = ['export', '-', '--max-steps', String(s.max_steps), '--max-work', String(s.max_work),
-        '--max-candidates', String(s.max_candidates), '--detect-cycles', String(s.detect_cycles), '--batch-steps', '10',
+        '--max-candidates', String(s.max_candidates), '--detect-cycles', String(s.detect_cycles), '--batch-steps', this.large?'5000':'10',
         '--execution-profile', s.execution_profile ?? 'reference-v1'];
+      if(this.large)args.push('--checkpoint-interval','20000');
       if (s.seed !== null) args.push('--strategy', 'seeded', '--seed', s.seed);
       const remainingTime = () => Math.max(0, s.deadline_ms - job.elapsed_ms - Math.ceil(performance.now() - started));
       if (!remainingTime()) throw Object.assign(Error('Execution allowance exhausted'), { code: 'timed_out' });
-      const run = await native(this.binary, job.checkpoint_sha256 ? ['resume', '-', '--batch-steps', '10'] : args,
-        input, { signal, deadline: remainingTime(), limits: this.limits });
+      const run = await native(this.binary, job.checkpoint_sha256 ? ['resume', '-', '--batch-steps', this.large?'5000':'10'] : args,
+        input, { signal, deadline: remainingTime(), limits: this.limits,large:this.large,maximum:(this.large?128:16)*1024*1024 });
       if (run.cause) {
         patch = { status: ['cancelled', 'timed_out', 'interrupted'].includes(run.cause) ? run.cause : 'failed', failure: run.cause };
       } else if (![0, 3, 4, 5, 6].includes(run.code)) {
@@ -127,7 +131,7 @@ export class Worker {
         const remaining = remainingTime();
         if (remaining <= 0) { patch = { status: 'timed_out', failure: 'No time left for replay verification' }; }
         else {
-          const checked = await native(this.binary, ['trace-check', '-'], run.stdout, { signal, deadline: remaining, limits: this.limits });
+          const checked = await native(this.binary, ['trace-check', '-'], run.stdout, { signal, deadline: remaining, limits: this.limits,large:this.large });
           if (checked.cause) patch = { status: ['cancelled', 'timed_out', 'interrupted'].includes(checked.cause) ? checked.cause : 'failed', failure: checked.cause };
           else if (checked.code !== 0) throw Error('Native result failed replay verification');
           else {
@@ -141,7 +145,8 @@ export class Worker {
             else if (trace.status === 'yielded') patch = { status: 'queued', checkpoint_sha256: await this.store.put(run.stdout),
               checkpoint_commits: trace.events.length, commits: trace.events.length, implementation: trace.implementation, failure: null };
             else patch = { status: 'completed', outcome: trace.report.outcome, commits: trace.events.length,
-              trace_sha256: await this.store.put(run.stdout), implementation: trace.implementation, failure: null };
+              trace_sha256: await this.store.put(run.stdout), implementation: trace.implementation,
+              failure: trace.report.outcome === 'ResourceLimit' ? run.stderr.slice(0,8192) || 'Declared execution resource limit reached' : null };
           }
         }
       }

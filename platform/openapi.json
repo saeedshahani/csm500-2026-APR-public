@@ -145,9 +145,14 @@
                     "api": {
                       "type": "string"
                     },
-                    "mode": {
-                      "type": "string"
-                    },
+                "mode": {
+                  "type": "string"
+                },
+                "execution_envelope": {
+                  "type": "string",
+                  "enum": ["pilot-v1", "large-local-v1"],
+                  "description": "Operator-selected allowances. An absent field denotes the pilot contract; clients cannot select or enlarge this route through job settings."
+                },
                     "uid": {
                       "type": "string",
                       "description": "Authenticated UID in Firebase identity modes"
@@ -412,7 +417,7 @@
                   },
                   "source": {
                     "type": "string",
-                    "description": "Well-formed text, at most 262144 UTF-8 bytes"
+                    "description": "Well-formed text, at most 262144 UTF-8 bytes under pilot-v1 or 16 MiB under the explicit large-local-v1 operator route; the complete encoded JSON request also has a 1/16 MiB route bound."
                   },
                   "parent_version_id": {
                     "type": [
@@ -1349,6 +1354,240 @@
           }
         }
       }
+    },
+    "/v1/projects/{project}/month-imports": {
+      "post": {
+        "operationId": "importCalendarDataset",
+        "description": "large-local-v1 only; immutable import of 1–15000 UCI-dialect session rows. Native validation precedes publication. Pilot/hosted returns 409.",
+        "parameters": [
+          {
+            "name": "project",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "csv",
+                  "policy"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 100
+                  },
+                  "csv": {
+                    "type": "string",
+                    "description": "At most 4 MiB UTF-8; all eighteen release columns required."
+                  },
+                  "policy": {
+                    "type": "string",
+                    "enum": [
+                      "fixed",
+                      "guarded",
+                      "disabled"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Checked application response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Version"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "401 identity rejected; 403 not owner; 404 inaccessible or unsupported in local-token mode",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job}/month-results": {
+      "get": {
+        "operationId": "calendarResultPage",
+        "description": "Before/after rows from a verified trace, checked against preserved input CSV. NormalForm alone does not set complete=true.",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 25
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Checked application response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "total",
+                    "items",
+                    "complete",
+                    "normalised",
+                    "invalid_total",
+                    "trace_sha256",
+                    "next_offset"
+                  ],
+                  "properties": {
+                    "total": {
+                      "type": "integer"
+                    },
+                    "items": {
+                      "type": "array",
+                      "maxItems": 100,
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "integer"
+                          },
+                          "source_month": {
+                            "type": "string"
+                          },
+                          "month_number": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "fields": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            },
+                            "minItems": 18,
+                            "maxItems": 18
+                          }
+                        }
+                      }
+                    },
+                    "complete": {
+                      "type": "boolean"
+                    },
+                    "normalised": {
+                      "type": "integer"
+                    },
+                    "invalid_total": {
+                      "type": "integer"
+                    },
+                    "trace_sha256": {
+                      "type": "string"
+                    },
+                    "next_offset": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "401 identity rejected; 403 not owner; 404 inaccessible or unsupported in local-token mode",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/jobs/{job}/month-csv": {
+      "get": {
+        "operationId": "calendarCsv",
+        "description": "All original fields plus MonthNumber. Refuses incomplete or oracle-rejected results; never exports a prefix as success.",
+        "parameters": [
+          {
+            "name": "job",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Complete source-order normalised CSV",
+            "content": {
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "401 identity rejected; 403 not owner; 404 inaccessible or unsupported in local-token mode",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1435,30 +1674,31 @@
       },
       "Settings": {
         "type": "object",
+        "description": "Pilot ceilings: 1000 steps/candidates, 1000000 work, 30000 ms. Only an operator-enabled authenticated local large-local-v1 route accepts the larger maxima below; clients cannot raise the service envelope.",
         "additionalProperties": false,
         "properties": {
           "max_steps": {
             "type": "integer",
             "minimum": 0,
-            "maximum": 1000,
+            "maximum": 20000,
             "default": 100
           },
           "max_work": {
             "type": "integer",
             "minimum": 0,
-            "maximum": 1000000,
+            "maximum": 10000000,
             "default": 1000000
           },
           "max_candidates": {
             "type": "integer",
             "minimum": 0,
-            "maximum": 1000,
+            "maximum": 20000,
             "default": 1000
           },
           "deadline_ms": {
             "type": "integer",
             "minimum": 1,
-            "maximum": 30000,
+            "maximum": 120000,
             "default": 10000
           },
           "seed": {
@@ -1474,7 +1714,12 @@
           },
           "execution_profile": {
             "type": "string",
-            "enum": ["reference-v1", "indexed-v2", "framed-v3"],
+            "enum": [
+              "reference-v1",
+              "indexed-v2",
+              "framed-v3",
+              "joined-v4"
+            ],
             "default": "reference-v1",
             "description": "Versioned matching/comparison work contract; recorded in traces and preserved on resume."
           }
@@ -1545,6 +1790,30 @@
           "dataset_id": {
             "type": "string",
             "description": "Present only for a version compiled from this immutable dataset; source digest must match."
+          },
+          "application": {
+            "type": "object",
+            "description": "Present for a calendar import; records schema, full row count, policy and immutable CSV digest.",
+            "properties": {
+              "schema": {
+                "const": "shopping-months-v1"
+              },
+              "rows": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 15000
+              },
+              "policy": {
+                "enum": [
+                  "fixed",
+                  "guarded",
+                  "disabled"
+                ]
+              },
+              "input_sha256": {
+                "type": "string"
+              }
+            }
           }
         },
         "required": [
@@ -1596,8 +1865,8 @@
           "status": {
             "enum": [
               "queued",
-            "running",
-            "paused",
+              "running",
+              "paused",
               "completed",
               "cancelled",
               "timed_out",
@@ -1660,16 +1929,72 @@
           "implementation": {
             "type": "string"
           },
-        "cancellation_requested_at": {
-          "type": "string"
-        },
-        "checkpoint_sha256": { "type": ["string", "null"] },
-        "checkpoint_commits": { "type": "integer", "minimum": 0 },
-        "elapsed_ms": { "type": "integer", "minimum": 0 },
-        "pause_requested_at": { "type": ["string", "null"] },
-        "attempts": { "type": "array", "maxItems": 256, "items": { "type": "object", "required": ["number", "status", "started_at", "finished_at"], "properties": {
-          "number": { "type": "integer", "minimum": 1 }, "status": { "type": "string" }, "started_at": { "type": "string" }, "finished_at": { "type": ["string", "null"] }, "input_checkpoint_sha256": { "type": ["string", "null"] }, "output_sha256": { "type": ["string", "null"] }
-        } } }
+          "cancellation_requested_at": {
+            "type": "string"
+          },
+          "checkpoint_sha256": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "checkpoint_commits": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "elapsed_ms": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pause_requested_at": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "attempts": {
+            "type": "array",
+            "maxItems": 256,
+            "items": {
+              "type": "object",
+              "required": [
+                "number",
+                "status",
+                "started_at",
+                "finished_at"
+              ],
+              "properties": {
+                "number": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "status": {
+                  "type": "string"
+                },
+                "started_at": {
+                  "type": "string"
+                },
+                "finished_at": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "input_checkpoint_sha256": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "output_sha256": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                }
+              }
+            }
+          }
         }
       },
       "Dataset": {

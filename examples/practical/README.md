@@ -1,5 +1,9 @@
 # Work-item processing profile
 
+## Vocabulary-join example
+
+`month-normalisation.graph` is an independently authored small example of the `joined-v4` functional-join class. It replaces a session-to-raw-month relation by a session-to-canonical-month relation using a preserved dictionary edge. Run `cargo run --release -p cli -- export examples/practical/month-normalisation.graph --max-steps 2 --execution-profile joined-v4`. The same pattern is used by the full public-data Calendar normalisation application in Projects; its importer preserves all eighteen UCI source fields and its result export checks each original row. See `platform/README.md` for the explicit larger local route. This small example contains no approval rule and is not itself a public-data benchmark.
+
 The domain contains named work items with exactly one status, pending or processed. A constructor labelled `WorkItem:<id>` represents an item. One unquoted `ObjectLink` record labelled `pending` or `processed` points to that constructor in both field positions. The self-link denotes a unary status using the existing binary record kind; it is not a new semantic primitive. Identity, domain ID and authored alias are distinct.
 
 ## Input and deterministic generation

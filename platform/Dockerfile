@@ -13,6 +13,7 @@ COPY platform/package.json platform/package-lock.json ./platform/
 RUN npm ci --prefix platform --omit=dev --ignore-scripts && npm cache clean --force
 COPY --from=native /build/target/release/cli ./target/release/cli
 COPY platform ./platform
+COPY scripts/import-study-data.mjs ./scripts/import-study-data.mjs
 COPY examples ./examples
 RUN mkdir -p /app/output && chown node:node /app/output
 USER node

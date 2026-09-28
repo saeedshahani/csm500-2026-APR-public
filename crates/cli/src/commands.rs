@@ -24,6 +24,29 @@ impl Failure {
     }
 }
 type Result<T> = std::result::Result<T, Failure>;
+// Operator-selected local route; never inferred from untrusted trace settings.
+fn trace_limits() -> engine::trace::TraceLimits {
+    let mut limits = engine::trace::TraceLimits::default();
+    if std::env::var("GRAPH_EXECUTION_ENVELOPE").as_deref() == Ok("large-local-v1") {
+        limits.max_bytes = 128 * 1024 * 1024;
+        limits.max_nodes = 8_000_000;
+        limits.max_events = 20_000;
+        limits.max_atoms_total = 500_000;
+        limits.max_fields_total = 1_000_000;
+        limits.max_bindings = 200_000;
+        limits.execution.graph.max_atoms = 50_000;
+        limits.execution.graph.max_fields = 100_000;
+        limits.execution.graph.max_input_bytes = 16 * 1024 * 1024;
+        limits.execution.graph.max_label_bytes = 8 * 1024 * 1024;
+        limits.execution.search.max_candidates = 20_000;
+        limits.execution.search.max_work = 10_000_000;
+        limits.recording.max_events = 20_000;
+        limits.recording.max_units = 50_000_000;
+        limits.recording.max_work = 50_000_000;
+        limits.observation.max_history_units = 50_000_000;
+    }
+    limits
+}
 fn lambda_failure(error: parser::lambda::Error) -> Failure {
     let code = match &error {
         parser::lambda::Error::ResourceLimit => 3,
@@ -51,6 +74,9 @@ struct Options {
 }
 
 pub(crate) fn main_command() -> Result<u8> {
+    if std::env::var("GRAPH_EXECUTION_ENVELOPE").is_ok_and(|v| v != "large-local-v1") {
+        return Err(Failure::new(2, "Unknown operator execution envelope"));
+    }
     let args = std::env::args_os()
         .skip(1)
         .map(|s| {
@@ -77,7 +103,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
     {
-        io::stdout().lock().write_all(b"Execution profiles: --execution-profile reference-v1 (default) | indexed-v2 | framed-v3\nExplicit legacy migration: cli trace-migrate TRACE [--output NEW_PATH]\nMigration rechecks the full history under reference-v1; it never overwrites its input.\n").map_err(|e| Failure::new(1, e.to_string()))?;
+        io::stdout().lock().write_all(b"Execution profiles: --execution-profile reference-v1 (default) | indexed-v2 | framed-v3 | joined-v4\nOperator envelope: GRAPH_EXECUTION_ENVELOPE=large-local-v1 enables the documented larger local source/trace limits; unset retains defaults.\nExplicit legacy migration: cli trace-migrate TRACE [--output NEW_PATH]\nMigration rechecks the full history under reference-v1; it never overwrites its input.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Continuation: cli export INPUT --max-steps N --batch-steps N [export options]\n              cli resume TRACE --batch-steps N [--output PATH]\nA yielded checkpoint exits 0 without claiming completion. Resume preserves the original run limits and only accepts a verified yielded endpoint.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Dataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Lambda adapters: cli lambda-compile SOURCE | cli lambda-readback GRAPH\nBoth accept a file or -; compilation emits ordinary graph source.\nUse cli replay TRACE --at N | cli lambda-readback - for recorded terms.\n\n").map_err(|e| Failure::new(1, e.to_string()))?;
@@ -224,7 +250,7 @@ pub(crate) fn main_command() -> Result<u8> {
     .map_err(engine_failure)?;
     if options.export {
         runner
-            .enable_recording(Default::default())
+            .enable_recording(trace_limits().recording)
             .map_err(engine_failure)?;
     }
     let mut outcome = "Valid";
@@ -267,11 +293,11 @@ pub(crate) fn main_command() -> Result<u8> {
             &runner,
             Some(engine::trace::sha256(source.as_bytes())),
             options.trace_options,
-            Default::default(),
+            trace_limits(),
         )
         .map_err(engine_failure)?;
         let bytes = doc
-            .to_json(engine::trace::TraceLimits::default().max_bytes)
+            .to_json(trace_limits().max_bytes)
             .map_err(engine_failure)?;
         if let Some(path) = &options.output {
             publish_new(path, &bytes)?;
@@ -371,7 +397,7 @@ fn resume_command(args: &[String]) -> Result<u8> {
     let batch = batch
         .filter(|n| *n > 0)
         .ok_or_else(|| Failure::new(2, "positive --batch-steps required"))?;
-    let limits = engine::trace::TraceLimits::default();
+    let limits = trace_limits();
     let text = read_source(&args[1], limits.max_bytes)?;
     let verified =
         engine::trace::VerifiedTrace::import(text.as_bytes(), limits).map_err(engine_failure)?;
@@ -429,7 +455,7 @@ fn trace_command(args: &[String]) -> Result<u8> {
             _ => return Err(Failure::new(2, "unsupported replay option")),
         }
     }
-    let limits = engine::trace::TraceLimits::default();
+    let limits = trace_limits();
     let text = read_source(&args[1], limits.max_bytes)?;
     let trace = (if args[0] == "trace-migrate" {
         engine::trace::VerifiedTrace::migrate_reference(text.as_bytes(), limits)
@@ -504,12 +530,23 @@ fn options(args: &[String]) -> Result<Options> {
         output: None,
         max_steps: 0,
         rule: None,
-        parse: ParseLimits::default(),
-        execution: ExecutionLimits::default(),
+        parse: ParseLimits {
+            graph: trace_limits().execution.graph,
+            max_tokens: if trace_limits().max_events > 10_000 {
+                1_000_000
+            } else {
+                ParseLimits::default().max_tokens
+            },
+            ..Default::default()
+        },
+        execution: trace_limits().execution,
         scheduler: "deterministic".into(),
         seed: None,
         observer: None,
-        run_limits: RunLimits::default(),
+        run_limits: RunLimits {
+            observation: trace_limits().observation,
+            ..Default::default()
+        },
     };
     let mut seen = BTreeSet::new();
     let mut i = 1;
@@ -548,9 +585,10 @@ fn options(args: &[String]) -> Result<Options> {
                             "reference-v1" => engine::runner::ExecutionProfile::ReferenceV1,
                             "indexed-v2" => engine::runner::ExecutionProfile::IndexedV2,
                             "framed-v3" => engine::runner::ExecutionProfile::FramedV3,
+                            "joined-v4" => engine::runner::ExecutionProfile::JoinedV4,
                             _ => return Err(Failure::new(
                                 2,
-                                "--execution-profile expects reference-v1, indexed-v2 or framed-v3",
+                                "--execution-profile expects reference-v1, indexed-v2, framed-v3 or joined-v4",
                             )),
                         }
                 }

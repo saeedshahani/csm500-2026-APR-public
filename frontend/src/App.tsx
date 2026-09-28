@@ -31,7 +31,7 @@ export default function App(){
   const [atomSearch,setAtomSearch]=useState('');
   const [atomPage,setAtomPage]=useState(0),[inspected,setInspected]=useState<Reply['inspection']>(null);
   const [maxWork,setMaxWork]=useState('1000000'),[maxCandidates,setMaxCandidates]=useState('1000');
-  const [executionProfile,setExecutionProfile]=useState<'reference-v1'|'indexed-v2'|'framed-v3'>('reference-v1');
+  const [executionProfile,setExecutionProfile]=useState<'reference-v1'|'indexed-v2'|'framed-v3'|'joined-v4'>('reference-v1');
   const [theme,setTheme]=useState<Theme>('system'),[guide,setGuide]=useState(location.hash==='#guide'),[platform,setPlatform]=useState(location.hash==='#projects'),[storageError,setStorageError]=useState(''),[savedDraft,setSavedDraft]=useState<string|null>(null);
   const [sourceError,setSourceError]=useState<Reply['error']>(null),[jumpError,setJumpError]=useState(0);
   const [diagnosticTarget,setDiagnosticTarget]=useState<string|null>(null);
@@ -126,7 +126,7 @@ export default function App(){
           <label>Absolute step bound<input aria-label="Absolute step bound" inputMode="numeric" value={maxSteps} onChange={e=>setMaxSteps(e.target.value)} disabled={locked}/></label>
           <label>Seed · blank is deterministic<input aria-label="Seed" value={seed} onChange={e=>setSeed(e.target.value)} disabled={locked}/></label>
           <label>Search work per step<input aria-label="Search work per step" value={maxWork} onChange={e=>setMaxWork(e.target.value)} disabled={locked}/></label><label>Candidate limit<input aria-label="Candidate limit" value={maxCandidates} onChange={e=>setMaxCandidates(e.target.value)} disabled={locked}/></label>
-          <label>Execution profile<select aria-label="Execution profile" value={executionProfile} onChange={e=>setExecutionProfile(e.target.value as 'reference-v1'|'indexed-v2'|'framed-v3')} disabled={locked}><option value="reference-v1">Reference v1</option><option value="indexed-v2">Indexed v2</option><option value="framed-v3">Framed v3</option></select></label>
+          <label>Execution profile<select aria-label="Execution profile" value={executionProfile} onChange={e=>setExecutionProfile(e.target.value as 'reference-v1'|'indexed-v2'|'framed-v3'|'joined-v4')} disabled={locked}><option value="reference-v1">Reference v1</option><option value="indexed-v2">Indexed v2</option><option value="framed-v3">Framed v3</option><option value="joined-v4">Joined v4</option></select></label>
           <label>Observer<select aria-label="Observer" value={observer} onChange={e=>setObserver(e.target.value)} disabled={locked}><option value="all">Complete carrier</option><option value="value">Value links</option>{!['all','value'].includes(observer)&&<option value={observer}>Imported observer declaration</option>}</select></label>
           <label>Commits per batch<select aria-label="Commits per batch" value={batch} onChange={e=>setBatch(e.target.value)} disabled={locked}><option>1</option><option>2</option><option>5</option><option>10</option></select></label>
           <label>Execution pacing<select aria-label="Execution pacing" value={pace} onChange={e=>setPace(e.target.value)} disabled={locked}><option value="0">Fast</option><option value="250">0.25 seconds per batch</option><option value="1000">1 second per batch</option></select></label>

@@ -64,6 +64,7 @@ export function validate(state) {
   for (const version of state.versions) {
     if (!state.projects.some(p => p.id === version.project_id) || !digest.test(version.source_sha256))
       throw Error('Invalid stored version');
+    if(version.application && (version.application.schema!=='shopping-months-v1'||!Number.isSafeInteger(version.application.rows)||version.application.rows<1||version.application.rows>15000||!['fixed','guarded','disabled'].includes(version.application.policy)||!digest.test(version.application.input_sha256)))throw Error('Invalid stored application import');
     if (version.dataset_id != null && !state.datasets.some(d => d.id === version.dataset_id
         && d.project_id === version.project_id && d.source_sha256 === version.source_sha256))
       throw Error('Invalid version dataset identity');
@@ -99,7 +100,8 @@ export function validate(state) {
 }
 
 export class Store {
-  constructor(directory, { recover = false, namespace = 'local-single-owner' } = {}) {
+  constructor(directory, { recover = false, namespace = 'local-single-owner', large = false } = {}) {
+    this.large=large;
     this.directory = path.resolve(directory);
     fs.mkdirSync(this.directory, { recursive: true, mode: 0o700 });
     this.lock = path.join(this.directory, 'owner.lock');
@@ -130,7 +132,7 @@ export class Store {
       }
       validate(this.state);
       // Reject corrupted referenced bytes before serving any state. Orphans are not results.
-      for (const v of this.state.versions) this.read(v.source_sha256);
+      for (const v of this.state.versions) {this.read(v.source_sha256);if(v.application)this.read(v.application.input_sha256);}
       for (const d of this.state.datasets) { this.read(d.document_sha256); this.read(d.source_sha256); }
       for (const j of this.state.jobs) if (j.trace_sha256) {
         const trace = JSON.parse(this.read(j.trace_sha256));
@@ -175,14 +177,14 @@ export class Store {
     const sha = hash(bytes), file = path.join(this.blobs, sha);
     if (fs.existsSync(file)) { this.read(sha); return sha; }
     const used = fs.readdirSync(this.blobs).reduce((n, name) => n + fs.statSync(path.join(this.blobs, name)).size, 0);
-    if (used + Buffer.byteLength(bytes) > 64 * 1024 * 1024) fail(507, 'storage_limit', 'Local artefact capacity reached');
+    if (Buffer.byteLength(bytes) > (this.large?128:16)*1024*1024 || used + Buffer.byteLength(bytes) > (this.large?1024:64) * 1024 * 1024) fail(507, 'storage_limit', 'Local artefact capacity reached');
     atomic(file, bytes);
     return sha;
   }
   read(sha) {
     if (!digest.test(sha)) throw Error('Invalid artefact digest');
     const file = path.join(this.blobs, sha);
-    if (fs.statSync(file).size > 16 * 1024 * 1024) throw Error('Artefact too large');
+    if (fs.statSync(file).size > (this.large?128:16) * 1024 * 1024) throw Error('Artefact too large');
     const bytes = fs.readFileSync(file);
     if (hash(bytes) !== sha) throw Error('Artefact checksum mismatch');
     return bytes;

@@ -19,6 +19,14 @@ pub enum ExecutionProfile {
     IndexedV2,
     #[serde(rename = "framed-v3")]
     FramedV3,
+    #[serde(rename = "joined-v4")]
+    JoinedV4,
+}
+
+impl ExecutionProfile {
+    pub fn uses_frames(self) -> bool {
+        matches!(self, Self::FramedV3 | Self::JoinedV4)
+    }
 }
 
 enum Candidates {
@@ -143,7 +151,7 @@ impl<S: SchedulingStrategy> Runner<S> {
         observer: Observer,
         profile: ExecutionProfile,
     ) -> Result<Self> {
-        let execution = if profile == ExecutionProfile::FramedV3 {
+        let execution = if profile.uses_frames() {
             Execution::with_frame_validation(graph, limits)?
         } else {
             Execution::new(graph, limits)?
@@ -226,8 +234,12 @@ impl<S: SchedulingStrategy> Runner<S> {
     }
     pub(crate) fn continuation_identity(&self) -> String {
         let mut hash = Sha256::new();
-        if self.profile == ExecutionProfile::FramedV3 {
-            hash.update(b"framed-v3;");
+        if self.profile.uses_frames() {
+            hash.update(if self.profile == ExecutionProfile::JoinedV4 {
+                b"joined-v4;"
+            } else {
+                b"framed-v3;"
+            });
             hash.update(self.initial_identity.as_bytes());
             hash.update(self.transition_digest);
             hash.update(format!(
@@ -271,14 +283,14 @@ impl<S: SchedulingStrategy> Runner<S> {
         &self.scheduler
     }
     pub fn retained_states(&self) -> usize {
-        if self.profile == ExecutionProfile::FramedV3 {
+        if self.profile.uses_frames() {
             self.screened.len()
         } else {
             self.history.len()
         }
     }
     fn retained_units(&self) -> usize {
-        if self.profile == ExecutionProfile::FramedV3 {
+        if self.profile.uses_frames() {
             self.screened.units()
         } else {
             self.history_units
@@ -287,7 +299,7 @@ impl<S: SchedulingStrategy> Runner<S> {
     pub fn replace_graph(&mut self, graph: Graph, observer: Observer) -> Result<()> {
         // Stage the complete replacement, including recording capacity, before
         // publishing any new baseline or resetting scheduler/observation state.
-        let replacement = if self.profile == ExecutionProfile::FramedV3 {
+        let replacement = if self.profile.uses_frames() {
             Execution::with_frame_validation(graph, self.execution.limits())?
         } else {
             Execution::new(graph, self.execution.limits())?
@@ -415,11 +427,12 @@ impl<S: SchedulingStrategy> Runner<S> {
                         return Ok(None);
                     }
                 }
-                if self.profile == ExecutionProfile::FramedV3
-                    && self.scheduler.supports_count_selection()
-                {
+                if self.profile.uses_frames() && self.scheduler.supports_count_selection() {
                     if self.one_shot.is_none() {
-                        self.one_shot = crate::one_shot::OneShot::recognise(&self.execution)?;
+                        self.one_shot = crate::one_shot::OneShot::recognise(
+                            &self.execution,
+                            self.profile == ExecutionProfile::JoinedV4,
+                        )?;
                     }
                     if let Some(pool) = &self.one_shot {
                         if requested.is_none_or(|head| head == pool.head) {
@@ -500,7 +513,7 @@ impl<S: SchedulingStrategy> Runner<S> {
                 other => other?,
             };
             let Some(committed) = committed else {
-                if self.profile == ExecutionProfile::FramedV3 {
+                if self.profile.uses_frames() {
                     self.screened
                         .truncate(history_boundary.0, history_boundary.1);
                 } else {
@@ -594,7 +607,7 @@ impl<S: SchedulingStrategy> Runner<S> {
         }
         let mut next_digest = self.transition_digest;
         let mut produced_units = 0usize;
-        if self.profile == ExecutionProfile::FramedV3 {
+        if self.profile.uses_frames() {
             let mut hash = Sha256::new();
             hash.update(self.transition_digest);
             hash.update(format!(
@@ -623,13 +636,14 @@ impl<S: SchedulingStrategy> Runner<S> {
         Ok(Some(true))
     }
     fn observe(&mut self, limits: ObservationLimits) -> Result<(usize, Option<Recurrence>)> {
-        if self.profile == ExecutionProfile::FramedV3 {
+        if self.profile.uses_frames() {
             return self.screened.observe(
                 &self.execution,
                 &self.observer,
                 self.scheduler.description(),
                 limits,
                 self.produced_units,
+                self.profile == ExecutionProfile::JoinedV4,
             );
         }
         let view = self.execution.view()?;
@@ -640,7 +654,7 @@ impl<S: SchedulingStrategy> Runner<S> {
         let compare = match self.profile {
             ExecutionProfile::ReferenceV1 => isomorphic_budget,
             ExecutionProfile::IndexedV2 => isomorphic_indexed_budget,
-            ExecutionProfile::FramedV3 => unreachable!(),
+            ExecutionProfile::FramedV3 | ExecutionProfile::JoinedV4 => unreachable!(),
         };
         for previous in &self.history {
             if compare(&previous.selected, &selected, &mut budget)? {

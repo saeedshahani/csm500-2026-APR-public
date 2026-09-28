@@ -1,0 +1,566 @@
+{
+  "schema": "loop-c-platform-v1",
+  "created_at": "2026-09-28T21:37:38.545Z",
+  "archive_sha256": "2972e6184d3ad7beaaa831d9fc2b059dc3ee29df69d1ec593c466a5cd8485d14",
+  "csv_sha256": "b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9",
+  "binary_sha256": "ed6c8cae12dcca2a328d33ef0c7eff30a56003b1aedd3cdef1ff1dd810301c86",
+  "hardware": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpus": "Apple M4 Pro",
+    "memory": 51539607552
+  },
+  "baseline_ms": [
+    3.949292,
+    4.206874999999997,
+    3.7682920000000024,
+    4.801375
+  ],
+  "rows": 12330,
+  "expected_sha256": "9d122207618b5f05204c9a12f16104213c0ab384df69eee2b7b424739f6901a7",
+  "samples": [
+    {
+      "i": 0,
+      "warmup": true,
+      "policy": "fixed",
+      "import_ms": 522.3585,
+      "wall_ms": 11739.144667,
+      "peak_native_rss": 1267056640,
+      "job": {
+        "id": "8bd7a12a-3f88-4785-bfc5-23512c85786c",
+        "project_id": "102a284f-2c1c-438e-bd96-ea555bdf641d",
+        "version_id": "67673f23-a3d8-4240-97ab-5586d6cdf86a",
+        "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+        "idempotency_key": "full",
+        "request_sha256": "4590572ff04d95d4d71dfcaf27b1987449f0ca8fc0de67afdebdf8d1c195d07d",
+        "engine_sha256": "ed6c8cae12dcca2a328d33ef0c7eff30a56003b1aedd3cdef1ff1dd810301c86",
+        "settings": {
+          "max_steps": 13000,
+          "max_work": 10000000,
+          "max_candidates": 20000,
+          "seed": "42",
+          "detect_cycles": true,
+          "deadline_ms": 120000,
+          "execution_profile": "joined-v4"
+        },
+        "parent_job_id": null,
+        "status": "completed",
+        "outcome": "NormalForm",
+        "commits": 12330,
+        "trace_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e",
+        "failure": null,
+        "created_at": "2026-09-28T21:37:39.204Z",
+        "started_at": "2026-09-28T21:37:39.213Z",
+        "finished_at": "2026-09-28T21:37:50.877Z",
+        "attempts": [
+          {
+            "number": 1,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:37:39.213Z",
+            "finished_at": "2026-09-28T21:37:41.593Z",
+            "input_checkpoint_sha256": null,
+            "output_sha256": "10ca3be0f80b0fd22ce4fe52625ee7f515aaa30c3668791aaa65e305da9c5e47"
+          },
+          {
+            "number": 2,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:37:41.604Z",
+            "finished_at": "2026-09-28T21:37:45.828Z",
+            "input_checkpoint_sha256": "10ca3be0f80b0fd22ce4fe52625ee7f515aaa30c3668791aaa65e305da9c5e47",
+            "output_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f"
+          },
+          {
+            "number": 3,
+            "status": "completed",
+            "started_at": "2026-09-28T21:37:45.845Z",
+            "finished_at": "2026-09-28T21:37:50.877Z",
+            "input_checkpoint_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f",
+            "output_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e"
+          }
+        ],
+        "elapsed_ms": 11638,
+        "checkpoint_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f",
+        "checkpoint_commits": 10000,
+        "implementation": "engine-0.1.0-source-sha256=afad1f6fa7a75f49f52fd91a38a37c4c5301968d96e15e2bfcbd4c250aa2ccda"
+      },
+      "page_ms": 154.19187500000044,
+      "csv_ms": 180.59470900000088,
+      "csv_sha256": "9d122207618b5f05204c9a12f16104213c0ab384df69eee2b7b424739f6901a7",
+      "summary": {
+        "schema": "reflective-run-summary-v1",
+        "trace_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e",
+        "outcome": "NormalForm",
+        "commits": 12330,
+        "initial": {
+          "atoms": 24718,
+          "fields": 24715,
+          "kinds": {
+            "RuleHead": 1,
+            "Nat": 1,
+            "Record": 12359,
+            "PatternVariable": 3,
+            "Constructor": 12354
+          },
+          "roles": {
+            "Rank": 1,
+            "ModeObject": 1,
+            "Revision": 1,
+            "Active": 1,
+            "ObjectLink": 12345,
+            "Lhs": 5,
+            "Rhs": 5
+          }
+        },
+        "final": {
+          "atoms": 24718,
+          "fields": 24715,
+          "kinds": {
+            "RuleHead": 1,
+            "Nat": 1,
+            "Record": 12359,
+            "PatternVariable": 3,
+            "Constructor": 12354
+          },
+          "roles": {
+            "Rank": 1,
+            "ModeObject": 1,
+            "Revision": 1,
+            "Active": 1,
+            "ObjectLink": 12345,
+            "Lhs": 5,
+            "Rhs": 5
+          }
+        },
+        "consumed_total": 12330,
+        "produced_total": 12330,
+        "altered_rule_identities": [],
+        "limitation": "Carrier counts include quoted syntax and rule metadata. Totals are not graph equivalence, convergence or semantic usefulness. Identities are comparable only within this history."
+      },
+      "trace_bytes": 38958234,
+      "oracle_verified": true
+    },
+    {
+      "i": 1,
+      "warmup": false,
+      "policy": "fixed",
+      "import_ms": 163.0604999999996,
+      "wall_ms": 11483.146125000001,
+      "peak_native_rss": 1274511360,
+      "job": {
+        "id": "42154b03-fdd7-4439-be9b-579a4a779a95",
+        "project_id": "809912a5-50eb-4573-9811-010d37258686",
+        "version_id": "f511a756-0a80-42f9-9a90-a0ce1865ea97",
+        "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+        "idempotency_key": "full",
+        "request_sha256": "7dd20e489a0d561eb485dd0f35dfb930cd3fb8cc467305738cb9240fb5789b44",
+        "engine_sha256": "ed6c8cae12dcca2a328d33ef0c7eff30a56003b1aedd3cdef1ff1dd810301c86",
+        "settings": {
+          "max_steps": 13000,
+          "max_work": 10000000,
+          "max_candidates": 20000,
+          "seed": "42",
+          "detect_cycles": true,
+          "deadline_ms": 120000,
+          "execution_profile": "joined-v4"
+        },
+        "parent_job_id": null,
+        "status": "completed",
+        "outcome": "NormalForm",
+        "commits": 12330,
+        "trace_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e",
+        "failure": null,
+        "created_at": "2026-09-28T21:37:51.693Z",
+        "started_at": "2026-09-28T21:37:51.701Z",
+        "finished_at": "2026-09-28T21:38:03.092Z",
+        "attempts": [
+          {
+            "number": 1,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:37:51.701Z",
+            "finished_at": "2026-09-28T21:37:54.035Z",
+            "input_checkpoint_sha256": null,
+            "output_sha256": "10ca3be0f80b0fd22ce4fe52625ee7f515aaa30c3668791aaa65e305da9c5e47"
+          },
+          {
+            "number": 2,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:37:54.045Z",
+            "finished_at": "2026-09-28T21:37:58.243Z",
+            "input_checkpoint_sha256": "10ca3be0f80b0fd22ce4fe52625ee7f515aaa30c3668791aaa65e305da9c5e47",
+            "output_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f"
+          },
+          {
+            "number": 3,
+            "status": "completed",
+            "started_at": "2026-09-28T21:37:58.252Z",
+            "finished_at": "2026-09-28T21:38:03.092Z",
+            "input_checkpoint_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f",
+            "output_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e"
+          }
+        ],
+        "elapsed_ms": 11373,
+        "checkpoint_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f",
+        "checkpoint_commits": 10000,
+        "implementation": "engine-0.1.0-source-sha256=afad1f6fa7a75f49f52fd91a38a37c4c5301968d96e15e2bfcbd4c250aa2ccda"
+      },
+      "page_ms": 153.12220799999704,
+      "csv_ms": 156.53262499999983,
+      "csv_sha256": "9d122207618b5f05204c9a12f16104213c0ab384df69eee2b7b424739f6901a7",
+      "summary": {
+        "schema": "reflective-run-summary-v1",
+        "trace_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e",
+        "outcome": "NormalForm",
+        "commits": 12330,
+        "initial": {
+          "atoms": 24718,
+          "fields": 24715,
+          "kinds": {
+            "RuleHead": 1,
+            "Nat": 1,
+            "Record": 12359,
+            "PatternVariable": 3,
+            "Constructor": 12354
+          },
+          "roles": {
+            "Rank": 1,
+            "ModeObject": 1,
+            "Revision": 1,
+            "Active": 1,
+            "ObjectLink": 12345,
+            "Lhs": 5,
+            "Rhs": 5
+          }
+        },
+        "final": {
+          "atoms": 24718,
+          "fields": 24715,
+          "kinds": {
+            "RuleHead": 1,
+            "Nat": 1,
+            "Record": 12359,
+            "PatternVariable": 3,
+            "Constructor": 12354
+          },
+          "roles": {
+            "Rank": 1,
+            "ModeObject": 1,
+            "Revision": 1,
+            "Active": 1,
+            "ObjectLink": 12345,
+            "Lhs": 5,
+            "Rhs": 5
+          }
+        },
+        "consumed_total": 12330,
+        "produced_total": 12330,
+        "altered_rule_identities": [],
+        "limitation": "Carrier counts include quoted syntax and rule metadata. Totals are not graph equivalence, convergence or semantic usefulness. Identities are comparable only within this history."
+      },
+      "trace_bytes": 38958234,
+      "oracle_verified": true
+    },
+    {
+      "i": 2,
+      "warmup": false,
+      "policy": "fixed",
+      "import_ms": 160.56524999999965,
+      "wall_ms": 11548.484334,
+      "peak_native_rss": 1292992512,
+      "job": {
+        "id": "6ec7deff-58da-4cf1-86b8-943a892d8e22",
+        "project_id": "a91e761a-7b7c-498b-8110-7266474e3c68",
+        "version_id": "ada05eed-1bf9-4a1a-a57b-ea04ad4214a5",
+        "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+        "idempotency_key": "full",
+        "request_sha256": "f9c7694adba256f5e05b9e473e67212f2dc5807478c5a94f3fb039f2dce8d44d",
+        "engine_sha256": "ed6c8cae12dcca2a328d33ef0c7eff30a56003b1aedd3cdef1ff1dd810301c86",
+        "settings": {
+          "max_steps": 13000,
+          "max_work": 10000000,
+          "max_candidates": 20000,
+          "seed": "42",
+          "detect_cycles": true,
+          "deadline_ms": 120000,
+          "execution_profile": "joined-v4"
+        },
+        "parent_job_id": null,
+        "status": "completed",
+        "outcome": "NormalForm",
+        "commits": 12330,
+        "trace_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e",
+        "failure": null,
+        "created_at": "2026-09-28T21:38:03.921Z",
+        "started_at": "2026-09-28T21:38:03.928Z",
+        "finished_at": "2026-09-28T21:38:15.384Z",
+        "attempts": [
+          {
+            "number": 1,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:38:03.928Z",
+            "finished_at": "2026-09-28T21:38:06.247Z",
+            "input_checkpoint_sha256": null,
+            "output_sha256": "10ca3be0f80b0fd22ce4fe52625ee7f515aaa30c3668791aaa65e305da9c5e47"
+          },
+          {
+            "number": 2,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:38:06.254Z",
+            "finished_at": "2026-09-28T21:38:10.357Z",
+            "input_checkpoint_sha256": "10ca3be0f80b0fd22ce4fe52625ee7f515aaa30c3668791aaa65e305da9c5e47",
+            "output_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f"
+          },
+          {
+            "number": 3,
+            "status": "completed",
+            "started_at": "2026-09-28T21:38:10.366Z",
+            "finished_at": "2026-09-28T21:38:15.384Z",
+            "input_checkpoint_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f",
+            "output_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e"
+          }
+        ],
+        "elapsed_ms": 11440,
+        "checkpoint_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f",
+        "checkpoint_commits": 10000,
+        "implementation": "engine-0.1.0-source-sha256=afad1f6fa7a75f49f52fd91a38a37c4c5301968d96e15e2bfcbd4c250aa2ccda"
+      },
+      "page_ms": 155.75995899999543,
+      "csv_ms": 154.07166599999618,
+      "csv_sha256": "9d122207618b5f05204c9a12f16104213c0ab384df69eee2b7b424739f6901a7",
+      "summary": {
+        "schema": "reflective-run-summary-v1",
+        "trace_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e",
+        "outcome": "NormalForm",
+        "commits": 12330,
+        "initial": {
+          "atoms": 24718,
+          "fields": 24715,
+          "kinds": {
+            "RuleHead": 1,
+            "Nat": 1,
+            "Record": 12359,
+            "PatternVariable": 3,
+            "Constructor": 12354
+          },
+          "roles": {
+            "Rank": 1,
+            "ModeObject": 1,
+            "Revision": 1,
+            "Active": 1,
+            "ObjectLink": 12345,
+            "Lhs": 5,
+            "Rhs": 5
+          }
+        },
+        "final": {
+          "atoms": 24718,
+          "fields": 24715,
+          "kinds": {
+            "RuleHead": 1,
+            "Nat": 1,
+            "Record": 12359,
+            "PatternVariable": 3,
+            "Constructor": 12354
+          },
+          "roles": {
+            "Rank": 1,
+            "ModeObject": 1,
+            "Revision": 1,
+            "Active": 1,
+            "ObjectLink": 12345,
+            "Lhs": 5,
+            "Rhs": 5
+          }
+        },
+        "consumed_total": 12330,
+        "produced_total": 12330,
+        "altered_rule_identities": [],
+        "limitation": "Carrier counts include quoted syntax and rule metadata. Totals are not graph equivalence, convergence or semantic usefulness. Identities are comparable only within this history."
+      },
+      "trace_bytes": 38958234,
+      "oracle_verified": true
+    },
+    {
+      "i": 3,
+      "warmup": false,
+      "policy": "fixed",
+      "import_ms": 162.76633300000685,
+      "wall_ms": 16888.49125,
+      "peak_native_rss": 1389887488,
+      "job": {
+        "id": "b9f649af-bfa4-4de6-aa62-cb335764470d",
+        "project_id": "e6639555-1590-4640-b1be-51c4bbaefb03",
+        "version_id": "eda9c1f9-ec7d-4028-88a1-7896b84b9338",
+        "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+        "idempotency_key": "full",
+        "request_sha256": "1f64bc478f98965a5159ec881a86bc98af8de9ca1ab583e62f6b098ef024f7b4",
+        "engine_sha256": "ed6c8cae12dcca2a328d33ef0c7eff30a56003b1aedd3cdef1ff1dd810301c86",
+        "settings": {
+          "max_steps": 13000,
+          "max_work": 10000000,
+          "max_candidates": 20000,
+          "seed": "42",
+          "detect_cycles": true,
+          "deadline_ms": 120000,
+          "execution_profile": "joined-v4"
+        },
+        "parent_job_id": null,
+        "status": "completed",
+        "outcome": "NormalForm",
+        "commits": 12330,
+        "trace_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e",
+        "failure": null,
+        "created_at": "2026-09-28T21:38:16.221Z",
+        "started_at": "2026-09-28T21:38:16.230Z",
+        "finished_at": "2026-09-28T21:38:32.962Z",
+        "attempts": [
+          {
+            "number": 1,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:38:16.230Z",
+            "finished_at": "2026-09-28T21:38:18.594Z",
+            "input_checkpoint_sha256": null,
+            "output_sha256": "10ca3be0f80b0fd22ce4fe52625ee7f515aaa30c3668791aaa65e305da9c5e47"
+          },
+          {
+            "number": 2,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:38:18.601Z",
+            "finished_at": "2026-09-28T21:38:22.887Z",
+            "input_checkpoint_sha256": "10ca3be0f80b0fd22ce4fe52625ee7f515aaa30c3668791aaa65e305da9c5e47",
+            "output_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f"
+          },
+          {
+            "number": 3,
+            "status": "completed",
+            "started_at": "2026-09-28T21:38:22.897Z",
+            "finished_at": "2026-09-28T21:38:32.962Z",
+            "input_checkpoint_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f",
+            "output_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e"
+          }
+        ],
+        "elapsed_ms": 16716,
+        "checkpoint_sha256": "b33a833a10015e25da0255cd830e0d5f3120f2cae1414f3c1bbad422b541da6f",
+        "checkpoint_commits": 10000,
+        "implementation": "engine-0.1.0-source-sha256=afad1f6fa7a75f49f52fd91a38a37c4c5301968d96e15e2bfcbd4c250aa2ccda"
+      },
+      "page_ms": 762.0006670000002,
+      "csv_ms": 787.9259170000005,
+      "csv_sha256": "9d122207618b5f05204c9a12f16104213c0ab384df69eee2b7b424739f6901a7",
+      "summary": {
+        "schema": "reflective-run-summary-v1",
+        "trace_sha256": "f33a85d8d3dfd7d8ea6106e5200a9eff748f79f5769fb4796b3d4ce49490599e",
+        "outcome": "NormalForm",
+        "commits": 12330,
+        "initial": {
+          "atoms": 24718,
+          "fields": 24715,
+          "kinds": {
+            "RuleHead": 1,
+            "Nat": 1,
+            "Record": 12359,
+            "PatternVariable": 3,
+            "Constructor": 12354
+          },
+          "roles": {
+            "Rank": 1,
+            "ModeObject": 1,
+            "Revision": 1,
+            "Active": 1,
+            "ObjectLink": 12345,
+            "Lhs": 5,
+            "Rhs": 5
+          }
+        },
+        "final": {
+          "atoms": 24718,
+          "fields": 24715,
+          "kinds": {
+            "RuleHead": 1,
+            "Nat": 1,
+            "Record": 12359,
+            "PatternVariable": 3,
+            "Constructor": 12354
+          },
+          "roles": {
+            "Rank": 1,
+            "ModeObject": 1,
+            "Revision": 1,
+            "Active": 1,
+            "ObjectLink": 12345,
+            "Lhs": 5,
+            "Rhs": 5
+          }
+        },
+        "consumed_total": 12330,
+        "produced_total": 12330,
+        "altered_rule_identities": [],
+        "limitation": "Carrier counts include quoted syntax and rule metadata. Totals are not graph equivalence, convergence or semantic usefulness. Identities are comparable only within this history."
+      },
+      "trace_bytes": 38958234,
+      "oracle_verified": true
+    },
+    {
+      "i": 4,
+      "warmup": false,
+      "policy": "guarded",
+      "import_ms": 679.7045419999995,
+      "wall_ms": 6140.272042000004,
+      "peak_native_rss": 473513984,
+      "job": {
+        "id": "361038ed-5812-4729-a8db-b6b0a7e9709f",
+        "project_id": "b5cb27c1-9f23-4039-a47c-b8615e8f9b6f",
+        "version_id": "5b03b44b-4dc6-4d21-845f-9c329b3e964e",
+        "source_sha256": "d1b10f3985e03580c9e9cb3f84c85165e89dfbe4b13e74361e96354fcdc20f33",
+        "idempotency_key": "full",
+        "request_sha256": "1be9c0a5e236ae9d1409ae9fdab5da33fad6a3e9c4f90c7bcebe511e98fa7c19",
+        "engine_sha256": "ed6c8cae12dcca2a328d33ef0c7eff30a56003b1aedd3cdef1ff1dd810301c86",
+        "settings": {
+          "max_steps": 13000,
+          "max_work": 10000000,
+          "max_candidates": 20000,
+          "seed": "42",
+          "detect_cycles": true,
+          "deadline_ms": 120000,
+          "execution_profile": "joined-v4"
+        },
+        "parent_job_id": null,
+        "status": "completed",
+        "outcome": "ResourceLimit",
+        "commits": 1,
+        "trace_sha256": "03bece1f353f6bd92c62411632bf90f6d300d5cf8cbf56cb73f57d8fbeb4d9fa",
+        "failure": null,
+        "created_at": "2026-09-28T21:38:36.620Z",
+        "started_at": "2026-09-28T21:38:36.628Z",
+        "finished_at": "2026-09-28T21:38:42.609Z",
+        "attempts": [
+          {
+            "number": 1,
+            "status": "completed",
+            "started_at": "2026-09-28T21:38:36.628Z",
+            "finished_at": "2026-09-28T21:38:42.609Z",
+            "input_checkpoint_sha256": null,
+            "output_sha256": "03bece1f353f6bd92c62411632bf90f6d300d5cf8cbf56cb73f57d8fbeb4d9fa"
+          }
+        ],
+        "elapsed_ms": 5982,
+        "checkpoint_sha256": null,
+        "implementation": "engine-0.1.0-source-sha256=afad1f6fa7a75f49f52fd91a38a37c4c5301968d96e15e2bfcbd4c250aa2ccda"
+      }
+    }
+  ],
+  "source_bundle_sha256": "ee23fc8991925d0a2b253ba180e9648d0e2889083e3c4b63cc7f7a12760a73bb",
+  "protocol": {
+    "warmups": 1,
+    "fixed_measurements": 3,
+    "guarded_measurements": 1,
+    "whole_release": true,
+    "seed": 42,
+    "deadline_ms": 120000,
+    "sampled_native_rss_ceiling": 2147483648,
+    "sample_interval_ms": 500,
+    "hard_rss_cap": null,
+    "concurrent_workloads": false,
+    "execution_envelope": "large-local-v1",
+    "criterion": "NormalForm; complete exact CSV oracle; checked export/replay; full count and final paged event; no partial success"
+  }
+}

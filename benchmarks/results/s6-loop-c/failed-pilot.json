@@ -1,0 +1,80 @@
+{
+  "schema": "loop-c-platform-v1",
+  "created_at": "2026-09-28T21:21:15.913Z",
+  "archive_sha256": "2972e6184d3ad7beaaa831d9fc2b059dc3ee29df69d1ec593c466a5cd8485d14",
+  "csv_sha256": "b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9",
+  "binary_sha256": "0c86a626bb5c97ba557a833ffc4435f3a4a0215a38328dba4f03c0b72a7cbbd0",
+  "hardware": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpus": "Apple M4 Pro",
+    "memory": 51539607552
+  },
+  "baseline_ms": [
+    17.57195900000002,
+    20.40100000000001,
+    18.47483299999999,
+    17.787999999999982
+  ],
+  "rows": 12330,
+  "expected_sha256": "9d122207618b5f05204c9a12f16104213c0ab384df69eee2b7b424739f6901a7",
+  "samples": [
+    {
+      "i": 0,
+      "warmup": true,
+      "policy": "fixed",
+      "import_ms": 8985.316125,
+      "wall_ms": 121279.89625,
+      "peak_native_rss": 918700032,
+      "job": {
+        "id": "c1f6fe54-0c7d-4b98-a28f-c6bb377f9394",
+        "project_id": "1a9e2f30-9161-474a-8d16-3566401c2e49",
+        "version_id": "3c990011-5fd1-4896-aa5d-eac8f7be650e",
+        "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+        "idempotency_key": "full",
+        "request_sha256": "c04003f21963cbe69d04a7e202623b7dc7d3f193081a59af8b69a25d375ccb3e",
+        "engine_sha256": "0c86a626bb5c97ba557a833ffc4435f3a4a0215a38328dba4f03c0b72a7cbbd0",
+        "settings": {
+          "max_steps": 13000,
+          "max_work": 10000000,
+          "max_candidates": 20000,
+          "seed": "42",
+          "detect_cycles": true,
+          "deadline_ms": 120000,
+          "execution_profile": "joined-v4"
+        },
+        "parent_job_id": null,
+        "status": "timed_out",
+        "outcome": null,
+        "commits": 5000,
+        "trace_sha256": null,
+        "failure": "timed_out",
+        "created_at": "2026-09-28T21:21:25.303Z",
+        "started_at": "2026-09-28T21:21:25.314Z",
+        "finished_at": "2026-09-28T21:23:25.708Z",
+        "attempts": [
+          {
+            "number": 1,
+            "status": "yielded",
+            "started_at": "2026-09-28T21:21:25.315Z",
+            "finished_at": "2026-09-28T21:21:50.726Z",
+            "input_checkpoint_sha256": null,
+            "output_sha256": "10b768820b395406ead64373a4df82ce05ba4b225edf58134d654361d7f31508"
+          },
+          {
+            "number": 2,
+            "status": "timed_out",
+            "started_at": "2026-09-28T21:21:50.846Z",
+            "finished_at": "2026-09-28T21:23:25.708Z",
+            "input_checkpoint_sha256": "10b768820b395406ead64373a4df82ce05ba4b225edf58134d654361d7f31508",
+            "output_sha256": null
+          }
+        ],
+        "elapsed_ms": 120276,
+        "checkpoint_sha256": "10b768820b395406ead64373a4df82ce05ba4b225edf58134d654361d7f31508",
+        "checkpoint_commits": 5000,
+        "implementation": "engine-0.1.0-source-sha256=72caac6c6a0afd122362b82992d472ea7bf13e05580eea89afa632e88b940534"
+      }
+    }
+  ]
+}

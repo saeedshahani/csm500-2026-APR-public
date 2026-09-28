@@ -1,0 +1,47 @@
+{
+  "schema": "loop-c-browser-v1",
+  "total": 12330,
+  "rows_rendered": 25,
+  "navigation_ms": [
+    1254.7999999523163,
+    1116.6000000238419,
+    999.7999999523163
+  ],
+  "response_body_ms": [
+    1066.5,
+    958.5,
+    852.7999999523163
+  ],
+  "render_after_body_ms": [
+    188.29999995231628,
+    158.10000002384186,
+    147
+  ],
+  "response_bytes": [
+    5443,
+    5432,
+    5412
+  ],
+  "narrow_overflow": false,
+  "browser": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/153.0.0.0 Safari/537.36",
+  "measured_viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "narrow_viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "csv_sha256": "9d122207618b5f05204c9a12f16104213c0ab384df69eee2b7b424739f6901a7",
+  "created_at": "2026-09-28T22:18:42.906Z",
+  "script_sha256": "91f466fc682954b06b382c7f8ca8f166be11ea08d1ef5376b55c463f45ba1041",
+  "assets": {
+    "emulator-session-CbEwqe36.js": "a03e236aa49cf5e956b60f700a1c4080561830e3e59eb903cf1fff22d097a54f",
+    "engine.worker-AgyzCPtn.js": "ef5c63e7e958225275c14320d970521edbf255f5dec4e8698cfbf0048e31a090",
+    "hosted-session-D2B8zQWL.js": "684b64c671bad329726a0d0a2f7d0b8cf75bc9692b4b267798a11caee648ba3a",
+    "index-BhaRIIIF.js": "66f25fa3eed0fd2ed09c1e5108d2124bfe025d025dc873fa366e3829939016cb",
+    "index-CsT9VMuJ.css": "03c54209e8102580a5f54ffa3beaa8c0ca6bcc525b6d9462ef484df9f3a599f7",
+    "index.esm-B5GWHz6j.js": "f96a1b379ffcaaad85ff46ec35ffa2a5a8809ed9d8ea7fe8c6c7c24361e503dc",
+    "wasm_bridge_bg-Df0aWTia.wasm": "3fc20eed408f0e3b8e86a58f278c7b069ac8d60169858cd10000823514c21a97"
+  }
+}

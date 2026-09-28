@@ -415,8 +415,11 @@ impl VerifiedTrace {
             | ("finished", true, true) => {}
             _ => return Err(bad("status, plan and report are inconsistent")),
         }
-        let framed =
-            doc.settings.execution_profile == Some(crate::runner::ExecutionProfile::FramedV3);
+        let framed = doc
+            .settings
+            .execution_profile
+            .unwrap_or_default()
+            .uses_frames();
         let mut execution = if framed {
             Execution::with_frame_validation(graph, doc.settings.execution()?)?
         } else {
@@ -580,8 +583,12 @@ impl VerifiedTrace {
             .document
             .initial
             .restore(&self.document.settings.graph.native()?)?;
-        let mut execution = if self.document.settings.execution_profile
-            == Some(crate::runner::ExecutionProfile::FramedV3)
+        let mut execution = if self
+            .document
+            .settings
+            .execution_profile
+            .unwrap_or_default()
+            .uses_frames()
         {
             Execution::with_frame_validation(graph, self.document.settings.execution()?)?
         } else {

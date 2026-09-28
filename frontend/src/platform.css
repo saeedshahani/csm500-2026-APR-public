@@ -23,3 +23,10 @@
 @media(max-width:650px){.platform-layout{grid-template-columns:1fr}.project-sidebar{border-right:0;border-bottom:1px solid var(--border)}.project-sidebar nav{max-height:220px;overflow:auto}.platform-heading{align-items:flex-start;flex-direction:column;padding:20px}.platform-connect{padding:20px}.platform-connection{overflow-wrap:anywhere}.platform-message{padding:12px 20px}.platform dl{grid-template-columns:110px minmax(0,1fr)}}
 @media(prefers-reduced-motion:reduce){.run-inspector{animation:none}.project-sidebar nav button{transition:none}}
 @media print{.platform{display:none!important}}
+.calendar-results .table-scroll{max-height:34rem;border-bottom:1px solid var(--border)}
+.calendar-results table{min-width:560px}
+.calendar-results th{position:sticky;top:0;background:var(--panel);z-index:1}
+.calendar-results td{vertical-align:top}
+.calendar-results details{margin:0}
+.calendar-results summary{white-space:nowrap}
+.calendar-results pre{max-width:32rem;white-space:pre-wrap;overflow-wrap:anywhere}

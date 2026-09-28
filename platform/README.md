@@ -1,8 +1,29 @@
 # Local developer API
 
+## Large calendar-normalisation application
+
+An explicit `large-local-v1` route processes the complete UCI Online Shoppers Purchasing Intention CSV through graph rewriting. It is a local developer deployment, not an increase to hosted Firebase quotas. Use a separate store for this route. It requires local owner-token authentication and refuses Firebase production/emulator modes or supplied remote storage.
+
+```sh
+cargo build --release --locked -p cli
+GRAPH_EXECUTION_ENVELOPE=large-local-v1 GRAPH_STORE=output/calendar-platform GRAPH_API_TOKEN=replace_with_your_32_character_random_token GRAPH_BROWSER_ORIGINS=http://127.0.0.1:4173 node platform/server.mjs
+```
+
+In the browser, open Projects, choose Local API token, connect to `http://127.0.0.1:8787` with that token, and create a project. Download and extract [Sakar and Kastro's UCI release](https://doi.org/10.24432/C5F88Q), licensed CC BY 4.0. Import `online_shoppers_intention.csv` in Calendar normalisation, select the approval or fixed policy, and submit the selected version using the automatically supplied `joined-v4` settings. The source schema is deliberately restricted: all eighteen release columns, unquoted fields, known categories and valid nonnegative numerical ranges. Unknown columns, missing values and malformed rows reject before saving a version. This is not a general CSV or CSVW implementation.
+
+Each source row becomes one constructor holding its complete ordered field values; its month relation points to a shared raw category. The graph-resident processor joins that relation with an immutable dictionary to point to the shared month-number category. It does not compute the answer in the importer. The optional approval rule first activates the processor, replaces revision tokens, lowers its own rank and disables itself. The disabled control intentionally produces no useful transformation. All other fields remain opaque preserved payload, not independently queryable graph attributes.
+
+The route permits 50,000 atoms, 100,000 fields, 16 MiB source, one million syntax tokens, 20,000 events/candidates, ten million search-work units, 128 MiB trace artefacts, a 1 GiB local artefact store and at most 120 seconds per job including independent verification. Batches contain at most 5,000 commits; pause waits for a verified batch. Initial/endpoint checkpoints avoid repeated full snapshots but retain every event. An interrupted job resumes only from a verified checkpoint within its original remaining allowance. Cancellation publishes no unverified prefix. Storage exhaustion fails rather than publishing an incomplete result. These local logical/deadline bounds are not a portable hard memory sandbox; the retained study additionally samples native RSS. Hosted container limits are unchanged and are not suitable for this larger route.
+
+The browser retrieves 25 before/after rows at a time, with full totals, original fields and independent acceptance status. CSV export includes all original columns plus `MonthNumber`; it refuses incomplete or incorrect results even if the graph reached NormalForm. Event pages remain bounded. Large full traces can be downloaded and checked with `GRAPH_EXECUTION_ENVELOPE=large-local-v1 target/release/cli trace-check TRACE`; they are not silently admitted into the smaller browser graph inspector. Source versions, raw CSV and traces are content-addressed. The result oracle compares against the original saved CSV, not just counts.
+
+API additions are `POST /v1/projects/{project}/month-imports` with `{name,csv,policy}`, `GET /v1/jobs/{job}/month-results?offset=0&limit=25`, and `GET /v1/jobs/{job}/month-csv`. Health advertises `execution_envelope`; a client cannot request a larger envelope through job settings. The OpenAPI description includes these routes. Existing project access, cancellation, pause/resume and immutable version contracts apply.
+
+Reproduction uses `scripts/collect-loop-c.mjs`, `scripts/compare-loop-c.mjs` and `scripts/accept-loop-c-recovery.mjs` with new output destinations. Place the UCI archive at `output/s6-datasets/shoppers.zip`; collection refuses bytes not matching the documented release digest. Source bundles and retained summaries support inspection without committing private local tokens or large generated stores. Native and browser acceptance are separate; conventional CSV transformation has different proof/history obligations and is expected to be much cheaper.
+
 The developer service is a loopback HTTP API backed by the existing native Rust CLI and connected to the browser's Projects interface. It saves projects and immutable graph-source versions, queues bounded jobs, publishes replay-verified traces and recovers metadata after restart. The Node adapter implements transport and orchestration, not graph semantics. The optional Firebase Authentication emulator mode uses the pinned Admin SDK; the browser loads its Authentication SDK only when that mode is selected.
 
-This is **local development software**, with either one token owner or multiple emulator test accounts. It is not a Firebase deployment or general-purpose job sandbox. Do not bind it publicly or proxy it onto a network. Emulator tokens are unsigned. Firebase persistence and access behaviour are tested locally; production identity, IAM and hosted resource isolation require separate acceptance.
+The commands in this section start **local development software**, with either one token owner or multiple emulator test accounts, not the separately accepted hosted pilot described below. Do not bind this adapter publicly or proxy it onto a network. Emulator tokens are unsigned. Production identity, IAM and hosted resource isolation use the separate hosted entry point and acceptance contract. The large local envelope is not a general-purpose job sandbox.
 
 ## Run and test
 

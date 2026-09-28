@@ -8,18 +8,74 @@ use crate::{
 use graph_core::{Diagnostic, LimitKind, Result, SharedCarrier};
 use std::{collections::BTreeMap, rc::Rc};
 type Signature = (usize, usize, u64);
+type RuleShape = Vec<(usize, bool, bool, usize, usize)>;
 #[derive(Clone, Debug)]
 struct Entry {
     step: u64,
     full: SharedCarrier,
     selected: Option<Rc<Observation>>,
     scheduler: String,
+    rule_shape: Option<RuleShape>,
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
     use graph_core::{Graph, Kind, NewAtom, Role, Target};
+    #[test]
+    fn rule_invariant_screens_rank_changes_but_not_projected_recurrence() {
+        let source = include_str!("../../../examples/practical/month-normalisation.graph").replace(
+            "rank rank0 = zero",
+            "atom one = Nat(zero); rank rank0 = zero",
+        );
+        let a = Execution::new(
+            parser::load(&source).unwrap().into_graph(),
+            Default::default(),
+        )
+        .unwrap();
+        let b = Execution::new(
+            parser::load(&source.replace("rank rank0 = zero", "rank rank0 = one"))
+                .unwrap()
+                .into_graph(),
+            Default::default(),
+        )
+        .unwrap();
+        assert_eq!(a.graph().shape_signature(), b.graph().shape_signature());
+        let limits = ObservationLimits {
+            max_comparison_work: 20,
+            ..Default::default()
+        };
+        let mut h = History::default();
+        h.observe(&a, &Observer::all(), "a".into(), limits, 0, true)
+            .unwrap();
+        assert!(h
+            .observe(&b, &Observer::all(), "b".into(), limits, 0, true)
+            .unwrap()
+            .1
+            .is_none());
+        let mut old = History::default();
+        old.observe(&a, &Observer::all(), "a".into(), limits, 0, false)
+            .unwrap();
+        assert!(old
+            .observe(&b, &Observer::all(), "b".into(), limits, 0, false)
+            .is_err());
+        let observer = Observer::parse(
+            "observer-v1\nselect data\nkind Constructor\n",
+            |_| None,
+            100,
+        )
+        .unwrap();
+        let mut projected = History::default();
+        projected
+            .observe(&a, &observer, "a".into(), Default::default(), 0, true)
+            .unwrap();
+        let recurrence = projected
+            .observe(&b, &observer, "b".into(), Default::default(), 0, true)
+            .unwrap()
+            .1
+            .unwrap();
+        assert!(!recurrence.complete_state_equal);
+    }
     fn ring(targets: &[usize], offset: usize) -> Execution {
         let mut g = Graph::new();
         let old: std::collections::BTreeSet<_> = (0..offset)
@@ -52,7 +108,14 @@ mod tests {
         assert_eq!(a.graph().shape_signature(), c.graph().shape_signature());
         let mut h = History::default();
         assert!(h
-            .observe(&a, &Observer::all(), "first".into(), Default::default(), 0)
+            .observe(
+                &a,
+                &Observer::all(),
+                "first".into(),
+                Default::default(),
+                0,
+                true
+            )
             .unwrap()
             .1
             .is_none());
@@ -62,7 +125,8 @@ mod tests {
                 &Observer::all(),
                 "different".into(),
                 Default::default(),
-                0
+                0,
+                true
             )
             .unwrap()
             .1
@@ -74,6 +138,7 @@ mod tests {
                 "renamed".into(),
                 Default::default(),
                 0,
+                true,
             )
             .unwrap()
             .1
@@ -137,9 +202,29 @@ impl History {
         scheduler: String,
         limits: ObservationLimits,
         produced_units: usize,
+        rule_screen: bool,
     ) -> Result<(usize, Option<Recurrence>)> {
         let mut projection = Budget::new(limits.max_work, LimitKind::ObservationWork);
         projection.charge(1)?;
+        // A full-carrier isomorphism preserves the multiset of decoded rule
+        // ranks, modes, activity and membership cardinalities. This is only a
+        // necessary invariant: equal shapes still require exact comparison.
+        // Never use hidden rule metadata to reject a projected recurrence.
+        let rule_shape =
+            if rule_screen && observer.is_all() {
+                let rules = &execution.configuration().rules;
+                projection.charge(rules.len().saturating_mul(
+                    6 + usize::BITS as usize - rules.len().leading_zeros() as usize,
+                ))?;
+                let mut shape: RuleShape = rules
+                    .values()
+                    .map(|r| (r.rank, r.meta, r.active, r.lhs.len(), r.rhs.len()))
+                    .collect();
+                shape.sort_unstable();
+                Some(shape)
+            } else {
+                None
+            };
         let selected = if observer.is_all() {
             None
         } else {
@@ -154,12 +239,17 @@ impl History {
             full,
             selected,
             scheduler,
+            rule_shape,
         };
         let signature = current.signature();
         let mut budget = Budget::new(limits.max_comparison_work, LimitKind::ComparisonWork);
         budget.charge(1)?;
         for &index in self.buckets.get(&signature).into_iter().flatten() {
             let old = &self.entries[index];
+            budget.charge(old.rule_shape.as_ref().map_or(0, |s| 1 + 5 * s.len()))?;
+            if old.rule_shape != current.rule_shape {
+                continue;
+            }
             // Charge materialisation before restoring a full historical carrier.
             budget.charge(old.full.units().saturating_add(current.full.units()))?;
             if observation::isomorphic_indexed_budget(
@@ -205,6 +295,7 @@ impl History {
             .units
             .saturating_add(extra)
             .saturating_add(current.scheduler.len() + 8)
+            .saturating_add(current.rule_shape.as_ref().map_or(0, |s| 5 * s.len()))
             .saturating_add(current.selected.as_ref().map_or(0, |o| o.retention_units()));
         if units > limits.max_history_units {
             return Err(Diagnostic::exhausted(

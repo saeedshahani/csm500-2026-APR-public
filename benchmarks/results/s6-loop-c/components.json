@@ -1,0 +1,55 @@
+{
+  "schema": "loop-c-components-v1",
+  "binary_sha256": "638a697757f8f89d476590ba68255181ad6ae2100ac527a2fe67fab123b525ad",
+  "script_sha256": "d2249f5de9937619129393c466915b7865422712e3efc4cc7c7ef07d4bc3f14f",
+  "csv_sha256": "b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9",
+  "scope": "Single serial observation per policy. Export includes loading, running, recording and serialization; verification is a separate process. Neither isolates rewrite-only time. No API batching, polling, storage or browser work.",
+  "args": [
+    "export",
+    "-",
+    "--max-steps",
+    "13000",
+    "--execution-profile",
+    "joined-v4",
+    "--max-work",
+    "10000000",
+    "--max-candidates",
+    "20000",
+    "--checkpoint-interval",
+    "20000",
+    "--strategy",
+    "seeded",
+    "--seed",
+    "42",
+    "--detect-cycles",
+    "true"
+  ],
+  "samples": [
+    {
+      "policy": "fixed",
+      "export_ms": 7277.540207999999,
+      "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+      "code": 0,
+      "cause": null,
+      "verification_ms": 7479.448125000001,
+      "trace_sha256": "a7b0cbb6e0ca889f2ecb2158059f1a7f69bd3337d852e4bcfb2b5a528f1b9b95",
+      "trace_bytes": 38958234,
+      "commits": 12330,
+      "oracle_verified": true,
+      "replay_verified": true
+    },
+    {
+      "policy": "guarded",
+      "export_ms": 9191.108625,
+      "source_sha256": "d1b10f3985e03580c9e9cb3f84c85165e89dfbe4b13e74361e96354fcdc20f33",
+      "code": 0,
+      "cause": null,
+      "verification_ms": 8100.476500000004,
+      "trace_sha256": "c5a928060148b05a85b16c2f7819796c9ca55cad1e7990379479c635f244d1e3",
+      "trace_bytes": 43150888,
+      "commits": 12331,
+      "oracle_verified": true,
+      "replay_verified": true
+    }
+  ]
+}

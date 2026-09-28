@@ -32,8 +32,8 @@ test('complete catalogue has exact CLI/native/WASM execution, trace and historic
  assert.equal(verifyExamples(compare),22);
 });
 function compare(commands){const native=execFileSync(fileURLToPath(new URL('target/debug/examples/protocol',root)),[],{input:commands.map(c=>JSON.stringify(c)).join('\n')+'\n',encoding:'utf8',maxBuffer:64*1024*1024}).trim().split('\n').map(JSON.parse);const handle=new WorkbenchHandle();try{const wasm=commands.map(c=>handle.dispatch(JSON.stringify(c)));assert.deepEqual(wasm,native);return wasm;}finally{handle.free();}}
-for(const execution_profile of ['indexed-v2','framed-v3'])test(`${execution_profile} has exact CLI/native/WASM replay, resume and reset parity`,()=>{
- for(const file of ['practical/work-items.graph','practical/policy-enable.graph','behaviour/oscillating.graph','programs/self-modify.graph']){
+for(const execution_profile of ['indexed-v2','framed-v3','joined-v4'])test(`${execution_profile} has exact CLI/native/WASM replay, resume and reset parity`,()=>{
+ for(const file of ['practical/work-items.graph','practical/month-normalisation.graph','practical/policy-enable.graph','behaviour/oscillating.graph','programs/self-modify.graph']){
   const src=source(file),config={max_steps:'4',seed:'42',detect_cycles:true,execution_profile};
   const prefix=compare([{command:'load',source:src,config},{command:'advance',batch:'1'}]).at(-1);
   assert.equal(prefix.ok,true);assert.equal(prefix.state.settings.execution_profile,execution_profile);

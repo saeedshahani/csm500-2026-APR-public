@@ -1,0 +1,185 @@
+{
+  "schema": "loop-c-recovery-v1",
+  "binary_sha256": "638a697757f8f89d476590ba68255181ad6ae2100ac527a2fe67fab123b525ad",
+  "csv_sha256": "b3055ee355f59134d851d32641183cb4a8b45def7124d2f50442a042f358e0d9",
+  "paused": {
+    "id": "d60febe6-244e-497d-8bb8-76791600ce8c",
+    "project_id": "a1ec27ed-ea04-4b7d-9976-f10fa023183c",
+    "version_id": "485588cd-0721-4b35-b4d9-474983a89a43",
+    "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+    "idempotency_key": "restart",
+    "request_sha256": "cc12224a2b791c1f02def2733bc7055fde95e324fbe324fe6e530f87bc9b9654",
+    "engine_sha256": "638a697757f8f89d476590ba68255181ad6ae2100ac527a2fe67fab123b525ad",
+    "settings": {
+      "max_steps": 13000,
+      "max_work": 10000000,
+      "max_candidates": 20000,
+      "seed": "42",
+      "detect_cycles": true,
+      "deadline_ms": 120000,
+      "execution_profile": "joined-v4"
+    },
+    "parent_job_id": null,
+    "status": "paused",
+    "outcome": null,
+    "commits": 5000,
+    "trace_sha256": null,
+    "failure": null,
+    "created_at": "2026-09-28T21:56:27.786Z",
+    "started_at": "2026-09-28T21:56:27.797Z",
+    "finished_at": null,
+    "attempts": [
+      {
+        "number": 1,
+        "status": "yielded",
+        "started_at": "2026-09-28T21:56:27.797Z",
+        "finished_at": "2026-09-28T21:56:36.935Z",
+        "input_checkpoint_sha256": null,
+        "output_sha256": "e71621eddb23c5c7466a3450f6d0946ef9c9eac59ffa362b10592e2e86ae8c3b"
+      }
+    ],
+    "elapsed_ms": 9138,
+    "checkpoint_sha256": "e71621eddb23c5c7466a3450f6d0946ef9c9eac59ffa362b10592e2e86ae8c3b",
+    "pause_requested_at": "2026-09-28T21:56:27.826Z",
+    "checkpoint_commits": 5000,
+    "implementation": "engine-0.1.0-source-sha256=a08e22200b9b6a3a0b62ad21ac1a87139e323caa7a6162c27d51bb42e7f2a852"
+  },
+  "resumed": {
+    "id": "d60febe6-244e-497d-8bb8-76791600ce8c",
+    "project_id": "a1ec27ed-ea04-4b7d-9976-f10fa023183c",
+    "version_id": "485588cd-0721-4b35-b4d9-474983a89a43",
+    "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+    "idempotency_key": "restart",
+    "request_sha256": "cc12224a2b791c1f02def2733bc7055fde95e324fbe324fe6e530f87bc9b9654",
+    "engine_sha256": "638a697757f8f89d476590ba68255181ad6ae2100ac527a2fe67fab123b525ad",
+    "settings": {
+      "max_steps": 13000,
+      "max_work": 10000000,
+      "max_candidates": 20000,
+      "seed": "42",
+      "detect_cycles": true,
+      "deadline_ms": 120000,
+      "execution_profile": "joined-v4"
+    },
+    "parent_job_id": null,
+    "status": "completed",
+    "outcome": "NormalForm",
+    "commits": 12330,
+    "trace_sha256": "a7b0cbb6e0ca889f2ecb2158059f1a7f69bd3337d852e4bcfb2b5a528f1b9b95",
+    "failure": null,
+    "created_at": "2026-09-28T21:56:27.786Z",
+    "started_at": "2026-09-28T21:56:27.797Z",
+    "finished_at": "2026-09-28T21:57:13.125Z",
+    "attempts": [
+      {
+        "number": 1,
+        "status": "yielded",
+        "started_at": "2026-09-28T21:56:27.797Z",
+        "finished_at": "2026-09-28T21:56:36.935Z",
+        "input_checkpoint_sha256": null,
+        "output_sha256": "e71621eddb23c5c7466a3450f6d0946ef9c9eac59ffa362b10592e2e86ae8c3b"
+      },
+      {
+        "number": 2,
+        "status": "yielded",
+        "started_at": "2026-09-28T21:56:37.259Z",
+        "finished_at": "2026-09-28T21:56:53.254Z",
+        "input_checkpoint_sha256": "e71621eddb23c5c7466a3450f6d0946ef9c9eac59ffa362b10592e2e86ae8c3b",
+        "output_sha256": "c2edcb0bf606a84314d6d20de2a0cf1ce0e552746be5a6a77dbac5697db458cc"
+      },
+      {
+        "number": 3,
+        "status": "completed",
+        "started_at": "2026-09-28T21:56:53.264Z",
+        "finished_at": "2026-09-28T21:57:13.125Z",
+        "input_checkpoint_sha256": "c2edcb0bf606a84314d6d20de2a0cf1ce0e552746be5a6a77dbac5697db458cc",
+        "output_sha256": "a7b0cbb6e0ca889f2ecb2158059f1a7f69bd3337d852e4bcfb2b5a528f1b9b95"
+      }
+    ],
+    "elapsed_ms": 44995,
+    "checkpoint_sha256": "c2edcb0bf606a84314d6d20de2a0cf1ce0e552746be5a6a77dbac5697db458cc",
+    "pause_requested_at": null,
+    "checkpoint_commits": 10000,
+    "implementation": "engine-0.1.0-source-sha256=a08e22200b9b6a3a0b62ad21ac1a87139e323caa7a6162c27d51bb42e7f2a852"
+  },
+  "cancelled": {
+    "id": "23513a6a-bcc8-446b-9545-c9e50b358081",
+    "project_id": "a1ec27ed-ea04-4b7d-9976-f10fa023183c",
+    "version_id": "485588cd-0721-4b35-b4d9-474983a89a43",
+    "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+    "idempotency_key": "cancel",
+    "request_sha256": "cc12224a2b791c1f02def2733bc7055fde95e324fbe324fe6e530f87bc9b9654",
+    "engine_sha256": "638a697757f8f89d476590ba68255181ad6ae2100ac527a2fe67fab123b525ad",
+    "settings": {
+      "max_steps": 13000,
+      "max_work": 10000000,
+      "max_candidates": 20000,
+      "seed": "42",
+      "detect_cycles": true,
+      "deadline_ms": 120000,
+      "execution_profile": "joined-v4"
+    },
+    "parent_job_id": null,
+    "status": "cancelled",
+    "outcome": null,
+    "commits": null,
+    "trace_sha256": null,
+    "failure": "Stopped before publication",
+    "created_at": "2026-09-28T21:57:13.792Z",
+    "started_at": "2026-09-28T21:57:13.802Z",
+    "finished_at": "2026-09-28T21:57:13.861Z",
+    "attempts": [
+      {
+        "number": 1,
+        "status": "cancelled",
+        "started_at": "2026-09-28T21:57:13.802Z",
+        "finished_at": "2026-09-28T21:57:13.861Z",
+        "input_checkpoint_sha256": null,
+        "output_sha256": null
+      }
+    ],
+    "elapsed_ms": 59,
+    "checkpoint_sha256": null,
+    "cancellation_requested_at": "2026-09-28T21:57:13.836Z"
+  },
+  "resource_limited": {
+    "id": "d55e26c2-61af-4338-a567-be49680988dc",
+    "project_id": "a1ec27ed-ea04-4b7d-9976-f10fa023183c",
+    "version_id": "485588cd-0721-4b35-b4d9-474983a89a43",
+    "source_sha256": "e950898fe63dc3209e5f523aa06b46c1378e9757de3eb49afc1ef4d3041c04af",
+    "idempotency_key": "limited",
+    "request_sha256": "28cbc932f77f216b1c3eb2bbcbf592dc43a3f88e4602f8adc24dc3af54e250a0",
+    "engine_sha256": "638a697757f8f89d476590ba68255181ad6ae2100ac527a2fe67fab123b525ad",
+    "settings": {
+      "max_steps": 13000,
+      "max_work": 10000000,
+      "max_candidates": 0,
+      "seed": "42",
+      "detect_cycles": true,
+      "deadline_ms": 120000,
+      "execution_profile": "joined-v4"
+    },
+    "parent_job_id": null,
+    "status": "completed",
+    "outcome": "ResourceLimit",
+    "commits": 0,
+    "trace_sha256": "7f9e4949c00de3846a9f4977edbd98e4f644376e6e2f60aad9acfba1fc547688",
+    "failure": null,
+    "created_at": "2026-09-28T21:57:13.982Z",
+    "started_at": "2026-09-28T21:57:13.990Z",
+    "finished_at": "2026-09-28T21:57:17.154Z",
+    "attempts": [
+      {
+        "number": 1,
+        "status": "completed",
+        "started_at": "2026-09-28T21:57:13.990Z",
+        "finished_at": "2026-09-28T21:57:17.154Z",
+        "input_checkpoint_sha256": null,
+        "output_sha256": "7f9e4949c00de3846a9f4977edbd98e4f644376e6e2f60aad9acfba1fc547688"
+      }
+    ],
+    "elapsed_ms": 3165,
+    "checkpoint_sha256": null,
+    "implementation": "engine-0.1.0-source-sha256=a08e22200b9b6a3a0b62ad21ac1a87139e323caa7a6162c27d51bb42e7f2a852"
+  }
+}

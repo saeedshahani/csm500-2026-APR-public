@@ -1,0 +1,20 @@
+// Small independently authored vocabulary join; not a subset of the public study.
+program {
+rule normalise {
+ atom zero = Nat(); rank rank0 = zero; mode mode0 = ModeObject;
+ revision rev; active enabled;
+ atom row = PatternVariable[Constructor] Free;
+ atom raw = PatternVariable[Constructor] Free;
+ atom canonical = PatternVariable[Constructor] Free;
+ atom input = Record[ObjectLink]("source-month", row, raw);
+ atom mapping = Record[ObjectLink]("normalizes-to", raw, canonical);
+ atom output = Record[ObjectLink]("calendar-month", row, canonical);
+ lhs { lr: row; lv: raw; lc: canonical; li: input; lm: mapping; }
+ rhs { rr: row; rv: raw; rc: canonical; ro: output; rm: mapping; }
+}
+atom session = Constructor("Session:example");
+atom june = Constructor("Month:June");
+atom six = Constructor("MonthNumber:06");
+atom dictionary = Record[ObjectLink]("normalizes-to", june, six);
+atom source = Record[ObjectLink]("source-month", session, june);
+}

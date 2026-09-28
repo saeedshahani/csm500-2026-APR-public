@@ -250,7 +250,7 @@ test('engine limits and recurrence remain semantic outcomes, not platform failur
   }
 });
 
-for(const execution_profile of ['indexed-v2','framed-v3'])test(`${execution_profile} jobs retain explicit profile and reproduce direct native traces`,async t=>{
+for(const execution_profile of ['indexed-v2','framed-v3','joined-v4'])test(`${execution_profile} jobs retain explicit profile and reproduce direct native traces`,async t=>{
  const f=await fixture(t),{project,version}=await f.create(oscillator);
  const r=await f.submit(project,version,{max_steps:4,seed:'42',detect_cycles:true,execution_profile},'indexed');
  const j=await f.wait(r.body.id);assert.equal(j.status,'completed');assert.equal(j.outcome,'CycleDetected');
