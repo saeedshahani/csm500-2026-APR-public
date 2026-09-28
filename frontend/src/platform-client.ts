@@ -6,7 +6,7 @@ export type DatasetRecord = {id:string;project_id:string;name:string;schema:stri
 export type RunSummary = {schema:string;trace_sha256:string;outcome:string|null;commits:number;initial:{atoms:number;fields:number};final:{atoms:number;fields:number};consumed_total:number;produced_total:number;altered_rule_identities:string[];limitation:string};
 export type TokenProvider = ()=>Promise<string>;
 export type VersionRecord = ProjectRecord & {project_id:string;source_sha256:string;validated_engine_sha256:string;parent_version_id?:string|null};
-export type JobSettings = {max_steps:number;max_work:number;max_candidates:number;seed:string|null;detect_cycles:boolean;deadline_ms:number};
+export type JobSettings = {max_steps:number;max_work:number;max_candidates:number;seed:string|null;detect_cycles:boolean;deadline_ms:number;execution_profile?:'reference-v1'|'indexed-v2'|'framed-v3'};
 export type JobRecord = {id:string;project_id:string;version_id:string;source_sha256:string;engine_sha256:string;settings:JobSettings;status:string;outcome:string|null;commits:number|null;trace_sha256:string|null;failure:string|null;created_at:string;started_at:string|null;finished_at:string|null;parent_job_id?:string|null;idempotency_key:string;checkpoint_sha256?:string|null;elapsed_ms?:number;pause_requested_at?:string|null;attempts?:{number:number;status:string;started_at:string;finished_at:string|null}[]};
 export type Page<T> = {items:T[];total:number;next_offset:number|null};
 export const defaultJobSettings:JobSettings = {max_steps:100,max_work:1000000,max_candidates:1000,seed:null,detect_cycles:false,deadline_ms:10000};

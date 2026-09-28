@@ -40,6 +40,15 @@ pub struct Observation {
     atoms: BTreeMap<AtomKey, Atom>,
 }
 impl Observation {
+    pub(crate) fn signature(&self) -> (usize, usize, u64) {
+        (
+            self.atoms.len(),
+            self.atoms.values().map(|a| a.fields.len()).sum(),
+            self.atoms.values().fold(0u64, |h, a| {
+                h.wrapping_add(graph_core::shape_contribution(a))
+            }),
+        )
+    }
     pub fn atoms(&self) -> &BTreeMap<AtomKey, Atom> {
         &self.atoms
     }
@@ -91,6 +100,9 @@ fn decode_hex(s: &str) -> Result<String> {
     String::from_utf8(bytes).map_err(|_| malformed("label is not UTF-8"))
 }
 impl Observer {
+    pub(crate) fn is_all(&self) -> bool {
+        self.all
+    }
     pub fn initial_inputs(&self) -> &BTreeMap<String, AtomKey> {
         &self.inputs
     }
@@ -293,9 +305,47 @@ pub(crate) fn isomorphic_budget(
     right: &Observation,
     budget: &mut Budget,
 ) -> Result<bool> {
+    compare_budget(left, right, budget, false)
+}
+
+/// Exact comparison with a checked identity witness and incremental, reversible
+/// field propagation. Work accounting is deliberately separate from the legacy
+/// comparator; callers must not substitute this inside a legacy trace replay.
+pub fn isomorphic_indexed(
+    left: &Observation,
+    right: &Observation,
+    max_work: usize,
+) -> Result<bool> {
+    let mut budget = Budget::new(max_work, LimitKind::ComparisonWork);
+    isomorphic_indexed_budget(left, right, &mut budget)
+}
+
+pub(crate) fn isomorphic_indexed_budget(
+    left: &Observation,
+    right: &Observation,
+    budget: &mut Budget,
+) -> Result<bool> {
+    compare_budget(left, right, budget, true)
+}
+
+fn compare_budget(
+    left: &Observation,
+    right: &Observation,
+    budget: &mut Budget,
+    indexed: bool,
+) -> Result<bool> {
     budget.charge(1)?;
     if left.atoms.len() != right.atoms.len() {
         return Ok(false);
+    }
+    if indexed {
+        // Keys alone are NOT a witness. Check all kinds, attributes and ordered
+        // endpoints; exact map equality certifies the identity bijection.
+        budget.charge(left.retention_units())?;
+        budget.charge(right.retention_units())?;
+        if left.atoms == right.atoms {
+            return Ok(true);
+        }
     }
     budget.charge(left.atoms.len())?;
     budget.charge(right.atoms.len())?;
@@ -341,6 +391,9 @@ pub(crate) fn isomorphic_budget(
     let Some(colours) = refine(colours, &fields, n, budget)? else {
         return Ok(false);
     };
+    if indexed {
+        return propagated(&l, &r, &fields, &colours, budget);
+    }
     let mut map = vec![None; n];
     let mut used = vec![false; n];
     let mut next = vec![0; n];
@@ -412,6 +465,110 @@ pub(crate) fn isomorphic_budget(
             map[depth] = None;
         }
     }
+}
+
+/// Each assigned pair forces its ordered field pairs. The trail records only
+/// newly assigned pairs, so undo restores the exact preceding partial bijection.
+/// Refinement only restricts domains; success still requires a total bijection.
+fn propagated(
+    left: &[(&AtomKey, &Atom)],
+    right: &[(&AtomKey, &Atom)],
+    fields: &[Vec<usize>],
+    colours: &[usize],
+    budget: &mut Budget,
+) -> Result<bool> {
+    use std::ops::Bound::{Excluded, Unbounded};
+    let n = left.len();
+    budget.charge(n.saturating_mul(4))?;
+    let mut forward = vec![None; n];
+    let mut backward = vec![None; n];
+    let mut free: BTreeSet<_> = (0..n).collect();
+    let mut available: BTreeMap<usize, BTreeSet<usize>> = BTreeMap::new();
+    for i in 0..n {
+        available.entry(colours[n + i]).or_default().insert(i);
+    }
+    struct Frame {
+        node: usize,
+        last: Option<usize>,
+        start: usize,
+    }
+    let mut stack = vec![Frame {
+        node: 0,
+        last: None,
+        start: 0,
+    }];
+    let mut trail: Vec<(usize, usize)> = Vec::new();
+    while let Some(frame) = stack.last_mut() {
+        while trail.len() > frame.start {
+            budget.charge(1)?;
+            let (a, b) = trail.pop().unwrap();
+            forward[a] = None;
+            backward[b] = None;
+            free.insert(a);
+            available.get_mut(&colours[n + b]).unwrap().insert(b);
+        }
+        budget.charge(1)?;
+        let domain = &available[&colours[frame.node]];
+        let candidate = match frame.last {
+            None => domain.first().copied(),
+            Some(last) => domain.range((Excluded(last), Unbounded)).next().copied(),
+        };
+        let Some(candidate) = candidate else {
+            stack.pop();
+            continue;
+        };
+        frame.last = Some(candidate);
+        let mut pending = vec![(frame.node, candidate)];
+        let mut valid = true;
+        while let Some((a, b)) = pending.pop() {
+            budget.charge(1)?;
+            if let Some(old) = forward[a] {
+                if old != b {
+                    valid = false;
+                    break;
+                }
+                continue;
+            }
+            budget.charge(
+                1 + match &left[a].1.kind {
+                    Kind::Constructor(s) | Kind::Record { label: Some(s), .. } => s.len(),
+                    Kind::PatternVariable { admits, .. } => admits.len(),
+                    _ => 0,
+                },
+            )?;
+            if backward[b].is_some()
+                || colours[a] != colours[n + b]
+                || left[a].1.kind != right[b].1.kind
+                || fields[a].len() != fields[n + b].len()
+            {
+                valid = false;
+                break;
+            }
+            forward[a] = Some(b);
+            backward[b] = Some(a);
+            free.remove(&a);
+            available.get_mut(&colours[n + b]).unwrap().remove(&b);
+            trail.push((a, b));
+            budget.charge(fields[a].len())?;
+            pending.extend(
+                fields[a]
+                    .iter()
+                    .zip(&fields[n + b])
+                    .map(|(x, y)| (*x, *y - n)),
+            );
+        }
+        if valid {
+            let Some(node) = free.first().copied() else {
+                return Ok(true);
+            };
+            stack.push(Frame {
+                node,
+                last: None,
+                start: trail.len(),
+            });
+        }
+    }
+    Ok(false)
 }
 
 /// Necessary-condition partition refinement only. Incoming signatures are

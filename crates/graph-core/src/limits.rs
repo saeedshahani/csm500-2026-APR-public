@@ -53,7 +53,7 @@ impl Default for GraphLimits {
     }
 }
 
-fn label_bytes(kind: &Kind) -> usize {
+pub(crate) fn label_bytes(kind: &Kind) -> usize {
     match kind {
         Kind::Constructor(label)
         | Kind::Record {
@@ -92,6 +92,20 @@ impl GraphLimits {
     }
     pub(crate) fn check_batch(&self, graph: &Graph, batch: &[NewAtom]) -> Result<()> {
         add(graph.len(), batch.len(), self.max_atoms, LimitKind::Atoms)?;
+        // Preserve the reference's located error by falling through to its scan
+        // whenever a total does not fit. Success can use maintained exact totals.
+        let totals =
+            batch
+                .iter()
+                .try_fold((graph.field_count(), graph.label_bytes()), |(f, l), a| {
+                    Some((
+                        f.checked_add(a.fields.len())?,
+                        l.checked_add(label_bytes(&a.kind))?,
+                    ))
+                });
+        if totals.is_some_and(|(f, l)| f <= self.max_fields && l <= self.max_label_bytes) {
+            return Ok(());
+        }
         let mut fields = 0;
         let mut labels = 0;
         for (id, atom) in graph.iter() {
@@ -134,6 +148,9 @@ pub(crate) struct ValidationBudget {
     remaining: usize,
 }
 impl ValidationBudget {
+    pub fn remaining(&self) -> usize {
+        self.remaining
+    }
     pub fn new(limits: &GraphLimits) -> Self {
         Self {
             remaining: limits.max_validation_work,

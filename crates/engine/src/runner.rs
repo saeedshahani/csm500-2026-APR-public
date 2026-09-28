@@ -1,10 +1,40 @@
 //! Shared transaction-boundary control. Graph recurrence is diagnostic evidence,
 //! never certification of convergence, oscillation, divergence or fairness.
-use crate::observation::{isomorphic_budget, Budget, Observation, ObservationLimits, Observer};
+use crate::observation::{
+    isomorphic_budget, isomorphic_indexed_budget, Budget, Observation, ObservationLimits, Observer,
+};
 use crate::scheduling::{candidate_key, SchedulingStrategy};
 use crate::{Execution, ExecutionLimits};
 use graph_core::{AtomKey, Diagnostic, ErrorKind, Graph, LimitKind, Result};
 use sha2::{Digest, Sha256};
+
+/// A versioned algorithm and logical work contract, independent of the source
+/// fingerprint identifying a particular build. Existing defaults stay reference.
+#[derive(Clone, Copy, Debug, Default, PartialEq, Eq, serde::Serialize, serde::Deserialize)]
+pub enum ExecutionProfile {
+    #[default]
+    #[serde(rename = "reference-v1")]
+    ReferenceV1,
+    #[serde(rename = "indexed-v2")]
+    IndexedV2,
+    #[serde(rename = "framed-v3")]
+    FramedV3,
+}
+
+enum Candidates {
+    Full(Vec<crate::PreparedStep>),
+    Compact(Vec<crate::OperationalBinding>),
+    Certified(usize),
+}
+impl Candidates {
+    fn is_empty(&self) -> bool {
+        match self {
+            Self::Full(v) => v.is_empty(),
+            Self::Compact(v) => v.is_empty(),
+            Self::Certified(n) => *n == 0,
+        }
+    }
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Outcome {
@@ -74,6 +104,11 @@ pub enum RunProgress {
 /// Owns the history boundary. No mutable Execution escape is provided. A valid
 /// replacement requires a freshly resolved observer and clears all run state.
 pub struct Runner<S: SchedulingStrategy> {
+    one_shot: Option<crate::one_shot::OneShot>,
+    screened: crate::screened::History,
+    produced_units: usize,
+    transition_digest: [u8; 32],
+    profile: ExecutionProfile,
     execution: Execution,
     initial_scheduler: S,
     scheduler: S,
@@ -93,9 +128,33 @@ impl<S: SchedulingStrategy> Runner<S> {
         scheduler: S,
         observer: Observer,
     ) -> Result<Self> {
-        let execution = Execution::new(graph, limits)?;
+        Self::with_profile(
+            graph,
+            limits,
+            scheduler,
+            observer,
+            ExecutionProfile::ReferenceV1,
+        )
+    }
+    pub fn with_profile(
+        graph: Graph,
+        limits: ExecutionLimits,
+        scheduler: S,
+        observer: Observer,
+        profile: ExecutionProfile,
+    ) -> Result<Self> {
+        let execution = if profile == ExecutionProfile::FramedV3 {
+            Execution::with_frame_validation(graph, limits)?
+        } else {
+            Execution::new(graph, limits)?
+        };
         let initial_identity = initial_identity(execution.graph());
         Ok(Self {
+            one_shot: None,
+            screened: Default::default(),
+            produced_units: 0,
+            transition_digest: [0; 32],
+            profile,
             execution,
             initial_scheduler: scheduler.clone(),
             scheduler,
@@ -111,6 +170,9 @@ impl<S: SchedulingStrategy> Runner<S> {
     }
     pub fn execution(&self) -> &Execution {
         &self.execution
+    }
+    pub fn profile(&self) -> ExecutionProfile {
+        self.profile
     }
     /// Start retaining events at state zero. Serialisation and replay are separate.
     pub fn enable_recording(&mut self, limits: crate::recording::RecordingLimits) -> Result<()> {
@@ -144,6 +206,11 @@ impl<S: SchedulingStrategy> Runner<S> {
         let execution = self.execution.fork();
         let recording = self.recording.as_ref().map(|r| r.fork(&execution));
         Self {
+            one_shot: self.one_shot.clone(),
+            screened: self.screened.clone(),
+            produced_units: self.produced_units,
+            transition_digest: self.transition_digest,
+            profile: self.profile,
             execution,
             recording,
             initial_scheduler: self.initial_scheduler.clone(),
@@ -159,6 +226,26 @@ impl<S: SchedulingStrategy> Runner<S> {
     }
     pub(crate) fn continuation_identity(&self) -> String {
         let mut hash = Sha256::new();
+        if self.profile == ExecutionProfile::FramedV3 {
+            hash.update(b"framed-v3;");
+            hash.update(self.initial_identity.as_bytes());
+            hash.update(self.transition_digest);
+            hash.update(format!(
+                "{:?};{};{};{};{:?};{};{:?}",
+                self.plan,
+                self.active,
+                self.execution.committed_steps(),
+                self.execution.graph().next_identity(),
+                self.screened.identity(),
+                self.observer.identity(),
+                self.last_report
+            ));
+            hash.update(self.scheduler.description());
+            return format!("{:x}", hash.finalize());
+        }
+        if self.profile == ExecutionProfile::IndexedV2 {
+            hash.update(b"indexed-v2;");
+        }
         hash.update(format!(
             "{:?};{};{};{};{:?};{};{:?}",
             self.plan,
@@ -174,7 +261,7 @@ impl<S: SchedulingStrategy> Runner<S> {
         format!("{:x}", hash.finalize())
     }
     pub(crate) fn checkpoint_units(&self) -> usize {
-        self.history_units
+        self.retained_units()
             .saturating_add(self.recording.as_ref().map_or(0, |r| r.units()))
             .saturating_add(
                 crate::recording::graph_units(self.execution.graph()).unwrap_or(usize::MAX),
@@ -184,18 +271,37 @@ impl<S: SchedulingStrategy> Runner<S> {
         &self.scheduler
     }
     pub fn retained_states(&self) -> usize {
-        self.history.len()
+        if self.profile == ExecutionProfile::FramedV3 {
+            self.screened.len()
+        } else {
+            self.history.len()
+        }
+    }
+    fn retained_units(&self) -> usize {
+        if self.profile == ExecutionProfile::FramedV3 {
+            self.screened.units()
+        } else {
+            self.history_units
+        }
     }
     pub fn replace_graph(&mut self, graph: Graph, observer: Observer) -> Result<()> {
         // Stage the complete replacement, including recording capacity, before
         // publishing any new baseline or resetting scheduler/observation state.
-        let replacement = Execution::new(graph, self.execution.limits())?;
+        let replacement = if self.profile == ExecutionProfile::FramedV3 {
+            Execution::with_frame_validation(graph, self.execution.limits())?
+        } else {
+            Execution::new(graph, self.execution.limits())?
+        };
         let recording = self
             .recording
             .as_ref()
             .map(|r| crate::recording::Recording::new(&replacement, r.limits()))
             .transpose()?;
         self.execution = replacement;
+        self.one_shot = None;
+        self.screened = Default::default();
+        self.produced_units = 0;
+        self.transition_digest = [0; 32];
         self.recording = recording;
         self.initial_identity = initial_identity(self.execution.graph());
         self.observer = observer;
@@ -244,6 +350,7 @@ impl<S: SchedulingStrategy> Runner<S> {
         self.last_report = None;
         self.history = Vec::new();
         self.history_units = 0;
+        self.screened = Default::default();
         Ok(())
     }
     /// Execute at most batch_steps commits, yielding before the next state query.
@@ -302,18 +409,39 @@ impl<S: SchedulingStrategy> Runner<S> {
                 report.outcome = Outcome::Cancelled;
                 break;
             }
-            let query = (|| {
+            let query: Result<Option<(Candidates, Vec<crate::RejectedBinding>)>> = (|| {
                 if let Some(head) = requested {
                     if self.execution.view()?.rule(head).is_none() {
                         return Ok(None);
                     }
                 }
-                match requested {
-                    Some(head) => self.execution.enabled_for(head).map(Some),
-                    None => self.execution.enabled().map(Some),
+                if self.profile == ExecutionProfile::FramedV3
+                    && self.scheduler.supports_count_selection()
+                {
+                    if self.one_shot.is_none() {
+                        self.one_shot = crate::one_shot::OneShot::recognise(&self.execution)?;
+                    }
+                    if let Some(pool) = &self.one_shot {
+                        if requested.is_none_or(|head| head == pool.head) {
+                            pool.check_query(&self.execution)?;
+                            return Ok(Some((Candidates::Certified(pool.len()), Vec::new())));
+                        }
+                    }
+                }
+                if self.profile != ExecutionProfile::ReferenceV1 {
+                    let (bindings, rejected) =
+                        self.execution.compact_query(requested, true)?.into_parts();
+                    Ok(Some((Candidates::Compact(bindings), rejected)))
+                } else {
+                    let set = match requested {
+                        Some(head) => self.execution.enabled_for(head)?,
+                        None => self.execution.enabled()?,
+                    };
+                    let rejected = set.rejected().to_vec();
+                    Ok(Some((Candidates::Full(set.into_steps()), rejected)))
                 }
             })();
-            let enabled = match query {
+            let (enabled, rejected) = match query {
                 Ok(Some(set)) => set,
                 Ok(None) => {
                     report.outcome = Outcome::RequestedRuleUnavailable;
@@ -326,9 +454,9 @@ impl<S: SchedulingStrategy> Runner<S> {
                 }
                 Err(error) => return Err(error),
             };
-            report.rejected = enabled.rejected().len();
-            report.diagnostic = enabled.rejected().first().map(|r| r.diagnostic.clone());
-            if enabled.steps().is_empty() {
+            report.rejected = rejected.len();
+            report.diagnostic = rejected.first().map(|r| r.diagnostic.clone());
+            if enabled.is_empty() {
                 report.outcome = if requested.is_some() {
                     Outcome::RequestedRuleUnavailable
                 } else {
@@ -336,7 +464,7 @@ impl<S: SchedulingStrategy> Runner<S> {
                 };
                 break;
             }
-            let history_boundary = (self.history.len(), self.history_units);
+            let history_boundary = (self.retained_states(), self.retained_units());
             if limits.detect_cycles {
                 match self.observe(limits.observation) {
                     Ok((payload, recurrence)) => {
@@ -363,11 +491,7 @@ impl<S: SchedulingStrategy> Runner<S> {
                 report.outcome = Outcome::Cancelled;
                 break;
             }
-            let committed = match self.select_commit_guarded(
-                enabled.into_steps(),
-                &mut cancelled,
-                &mut allow,
-            ) {
+            let committed = match self.select_commit_guarded(enabled, &mut cancelled, &mut allow) {
                 Err(error) if error.kind() == ErrorKind::ResourceExhaustion => {
                     report.outcome = Outcome::ResourceLimit;
                     report.diagnostic = Some(error);
@@ -376,8 +500,13 @@ impl<S: SchedulingStrategy> Runner<S> {
                 other => other?,
             };
             let Some(committed) = committed else {
-                self.history.truncate(history_boundary.0);
-                self.history_units = history_boundary.1;
+                if self.profile == ExecutionProfile::FramedV3 {
+                    self.screened
+                        .truncate(history_boundary.0, history_boundary.1);
+                } else {
+                    self.history.truncate(history_boundary.0);
+                    self.history_units = history_boundary.1;
+                }
                 return Ok(RunProgress::Yielded);
             };
             if !committed {
@@ -399,32 +528,84 @@ impl<S: SchedulingStrategy> Runner<S> {
         steps: Vec<crate::PreparedStep>,
         cancelled: &mut impl FnMut() -> bool,
     ) -> Result<bool> {
-        self.select_commit_guarded(steps, cancelled, &mut |_| true)
+        self.select_commit_guarded(Candidates::Full(steps), cancelled, &mut |_| true)
             .map(|v| v.unwrap())
     }
     fn select_commit_guarded(
         &mut self,
-        mut steps: Vec<crate::PreparedStep>,
+        candidates: Candidates,
         cancelled: &mut impl FnMut() -> bool,
         allow: &mut impl FnMut(&crate::PreparedStep) -> bool,
     ) -> Result<Option<bool>> {
-        steps.sort_by_cached_key(candidate_key);
         let mut next_scheduler = self.scheduler.clone();
-        let index = next_scheduler
-            .select(&steps)
-            .filter(|i| *i < steps.len())
-            .ok_or_else(|| {
-                Diagnostic::new(
-                    ErrorKind::InvalidBinding,
-                    "scheduler did not select an enabled candidate",
-                )
-            })?;
+        let mut certified_index = None;
+        let bad_selection = || {
+            Diagnostic::new(
+                ErrorKind::InvalidBinding,
+                "scheduler did not select an enabled candidate",
+            )
+        };
+        let prepared = match candidates {
+            Candidates::Certified(count) => {
+                let rank = next_scheduler
+                    .select_rank(count)
+                    .filter(|i| *i < count)
+                    .ok_or_else(bad_selection)?;
+                let (index, binding) = self.one_shot.as_ref().unwrap().select(rank);
+                certified_index = Some(index);
+                self.execution.prepare(binding)?
+            }
+            Candidates::Compact(bindings) => {
+                if let Some(selected) = next_scheduler.select_bindings(&bindings) {
+                    let index = selected
+                        .filter(|i| *i < bindings.len())
+                        .ok_or_else(bad_selection)?;
+                    self.execution.prepare(bindings[index].clone())?
+                } else {
+                    // A non-opted-in strategy retains its original full-candidate
+                    // interface. Discard any speculative clone mutations first.
+                    next_scheduler = self.scheduler.clone();
+                    let mut steps = bindings
+                        .into_iter()
+                        .map(|b| self.execution.prepare(b))
+                        .collect::<Result<Vec<_>>>()?;
+                    steps.sort_by_cached_key(candidate_key);
+                    let index = next_scheduler
+                        .select(&steps)
+                        .filter(|i| *i < steps.len())
+                        .ok_or_else(bad_selection)?;
+                    steps.swap_remove(index)
+                }
+            }
+            Candidates::Full(mut steps) => {
+                steps.sort_by_cached_key(candidate_key);
+                let index = next_scheduler
+                    .select(&steps)
+                    .filter(|i| *i < steps.len())
+                    .ok_or_else(bad_selection)?;
+                steps.swap_remove(index)
+            }
+        };
         if cancelled() {
             return Ok(Some(false));
         }
-        let prepared = steps.swap_remove(index);
         if !allow(&prepared) {
             return Ok(None);
+        }
+        let mut next_digest = self.transition_digest;
+        let mut produced_units = 0usize;
+        if self.profile == ExecutionProfile::FramedV3 {
+            let mut hash = Sha256::new();
+            hash.update(self.transition_digest);
+            hash.update(format!(
+                "{:?};{:?}",
+                prepared.event(),
+                prepared.ground_rule().fresh()
+            ));
+            next_digest = hash.finalize().into();
+            for atom in prepared.ground_rule().fresh().values() {
+                produced_units = produced_units.saturating_add(crate::recording::atom_units(atom)?);
+            }
         }
         if let Some(recording) = &mut self.recording {
             recording.commit(&mut self.execution, prepared)?;
@@ -432,17 +613,38 @@ impl<S: SchedulingStrategy> Runner<S> {
             self.execution.commit(prepared)?;
         }
         self.scheduler = next_scheduler;
+        self.transition_digest = next_digest;
+        self.produced_units = produced_units;
+        if let Some(index) = certified_index {
+            self.one_shot.as_mut().unwrap().remove(index);
+        } else {
+            self.one_shot = None;
+        }
         Ok(Some(true))
     }
     fn observe(&mut self, limits: ObservationLimits) -> Result<(usize, Option<Recurrence>)> {
+        if self.profile == ExecutionProfile::FramedV3 {
+            return self.screened.observe(
+                &self.execution,
+                &self.observer,
+                self.scheduler.description(),
+                limits,
+                self.produced_units,
+            );
+        }
         let view = self.execution.view()?;
         let selected = self.observer.project(&view, limits)?;
         let full = Observer::all().project(&view, limits)?;
         let payload = selected.value_payload();
         let mut budget = Budget::new(limits.max_comparison_work, LimitKind::ComparisonWork);
+        let compare = match self.profile {
+            ExecutionProfile::ReferenceV1 => isomorphic_budget,
+            ExecutionProfile::IndexedV2 => isomorphic_indexed_budget,
+            ExecutionProfile::FramedV3 => unreachable!(),
+        };
         for previous in &self.history {
-            if isomorphic_budget(&previous.selected, &selected, &mut budget)? {
-                let complete_state_equal = isomorphic_budget(&previous.full, &full, &mut budget)?;
+            if compare(&previous.selected, &selected, &mut budget)? {
+                let complete_state_equal = compare(&previous.full, &full, &mut budget)?;
                 return Ok((
                     payload,
                     Some(Recurrence {

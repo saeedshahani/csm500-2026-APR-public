@@ -5,7 +5,7 @@ use graph_core::{
 use std::collections::{BTreeMap, BTreeSet};
 
 /// A raw match rejected by a named applicability predicate, not a search failure.
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 pub struct RejectedBinding {
     pub binding: OperationalBinding,
     pub diagnostic: Diagnostic,

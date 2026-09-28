@@ -6,8 +6,12 @@ export const DEFAULTS = Object.freeze({ max_steps: 100, max_work: 1000000, max_c
   seed: null, detect_cycles: false, deadline_ms: 10000 });
 export function settings(value = {}) {
   if (!value || typeof value !== 'object' || Array.isArray(value)
-      || Object.keys(value).some(k => !Object.hasOwn(DEFAULTS, k))) fail(400, 'invalid_settings', 'Unknown settings');
+      || Object.keys(value).some(k => !Object.hasOwn(DEFAULTS, k) && k !== 'execution_profile')) fail(400, 'invalid_settings', 'Unknown settings');
   const s = { ...DEFAULTS, ...value };
+  if (Object.hasOwn(s, 'execution_profile') && !['reference-v1', 'indexed-v2', 'framed-v3'].includes(s.execution_profile))
+    fail(400, 'invalid_settings', 'Unsupported execution profile');
+  // Preserve the canonical pre-profile default settings and idempotency hashes.
+  if (s.execution_profile === 'reference-v1') delete s.execution_profile;
   for (const [key, maximum] of Object.entries({ max_steps: 1000, max_work: 1000000, max_candidates: 1000, deadline_ms: 30000 })) {
     if (!Number.isSafeInteger(s[key]) || s[key] < (key === 'deadline_ms' ? 1 : 0) || s[key] > maximum)
       fail(400, 'invalid_settings', `Invalid ${key}; maximum ${maximum}`);
@@ -107,7 +111,8 @@ export class Worker {
       const version = this.store.state.versions.find(v => v.id === job.version_id);
       const input = await this.store.read(job.checkpoint_sha256 ?? version.source_sha256);
       const args = ['export', '-', '--max-steps', String(s.max_steps), '--max-work', String(s.max_work),
-        '--max-candidates', String(s.max_candidates), '--detect-cycles', String(s.detect_cycles), '--batch-steps', '10'];
+        '--max-candidates', String(s.max_candidates), '--detect-cycles', String(s.detect_cycles), '--batch-steps', '10',
+        '--execution-profile', s.execution_profile ?? 'reference-v1'];
       if (s.seed !== null) args.push('--strategy', 'seeded', '--seed', s.seed);
       const remainingTime = () => Math.max(0, s.deadline_ms - job.elapsed_ms - Math.ceil(performance.now() - started));
       if (!remainingTime()) throw Object.assign(Error('Execution allowance exhausted'), { code: 'timed_out' });

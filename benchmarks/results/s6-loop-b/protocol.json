@@ -1,0 +1,43 @@
+{
+  "schema": "loop-b-diagnostic-v1",
+  "baseline_commit": "b650e4f3b55370b9fcc533f2d91cadc02819a689",
+  "warmups": 1,
+  "samples": 3,
+  "timeout_ms": 30000,
+  "hard_memory_cap": null,
+  "seed": 42,
+  "phases": [
+    "clone",
+    "prepare",
+    "enabled-compact",
+    "compare",
+    "compare-indexed",
+    "compare-permuted",
+    "pipeline-reference",
+    "pipeline-indexed"
+  ],
+  "comparison_work": {
+    "identity": 10000000,
+    "permuted": 100000000
+  },
+  "initial_sizes": [
+    10,
+    100,
+    1000
+  ],
+  "comparison_sizes": [
+    1000,
+    10000,
+    100000
+  ],
+  "full_run_ladder": [
+    10,
+    100,
+    1000,
+    10000,
+    100000,
+    1000000
+  ],
+  "gate": "Only complete NormalForm + verified domain + portable replay advances full-run size. A failed cell retains all three samples; larger cells are not attempted.",
+  "note": "Diagnostic medians only. Pipeline includes recording, recurrence observation, portable export and independently checked import. Combined candidate changes are not a causal isolation of persistence versus validation reuse."
+}

@@ -15,6 +15,11 @@ const token = 'local_test_token_012345678901234567890';
 const program = fs.readFileSync('examples/programs/arithmetic.graph', 'utf8');
 const oscillator = fs.readFileSync('examples/behaviour/oscillating.graph', 'utf8');
 
+test('explicit reference profile preserves legacy canonical settings and idempotency',()=>{
+ assert.deepEqual(settings({}),settings({execution_profile:'reference-v1'}));
+ assert.equal(settings({execution_profile:'indexed-v2'}).execution_profile,'indexed-v2');
+});
+
 async function fixture(t, options = {}) {
   const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'graph-platform-test-'));
   let app = await start({ directory, binary, token, ...options });
@@ -229,7 +234,7 @@ test('invalid source, settings, unknown fields, unauthorised and cross-origin re
   assert.equal((await f.request('/v1/validate', { source: '\ud800' })).status, 400);
   assert.equal((await f.request('/v1/validate', { source: 'x'.repeat(1024 * 1024) })).status, 413);
   const { project, version } = await f.create();
-  for (const config of [{ max_steps: -1 }, { max_steps: 1001 }, { max_work: 1000001 }, { seed: 42 }, { seed: '18446744073709551616' }, { detect_cycles: 'yes' }, { arbitrary: true }])
+  for (const config of [{ max_steps: -1 }, { max_steps: 1001 }, { max_work: 1000001 }, { seed: 42 }, { seed: '18446744073709551616' }, { detect_cycles: 'yes' }, { arbitrary: true }, {execution_profile:'future'}, {execution_profile:['indexed-v2']}])
     assert.equal((await f.submit(project, version, config)).status, 400);
   assert.equal((await f.request('/v1/projects?limit=101')).status, 400);
   assert.equal((await f.request('/v1/projects?surprise=yes')).status, 400);
@@ -243,6 +248,15 @@ test('engine limits and recurrence remain semantic outcomes, not platform failur
     assert.equal(j.status, 'completed'); assert.equal(j.outcome, outcome); assert.ok(j.trace_sha256);
     if (outcome !== 'CycleDetected') assert.equal(j.commits, 0);
   }
+});
+
+for(const execution_profile of ['indexed-v2','framed-v3'])test(`${execution_profile} jobs retain explicit profile and reproduce direct native traces`,async t=>{
+ const f=await fixture(t),{project,version}=await f.create(oscillator);
+ const r=await f.submit(project,version,{max_steps:4,seed:'42',detect_cycles:true,execution_profile},'indexed');
+ const j=await f.wait(r.body.id);assert.equal(j.status,'completed');assert.equal(j.outcome,'CycleDetected');
+ const exported=await f.request(`/v1/jobs/${j.id}/trace`);
+ const direct=spawnSync(binary,['export','-','--max-steps','4','--strategy','seeded','--seed','42','--detect-cycles','true','--execution-profile',execution_profile],{input:oscillator,encoding:'utf8'});
+ assert.equal(direct.status,6,direct.stderr);assert.equal(exported.body.settings.execution_profile,execution_profile);assert.deepEqual(exported.body,JSON.parse(direct.stdout));
 });
 
 test('reflective programs and seeded execution use the exact native trace path', async t => {

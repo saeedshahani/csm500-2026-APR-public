@@ -1,6 +1,6 @@
-//! Experimental query-local indexed matching and compact enabled-set retention.
-//! Not used by Runner or portable trace replay: work accounting is a separate
-//! profile. Admission still uses the complete reference validator/transaction.
+//! Query-local indexed matching and compact enabled-set retention. The direct
+//! experimental v1 API is retained; Runner/replay use the separately reserved
+//! v2 work contract. Both use complete checked post-state admission.
 use crate::scheduling::Scheduler;
 use crate::{AdmissionFailure, Execution, OperationalBinding, PreparedStep, RejectedBinding};
 use graph_core::{AtomKey, Binding, Graph, Kind, Result, Role, RuleView, Sort};
@@ -50,6 +50,9 @@ pub struct CompactEnabled<'a> {
     work: usize,
 }
 impl CompactEnabled<'_> {
+    pub(crate) fn into_parts(self) -> (Vec<OperationalBinding>, Vec<RejectedBinding>) {
+        (self.bindings, self.rejected)
+    }
     pub fn bindings(&self) -> &[OperationalBinding] {
         &self.bindings
     }
@@ -93,6 +96,15 @@ impl Execution {
     /// Full enabled set, not first-match selection. Each candidate is fully
     /// prepared then discarded; only its binding and rejection evidence remain.
     pub fn enabled_compact(&self) -> Result<CompactEnabled<'_>> {
+        self.compact_query(None, false)
+    }
+    /// Reserve re-materialisation work for every admitted binding, including
+    /// custom strategies requiring full candidates. This is profile v2 only.
+    pub(crate) fn compact_query(
+        &self,
+        requested: Option<AtomKey>,
+        reserve: bool,
+    ) -> Result<CompactEnabled<'_>> {
         let mut search = self.search();
         let view = self.view()?;
         let hidden = crate::matching::hidden(view.configuration(), &mut search)?;
@@ -100,11 +112,17 @@ impl Execution {
         let mut bindings = Vec::new();
         let mut rejected = Vec::new();
         for rule in view.live_rules() {
+            if requested.is_some_and(|head| head != rule.head) {
+                continue;
+            }
             search.charge_work(1)?;
             enumerate(self.graph(), rule, &hidden, &index, &mut search, |s, b| {
                 match s.prepare_classified(b.clone()) {
                     Ok(step) => {
                         s.charge_work(step.ground_rule().fresh().len())?;
+                        if reserve {
+                            s.charge_work(1 + b.assignments().len())?;
+                        }
                         bindings.push(b);
                     }
                     Err(AdmissionFailure::Rejected(diagnostic)) => rejected.push(RejectedBinding {

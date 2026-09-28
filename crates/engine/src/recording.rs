@@ -142,9 +142,11 @@ pub(crate) fn atom_units(atom: &Atom) -> Result<usize> {
         .ok_or_else(storage_error)
 }
 pub(crate) fn graph_units(graph: &graph_core::Graph) -> Result<usize> {
-    graph.iter().try_fold(0usize, |n, (_, a)| {
-        n.checked_add(atom_units(a)?).ok_or_else(storage_error)
-    })
+    graph
+        .retention_units()
+        .checked_sub(1)
+        .and_then(|n| n.checked_add(graph.len()))
+        .ok_or_else(storage_error)
 }
 fn storage_error() -> Diagnostic {
     Diagnostic::exhausted(LimitKind::TraceStorage, "recording capacity exhausted")

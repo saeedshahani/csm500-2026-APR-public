@@ -7,17 +7,19 @@ pub mod conflict;
 pub mod indexed;
 mod matching;
 pub mod observation;
+mod one_shot;
 pub mod recording;
 pub mod runner;
 pub mod scheduling;
+mod screened;
 pub mod trace;
 pub use checked::{
     CandidateSearch, Execution, ExecutionLimits, GroundMatch, GroundRule, OperationalBinding,
     PreparedStep, SearchLimits,
 };
 use graph_core::{
-    ensure, validate_with_limits, AtomKey, Binding, Diagnostic, ErrorKind, Graph, GraphLimits,
-    Kind, NewAtom, Result, Role, Target,
+    ensure, validate_with_limits, AtomKey, Binding, Configuration, Diagnostic, ErrorKind, Graph,
+    GraphLimits, Kind, NewAtom, Result, Role, Target,
 };
 pub use matching::{EnabledSet, RejectedBinding};
 use std::collections::{BTreeMap, BTreeSet};
@@ -89,6 +91,23 @@ pub(crate) fn apply_candidate(
     limits: &GraphLimits,
 ) -> std::result::Result<Event, AdmissionFailure> {
     let before = validate_with_limits(graph, limits)?;
+    let (candidate, event, _) =
+        prepare_from_validated(graph, source, binding, limits, &before, false)?;
+    *graph = candidate;
+    Ok(event)
+}
+
+/// Internal only: `before` must be the full validator's result for this exact
+/// immutable carrier and limits. Execution owns that invariant; callers cannot
+/// supply a detached/edited configuration through the public admission API.
+pub(crate) fn prepare_from_validated(
+    graph: &Graph,
+    source: AtomKey,
+    binding: &BTreeMap<AtomKey, AtomKey>,
+    limits: &GraphLimits,
+    before: &Configuration,
+    framed: bool,
+) -> std::result::Result<(Graph, Event, Configuration), AdmissionFailure> {
     let rule = before.rules.get(&source).ok_or_else(|| {
         Diagnostic::new(ErrorKind::InvalidBinding, "source is not live").at_atom(source)
     })?;
@@ -211,8 +230,18 @@ pub(crate) fn apply_candidate(
         .insert_batch_with_limits(&batch, limits)?
         .into_iter()
         .collect();
-    let after = validate_with_limits(&candidate, limits)
-        .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::InvalidConfiguration))?;
+    let after = if framed {
+        data_frame(
+            graph, &candidate, before, &hidden, &consumed, &produced, limits,
+        )
+    } else {
+        None
+    };
+    let after = match after {
+        Some(certificate) => certificate,
+        None => validate_with_limits(&candidate, limits)
+            .map_err(|error| AdmissionFailure::rejected(error, ErrorKind::InvalidConfiguration))?,
+    };
     let pre_heads: BTreeSet<_> = before.rules.keys().copied().collect();
     let post_heads: BTreeSet<_> = after.rules.keys().copied().collect();
     let entered: BTreeSet<_> = post_heads.difference(&pre_heads).copied().collect();
@@ -319,6 +348,69 @@ pub(crate) fn apply_candidate(
         exited,
         altered,
     };
-    *graph = candidate;
-    Ok(event)
+    Ok((candidate, event, after))
+}
+
+/// Ordinary-data frame lemma. No membership, metadata, rank, variable or quoted
+/// syntax changes. Existing incidences are immutable; checked deletion established
+/// the dangling condition. New links have constructor endpoints. Thus all decoded
+/// representations and recursive packages are unchanged. The exact full-validator
+/// charge changes only with top-level atom/field scan coefficients.
+fn data_frame(
+    before_graph: &Graph,
+    after_graph: &Graph,
+    before: &Configuration,
+    hidden: &BTreeSet<AtomKey>,
+    consumed: &BTreeSet<AtomKey>,
+    produced: &BTreeSet<AtomKey>,
+    limits: &GraphLimits,
+) -> Option<Configuration> {
+    // Nested-package validation has additional outer-carrier closure charges;
+    // keep the full validator until a separate coefficient certificate covers it.
+    if before.rules.values().any(|r| !r.package_atoms.is_empty()) {
+        return None;
+    }
+    let ordinary = |atom: &graph_core::Atom| {
+        matches!(
+            atom.kind,
+            Kind::Constructor(_)
+                | Kind::Record {
+                    role: Role::ObjectLink,
+                    ..
+                }
+        )
+    };
+    if !hidden.is_disjoint(consumed)
+        || consumed
+            .iter()
+            .any(|id| !ordinary(before_graph.get(*id).unwrap()))
+    {
+        return None;
+    }
+    for id in produced {
+        let atom = after_graph.get(*id)?;
+        if !ordinary(atom)
+            || atom.fields.iter().any(|target| {
+                !matches!(
+                    after_graph.get(*target).map(|a| &a.kind),
+                    Some(Kind::Constructor(_))
+                )
+            })
+        {
+            return None;
+        }
+    }
+    let rules = before.rules.len() as i128;
+    let active = before.rules.values().filter(|r| r.active).count() as i128;
+    let work = (before.validation_work as i128)
+        + (2 + 2 * rules + 2 * active) * (after_graph.len() as i128 - before_graph.len() as i128)
+        + (rules + 2 * active)
+            * (after_graph.field_count() as i128 - before_graph.field_count() as i128);
+    let work = usize::try_from(work).ok()?;
+    if work > limits.max_validation_work {
+        return None;
+    }
+    let mut after = before.clone();
+    after.validation_work = work;
+    Some(after)
 }

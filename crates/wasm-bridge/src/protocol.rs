@@ -13,6 +13,7 @@ use std::collections::BTreeMap;
 #[derive(Clone, Debug, Deserialize)]
 #[serde(default, deny_unknown_fields)]
 pub struct Config {
+    pub execution_profile: engine::runner::ExecutionProfile,
     pub max_steps: Number,
     pub seed: Option<Number>,
     pub detect_cycles: bool,
@@ -24,6 +25,7 @@ pub struct Config {
 impl Default for Config {
     fn default() -> Self {
         Self {
+            execution_profile: Default::default(),
             max_steps: Number(100),
             seed: None,
             detect_cycles: false,
@@ -552,13 +554,14 @@ impl Workbench {
                 let mut limits = ExecutionLimits::default();
                 limits.search.max_work = config.max_work.size()?;
                 limits.search.max_candidates = config.max_candidates.size()?;
-                let mut runner = Runner::new(
+                let mut runner = Runner::with_profile(
                     input.into_graph(),
                     limits,
                     config
                         .seed
                         .map_or(Scheduler::Deterministic, |n| Scheduler::seeded(n.0)),
                     observer,
+                    config.execution_profile,
                 )?;
                 runner.enable_recording(Default::default())?;
                 runner.begin_run(
@@ -809,12 +812,13 @@ impl Workbench {
                                     .ok_or_else(|| error("missing initial source"))
                             })
                             .transpose()?;
-                        let mut runner = Runner::new(
+                        let mut runner = Runner::with_profile(
                             graph,
                             doc.settings.execution()?,
                             plan.seed
                                 .map_or(Scheduler::Deterministic, |n| Scheduler::seeded(n.0)),
                             observer,
+                            doc.settings.execution_profile.unwrap_or_default(),
                         )?;
                         runner.enable_recording(doc.settings.recording.native()?)?;
                         runner.begin_run(plan.limits()?, requested)?;

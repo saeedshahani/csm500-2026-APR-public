@@ -1471,6 +1471,12 @@
           "detect_cycles": {
             "type": "boolean",
             "default": false
+          },
+          "execution_profile": {
+            "type": "string",
+            "enum": ["reference-v1", "indexed-v2", "framed-v3"],
+            "default": "reference-v1",
+            "description": "Versioned matching/comparison work contract; recorded in traces and preserved on resume."
           }
         },
         "required": []

@@ -26,8 +26,22 @@ pub fn candidate_key(step: &PreparedStep) -> CandidateKey {
 /// Selection must also be reproducible from identical cloned state and input;
 /// debugger yields may discard and recompute an uncommitted selection.
 pub trait SchedulingStrategy: Clone {
+    fn supports_count_selection(&self) -> bool {
+        false
+    }
+    fn select_rank(&mut self, _count: usize) -> Option<usize> {
+        None
+    }
     fn select(&mut self, candidates: &[PreparedStep]) -> Option<usize>;
     fn description(&self) -> String;
+    /// Opt in only if selection depends solely on canonical bindings. None
+    /// preserves full-candidate access for existing custom strategies.
+    fn select_bindings(
+        &mut self,
+        _candidates: &[crate::OperationalBinding],
+    ) -> Option<Option<usize>> {
+        None
+    }
 }
 
 #[derive(Clone, Debug)]
@@ -63,6 +77,18 @@ impl Scheduler {
     }
 }
 impl SchedulingStrategy for Scheduler {
+    fn supports_count_selection(&self) -> bool {
+        true
+    }
+    fn select_rank(&mut self, count: usize) -> Option<usize> {
+        self.select_count(count)
+    }
+    fn select_bindings(
+        &mut self,
+        candidates: &[crate::OperationalBinding],
+    ) -> Option<Option<usize>> {
+        Some(self.select_count(candidates.len()))
+    }
     fn select(&mut self, candidates: &[PreparedStep]) -> Option<usize> {
         self.select_count(candidates.len())
     }

@@ -1,7 +1,7 @@
 //! Bounded native experimental profile. See docs/research/evaluation.md.
 #[path = "../benches/support/mod.rs"]
 mod support;
-use engine::observation::{isomorphic, Observer};
+use engine::observation::{isomorphic, isomorphic_indexed, Observer};
 use engine::scheduling::{candidate_key, Scheduler, SchedulingStrategy};
 use engine::{Execution, ExecutionLimits, SearchLimits};
 use graph_core::{Graph, GraphLimits, Kind, NewAtom, Role, Target};
@@ -111,7 +111,7 @@ fn main() {
     let phase = &args[2];
     let events: u64 = args[3].parse().unwrap();
     let seed: u32 = args[4].parse().unwrap();
-    assert!(n <= 100_000 && events <= 1000);
+    assert!(n <= 100_000 && events <= 100_000);
     let lim = limits();
     let setup = Instant::now();
     let graph = if family.starts_with("import:") {
@@ -147,11 +147,52 @@ fn main() {
     } else {
         None
     };
-    let observation = if phase == "compare" {
+    let observation = if phase.starts_with("compare") {
         Some(
             Observer::all()
-                .project(&run.view().unwrap(), Default::default())
+                .project(
+                    &run.view().unwrap(),
+                    engine::observation::ObservationLimits {
+                        max_work: 10_000_000,
+                        ..Default::default()
+                    },
+                )
                 .unwrap(),
+        )
+    } else {
+        None
+    };
+    let permuted = if phase == "compare-permuted" {
+        let count = run.graph().len() as u64;
+        let identities: std::collections::BTreeMap<_, _> = run
+            .graph()
+            .iter()
+            .enumerate()
+            .map(|(i, (key, _))| (key, count - 1 - i as u64))
+            .collect();
+        let mut snapshot: Vec<_> = run
+            .graph()
+            .iter()
+            .map(|(key, atom)| {
+                (
+                    identities[&key],
+                    atom.kind.clone(),
+                    atom.fields.iter().map(|k| identities[k]).collect(),
+                )
+            })
+            .collect();
+        snapshot.sort_by_key(|(id, _, _)| *id);
+        let graph = Graph::restore_identity_snapshot(&snapshot, count, &lim.graph).unwrap();
+        Some(
+            engine::observation::all(
+                &graph,
+                lim.graph,
+                engine::observation::ObservationLimits {
+                    max_work: 10_000_000,
+                    ..Default::default()
+                },
+            )
+            .unwrap(),
         )
     } else {
         None
@@ -166,11 +207,162 @@ fn main() {
                 std::hint::black_box(run.graph().clone());
             }
             "observe" => {
-                std::hint::black_box(Observer::all().project(&run.view()?, Default::default())?);
+                std::hint::black_box(Observer::all().project(
+                    &run.view()?,
+                    engine::observation::ObservationLimits {
+                        max_work: 10_000_000,
+                        ..Default::default()
+                    },
+                )?);
             }
-            "compare" => {
+            "compare" | "compare-indexed" => {
                 let value = observation.as_ref().unwrap();
-                assert!(isomorphic(value, value, 10_000_000)?);
+                assert!(if phase == "compare-indexed" {
+                    isomorphic_indexed(value, value, 10_000_000)?
+                } else {
+                    isomorphic(value, value, 10_000_000)?
+                });
+            }
+            "compare-permuted" => {
+                assert!(isomorphic_indexed(
+                    observation.as_ref().unwrap(),
+                    permuted.as_ref().unwrap(),
+                    100_000_000
+                )?);
+            }
+            "pipeline-reference" | "pipeline-indexed" | "pipeline-framed" => {
+                use engine::runner::{ExecutionProfile, RunLimits, Runner};
+                use engine::trace::{TraceDocument, TraceLimits, TraceOptions, VerifiedTrace};
+                let framed = phase.ends_with("framed");
+                let profile = if framed {
+                    ExecutionProfile::FramedV3
+                } else if phase.ends_with("indexed") {
+                    ExecutionProfile::IndexedV2
+                } else {
+                    ExecutionProfile::ReferenceV1
+                };
+                let mut trace_limits = TraceLimits {
+                    execution: lim,
+                    max_bytes: 64 * 1024 * 1024,
+                    ..Default::default()
+                };
+                // Declared native large-job envelope, not the hosted/API policy.
+                // Keep one initial and one endpoint checkpoint; every event is
+                // still replayed and all recurrence observations remain enabled.
+                if framed && n > 100 {
+                    trace_limits.max_bytes = 512 * 1024 * 1024;
+                    trace_limits.max_nodes = 40_000_000;
+                    trace_limits.max_events = 100_000;
+                    trace_limits.max_atoms_total = 2_000_000;
+                    trace_limits.max_fields_total = 4_000_000;
+                    trace_limits.max_bindings = 1_000_000;
+                    trace_limits.max_replay_work = 100_000_000;
+                    trace_limits.max_checkpoint_units = 100_000_000;
+                    trace_limits.recording = engine::recording::RecordingLimits {
+                        max_events: 100_000,
+                        max_units: 100_000_000,
+                        max_work: 100_000_000,
+                    };
+                    trace_limits.observation = engine::observation::ObservationLimits {
+                        max_work: 10_000_000,
+                        max_comparison_work: 100_000_000,
+                        max_history_units: 100_000_000,
+                    };
+                    trace_limits.analysis = engine::causal::AnalysisLimits {
+                        max_work: 100_000_000,
+                        max_units: 100_000_000,
+                    };
+                }
+                let mut runner = Runner::with_profile(
+                    run.graph().clone(),
+                    lim,
+                    Scheduler::seeded(u64::from(seed)),
+                    Observer::all(),
+                    profile,
+                )?;
+                runner.enable_recording(trace_limits.recording)?;
+                let initial_items: std::collections::BTreeMap<_, _> = run
+                    .graph()
+                    .iter()
+                    .filter(
+                        |(_, a)| matches!(&a.kind, Kind::Constructor(s) if s.starts_with("item:")),
+                    )
+                    .map(|(id, a)| (id, a.kind.clone()))
+                    .collect();
+                let run_started = Instant::now();
+                let report = runner.run(
+                    RunLimits {
+                        max_steps: events,
+                        detect_cycles: true,
+                        observation: trace_limits.observation,
+                    },
+                    None,
+                    || false,
+                )?;
+                result["run_ns"] = json!(run_started.elapsed().as_nanos());
+                result["retained_states"] = json!(runner.retained_states());
+                result["outcome"] = json!(format!("{:?}", report.outcome));
+                result["run_diagnostic"] =
+                    json!(report.diagnostic.as_ref().map(ToString::to_string));
+                result["commits"] = json!(runner.execution().committed_steps());
+                result["processed"] = json!(domain_count(runner.execution().graph(), "processed"));
+                result["pending"] = json!(domain_count(runner.execution().graph(), "pending"));
+                if ["fixed", "guarded", "symmetry"].contains(&family.as_str()) {
+                    let final_graph = runner.execution().graph();
+                    let mut statuses = std::collections::BTreeMap::<_, usize>::new();
+                    for (_, a) in final_graph.iter() {
+                        if matches!(&a.kind, Kind::Record { role: Role::ObjectLink, label: Some(s) } if s == "pending" || s == "processed")
+                            && initial_items.contains_key(&a.fields[0])
+                        {
+                            assert_eq!(a.fields[0], a.fields[1]);
+                            *statuses.entry(a.fields[0]).or_default() += 1;
+                        }
+                    }
+                    assert_eq!(statuses.len(), initial_items.len());
+                    for (id, kind) in &initial_items {
+                        assert_eq!(&final_graph.get(*id).unwrap().kind, kind);
+                        assert_eq!(statuses[id], 1);
+                    }
+                    assert_eq!(
+                        result["processed"].as_u64().unwrap() + result["pending"].as_u64().unwrap(),
+                        n as u64
+                    );
+                    assert_eq!(
+                        result["processed"].as_u64().unwrap(),
+                        runner
+                            .execution()
+                            .committed_steps()
+                            .saturating_sub(u64::from(family == "guarded"))
+                    );
+                    result["domain_verified"] = json!(true);
+                }
+                let export_started = Instant::now();
+                let document = TraceDocument::from_runner(
+                    &runner,
+                    None,
+                    if framed && n > 100 {
+                        TraceOptions {
+                            checkpoint_interval: events.max(1),
+                            conflict_states: Vec::new(),
+                        }
+                    } else {
+                        TraceOptions::default()
+                    },
+                    trace_limits,
+                )?;
+                let bytes = document.to_json(trace_limits.max_bytes)?;
+                result["export_ns"] = json!(export_started.elapsed().as_nanos());
+                let import_started = Instant::now();
+                let verified = VerifiedTrace::import(&bytes, trace_limits)?;
+                assert_eq!(
+                    verified
+                        .state_at(runner.execution().committed_steps() as usize)?
+                        .snapshot(),
+                    runner.execution().graph().snapshot()
+                );
+                result["import_ns"] = json!(import_started.elapsed().as_nanos());
+                result["trace_bytes"] = json!(bytes.len());
+                result["replay_verified"] = json!(true);
             }
             "inspect" => {
                 let bounded:Vec<_>=run.graph().iter().take(250).map(|(k,a)|json!({"id":k.number(),"kind":a.kind,"fields":a.fields.iter().map(|f|f.number()).collect::<Vec<_>>()})).collect();
@@ -259,7 +451,9 @@ fn main() {
         Ok(())
     })();
     result["phase_ns"] = json!(started.elapsed().as_nanos());
-    result["commits"] = json!(run.committed_steps());
+    if !phase.starts_with("pipeline") {
+        result["commits"] = json!(run.committed_steps());
+    }
     if let Err(error) = operation {
         result["outcome"] = json!(format!("{:?}", error.kind()));
         result["diagnostic"] = json!(error.to_string());
@@ -275,10 +469,12 @@ fn main() {
                     .saturating_sub(u64::from(family == "guarded"))
             );
         }
-        if phase != "baseline" {
+        if phase != "baseline" && !phase.starts_with("pipeline") {
             result["processed"] = json!(processed);
         }
-        result["pending"] = json!(pending);
+        if !phase.starts_with("pipeline") {
+            result["pending"] = json!(pending);
+        }
         result["domain_invariant"] = json!(true);
     }
     println!("{result}");

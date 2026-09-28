@@ -1,6 +1,7 @@
-use crate::{apply_candidate, AdmissionFailure, Event};
+use crate::{prepare_from_validated, AdmissionFailure, Event};
 use graph_core::{
-    Atom, AtomKey, Diagnostic, ErrorKind, Graph, GraphLimits, LimitKind, Result, ValidatedGraph,
+    validate_with_limits, Atom, AtomKey, Configuration, Diagnostic, ErrorKind, Graph, GraphLimits,
+    LimitKind, Result, ValidatedGraph,
 };
 use std::collections::{BTreeMap, BTreeSet};
 use std::rc::Rc;
@@ -114,6 +115,7 @@ pub struct PreparedStep {
     rule: GroundRule,
     ground_match: GroundMatch,
     candidate: Graph,
+    configuration: Configuration,
     event: Event,
 }
 impl PreparedStep {
@@ -163,7 +165,13 @@ impl PreparedStep {
 /// ```
 #[derive(Debug)]
 pub struct Execution {
+    framed: bool,
     graph: Graph,
+    // Derived, private certificate for precisely `graph` under `limits.graph`.
+    // Every replacement passes the complete validator. Opt-in framed execution
+    // can transfer this certificate over a proved ordinary-data delta; all
+    // other post-states pass the complete validator.
+    configuration: Configuration,
     limits: ExecutionLimits,
     baseline: Rc<()>,
     steps: u64,
@@ -171,7 +179,9 @@ pub struct Execution {
 impl Execution {
     pub(crate) fn fork(&self) -> Self {
         Self {
+            framed: self.framed,
             graph: self.graph.clone(),
+            configuration: self.configuration.clone(),
             limits: self.limits,
             baseline: Rc::new(()),
             steps: self.steps,
@@ -181,9 +191,11 @@ impl Execution {
         (Rc::clone(&self.baseline), self.steps)
     }
     pub fn new(graph: Graph, limits: ExecutionLimits) -> Result<Self> {
-        ValidatedGraph::new(&graph, &limits.graph)?;
+        let configuration = validate_with_limits(&graph, &limits.graph)?;
         Ok(Self {
+            framed: false,
             graph,
+            configuration,
             limits,
             baseline: Rc::new(()),
             steps: 0,
@@ -192,22 +204,34 @@ impl Execution {
     pub fn graph(&self) -> &Graph {
         &self.graph
     }
+    /// Opt-in proved ordinary-data frame with full-validator fallback. The
+    /// baseline is still independently validated; callers supply no certificate.
+    pub fn with_frame_validation(graph: Graph, limits: ExecutionLimits) -> Result<Self> {
+        let mut execution = Self::new(graph, limits)?;
+        execution.framed = true;
+        Ok(execution)
+    }
+    pub(crate) fn configuration(&self) -> &Configuration {
+        &self.configuration
+    }
     pub fn limits(&self) -> ExecutionLimits {
         self.limits
     }
     pub fn committed_steps(&self) -> u64 {
         self.steps
     }
-    /// Revalidate and decode the current carrier on every call; no rule cache or
-    /// separate rule store is maintained. The borrow prevents a concurrent commit.
+    /// Independently revalidate and decode the current carrier. This public view
+    /// does not expose the private preparation certificate or an authoritative
+    /// rule store. The borrow prevents a concurrent commit.
     pub fn view(&self) -> Result<ValidatedGraph<'_>> {
         ValidatedGraph::new(&self.graph, &self.limits.graph)
     }
     /// Rejected replacement leaves the graph, baseline and prepared candidates intact.
     /// Successful replacement invalidates all old candidates and resets the step count.
     pub fn replace_graph(&mut self, graph: Graph) -> Result<()> {
-        ValidatedGraph::new(&graph, &self.limits.graph)?;
+        let configuration = validate_with_limits(&graph, &self.limits.graph)?;
         self.graph = graph;
+        self.configuration = configuration;
         self.baseline = Rc::new(());
         self.steps = 0;
         Ok(())
@@ -239,6 +263,7 @@ impl Execution {
             )
         })?;
         self.graph = prepared.candidate;
+        self.configuration = prepared.configuration;
         self.steps = next;
         Ok(prepared.event)
     }
@@ -256,12 +281,13 @@ impl Execution {
         &self,
         binding: OperationalBinding,
     ) -> std::result::Result<PreparedStep, AdmissionFailure> {
-        let mut candidate = self.graph.clone();
-        let event = apply_candidate(
-            &mut candidate,
+        let (candidate, event, configuration) = prepare_from_validated(
+            &self.graph,
             binding.source,
             &binding.assignments,
             &self.limits.graph,
+            &self.configuration,
+            self.framed,
         )?;
         // The reference transaction has completed checked grounding and admission.
         // Materialise its ground carrier, rather than reinterpreting variables here.
@@ -287,6 +313,7 @@ impl Execution {
             rule,
             ground_match: GroundMatch { image },
             candidate,
+            configuration,
             event,
         })
     }

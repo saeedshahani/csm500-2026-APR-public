@@ -1,6 +1,6 @@
 export type Theme='light'|'dark'|'system';
 export type Preferences={theme:Theme;view:string};
-export type PendingConfig={max_steps:string;max_work:string;max_candidates:string;seed:string|null;detect_cycles:boolean;observer:string};
+export type PendingConfig={max_steps:string;max_work:string;max_candidates:string;seed:string|null;detect_cycles:boolean;observer:string;execution_profile?:'reference-v1'|'indexed-v2'|'framed-v3'};
 export type Project={schema:'reflective-project-v1';source:string|null;draft:string;config:PendingConfig;trace:string|null;execution:unknown;position:string;presentation:Preferences};
 const object=(v:unknown):v is Record<string,unknown>=>!!v&&typeof v==='object'&&!Array.isArray(v);
 function keys(v:Record<string,unknown>,allowed:string[]){if(Object.keys(v).some(k=>!allowed.includes(k))||allowed.some(k=>!(k in v)))throw Error('Unexpected or missing project field');}
@@ -13,7 +13,8 @@ export function parseProject(text:string):Project {
  for(const v of [p.draft,p.source])if(typeof v==='string'&&new TextEncoder().encode(v).length>4*1024*1024)throw Error('Source exceeds 4 MiB');
  if(typeof p.trace==='string'&&new TextEncoder().encode(p.trace).length>16*1024*1024)throw Error('Trace exceeds 16 MiB');
  if(!object(p.config)||!object(p.presentation))throw Error('Missing configuration');
- keys(p.config,['max_steps','max_work','max_candidates','seed','detect_cycles','observer']);
+ keys(p.config,['max_steps','max_work','max_candidates','seed','detect_cycles','observer',...('execution_profile' in p.config?['execution_profile']:[])]);
+ if('execution_profile' in p.config&&(typeof p.config.execution_profile!=='string'||!['reference-v1','indexed-v2','framed-v3'].includes(p.config.execution_profile)))throw Error('Unsupported execution profile');
  const c=p.config;if(!natural(c.max_steps,10000n)||!natural(c.max_work,1000000n)||!natural(c.max_candidates,1000n)||!(c.seed===null||natural(c.seed,18446744073709551615n))||typeof c.detect_cycles!=='boolean'||typeof c.observer!=='string'||c.observer.length>4*1024*1024)throw Error('Invalid pending run configuration');
  keys(p.presentation,['theme','view']);if(typeof p.presentation.theme!=='string'||typeof p.presentation.view!=='string'||!['light','dark','system'].includes(p.presentation.theme)||!['Practical','Internal','Rules','History'].includes(p.presentation.view))throw Error('Unsupported presentation preference');
  if(p.trace===null&&(p.source===null||p.execution!==null||p.position!=='0'))throw Error('Source-only project requires source and state zero');

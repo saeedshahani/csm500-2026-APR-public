@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {execFileSync} from 'node:child_process';
+import {execFileSync,spawnSync} from 'node:child_process';
 import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
@@ -32,6 +32,20 @@ test('complete catalogue has exact CLI/native/WASM execution, trace and historic
  assert.equal(verifyExamples(compare),22);
 });
 function compare(commands){const native=execFileSync(fileURLToPath(new URL('target/debug/examples/protocol',root)),[],{input:commands.map(c=>JSON.stringify(c)).join('\n')+'\n',encoding:'utf8',maxBuffer:64*1024*1024}).trim().split('\n').map(JSON.parse);const handle=new WorkbenchHandle();try{const wasm=commands.map(c=>handle.dispatch(JSON.stringify(c)));assert.deepEqual(wasm,native);return wasm;}finally{handle.free();}}
+for(const execution_profile of ['indexed-v2','framed-v3'])test(`${execution_profile} has exact CLI/native/WASM replay, resume and reset parity`,()=>{
+ for(const file of ['practical/work-items.graph','practical/policy-enable.graph','behaviour/oscillating.graph','programs/self-modify.graph']){
+  const src=source(file),config={max_steps:'4',seed:'42',detect_cycles:true,execution_profile};
+  const prefix=compare([{command:'load',source:src,config},{command:'advance',batch:'1'}]).at(-1);
+  assert.equal(prefix.ok,true);assert.equal(prefix.state.settings.execution_profile,execution_profile);
+  const resumed=compare([{command:'import',trace:prefix.trace},{command:'advance',batch:'10'},{command:'export'},{command:'reset'}]);
+  assert.equal(resumed.at(-1).state.settings.execution_profile,execution_profile);
+  const full=compare([{command:'load',source:src,config},{command:'advance',batch:'10'}]).at(-1);
+  assert.equal(resumed[2].trace,full.trace);
+  const cli=spawnSync(fileURLToPath(new URL('target/debug/cli',root)),['export','-','--max-steps','4','--strategy','seeded','--seed','42','--detect-cycles','true','--execution-profile',execution_profile],{input:src,encoding:'utf8'});
+  assert.ok([0,3,6].includes(cli.status),cli.stderr);assert.deepEqual(JSON.parse(cli.stdout),JSON.parse(full.trace));
+ }
+ const rejected=compare([{command:'load',source:'program {}',config:{execution_profile:'unknown'}}]);assert.equal(rejected[0].ok,false);
+});
 test('breakpoint pause, revision, resume and reset agree exactly across native and WASM',()=>{
  for(const file of ['behaviour/oscillating.graph','programs/self-modify.graph','practical/policy-enable.graph']){
   const load={command:'load',source:source(file),config:{max_steps:'4',seed:'42',detect_cycles:true}};

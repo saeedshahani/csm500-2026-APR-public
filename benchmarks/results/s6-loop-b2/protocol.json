@@ -1,0 +1,25 @@
+{
+  "schema": "loop-b-completion-v1",
+  "warmups": 1,
+  "samples": 3,
+  "seed": 42,
+  "timeout_ms": 600000,
+  "sampled_group_rss_ceiling_bytes": 6442450944,
+  "hard_memory_cap": null,
+  "full_run_ladder": [
+    100,
+    1000,
+    10000,
+    100000
+  ],
+  "gate": "Every measured sample must finish NormalForm, preserve every input payload and exactly one status per item, and verify portable replay. A failed gate blocks larger full jobs.",
+  "comparison_sizes": [
+    1000,
+    10000,
+    100000
+  ],
+  "envelope": "Native only. Framed jobs above 100 use the explicit linear-volume recording/history/replay envelope in scale_probe.rs and initial/endpoint checkpoints, not default hosted bounds. Every event is recorded and independently checked. Whole-carrier recurrence remains enabled.",
+  "comparison": "B.1 failures are retained separately. The same-size 100-item cell uses the original default observation/recording limits. Larger sizes are not equal-budget speedup comparisons.",
+  "million_gate": "One million requires a separately authorised graph/trace envelope after the 100k gate and a peak-RSS/trace-size projection. It is a feasibility decision, not a promised measured result.",
+  "limitations": "One active label-parametric one-shot processing rule; data and rules share the carrier. This is not arbitrary reflective-body throughput or a useful public-data transformation. Phase timings overlap internal replay; no causal attribution to individual optimisations."
+}

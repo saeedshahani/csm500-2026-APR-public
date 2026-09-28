@@ -32,10 +32,13 @@ jobs:
           node --test scripts/documentation.test.mjs
           node scripts/reproduce-cycle.mjs --verify benchmarks/results/s6-cycle01-reproduction
           node scripts/verify-scale-study.mjs
+          node scripts/verify-loop-b.mjs
+          node scripts/verify-loop-b2.mjs
           node scripts/verify-recovery-study.mjs
           node scripts/verify-recovery-study.mjs benchmarks/results/recovery-c01
           cargo run --release --locked -p engine --example recovery_probe -- modulating 3 10
           cargo run --release --locked -p engine --example scale_probe -- fixed 1000 bindings-indexed 1 42
+          cargo run --release --locked -p engine --example scale_probe -- fixed 1000 pipeline-framed 1000 42 | node -e 'let s="";process.stdin.on("data",b=>s+=b);process.stdin.on("end",()=>{const r=JSON.parse(s);require("node:assert/strict").ok(r.outcome==="NormalForm"&&r.commits===1000&&r.domain_verified&&r.replay_verified);});'
           cargo run --release --locked -p engine --example scale_probe -- guarded 10 run-compact 20 42
       - name: Benchmark correctness smoke (not performance evidence)
         run: |

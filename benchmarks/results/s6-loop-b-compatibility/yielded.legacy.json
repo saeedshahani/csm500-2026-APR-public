@@ -1,0 +1,1158 @@
+{
+  "schema": "reflective-trace-v1",
+  "profile": "checked-binding-positive-resources-v1",
+  "implementation": "engine-0.1.0-source-sha256=f0c7a9a4e84899fb0480a5b9f0ae1433de2b81996f5e7a8e0cd3c905c0ff8a99",
+  "source_sha256": "e078a1d2815d9d562ccf8c340a0e939284c481a8c1d31451793271f25060bddd",
+  "initial_sha256": "893086385c01c0f0286378e27e466d5f6669e727e63733fc97a0b74f0d5d70e1",
+  "initial": {
+    "next_identity": "33",
+    "atoms": {
+      "0": {
+        "kind": "RuleHead",
+        "fields": []
+      },
+      "1": {
+        "kind": "Nat",
+        "fields": []
+      },
+      "2": {
+        "kind": {
+          "Record": {
+            "role": "Rank",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "1"
+        ]
+      },
+      "3": {
+        "kind": {
+          "Record": {
+            "role": "ModeObject",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "4": {
+        "kind": {
+          "Record": {
+            "role": "Revision",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "5": {
+        "kind": {
+          "Record": {
+            "role": "Active",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "6": {
+        "kind": {
+          "PatternVariable": {
+            "admits": [
+              "Constructor"
+            ],
+            "binding": "Free"
+          }
+        },
+        "fields": []
+      },
+      "7": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "6",
+          "6"
+        ]
+      },
+      "8": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "processed"
+          }
+        },
+        "fields": [
+          "6",
+          "6"
+        ]
+      },
+      "9": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "6"
+        ]
+      },
+      "10": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "7"
+        ]
+      },
+      "11": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "6"
+        ]
+      },
+      "12": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "8"
+        ]
+      },
+      "13": {
+        "kind": {
+          "Constructor": "WorkItem:work-0000"
+        },
+        "fields": []
+      },
+      "14": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "13",
+          "13"
+        ]
+      },
+      "15": {
+        "kind": {
+          "Constructor": "WorkItem:work-0004"
+        },
+        "fields": []
+      },
+      "16": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "15",
+          "15"
+        ]
+      },
+      "17": {
+        "kind": {
+          "Constructor": "WorkItem:work-0006"
+        },
+        "fields": []
+      },
+      "18": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "17",
+          "17"
+        ]
+      },
+      "19": {
+        "kind": {
+          "Constructor": "WorkItem:work-0005"
+        },
+        "fields": []
+      },
+      "20": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "19",
+          "19"
+        ]
+      },
+      "21": {
+        "kind": {
+          "Constructor": "WorkItem:work-0002"
+        },
+        "fields": []
+      },
+      "22": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "21",
+          "21"
+        ]
+      },
+      "23": {
+        "kind": {
+          "Constructor": "WorkItem:work-0008"
+        },
+        "fields": []
+      },
+      "24": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "23",
+          "23"
+        ]
+      },
+      "25": {
+        "kind": {
+          "Constructor": "WorkItem:work-0001"
+        },
+        "fields": []
+      },
+      "26": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "25",
+          "25"
+        ]
+      },
+      "27": {
+        "kind": {
+          "Constructor": "WorkItem:work-0009"
+        },
+        "fields": []
+      },
+      "28": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "27",
+          "27"
+        ]
+      },
+      "29": {
+        "kind": {
+          "Constructor": "WorkItem:work-0007"
+        },
+        "fields": []
+      },
+      "30": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "29",
+          "29"
+        ]
+      },
+      "31": {
+        "kind": {
+          "Constructor": "WorkItem:work-0003"
+        },
+        "fields": []
+      },
+      "32": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "31",
+          "31"
+        ]
+      }
+    }
+  },
+  "relation": "positive_resource_order",
+  "limitation": "Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.",
+  "settings": {
+    "graph": {
+      "max_input_bytes": "4194304",
+      "max_atoms": "10000",
+      "max_fields": "20000",
+      "max_label_bytes": "1048576",
+      "max_package_depth": "32",
+      "max_validation_work": "10000000"
+    },
+    "search": {
+      "max_candidates": "1000",
+      "max_work": "1000000"
+    },
+    "recording": {
+      "max_events": "10000",
+      "max_units": "2000000",
+      "max_work": "2000000"
+    },
+    "analysis": {
+      "max_work": "2000000",
+      "max_units": "2000000"
+    },
+    "observer": {
+      "declaration": "observer-v1\nall\n",
+      "inputs": {},
+      "nontriviality_threshold": "2"
+    },
+    "plan": {
+      "max_steps": "10",
+      "detect_cycles": false,
+      "observation": {
+        "max_work": "1000000",
+        "max_comparison_work": "1000000",
+        "max_history_units": "1000000"
+      },
+      "requested": null,
+      "seed": "42"
+    }
+  },
+  "status": "yielded",
+  "report": null,
+  "events": [
+    {
+      "id": "0",
+      "redex": {
+        "state": "0",
+        "source": "0",
+        "revision": "4",
+        "binding": [
+          [
+            "6",
+            "25"
+          ],
+          [
+            "7",
+            "26"
+          ]
+        ]
+      },
+      "post_state": "1",
+      "footprint": {
+        "consumed": [
+          "26"
+        ],
+        "preserved": [
+          "25"
+        ],
+        "produced": [
+          "33"
+        ],
+        "read": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "25",
+          "26"
+        ],
+        "entered": [],
+        "exited": [],
+        "altered": []
+      },
+      "fresh": {
+        "33": {
+          "kind": {
+            "Record": {
+              "role": "ObjectLink",
+              "label": "processed"
+            }
+          },
+          "fields": [
+            "25",
+            "25"
+          ]
+        }
+      }
+    },
+    {
+      "id": "1",
+      "redex": {
+        "state": "1",
+        "source": "0",
+        "revision": "4",
+        "binding": [
+          [
+            "6",
+            "19"
+          ],
+          [
+            "7",
+            "20"
+          ]
+        ]
+      },
+      "post_state": "2",
+      "footprint": {
+        "consumed": [
+          "20"
+        ],
+        "preserved": [
+          "19"
+        ],
+        "produced": [
+          "34"
+        ],
+        "read": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "19",
+          "20"
+        ],
+        "entered": [],
+        "exited": [],
+        "altered": []
+      },
+      "fresh": {
+        "34": {
+          "kind": {
+            "Record": {
+              "role": "ObjectLink",
+              "label": "processed"
+            }
+          },
+          "fields": [
+            "19",
+            "19"
+          ]
+        }
+      }
+    }
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "checkpoint_interval": "32",
+  "checkpoints": [
+    {
+      "state": "0",
+      "graph": {
+        "next_identity": "33",
+        "atoms": {
+          "0": {
+            "kind": "RuleHead",
+            "fields": []
+          },
+          "1": {
+            "kind": "Nat",
+            "fields": []
+          },
+          "2": {
+            "kind": {
+              "Record": {
+                "role": "Rank",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "1"
+            ]
+          },
+          "3": {
+            "kind": {
+              "Record": {
+                "role": "ModeObject",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "4": {
+            "kind": {
+              "Record": {
+                "role": "Revision",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "5": {
+            "kind": {
+              "Record": {
+                "role": "Active",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "6": {
+            "kind": {
+              "PatternVariable": {
+                "admits": [
+                  "Constructor"
+                ],
+                "binding": "Free"
+              }
+            },
+            "fields": []
+          },
+          "7": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "6",
+              "6"
+            ]
+          },
+          "8": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "processed"
+              }
+            },
+            "fields": [
+              "6",
+              "6"
+            ]
+          },
+          "9": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "10": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "7"
+            ]
+          },
+          "11": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "12": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "8"
+            ]
+          },
+          "13": {
+            "kind": {
+              "Constructor": "WorkItem:work-0000"
+            },
+            "fields": []
+          },
+          "14": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "13",
+              "13"
+            ]
+          },
+          "15": {
+            "kind": {
+              "Constructor": "WorkItem:work-0004"
+            },
+            "fields": []
+          },
+          "16": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "15",
+              "15"
+            ]
+          },
+          "17": {
+            "kind": {
+              "Constructor": "WorkItem:work-0006"
+            },
+            "fields": []
+          },
+          "18": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "17",
+              "17"
+            ]
+          },
+          "19": {
+            "kind": {
+              "Constructor": "WorkItem:work-0005"
+            },
+            "fields": []
+          },
+          "20": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "19",
+              "19"
+            ]
+          },
+          "21": {
+            "kind": {
+              "Constructor": "WorkItem:work-0002"
+            },
+            "fields": []
+          },
+          "22": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "21",
+              "21"
+            ]
+          },
+          "23": {
+            "kind": {
+              "Constructor": "WorkItem:work-0008"
+            },
+            "fields": []
+          },
+          "24": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "23",
+              "23"
+            ]
+          },
+          "25": {
+            "kind": {
+              "Constructor": "WorkItem:work-0001"
+            },
+            "fields": []
+          },
+          "26": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "25",
+              "25"
+            ]
+          },
+          "27": {
+            "kind": {
+              "Constructor": "WorkItem:work-0009"
+            },
+            "fields": []
+          },
+          "28": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "27",
+              "27"
+            ]
+          },
+          "29": {
+            "kind": {
+              "Constructor": "WorkItem:work-0007"
+            },
+            "fields": []
+          },
+          "30": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "29",
+              "29"
+            ]
+          },
+          "31": {
+            "kind": {
+              "Constructor": "WorkItem:work-0003"
+            },
+            "fields": []
+          },
+          "32": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "31",
+              "31"
+            ]
+          }
+        }
+      },
+      "scheduler": "seeded-v1; seed=42; seed-encoding=repeat-le-u64-v1; rng=ChaCha8Rng/rand_chacha-0.3.1/rand-0.8.5; stream=0; word-position=0; sampling=u64-rejection-v1; order=source-template-host-lexicographic-v1; engine=0.1.0",
+      "continuation_sha256": "90088a54682b35b8115dec4407903c94889dd43d0f91189f7e7496cb7476df0f"
+    },
+    {
+      "state": "2",
+      "graph": {
+        "next_identity": "35",
+        "atoms": {
+          "0": {
+            "kind": "RuleHead",
+            "fields": []
+          },
+          "1": {
+            "kind": "Nat",
+            "fields": []
+          },
+          "2": {
+            "kind": {
+              "Record": {
+                "role": "Rank",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "1"
+            ]
+          },
+          "3": {
+            "kind": {
+              "Record": {
+                "role": "ModeObject",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "4": {
+            "kind": {
+              "Record": {
+                "role": "Revision",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "5": {
+            "kind": {
+              "Record": {
+                "role": "Active",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "6": {
+            "kind": {
+              "PatternVariable": {
+                "admits": [
+                  "Constructor"
+                ],
+                "binding": "Free"
+              }
+            },
+            "fields": []
+          },
+          "7": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "6",
+              "6"
+            ]
+          },
+          "8": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "processed"
+              }
+            },
+            "fields": [
+              "6",
+              "6"
+            ]
+          },
+          "9": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "10": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "7"
+            ]
+          },
+          "11": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "12": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "8"
+            ]
+          },
+          "13": {
+            "kind": {
+              "Constructor": "WorkItem:work-0000"
+            },
+            "fields": []
+          },
+          "14": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "13",
+              "13"
+            ]
+          },
+          "15": {
+            "kind": {
+              "Constructor": "WorkItem:work-0004"
+            },
+            "fields": []
+          },
+          "16": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "15",
+              "15"
+            ]
+          },
+          "17": {
+            "kind": {
+              "Constructor": "WorkItem:work-0006"
+            },
+            "fields": []
+          },
+          "18": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "17",
+              "17"
+            ]
+          },
+          "19": {
+            "kind": {
+              "Constructor": "WorkItem:work-0005"
+            },
+            "fields": []
+          },
+          "21": {
+            "kind": {
+              "Constructor": "WorkItem:work-0002"
+            },
+            "fields": []
+          },
+          "22": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "21",
+              "21"
+            ]
+          },
+          "23": {
+            "kind": {
+              "Constructor": "WorkItem:work-0008"
+            },
+            "fields": []
+          },
+          "24": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "23",
+              "23"
+            ]
+          },
+          "25": {
+            "kind": {
+              "Constructor": "WorkItem:work-0001"
+            },
+            "fields": []
+          },
+          "27": {
+            "kind": {
+              "Constructor": "WorkItem:work-0009"
+            },
+            "fields": []
+          },
+          "28": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "27",
+              "27"
+            ]
+          },
+          "29": {
+            "kind": {
+              "Constructor": "WorkItem:work-0007"
+            },
+            "fields": []
+          },
+          "30": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "29",
+              "29"
+            ]
+          },
+          "31": {
+            "kind": {
+              "Constructor": "WorkItem:work-0003"
+            },
+            "fields": []
+          },
+          "32": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "31",
+              "31"
+            ]
+          },
+          "33": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "processed"
+              }
+            },
+            "fields": [
+              "25",
+              "25"
+            ]
+          },
+          "34": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "processed"
+              }
+            },
+            "fields": [
+              "19",
+              "19"
+            ]
+          }
+        }
+      },
+      "scheduler": "seeded-v1; seed=42; seed-encoding=repeat-le-u64-v1; rng=ChaCha8Rng/rand_chacha-0.3.1/rand-0.8.5; stream=0; word-position=4; sampling=u64-rejection-v1; order=source-template-host-lexicographic-v1; engine=0.1.0",
+      "continuation_sha256": "863c84e82e457e23522576dfe015a6caf103ada58212c325bb3bf8573cfa554a"
+    }
+  ]
+}

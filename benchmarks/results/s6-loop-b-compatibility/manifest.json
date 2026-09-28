@@ -1,0 +1,54 @@
+{
+  "schema": "loop-b-migration-evidence-v1",
+  "baseline_commit": "b650e4f3b55370b9fcc533f2d91cadc02819a689",
+  "baseline_binary_sha256": "68c7229182d718c3a5a7e8e6eef814ca128244a9f0dcba434cb9aa01ca4cc15a",
+  "candidate_binary_sha256": "d8abb4e2ef85106fce72da53a6bd1b40053becae994d45259a809e069851c270",
+  "collector_sha256": "5db409b6e0c7052dd4b00819eedb838b3c91cd1fdd371086d99660b2f36bf968",
+  "rows": [
+    {
+      "name": "normal",
+      "source": "examples/programs/arithmetic.graph",
+      "source_sha256": "59ab1d8d263750dfd15425fcd4abbde91518eb1836ea42c84deff7ca1e6e25bf",
+      "legacy_sha256": "660e59239b250cbdf8e871f95bbdab3bc78a29563a39c6c9397848c84c6c539b",
+      "migrated_sha256": "38728b2cd77e0ff83cf31f6e7943aa4859d1f7786ed3dd6dd301ad0bc7d6f5e2",
+      "outcome": "NormalForm",
+      "events": 1
+    },
+    {
+      "name": "recurrence",
+      "source": "examples/behaviour/oscillating.graph",
+      "source_sha256": "81d8a7c0c5d647ceaa20d4e750e1050355600141bd79c1becc2772a18cd79d74",
+      "legacy_sha256": "563574e31846231282c8ab80b57920fac11f6ad81e8af35e9618d76aa2abaafb",
+      "migrated_sha256": "d0ffc6a610d89d684523ff81170b51b4111128754369ff1bf78f063351ea9b3a",
+      "outcome": "CycleDetected",
+      "events": 2
+    },
+    {
+      "name": "reflective",
+      "source": "examples/programs/self-modify.graph",
+      "source_sha256": "02ef32a988d4d5643399b13fe7d4761d08d7b642d6d8366994d9281d4d13ada9",
+      "legacy_sha256": "69d25a1d75589dd1beff162a63f611f07dd47bece87d2411702518147692fbc6",
+      "migrated_sha256": "8c8490ee8d358844da6ef6eb74d18aebb35799923e11635e7ad7a52e8d715a99",
+      "outcome": "StepLimit",
+      "events": 4
+    },
+    {
+      "name": "exhausted",
+      "source": "examples/behaviour/oscillating.graph",
+      "source_sha256": "81d8a7c0c5d647ceaa20d4e750e1050355600141bd79c1becc2772a18cd79d74",
+      "legacy_sha256": "fa73eb42279a65c4ab95a07aee70d407b3d3012b32b177f5572ce578beacc541",
+      "migrated_sha256": "7918131a07e826e4511f668feba8cc1f8233383ab4908bb23828357fc76ff5be",
+      "outcome": "ResourceLimit",
+      "events": 0
+    },
+    {
+      "name": "yielded",
+      "source": "examples/practical/work-items.graph",
+      "source_sha256": "e078a1d2815d9d562ccf8c340a0e939284c481a8c1d31451793271f25060bddd",
+      "legacy_sha256": "ff0a4b042d86a121bfcb708c80cb5f7ee88c3036e7a3671dd024bf336da29ad5",
+      "migrated_sha256": "b09f24aa78c86ebf9fd76384ab2b36bcc292b14adf0f88adfe048d30ef6e084d",
+      "outcome": "yielded",
+      "events": 2
+    }
+  ]
+}

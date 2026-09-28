@@ -33,6 +33,7 @@ fn lambda_failure(error: parser::lambda::Error) -> Failure {
     Failure::new(code, error.to_string())
 }
 struct Options {
+    execution_profile: engine::runner::ExecutionProfile,
     run: bool,
     export: bool,
     batch_steps: Option<u64>,
@@ -70,11 +71,13 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["resume", "--help"]
         || args == ["replay", "--help"]
         || args == ["trace-check", "--help"]
+        || args == ["trace-migrate", "--help"]
         || args == ["trace-conditions", "--help"]
         || args == ["dataset-compile", "--help"]
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
     {
+        io::stdout().lock().write_all(b"Execution profiles: --execution-profile reference-v1 (default) | indexed-v2 | framed-v3\nExplicit legacy migration: cli trace-migrate TRACE [--output NEW_PATH]\nMigration rechecks the full history under reference-v1; it never overwrites its input.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Continuation: cli export INPUT --max-steps N --batch-steps N [export options]\n              cli resume TRACE --batch-steps N [--output PATH]\nA yielded checkpoint exits 0 without claiming completion. Resume preserves the original run limits and only accepts a verified yielded endpoint.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Dataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Lambda adapters: cli lambda-compile SOURCE | cli lambda-readback GRAPH\nBoth accept a file or -; compilation emits ordinary graph source.\nUse cli replay TRACE --at N | cli lambda-readback - for recorded terms.\n\n").map_err(|e| Failure::new(1, e.to_string()))?;
@@ -89,7 +92,7 @@ pub(crate) fn main_command() -> Result<u8> {
     }
     if matches!(
         args[0].as_str(),
-        "replay" | "trace-check" | "trace-conditions"
+        "replay" | "trace-check" | "trace-conditions" | "trace-migrate"
     ) {
         return trace_command(&args);
     }
@@ -211,8 +214,14 @@ pub(crate) fn main_command() -> Result<u8> {
         Some(seed) => Scheduler::seeded(seed),
         None => Scheduler::Deterministic,
     };
-    let mut runner = Runner::new(loaded.into_graph(), options.execution, scheduler, observer)
-        .map_err(engine_failure)?;
+    let mut runner = Runner::with_profile(
+        loaded.into_graph(),
+        options.execution,
+        scheduler,
+        observer,
+        options.execution_profile,
+    )
+    .map_err(engine_failure)?;
     if options.export {
         runner
             .enable_recording(Default::default())
@@ -414,13 +423,20 @@ fn trace_command(args: &[String]) -> Result<u8> {
         }
         match pair[0].as_str() {
             "--at" if args[0] == "replay" => index = Some(number::<usize>(&pair[1], "--at")?),
-            "--output" if args[0] == "replay" => output = Some(PathBuf::from(&pair[1])),
+            "--output" if args[0] == "replay" || args[0] == "trace-migrate" => {
+                output = Some(PathBuf::from(&pair[1]))
+            }
             _ => return Err(Failure::new(2, "unsupported replay option")),
         }
     }
     let limits = engine::trace::TraceLimits::default();
     let text = read_source(&args[1], limits.max_bytes)?;
-    let trace = engine::trace::VerifiedTrace::import(text.as_bytes(), limits).map_err(|e| {
+    let trace = (if args[0] == "trace-migrate" {
+        engine::trace::VerifiedTrace::migrate_reference(text.as_bytes(), limits)
+    } else {
+        engine::trace::VerifiedTrace::import(text.as_bytes(), limits)
+    })
+    .map_err(|e| {
         Failure::new(
             if e.kind() == ErrorKind::ResourceExhaustion {
                 3
@@ -430,7 +446,15 @@ fn trace_command(args: &[String]) -> Result<u8> {
             e.to_string(),
         )
     })?;
-    let result = if args[0] == "trace-conditions" {
+    let result = if args[0] == "trace-migrate" {
+        String::from_utf8(
+            trace
+                .document()
+                .to_json(limits.max_bytes)
+                .map_err(engine_failure)?,
+        )
+        .map_err(|e| Failure::new(1, e.to_string()))?
+    } else if args[0] == "trace-conditions" {
         let report = engine::conditions::extract(&trace, engine::causal::AnalysisLimits::default())
             .map_err(engine_failure)?;
         let value = serde_json::json!({"source_trace_sha256": engine::trace::sha256(text.as_bytes()), "analysis": report});
@@ -471,6 +495,7 @@ fn options(args: &[String]) -> Result<Options> {
         _ => return Err(Failure::new(2, HELP)),
     };
     let mut result = Options {
+        execution_profile: Default::default(),
         run,
         export: args[0] == "export",
         batch_steps: None,
@@ -517,6 +542,18 @@ fn options(args: &[String]) -> Result<Options> {
                 "--rule" if run => result.rule = Some(value.clone()),
                 "--strategy" if run => result.scheduler = value.clone(),
                 "--seed" if run => result.seed = Some(number(value, arg)?),
+                "--execution-profile" if run => {
+                    result.execution_profile =
+                        match value.as_str() {
+                            "reference-v1" => engine::runner::ExecutionProfile::ReferenceV1,
+                            "indexed-v2" => engine::runner::ExecutionProfile::IndexedV2,
+                            "framed-v3" => engine::runner::ExecutionProfile::FramedV3,
+                            _ => return Err(Failure::new(
+                                2,
+                                "--execution-profile expects reference-v1, indexed-v2 or framed-v3",
+                            )),
+                        }
+                }
                 "--observer" => result.observer = Some(value.clone()),
                 "--detect-cycles" if run => {
                     result.run_limits.detect_cycles = match value.as_str() {

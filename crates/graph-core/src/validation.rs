@@ -25,6 +25,8 @@ pub struct Configuration {
     pub rules: BTreeMap<AtomKey, RuleView>,
     pub quoted: BTreeMap<AtomKey, AtomKey>,
     pub operative_memberships: BTreeSet<AtomKey>,
+    /// Exact successful full-validator charge. Derived metadata, not authority.
+    pub validation_work: usize,
 }
 
 /// A read-only validated view tied to the borrowed graph's lifetime.
@@ -83,7 +85,10 @@ pub fn validate(graph: &Graph) -> Result<Configuration> {
 /// Validate all carrier, quotation, live-head and active-rule invariants with shared bounds.
 pub fn validate_with_limits(graph: &Graph, limits: &GraphLimits) -> Result<Configuration> {
     limits.check_graph(graph)?;
-    validate_inner(graph, limits, &mut ValidationBudget::new(limits), 0)
+    let mut budget = ValidationBudget::new(limits);
+    let mut configuration = validate_inner(graph, limits, &mut budget, 0)?;
+    configuration.validation_work = limits.max_validation_work - budget.remaining();
+    Ok(configuration)
 }
 
 fn validate_inner(

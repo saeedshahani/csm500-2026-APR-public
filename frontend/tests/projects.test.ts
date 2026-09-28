@@ -3,6 +3,12 @@ import assert from 'node:assert/strict';
 import {parseProject,readUtf8} from '../src/projects.ts';
 const valid={schema:'reflective-project-v1',source:'program {} // Ελληνικά',draft:'draft 🐈',trace:null,execution:null,position:'0',presentation:{theme:'dark',view:'Practical'},config:{max_steps:'20',max_work:'1000000',max_candidates:'1000',seed:'42',detect_cycles:false,observer:'observer { all; }'}};
 test('project format preserves Unicode and keeps presentation separate',()=>assert.deepEqual(parseProject(JSON.stringify(valid)),valid));
+test('execution profile is optional for old projects and explicit for indexed projects',()=>{
+ for(const execution_profile of ['reference-v1','indexed-v2','framed-v3']){
+  const p={...valid,config:{...valid.config,execution_profile}};assert.deepEqual(parseProject(JSON.stringify(p)),p);
+ }
+ for(const execution_profile of ['indexed-v1','future',null,['indexed-v2']])assert.throws(()=>parseProject(JSON.stringify({...valid,config:{...valid.config,execution_profile}})));
+});
 test('presentation preferences are strings, not coercible arrays or objects',()=>{for(const presentation of [{theme:['dark'],view:'Practical'},{theme:'dark',view:['Practical']},{theme:{},view:'Practical'}])assert.throws(()=>parseProject(JSON.stringify({...valid,presentation})));});
 test('file input preserves Unicode and rejects invalid UTF-8',async()=>{assert.equal(await readUtf8(new File(['λ 🐈'],'source.graph')),'λ 🐈');await assert.rejects(readUtf8(new File([new Uint8Array([0xff])],'bad.graph')));});
 test('project validation rejects unknown, malformed and over-budget parts',()=>{

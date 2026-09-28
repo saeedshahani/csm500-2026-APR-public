@@ -164,6 +164,19 @@ impl TraceDocument {
         options: TraceOptions,
         limits: TraceLimits,
     ) -> Result<Self> {
+        Ok(VerifiedTrace::verify(
+            Self::recording_document(recording, observer, source_sha256, options, limits)?,
+            limits,
+        )?
+        .document)
+    }
+    fn recording_document(
+        recording: &Recording,
+        observer: &Observer,
+        source_sha256: Option<String>,
+        options: TraceOptions,
+        limits: TraceLimits,
+    ) -> Result<Self> {
         let initial = GraphData {
             next_identity: Number(recording.initial_allocator()),
             atoms: recording.initial().clone(),
@@ -179,6 +192,7 @@ impl TraceDocument {
             relation: RELATION.into(),
             limitation: LIMITATION.into(),
             settings: Settings {
+                execution_profile: None,
                 graph: execution.graph.into(),
                 search: execution.search.into(),
                 recording: recording.limits().into(),
@@ -201,7 +215,7 @@ impl TraceDocument {
             checkpoint_interval: Number(options.checkpoint_interval),
             checkpoints: Vec::new(),
         };
-        Ok(VerifiedTrace::verify(doc, limits)?.document)
+        Ok(doc)
     }
     pub fn from_runner(
         runner: &Runner<Scheduler>,
@@ -219,7 +233,7 @@ impl TraceDocument {
             ));
         }
         let mut doc =
-            Self::from_recording(recording, runner.observer(), source_sha256, options, limits)?;
+            Self::recording_document(recording, runner.observer(), source_sha256, options, limits)?;
         doc.settings.plan = Some(PlanData {
             max_steps: Number(plan.limits.max_steps),
             detect_cycles: plan.limits.detect_cycles,
@@ -227,6 +241,7 @@ impl TraceDocument {
             requested: plan.requested.map(Into::into),
             seed: runner.scheduler().seed().map(Number),
         });
+        doc.settings.execution_profile = Some(runner.profile());
         doc.status = if runner.is_active() {
             "yielded"
         } else {
@@ -297,6 +312,30 @@ impl VerifiedTrace {
         *self = next;
         Ok(())
     }
+    /// Explicit migration of one legacy scheduler history, not a declaration
+    /// that an arbitrary historical implementation is compatible. Every event,
+    /// selection, terminal report and checkpoint must reproduce under reference-v1.
+    /// Original input bytes and build provenance are never rewritten in place.
+    pub fn migrate_reference(bytes: &[u8], limits: TraceLimits) -> Result<Self> {
+        if bytes.len() > limits.max_bytes {
+            return Err(exhausted("trace byte limit"));
+        }
+        let value = strict::parse(bytes, limits.max_nodes, limits.max_depth)?;
+        structural_limits(&value, limits)?;
+        let mut doc: TraceDocument =
+            serde_path_to_error::deserialize(value.clone().into_deserializer())
+                .map_err(|e| bad(&e.to_string()))?;
+        if serde_json::to_value(&doc).map_err(|e| bad(&e.to_string()))? != value {
+            return Err(bad("noncanonical or duplicate set members"));
+        }
+        if doc.settings.execution_profile.is_some() || doc.settings.plan.is_none() {
+            return Err(bad(
+                "migration requires a legacy scheduler trace without an explicit execution profile",
+            ));
+        }
+        doc.settings.execution_profile = Some(crate::runner::ExecutionProfile::ReferenceV1);
+        Self::verify(doc, limits)
+    }
     pub fn document(&self) -> &TraceDocument {
         &self.document
     }
@@ -339,7 +378,7 @@ impl VerifiedTrace {
         let graph = doc.initial.restore(&doc.settings.graph.native()?)?;
         let observer = doc.settings.observer.restore(&graph, limits.max_bytes)?;
         let mut runner = if let Some(plan) = &doc.settings.plan {
-            if doc.implementation != IMPLEMENTATION {
+            if doc.settings.execution_profile.is_none() && doc.implementation != IMPLEMENTATION {
                 return Err(bad(
                     "scheduler reproduction requires compatible implementation",
                 ));
@@ -356,12 +395,13 @@ impl VerifiedTrace {
                         .ok_or_else(|| bad("requested rule is absent"))
                 })
                 .transpose()?;
-            let mut r = Runner::new(
+            let mut r = Runner::with_profile(
                 graph.clone(),
                 doc.settings.execution()?,
                 plan.seed
                     .map_or(Scheduler::Deterministic, |n| Scheduler::seeded(n.0)),
                 observer,
+                doc.settings.execution_profile.unwrap_or_default(),
             )?;
             r.enable_recording(doc.settings.recording.native()?)?;
             r.begin_run(plan.limits()?, requested)?;
@@ -375,7 +415,13 @@ impl VerifiedTrace {
             | ("finished", true, true) => {}
             _ => return Err(bad("status, plan and report are inconsistent")),
         }
-        let mut execution = Execution::new(graph, doc.settings.execution()?)?;
+        let framed =
+            doc.settings.execution_profile == Some(crate::runner::ExecutionProfile::FramedV3);
+        let mut execution = if framed {
+            Execution::with_frame_validation(graph, doc.settings.execution()?)?
+        } else {
+            Execution::new(graph, doc.settings.execution()?)?
+        };
         let mut checked_recording = Recording::new(&execution, doc.settings.recording.native()?)?;
         let mut checkpoints = Vec::new();
         let mut units = limits.max_checkpoint_units;
@@ -396,26 +442,42 @@ impl VerifiedTrace {
         }
         for state in 0..=doc.events.len() {
             let cost = crate::recording::graph_units(execution.graph())?.saturating_add(1);
+            let claim = supplied.iter().find(|c| c.state.0 == state as u64);
+            let retain =
+                state == doc.events.len() || (state as u64) % doc.checkpoint_interval.0 == 0;
+            let charge = if framed {
+                let event = doc.events.get(state).map_or(1, |e| {
+                    1 + e.redex.binding.len()
+                        + e.footprint.read.len()
+                        + e.footprint.consumed.len()
+                        + e.footprint.produced.len()
+                });
+                event.saturating_add(if retain || claim.is_some() {
+                    cost.saturating_add(runner.as_ref().map_or(0, Runner::checkpoint_units))
+                } else {
+                    0
+                })
+            } else {
+                cost.saturating_add(checked_recording.units())
+                    .saturating_add(runner.as_ref().map_or(0, Runner::checkpoint_units))
+            };
             work = work
-                .checked_sub(
-                    cost.saturating_add(checked_recording.units())
-                        .saturating_add(runner.as_ref().map_or(0, Runner::checkpoint_units)),
-                )
+                .checked_sub(charge)
                 .ok_or_else(|| exhausted("aggregate replay work"))?;
-            let current = CheckpointData {
+            let current = (retain || claim.is_some()).then(|| CheckpointData {
                 state: Number(state as u64),
                 graph: GraphData::from_graph(execution.graph()),
                 scheduler: runner.as_ref().map(|r| r.scheduler().description()),
                 continuation_sha256: runner.as_ref().map(Runner::continuation_identity),
-            };
-            if let Some(claim) = supplied.iter().find(|c| c.state == current.state) {
-                if claim != &current {
+            });
+            if let Some(claim) = claim {
+                if Some(claim) != current.as_ref() {
                     return Err(bad(&format!(
                         "checkpoints[{state}] does not match checked prefix"
                     )));
                 }
             }
-            if state == doc.events.len() || (state as u64) % doc.checkpoint_interval.0 == 0 {
+            if retain {
                 if checkpoints.len() >= limits.max_checkpoints {
                     return Err(exhausted("checkpoint count"));
                 }
@@ -425,7 +487,7 @@ impl VerifiedTrace {
                             .saturating_add(runner.as_ref().map_or(0, Runner::checkpoint_units)),
                     )
                     .ok_or_else(|| exhausted("checkpoint retention"))?;
-                doc.checkpoints.push(current);
+                doc.checkpoints.push(current.unwrap());
                 checkpoints.push(Checkpoint {
                     state,
                     execution: execution.fork(),
@@ -514,12 +576,17 @@ impl VerifiedTrace {
         if index > self.document.events.len() {
             return Err(bad("state index outside trace"));
         }
-        let mut execution = Execution::new(
-            self.document
-                .initial
-                .restore(&self.document.settings.graph.native()?)?,
-            self.document.settings.execution()?,
-        )?;
+        let graph = self
+            .document
+            .initial
+            .restore(&self.document.settings.graph.native()?)?;
+        let mut execution = if self.document.settings.execution_profile
+            == Some(crate::runner::ExecutionProfile::FramedV3)
+        {
+            Execution::with_frame_validation(graph, self.document.settings.execution()?)?
+        } else {
+            Execution::new(graph, self.document.settings.execution()?)?
+        };
         for event in &self.document.events[..index] {
             checked_step(&mut execution, event)?;
         }

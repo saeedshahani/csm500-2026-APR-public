@@ -13,6 +13,7 @@ graph-core = { path = "crates/graph-core" }
 engine = { path = "crates/engine" }
 parser = { path = "crates/parser" }
 slotmap = "=1.0.7"
+im = "=15.1.0"
 logos = "=0.16.1"
 serde = { version = "=1.0.228", features = ["derive"] }
 serde_json = "=1.0.145"

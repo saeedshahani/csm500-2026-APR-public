@@ -139,6 +139,10 @@ impl PlanData {
 #[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Settings {
+    /// Absent means legacy source-pinned replay. Present profiles explicitly
+    /// identify algorithm/work semantics independently of build provenance.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub execution_profile: Option<crate::runner::ExecutionProfile>,
     pub graph: GraphBounds,
     pub search: SearchBounds,
     pub recording: RecordingBounds,

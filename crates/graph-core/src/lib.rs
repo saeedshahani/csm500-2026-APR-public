@@ -30,10 +30,11 @@ mod tests {
     }
 }
 
+use im::OrdMap;
 use serde::{Deserialize, Serialize};
-use slotmap::{new_key_type, SlotMap};
-use std::collections::{BTreeMap, BTreeSet};
+use std::collections::BTreeSet;
 use std::fmt;
+use std::sync::Arc;
 pub use validation::{validate, validate_with_limits, Configuration, RuleView, ValidatedGraph};
 
 /// Never reused in a committed graph history; allocation fails on exhaustion.
@@ -46,8 +47,6 @@ impl AtomKey {
         self.0
     }
 }
-
-new_key_type! { struct StorageKey; }
 
 /// The eight semantic record roles; fields are ordered by their vector positions.
 #[derive(Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
@@ -258,9 +257,55 @@ pub fn ensure(condition: bool, message: impl Into<String>) -> Result<()> {
 /// Clones preserve history but must not be merged by treating equal keys as global IDs.
 #[derive(Clone, Debug, Default)]
 pub struct Graph {
-    atoms: SlotMap<StorageKey, Atom>,
-    identities: BTreeMap<AtomKey, StorageKey>,
+    // Persistent ordered storage shares untouched tree nodes across candidates.
+    // Atom payloads are immutable and separately shared, including long labels.
+    atoms: OrdMap<AtomKey, Arc<Atom>>,
     next_identity: u64,
+    incoming: OrdMap<AtomKey, im::OrdSet<(AtomKey, usize)>>,
+    fields: usize,
+    attributes: usize,
+    labels: usize,
+    shape_sum: u64,
+    value_endpoints: OrdMap<AtomKey, usize>,
+}
+
+/// Immutable carrier-only snapshot. Derived indexes are not retained for every
+/// historical state. Restoration rebuilds and validates them; no mutation API.
+#[derive(Clone, Debug)]
+pub struct SharedCarrier {
+    atoms: OrdMap<AtomKey, Arc<Atom>>,
+    next_identity: u64,
+    signature: (usize, usize, u64),
+    units: usize,
+    payload: usize,
+}
+impl SharedCarrier {
+    pub fn signature(&self) -> (usize, usize, u64) {
+        self.signature
+    }
+    pub fn units(&self) -> usize {
+        self.units
+    }
+    pub fn payload(&self) -> usize {
+        self.payload
+    }
+    pub fn restore(&self, limits: &GraphLimits) -> Result<Graph> {
+        Graph::restore_identity_snapshot(
+            &self
+                .atoms
+                .iter()
+                .map(|(id, a)| {
+                    (
+                        id.number(),
+                        a.kind.clone(),
+                        a.fields.iter().map(|id| id.number()).collect(),
+                    )
+                })
+                .collect::<Vec<_>>(),
+            self.next_identity,
+            limits,
+        )
+    }
 }
 
 impl Graph {
@@ -271,7 +316,7 @@ impl Graph {
     /// Resolve a public number only when that atom exists in this graph.
     pub fn key(&self, number: u64) -> Option<AtomKey> {
         let key = AtomKey(number);
-        self.identities.contains_key(&key).then_some(key)
+        self.atoms.contains_key(&key).then_some(key)
     }
     /// Reconstruct a separate, fully validated identity-bearing snapshot. This
     /// does not mutate any existing execution or trust its claimed history.
@@ -329,11 +374,13 @@ impl Graph {
             ..Self::default()
         };
         for (id, kind, fields) in atoms {
-            let slot = graph.atoms.insert(Atom {
-                kind: kind.clone(),
-                fields: fields.iter().map(|id| AtomKey(*id)).collect(),
-            });
-            graph.identities.insert(AtomKey(*id), slot);
+            graph.add_atom(
+                AtomKey(*id),
+                Atom {
+                    kind: kind.clone(),
+                    fields: fields.iter().map(|id| AtomKey(*id)).collect(),
+                },
+            );
         }
         validate_with_limits(&graph, limits)?;
         Ok(graph)
@@ -342,10 +389,10 @@ impl Graph {
         Self::default()
     }
     pub fn len(&self) -> usize {
-        self.identities.len()
+        self.atoms.len()
     }
     pub fn is_empty(&self) -> bool {
-        self.identities.is_empty()
+        self.atoms.is_empty()
     }
     /// Look up an atom; a consumed or unknown key resolves to `None`.
     /// Stored fields cannot be modified through this reference.
@@ -364,9 +411,7 @@ impl Graph {
     /// graph.get(id).unwrap().kind = Kind::RuleHead;
     /// ```
     pub fn get(&self, key: AtomKey) -> Option<&Atom> {
-        self.identities
-            .get(&key)
-            .and_then(|slot| self.atoms.get(*slot))
+        self.atoms.get(&key).map(Arc::as_ref)
     }
     pub fn atom(&self, key: AtomKey) -> Result<&Atom> {
         self.get(key).ok_or_else(|| {
@@ -379,19 +424,82 @@ impl Graph {
     }
     /// Iterate in increasing runtime identity order, not semantic canonical order.
     pub fn iter(&self) -> impl Iterator<Item = (AtomKey, &Atom)> {
-        self.identities
-            .iter()
-            .map(|(id, slot)| (*id, &self.atoms[*slot]))
+        self.atoms.iter().map(|(id, atom)| (*id, atom.as_ref()))
     }
     pub fn field_count(&self) -> usize {
-        self.iter().map(|(_, a)| a.fields.len()).sum()
+        self.fields
     }
-    /// Scan for source atoms having at least one field targeting `target`.
+    pub fn label_bytes(&self) -> usize {
+        self.labels
+    }
+    /// Identity-free necessary invariant. Equality NEVER establishes isomorphism.
+    pub fn shape_signature(&self) -> (usize, usize, u64) {
+        (self.len(), self.fields, self.shape_sum)
+    }
+    pub fn retention_units(&self) -> usize {
+        1usize
+            .saturating_add(self.len())
+            .saturating_add(self.fields)
+            .saturating_add(self.attributes)
+    }
+    pub fn value_payload(&self) -> usize {
+        self.value_endpoints.len()
+    }
+    pub fn shared_carrier(&self) -> SharedCarrier {
+        SharedCarrier {
+            atoms: self.atoms.clone(),
+            next_identity: self.next_identity,
+            signature: self.shape_signature(),
+            units: self.retention_units(),
+            payload: self.value_payload(),
+        }
+    }
+    /// Indexed sources, in the same identity order as a complete scan.
     pub fn references_to(&self, target: AtomKey) -> BTreeSet<AtomKey> {
-        self.iter()
-            .filter(|(_, a)| a.fields.contains(&target))
-            .map(|(id, _)| id)
+        self.incoming
+            .get(&target)
+            .into_iter()
+            .flatten()
+            .map(|(id, _)| *id)
             .collect()
+    }
+    fn add_atom(&mut self, id: AtomKey, atom: Atom) {
+        self.fields += atom.fields.len();
+        self.labels += limits::label_bytes(&atom.kind);
+        self.attributes += attribute_units(&atom.kind);
+        self.shape_sum = self.shape_sum.wrapping_add(shape_contribution(&atom));
+        for (slot, target) in atom.fields.iter().enumerate() {
+            self.incoming.entry(*target).or_default().insert((id, slot));
+        }
+        if is_value(&atom) {
+            for target in &atom.fields {
+                *self.value_endpoints.entry(*target).or_default() += 1;
+            }
+        }
+        self.atoms.insert(id, Arc::new(atom));
+    }
+    fn erase_atom(&mut self, id: AtomKey) {
+        let atom = self.atoms.remove(&id).expect("checked existing atom");
+        self.fields -= atom.fields.len();
+        self.labels -= limits::label_bytes(&atom.kind);
+        self.attributes -= attribute_units(&atom.kind);
+        self.shape_sum = self.shape_sum.wrapping_sub(shape_contribution(&atom));
+        for (slot, target) in atom.fields.iter().enumerate() {
+            let entries = self.incoming.get_mut(target).expect("indexed incidence");
+            entries.remove(&(id, slot));
+            if entries.is_empty() {
+                self.incoming.remove(target);
+            }
+        }
+        if is_value(&atom) {
+            for target in &atom.fields {
+                let count = self.value_endpoints.get_mut(target).expect("indexed value");
+                *count -= 1;
+                if *count == 0 {
+                    self.value_endpoints.remove(target);
+                }
+            }
+        }
     }
     pub fn of_sort(&self, sort: Sort) -> BTreeSet<AtomKey> {
         self.iter()
@@ -451,7 +559,7 @@ impl Graph {
             });
         }
         for (id, atom) in ids.iter().zip(records) {
-            self.identities.insert(*id, self.atoms.insert(atom));
+            self.add_atom(*id, atom);
         }
         self.next_identity = end;
         Ok(ids)
@@ -461,24 +569,27 @@ impl Graph {
         for id in consumed {
             self.atom(*id)?;
         }
-        for (id, atom) in self.iter().filter(|(id, _)| !consumed.contains(id)) {
-            if let Some((slot, target)) = atom
-                .fields
-                .iter()
-                .enumerate()
-                .find(|(_, t)| consumed.contains(t))
-            {
-                return Err(Diagnostic::new(ErrorKind::Dangling, "dangling reference")
-                    .at_atom(id)
-                    .at_atom(*target)
-                    .at_role(atom.kind.role())
-                    .at_slot(slot));
-            }
+        let first = consumed
+            .iter()
+            .flat_map(|target| {
+                self.incoming
+                    .get(target)
+                    .into_iter()
+                    .flatten()
+                    .map(move |(source, slot)| (*source, *slot, *target))
+            })
+            .filter(|(source, _, _)| !consumed.contains(source))
+            .min();
+        if let Some((id, slot, target)) = first {
+            let atom = self.atom(id)?;
+            return Err(Diagnostic::new(ErrorKind::Dangling, "dangling reference")
+                .at_atom(id)
+                .at_atom(target)
+                .at_role(atom.kind.role())
+                .at_slot(slot));
         }
         for id in consumed {
-            if let Some(slot) = self.identities.remove(id) {
-                self.atoms.remove(slot);
-            }
+            self.erase_atom(*id);
         }
         Ok(())
     }
@@ -499,15 +610,13 @@ impl Graph {
         ensure(self.closure(keep)? == *keep, "package not record-closed")?;
         let mut result = self.clone();
         let remove: Vec<_> = result
-            .identities
+            .atoms
             .keys()
             .filter(|id| !keep.contains(id))
             .copied()
             .collect();
         for id in remove {
-            if let Some(slot) = result.identities.remove(&id) {
-                result.atoms.remove(slot);
-            }
+            result.erase_atom(id);
         }
         Ok(result)
     }
@@ -515,6 +624,28 @@ impl Graph {
     pub fn snapshot(&self) -> Vec<(AtomKey, Atom)> {
         self.iter().map(|(id, a)| (id, a.clone())).collect()
     }
+}
+
+fn attribute_units(kind: &Kind) -> usize {
+    match kind {
+        Kind::PatternVariable { admits, .. } => admits.len(),
+        _ => limits::label_bytes(kind),
+    }
+}
+fn is_value(atom: &Atom) -> bool {
+    matches!(&atom.kind, Kind::Record {role:Role::ObjectLink,label:Some(s)} if s=="value")
+        && atom.fields.len() == 2
+        && atom.fields[0] != atom.fields[1]
+}
+pub fn shape_contribution(atom: &Atom) -> u64 {
+    // Pinned FNV-1a over Debug kind bytes and a fixed-width arity. This is a
+    // rejection filter only: collisions are deliberately handled by exact search.
+    format!("{:?}", atom.kind)
+        .bytes()
+        .chain((atom.fields.len() as u64).to_le_bytes())
+        .fold(0xcbf29ce484222325u64, |h, b| {
+            (h ^ u64::from(b)).wrapping_mul(0x100000001b3)
+        })
 }
 
 fn check_shape(kind: &Kind, arity: usize) -> Result<()> {
