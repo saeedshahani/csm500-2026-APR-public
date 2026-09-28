@@ -21,6 +21,8 @@ test('container context includes the calendar importer without exposing other sc
   assert.equal(patterns[0],'**','Build context is denied by default');
   assert.ok(patterns.includes('!scripts/'),'Parent directory must be traversable');
   assert.ok(patterns.includes('!scripts/import-study-data.mjs'),'Required runtime importer must be included');
+  assert.ok(patterns.indexOf('scripts/**')>patterns.indexOf('!scripts/'),'Exclude siblings after reopening the parent');
+  assert.ok(patterns.indexOf('!scripts/import-study-data.mjs')>patterns.indexOf('scripts/**'),'Reinclude only the runtime file last');
   assert.ok(!patterns.includes('!scripts/**'),'Do not broaden the context to operator/research scripts');
   assert.ok(!patterns.some(line=>line.startsWith('!output')||line.startsWith('!.env')));
   assert.ok(patterns.includes('platform/.env*'));
