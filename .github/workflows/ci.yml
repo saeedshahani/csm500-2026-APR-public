@@ -35,6 +35,9 @@ jobs:
           node scripts/verify-loop-b.mjs
           node scripts/verify-loop-b2.mjs
           node scripts/verify-loop-c.mjs
+          node scripts/verify-loop-d.mjs
+          node scripts/verify-loop-d.mjs benchmarks/results/loop-d-01
+          cargo run --release --locked -p cli -- stability-check examples/practical/revise-guard.graph examples/practical/revise-guard.contract.json
           node scripts/verify-recovery-study.mjs
           node scripts/verify-recovery-study.mjs benchmarks/results/recovery-c01
           cargo run --release --locked -p engine --example recovery_probe -- modulating 3 10

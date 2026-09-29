@@ -102,7 +102,9 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["dataset-compile", "--help"]
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
+        || args == ["stability-check", "--help"]
     {
+        io::stdout().lock().write_all(b"Recovery analysis: cli stability-check INPUT CONTRACT [--max-states N] [--max-edges N] [--max-comparison-work N] [--max-retained-units N] [--max-work N] [--max-candidates N]\nComplete reachable-carrier analysis, not a bounded trace test. JSON report: exit 0 certified, 7 refuted, 3 inconclusive resource bound, 2 malformed input. Contract is recovery-contract-v1; no external faults or scheduler fairness assumed.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Execution profiles: --execution-profile reference-v1 (default) | indexed-v2 | framed-v3 | joined-v4\nOperator envelope: GRAPH_EXECUTION_ENVELOPE=large-local-v1 enables the documented larger local source/trace limits; unset retains defaults.\nExplicit legacy migration: cli trace-migrate TRACE [--output NEW_PATH]\nMigration rechecks the full history under reference-v1; it never overwrites its input.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Continuation: cli export INPUT --max-steps N --batch-steps N [export options]\n              cli resume TRACE --batch-steps N [--output PATH]\nA yielded checkpoint exits 0 without claiming completion. Resume preserves the original run limits and only accepts a verified yielded endpoint.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Dataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
@@ -112,6 +114,9 @@ pub(crate) fn main_command() -> Result<u8> {
             .write_all(format!("{HELP}\nScheduling: --strategy deterministic (default), or --strategy seeded --seed U64.\nOrdering: source identity, then (template identity, host identity) tuples.\nObservers: --observer FILE (observer-v1); --detect-cycles true|false (default false).\nBounds: --max-observation-work N, --max-comparison-work N, --max-history-units N.\nRecurrence is diagnostic, not proof of infinite behaviour; exit 6 CycleDetected.\nShared API cancellation stops at transaction boundaries (exit 5); CLI does not install a signal handler.\nNormal form takes precedence over recurrence and step limits; recurrence precedes step limit.\n").as_bytes())
             .map_err(|e| Failure::new(1, format!("output: {e}")))?;
         return Ok(0);
+    }
+    if args[0] == "stability-check" {
+        return stability_command(&args);
     }
     if args[0] == "resume" {
         return resume_command(&args);
@@ -352,6 +357,78 @@ pub(crate) fn main_command() -> Result<u8> {
             "requested rule has no enabled candidate; this is not a global normal-form result"
         );
     }
+    Ok(code)
+}
+
+fn stability_command(args: &[String]) -> Result<u8> {
+    if args.len() < 3 || (args.len() - 3) % 2 != 0 || (args[1] == "-" && args[2] == "-") {
+        return Err(Failure::new(2, "usage: cli stability-check INPUT CONTRACT [bounded options]; only one input may be stdin"));
+    }
+    let mut limits = engine::stability::Limits::default();
+    let mut seen = BTreeSet::new();
+    for pair in args[3..].chunks_exact(2) {
+        if !seen.insert(&pair[0])
+            || !pair[1].bytes().all(|b| b.is_ascii_digit())
+            || pair[1].is_empty()
+        {
+            return Err(Failure::new(
+                2,
+                "duplicate option or invalid nonnegative bound",
+            ));
+        }
+        let value: usize = pair[1]
+            .parse()
+            .map_err(|_| Failure::new(2, "bound out of range"))?;
+        let bound = match pair[0].as_str() {
+            "--max-states" => &mut limits.max_states,
+            "--max-edges" => &mut limits.max_edges,
+            "--max-comparison-work" => &mut limits.max_comparison_work,
+            "--max-retained-units" => &mut limits.max_retained_units,
+            "--max-work" => &mut limits.execution.search.max_work,
+            "--max-candidates" => &mut limits.execution.search.max_candidates,
+            _ => return Err(Failure::new(2, "unknown stability analysis option")),
+        };
+        *bound = value;
+    }
+    let text = read_source(&args[1], ParseLimits::default().graph.max_input_bytes)?;
+    let graph = parser::load(&text).map_err(|errors| {
+        Failure::new(
+            if errors
+                .iter()
+                .any(|e| e.diagnostic.kind() == ErrorKind::ResourceExhaustion)
+            {
+                3
+            } else {
+                2
+            },
+            format!("{errors:?}"),
+        )
+    })?;
+    let contract: engine::stability::Contract =
+        serde_json::from_str(&read_source(&args[2], 65536)?)
+            .map_err(|e| Failure::new(2, e.to_string()))?;
+    let (code, output) = match engine::stability::analyse(graph.into_graph(), &contract, limits) {
+        Ok(report) => (
+            if report.verdict == "certified" { 0 } else { 7 },
+            serde_json::to_value(report).map_err(|e| Failure::new(1, e.to_string()))?,
+        ),
+        Err(error) if error.kind() == ErrorKind::ResourceExhaustion => (
+            3,
+            serde_json::json!({"schema":"recovery-analysis-v1","verdict":"inconclusive","reason":error.to_string(),"limit":format!("{:?}",error.context().limit)}),
+        ),
+        Err(error) => return Err(Failure::new(2, error.to_string())),
+    };
+    io::stdout()
+        .lock()
+        .write_all(
+            format!(
+                "{}\n",
+                serde_json::to_string_pretty(&output)
+                    .map_err(|e| Failure::new(1, e.to_string()))?
+            )
+            .as_bytes(),
+        )
+        .map_err(|e| Failure::new(1, e.to_string()))?;
     Ok(code)
 }
 

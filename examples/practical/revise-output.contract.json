@@ -1,0 +1,6 @@
+{
+  "schema": "recovery-contract-v1",
+  "preserve": ["Ticket"],
+  "requirements": [{"from":"Ticket","targets":["Ticket"],"labels":["pending","done","audited"],"legitimate_labels":["done","audited"]}],
+  "stable_when_legitimate": true
+}

@@ -1,0 +1,27 @@
+// The supervisor edits the processor's RHS record, not its activity flag.
+program {
+ rule process {
+  atom z = Nat(); rank rank0 = z; mode mode0 = ModeObject; revision rev; active enabled;
+  atom item = Constructor("Ticket");
+  atom pending = Record[ObjectLink]("pending", item, item);
+  atom done = Record[ObjectLink]("done", item, item);
+  lhs { li: item; lp: pending; }
+  rhs { ri: item; rd: done; }
+ }
+ rule upgrade {
+  atom uz = Nat(); atom one = Nat(uz); rank rank1 = one; mode mode1 = ModeMeta; revision upgrade_rev; active upgrade_enabled;
+  atom target = PatternVariable[RuleHead] Free;
+  atom object = Record[ModeObject](target);
+  atom old_revision = Record[Revision](target);
+  atom new_revision = Record[Revision](target);
+  atom quoted_item = Constructor("Ticket");
+  atom old_output = Record[ObjectLink]("done", quoted_item, quoted_item);
+  atom old_member = Record[Rhs](target, old_output);
+  atom new_output = Record[ObjectLink]("audited", quoted_item, quoted_item);
+  atom new_member = Record[Rhs](target, new_output);
+  lhs { lh: target; lm: object; lv: old_revision; uli: quoted_item; lo: old_output; lr: old_member; }
+  rhs { rh: target; rm: object; rv: new_revision; uri: quoted_item; ro: new_output; rr: new_member; }
+ }
+ atom ticket = Constructor("Ticket");
+ atom status = Record[ObjectLink]("pending", ticket, ticket);
+}

@@ -12,6 +12,7 @@ pub mod recording;
 pub mod runner;
 pub mod scheduling;
 mod screened;
+pub mod stability;
 pub mod trace;
 pub use checked::{
     CandidateSearch, Execution, ExecutionLimits, GroundMatch, GroundRule, OperationalBinding,

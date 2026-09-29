@@ -1,0 +1,9 @@
+{
+  "schema": "recovery-contract-v1",
+  "preserve": ["Work:A", "Work:B"],
+  "requirements": [
+    {"from":"Work:A","targets":["Work:A"],"labels":["pending","done"],"legitimate_labels":["done"]},
+    {"from":"Work:B","targets":["Work:B"],"labels":["pending","done"],"legitimate_labels":["done"]}
+  ],
+  "stable_when_legitimate": true
+}

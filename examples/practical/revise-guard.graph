@@ -1,0 +1,27 @@
+// Removing a quoted LHS guard changes applicability for every work item.
+program {
+ rule process {
+  atom z = Nat(); rank rank0 = z; mode mode0 = ModeObject; revision rev; active enabled;
+  atom item = PatternVariable[Constructor] Free;
+  atom guard = Constructor("ReleaseGuard");
+  atom pending = Record[ObjectLink]("pending", item, item);
+  atom done = Record[ObjectLink]("done", item, item);
+  lhs { li: item; lg: guard; lp: pending; }
+  rhs { ri: item; rd: done; }
+ }
+ rule release {
+  atom uz = Nat(); atom one = Nat(uz); rank rank1 = one; mode mode1 = ModeMeta; revision release_rev; active release_enabled;
+  atom target = PatternVariable[RuleHead] Free;
+  atom object = Record[ModeObject](target);
+  atom old_revision = Record[Revision](target);
+  atom new_revision = Record[Revision](target);
+  atom quoted_guard = Constructor("ReleaseGuard");
+  atom member = Record[Lhs](target, quoted_guard);
+  lhs { lh: target; lm: object; lv: old_revision; ulg: quoted_guard; lb: member; }
+  rhs { rh: target; rm: object; rv: new_revision; }
+ }
+ atom a = Constructor("Work:A");
+ atom b = Constructor("Work:B");
+ atom sa = Record[ObjectLink]("pending", a, a);
+ atom sb = Record[ObjectLink]("pending", b, b);
+}
