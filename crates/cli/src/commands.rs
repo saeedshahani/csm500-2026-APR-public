@@ -103,8 +103,9 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
         || args == ["stability-check", "--help"]
+        || args == ["repair-statuses", "--help"]
     {
-        io::stdout().lock().write_all(b"Recovery analysis: cli stability-check INPUT CONTRACT [--max-states N] [--max-edges N] [--max-comparison-work N] [--max-retained-units N] [--max-work N] [--max-candidates N]\nComplete reachable-carrier analysis, not a bounded trace test. JSON report: exit 0 certified, 7 refuted, 3 inconclusive resource bound, 2 malformed input. Contract is recovery-contract-v1; no external faults or scheduler fairness assumed.\n").map_err(|e|Failure::new(1,e.to_string()))?;
+        io::stdout().lock().write_all(b"Recovery analysis: cli stability-check INPUT CONTRACT [--max-states N] [--max-edges N] [--max-comparison-work N] [--max-retained-units N] [--max-work N] [--max-candidates N]\nComplete reachable-carrier analysis, not a bounded trace test. JSON report: exit 0 certified, 7 refuted, 3 inconclusive resource bound, 2 malformed input. Contracts: recovery-contract-v1 or v2; v2 can require declared-output agreement and allow absent/duplicate statuses outside legitimacy. No external fault transition or scheduler fairness is inferred.\nExternal maintenance: cli repair-statuses INPUT CONTRACT RETRY_LABEL\nRequires core-valid input and an allowed non-legitimate retry label. Returns a recomputation-verified receipt and new baseline, not a rewrite-history continuation or proof of completed work.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Execution profiles: --execution-profile reference-v1 (default) | indexed-v2 | framed-v3 | joined-v4\nOperator envelope: GRAPH_EXECUTION_ENVELOPE=large-local-v1 enables the documented larger local source/trace limits; unset retains defaults.\nExplicit legacy migration: cli trace-migrate TRACE [--output NEW_PATH]\nMigration rechecks the full history under reference-v1; it never overwrites its input.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Continuation: cli export INPUT --max-steps N --batch-steps N [export options]\n              cli resume TRACE --batch-steps N [--output PATH]\nA yielded checkpoint exits 0 without claiming completion. Resume preserves the original run limits and only accepts a verified yielded endpoint.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Dataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
@@ -117,6 +118,72 @@ pub(crate) fn main_command() -> Result<u8> {
     }
     if args[0] == "stability-check" {
         return stability_command(&args);
+    }
+    if args[0] == "repair-statuses" {
+        if args.len() != 4 || (args[1] == "-" && args[2] == "-") {
+            return Err(Failure::new(2,"usage: cli repair-statuses INPUT CONTRACT RETRY_LABEL; external reconstruction, not a rewrite event"));
+        }
+        let source = read_source(&args[1], ParseLimits::default().graph.max_input_bytes)?;
+        let loaded = parser::load(&source).map_err(|errors| {
+            Failure::new(
+                if errors
+                    .iter()
+                    .any(|e| e.diagnostic.kind() == ErrorKind::ResourceExhaustion)
+                {
+                    3
+                } else {
+                    2
+                },
+                format!("{errors:?}"),
+            )
+        })?;
+        let contract: engine::stability::Contract =
+            serde_json::from_str(&read_source(&args[2], 65536)?)
+                .map_err(|e| Failure::new(2, e.to_string()))?;
+        let (graph, receipt) = engine::stability::reconstruct_statuses(
+            loaded.graph(),
+            &contract,
+            &args[3],
+            ExecutionLimits::default(),
+        )
+        .map_err(|e| {
+            Failure::new(
+                if e.kind() == ErrorKind::ResourceExhaustion {
+                    3
+                } else {
+                    2
+                },
+                e.to_string(),
+            )
+        })?;
+        engine::stability::verify_reconstruction(
+            loaded.graph(),
+            &graph,
+            &contract,
+            &receipt,
+            &args[3],
+            ExecutionLimits::default(),
+        )
+        .map_err(engine_failure)?;
+        let atoms: Vec<_> = graph
+            .iter()
+            .map(|(k, a)| {
+                (
+                    k.number(),
+                    &a.kind,
+                    a.fields.iter().map(|k| k.number()).collect::<Vec<_>>(),
+                )
+            })
+            .collect();
+        let source = parser::print(&graph).map_err(engine_failure)?;
+        let result = serde_json::json!({"schema":"status-reconstruction-result-v1","receipt":receipt,"atoms":atoms,"next_identity":graph.next_identity(),"source":source,"history_continuation":false});
+        writeln!(
+            io::stdout().lock(),
+            "{}",
+            serde_json::to_string(&result).map_err(|e| Failure::new(1, e.to_string()))?
+        )
+        .map_err(|e| Failure::new(1, e.to_string()))?;
+        return Ok(0);
     }
     if args[0] == "resume" {
         return resume_command(&args);
@@ -414,7 +481,7 @@ fn stability_command(args: &[String]) -> Result<u8> {
         ),
         Err(error) if error.kind() == ErrorKind::ResourceExhaustion => (
             3,
-            serde_json::json!({"schema":"recovery-analysis-v1","verdict":"inconclusive","reason":error.to_string(),"limit":format!("{:?}",error.context().limit)}),
+            serde_json::json!({"schema":"recovery-analysis-v2","verdict":"inconclusive","reason":error.to_string(),"limit":format!("{:?}",error.context().limit)}),
         ),
         Err(error) => return Err(Failure::new(2, error.to_string())),
     };

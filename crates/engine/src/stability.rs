@@ -28,6 +28,12 @@ pub struct Contract {
     pub preserve: BTreeSet<String>,
     pub requirements: Vec<Requirement>,
     pub stable_when_legitimate: bool,
+    /// v2: allow absent/duplicate declared statuses outside legitimacy.
+    #[serde(default)]
+    pub allow_status_faults: bool,
+    /// v2: require identical declared output across all legitimate outcomes.
+    #[serde(default)]
+    pub require_agreement: bool,
 }
 
 #[derive(Clone, Copy, Debug)]
@@ -74,10 +80,13 @@ pub struct Report {
     pub recovery_bound: Option<usize>,
     pub witness_states: Vec<usize>,
     pub stable_when_legitimate: bool,
+    pub agreement: &'static str,
+    pub legitimate_outputs: Vec<Status>,
+    pub output_representatives: Vec<usize>,
 }
 
 type Result<T> = graph_core::Result<T>;
-type Status = Vec<(String, String)>;
+pub type Status = Vec<Vec<(String, String)>>;
 
 fn invalid(message: impl Into<String>) -> Diagnostic {
     Diagnostic::new(ErrorKind::MalformedInput, message)
@@ -89,11 +98,23 @@ fn exhausted(message: &str) -> Diagnostic {
     Diagnostic::exhausted(LimitKind::ObservationHistory, message)
 }
 
+fn status_units(status: &Status) -> usize {
+    status.iter().flatten().fold(status.len(), |n, (a, b)| {
+        n.saturating_add(2)
+            .saturating_add(a.len())
+            .saturating_add(b.len())
+    })
+}
+
 impl Contract {
     fn names(&self) -> Result<BTreeSet<String>> {
-        if self.schema != "recovery-contract-v1" || self.requirements.is_empty() {
+        if !["recovery-contract-v1", "recovery-contract-v2"].contains(&self.schema.as_str())
+            || self.requirements.is_empty()
+            || (self.schema == "recovery-contract-v1"
+                && (self.allow_status_faults || self.require_agreement))
+        {
             return Err(invalid(
-                "expected recovery-contract-v1 and nonempty requirements",
+                "expected supported recovery contract and nonempty requirements; extended obligations require v2",
             ));
         }
         let mut names = self.preserve.clone();
@@ -162,22 +183,27 @@ impl Contract {
                     _ => None,
                 })
                 .collect();
-            if links.len() != 1 {
+            if links.len() != 1 && !self.allow_status_faults {
                 return Err(violation(format!(
                     "expected exactly one status relationship for {}",
                     r.from
                 )));
             }
-            let (label, target) = links[0];
-            let name = r.targets.iter().find(|name| resolved[*name] == target);
-            let Some(name) = name else {
-                return Err(violation(format!(
-                    "status relationship has an unintended target: {}",
-                    r.from
-                )));
-            };
-            legitimate &= r.legitimate_labels.contains(label);
-            status.push((label.clone(), name.clone()));
+            legitimate &= links.len() == 1;
+            let mut values = Vec::new();
+            for (label, target) in links {
+                let name = r.targets.iter().find(|name| resolved[*name] == target);
+                let Some(name) = name else {
+                    return Err(violation(format!(
+                        "status relationship has an unintended target: {}",
+                        r.from
+                    )));
+                };
+                legitimate &= r.legitimate_labels.contains(label);
+                values.push((label.clone(), name.clone()));
+            }
+            values.sort();
+            status.push(values);
         }
         Ok((resolved, status, legitimate))
     }
@@ -189,6 +215,136 @@ struct State {
     status: Status,
     legitimate: bool,
     parent: Option<usize>,
+}
+
+/// External, contract-directed recovery receipt. This is not a guarded event.
+#[derive(Clone, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ReconstructionReceipt {
+    pub schema: String,
+    pub reset_label: String,
+    pub before_sha256: String,
+    pub after_sha256: String,
+    pub removed: Vec<u64>,
+    pub created: Vec<u64>,
+}
+
+fn digest(graph: &Graph) -> String {
+    use sha2::{Digest, Sha256};
+    let atoms: Vec<_> = graph
+        .iter()
+        .map(|(k, a)| {
+            (
+                k.number(),
+                &a.kind,
+                a.fields.iter().map(|k| k.number()).collect::<Vec<_>>(),
+            )
+        })
+        .collect();
+    format!(
+        "{:x}",
+        Sha256::digest(
+            serde_json::to_vec(&(graph.next_identity(), atoms)).expect("graph records serialise")
+        )
+    )
+}
+
+/// Reconstruct declared status records from a trusted unambiguous contract.
+/// Requires an already core-valid carrier and preserved unique named payloads.
+/// Does not reconstruct rule logic, restore missing payload or establish closure.
+/// The input is borrowed and unchanged on both success and failure.
+pub fn reconstruct_statuses(
+    graph: &Graph,
+    contract: &Contract,
+    reset_label: &str,
+    limits: ExecutionLimits,
+) -> Result<(Graph, ReconstructionReceipt)> {
+    let names = contract.names()?;
+    let before = Execution::new(graph.clone(), limits)?;
+    let mut domain = contract.clone();
+    domain.schema = "recovery-contract-v2".into();
+    domain.allow_status_faults = true;
+    let (anchors, _, _) = domain.inspect(&before, &names, None)?;
+    let configuration = before.view()?.configuration().clone();
+    let hidden: BTreeSet<_> = configuration
+        .rules
+        .values()
+        .flat_map(|r| r.representation.iter().copied())
+        .collect();
+    let mut selected = BTreeSet::new();
+    let mut removed = BTreeSet::new();
+    let mut replacements = Vec::new();
+    for r in &contract.requirements {
+        if r.targets.len() != 1
+            || !r.labels.contains(reset_label)
+            || r.legitimate_labels.contains(reset_label)
+        {
+            return Err(invalid(
+                "reconstruction requires one target and an allowed non-legitimate retry label",
+            ));
+        }
+        for label in &r.labels {
+            if !selected.insert((r.from.clone(), label.clone())) {
+                return Err(invalid("overlapping reconstruction requirements"));
+            }
+        }
+        let label = reset_label.to_string();
+        let from = anchors[&r.from];
+        let to = anchors[r.targets.first().unwrap()];
+        let links:Vec<_>=graph.iter().filter(|(k,a)| !hidden.contains(k) && matches!(&a.kind,Kind::Record{role:Role::ObjectLink,label:Some(l)} if a.fields[0]==from && r.labels.contains(l))).collect();
+        if links.len() == 1 && links[0].1.fields[1] == to {
+            continue;
+        }
+        removed.extend(links.into_iter().map(|(k, _)| k));
+        replacements.push((label.clone(), from, to));
+    }
+    let mut repaired = graph.clone();
+    repaired.remove_set(&removed)?;
+    let mut created = Vec::new();
+    for (label, from, to) in replacements {
+        created.push(
+            repaired
+                .insert(
+                    Kind::Record {
+                        role: Role::ObjectLink,
+                        label: Some(label),
+                    },
+                    &[from, to],
+                )?
+                .number(),
+        );
+    }
+    let checked = Execution::new(repaired.clone(), limits)?;
+    domain.allow_status_faults = false;
+    domain.inspect(&checked, &names, Some(&anchors))?;
+    let receipt = ReconstructionReceipt {
+        schema: "status-reconstruction-v1".into(),
+        reset_label: reset_label.into(),
+        before_sha256: digest(graph),
+        after_sha256: digest(&repaired),
+        removed: removed.iter().map(|k| k.number()).collect(),
+        created,
+    };
+    Ok((repaired, receipt))
+}
+
+/// Recompute recovery rather than trusting a receipt's assertions or hashes.
+pub fn verify_reconstruction(
+    before: &Graph,
+    after: &Graph,
+    contract: &Contract,
+    receipt: &ReconstructionReceipt,
+    reset_label: &str,
+    limits: ExecutionLimits,
+) -> Result<()> {
+    let (expected, expected_receipt) = reconstruct_statuses(before, contract, reset_label, limits)?;
+    if receipt != &expected_receipt
+        || expected.snapshot() != after.snapshot()
+        || expected.next_identity() != after.next_identity()
+    {
+        return Err(violation("reconstruction receipt or result mismatch"));
+    }
+    Ok(())
 }
 
 fn path(states: &[State], mut at: usize) -> Vec<usize> {
@@ -271,7 +427,9 @@ pub fn analyse(graph: Graph, contract: &Contract, limits: Limits) -> Result<Repo
         max_history_units: limits.max_retained_units,
     };
     let observation = observation::all(first.graph(), limits.execution.graph, observation_limits)?;
-    let mut units = observation.retention_units();
+    let mut units = observation
+        .retention_units()
+        .saturating_add(status_units(&status));
     if limits.max_states == 0 || units > limits.max_retained_units {
         return Err(exhausted("stability state/retention bound"));
     }
@@ -283,7 +441,7 @@ pub fn analyse(graph: Graph, contract: &Contract, limits: Limits) -> Result<Repo
         parent: None,
     }];
     let mut report = Report {
-        schema: "recovery-analysis-v1",
+        schema: "recovery-analysis-v2",
         verdict: "refuted",
         reason: String::new(),
         states: 1,
@@ -293,6 +451,9 @@ pub fn analyse(graph: Graph, contract: &Contract, limits: Limits) -> Result<Repo
         recovery_bound: None,
         witness_states: Vec::new(),
         stable_when_legitimate: contract.stable_when_legitimate,
+        agreement: "not-established",
+        legitimate_outputs: Vec::new(),
+        output_representatives: Vec::new(),
     };
     let mut comparison = Budget::new(limits.max_comparison_work, LimitKind::ComparisonWork);
     let mut cursor = 0;
@@ -366,8 +527,13 @@ pub fn analyse(graph: Graph, contract: &Contract, limits: Limits) -> Result<Repo
                 // Unique visible named constructors are fixed by any full
                 // isomorphism. Different declared statuses therefore exclude
                 // equality, but equal statuses never prove it.
-                comparison
-                    .charge(1 + status.iter().map(|(a, b)| a.len() + b.len()).sum::<usize>())?;
+                comparison.charge(
+                    1 + status
+                        .iter()
+                        .flatten()
+                        .map(|(a, b)| a.len() + b.len())
+                        .sum::<usize>(),
+                )?;
                 if state.status == status
                     && state.observation.signature() == observation.signature()
                     && observation::isomorphic_indexed_budget(
@@ -385,7 +551,9 @@ pub fn analyse(graph: Graph, contract: &Contract, limits: Limits) -> Result<Repo
                 if states.len() >= limits.max_states {
                     return Err(exhausted("stability state bound"));
                 }
-                units = units.saturating_add(observation.retention_units());
+                units = units
+                    .saturating_add(observation.retention_units())
+                    .saturating_add(status_units(&status));
                 if units > limits.max_retained_units {
                     return Err(exhausted("stability retention bound"));
                 }
@@ -431,6 +599,28 @@ pub fn analyse(graph: Graph, contract: &Contract, limits: Limits) -> Result<Repo
             report.verdict = "certified";
             report.reason =
                 "complete finite quotient: preservation, progress and legitimate closure".into();
+            for (i, state) in states.iter().enumerate().filter(|(_, s)| s.legitimate) {
+                if !report.legitimate_outputs.contains(&state.status) {
+                    units = units
+                        .saturating_add(status_units(&state.status))
+                        .saturating_add(1);
+                    if units > limits.max_retained_units {
+                        return Err(exhausted("stability output retention bound"));
+                    }
+                    report.legitimate_outputs.push(state.status.clone());
+                    report.output_representatives.push(i);
+                }
+            }
+            report.agreement = if report.legitimate_outputs.len() == 1 {
+                "agreed"
+            } else {
+                "disagreed"
+            };
+            if contract.require_agreement && report.agreement != "agreed" {
+                report.verdict = "refuted";
+                report.reason = "recovery holds but declared outputs disagree across reachable legitimate states".into();
+                report.witness_states = report.output_representatives.clone();
+            }
         }
         Err(reason) => {
             report.reason = reason;

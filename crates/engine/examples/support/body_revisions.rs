@@ -40,6 +40,8 @@ pub fn guard(n: usize) -> (Graph, Contract) {
             preserve: BTreeSet::new(),
             requirements,
             stable_when_legitimate: true,
+            allow_status_faults: false,
+            require_agreement: false,
         },
     )
 }
@@ -159,6 +161,8 @@ pub fn prefixed(contract: &Contract, prefix: &str) -> Contract {
             .map(|s| format!("{prefix}{s}"))
             .collect(),
         stable_when_legitimate: contract.stable_when_legitimate,
+        allow_status_faults: contract.allow_status_faults,
+        require_agreement: contract.require_agreement,
         requirements: contract
             .requirements
             .iter()

@@ -42,7 +42,7 @@ fn main() {
     let result = match analyse(g, &c, limits) {
         Ok(report) => serde_json::to_value(report).unwrap(),
         Err(e) if e.kind() == ErrorKind::ResourceExhaustion => {
-            serde_json::json!({"schema":"recovery-analysis-v1","verdict":"inconclusive","reason":e.to_string()})
+            serde_json::json!({"schema":"recovery-analysis-v2","verdict":"inconclusive","reason":e.to_string()})
         }
         Err(e) => panic!("{e}"),
     };

@@ -1,4 +1,40 @@
 use std::{path::Path, process::Command};
+
+#[test]
+fn agreement_and_explicit_retry_reconstruction_are_exposed_without_fabricating_completion() {
+    let root = Path::new(env!("CARGO_MANIFEST_DIR")).join("../..");
+    let out = Command::new(env!("CARGO_BIN_EXE_cli"))
+        .current_dir(&root)
+        .args([
+            "stability-check",
+            "examples/practical/repair-policy.graph",
+            "examples/practical/repair-policy.contract.json",
+        ])
+        .output()
+        .unwrap();
+    assert!(out.status.success(), "{out:?}");
+    let r: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+    assert_eq!(r["agreement"], "agreed");
+    for (label, code) in [("pending", 0), ("done", 2)] {
+        let out = Command::new(env!("CARGO_BIN_EXE_cli"))
+            .current_dir(&root)
+            .args([
+                "repair-statuses",
+                "examples/practical/repair-policy.graph",
+                "examples/practical/repair-policy.contract.json",
+                label,
+            ])
+            .output()
+            .unwrap();
+        assert_eq!(out.status.code(), Some(code), "{out:?}");
+        if code == 0 {
+            let r: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
+            assert_eq!(r["history_continuation"], false);
+            assert_eq!(r["receipt"]["reset_label"], "pending");
+            assert_eq!(r["receipt"]["created"], serde_json::json!([]));
+        }
+    }
+}
 fn run(extra: &[&str]) -> std::process::Output {
     Command::new(env!("CARGO_BIN_EXE_cli"))
         .current_dir(Path::new(env!("CARGO_MANIFEST_DIR")).join("../.."))
