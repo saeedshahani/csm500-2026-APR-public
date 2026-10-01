@@ -6,6 +6,7 @@ pub mod conditions;
 pub mod conflict;
 pub mod indexed;
 mod matching;
+pub mod meta_activity;
 pub mod observation;
 mod one_shot;
 pub mod recording;

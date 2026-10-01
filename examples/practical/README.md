@@ -1,5 +1,9 @@
 # Work-item processing profile
 
+## Bounded reflective administration
+
+`credit-spawn.graph` contains a meta-rule that spends one visible credit to construct an inactive rank-zero empty rule package. Two credits permit two editing transactions. `delete-rule.graph` retires one inactive package, demonstrating that deletion also counts as an edit. Run either with `cargo run --release --locked -p cli -- meta-check PATH finite-edits none`; the exact initial bounds are two and one respectively. These are standalone analysis examples, not additions to the eighteen-program browser catalogue. A credit guard is only safe while other rules cannot remove it, replenish credits or expose quoted credit patterns. See [the meta-activity study](../../docs/research/reflective-recovery.md#meta-activity-contracts-loop-f) for the proof, adversarial examples and distinct productive-modulation contract.
+
 ## Vocabulary-join example
 
 `month-normalisation.graph` is an independently authored small example of the `joined-v4` functional-join class. It replaces a session-to-raw-month relation by a session-to-canonical-month relation using a preserved dictionary edge. Run `cargo run --release -p cli -- export examples/practical/month-normalisation.graph --max-steps 2 --execution-profile joined-v4`. The same pattern is used by the full public-data Calendar normalisation application in Projects; its importer preserves all eighteen UCI source fields and its result export checks each original row. See `platform/README.md` for the explicit larger local route. This small example contains no approval rule and is not itself a public-data benchmark.

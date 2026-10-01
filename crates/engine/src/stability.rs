@@ -107,7 +107,7 @@ fn status_units(status: &Status) -> usize {
 }
 
 impl Contract {
-    fn names(&self) -> Result<BTreeSet<String>> {
+    pub(crate) fn names(&self) -> Result<BTreeSet<String>> {
         if !["recovery-contract-v1", "recovery-contract-v2"].contains(&self.schema.as_str())
             || self.requirements.is_empty()
             || (self.schema == "recovery-contract-v1"
@@ -132,7 +132,7 @@ impl Contract {
         Ok(names)
     }
 
-    fn inspect(
+    pub(crate) fn inspect(
         &self,
         execution: &Execution,
         names: &BTreeSet<String>,
