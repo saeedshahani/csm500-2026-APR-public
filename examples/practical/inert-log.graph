@@ -1,0 +1,20 @@
+// Ordinary logs can grow forever; two credits still bound rule creation by two.
+program {
+ rule factory {
+  atom z = Nat(); atom one = Nat(z);
+  rank r = one; mode m = ModeMeta; revision rev; active enabled;
+  atom credit = Constructor("MetaCredit");
+  atom child = RuleHead;
+  atom cz = Nat(); atom cr = Record[Rank](child, cz);
+  atom cm = Record[ModeObject](child); atom cv = Record[Revision](child);
+  lhs { lc: credit; }
+  rhs { rh: child; rz: cz; rr: cr; rm: cm; rv: cv; }
+ }
+ rule logger {
+  atom lz = Nat(); rank lr = lz; mode lm = ModeObject; revision lrev; active lenabled;
+  atom log = Constructor("Log");
+  lhs {} rhs { emit: log; }
+ }
+ atom permit_a = Constructor("MetaCredit");
+ atom permit_b = Constructor("MetaCredit");
+}

@@ -4,7 +4,7 @@
 use crate::observation::{self, Budget, Observation, ObservationLimits};
 use crate::stability::{Contract, Limits, Status};
 use crate::Execution;
-use graph_core::{Diagnostic, ErrorKind, Graph, LimitKind, Result};
+use graph_core::{Binding, Diagnostic, ErrorKind, Graph, Kind, LimitKind, Result, Sort};
 use serde::Serialize;
 use std::collections::VecDeque;
 
@@ -155,9 +155,19 @@ pub struct Recovery {
     pub agreement: bool,
 }
 #[derive(Clone, Debug, Serialize)]
+pub struct Abstraction {
+    pub kind: &'static str,
+    pub label: String,
+    pub initially_erased: usize,
+    /// Sum over explored representative edges, NOT an execution's garbage count.
+    pub edge_erasure_count: usize,
+}
+#[derive(Clone, Debug, Serialize)]
 pub struct Report {
     pub schema: &'static str,
     pub complete: bool,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub abstraction: Option<Abstraction>,
     pub states: usize,
     pub edges: Vec<Edge>,
     pub legitimate: Option<Vec<bool>>,
@@ -181,8 +191,95 @@ struct State {
 /// Progress means an object-mode step reduces the number of unmet requirements.
 /// It is an explicitly chosen task measure, not an intrinsic notion of usefulness.
 pub fn analyse(graph: Graph, contract: Option<&Contract>, limits: Limits) -> Result<Report> {
+    analyse_impl(graph, contract, limits, None)
+}
+
+/// Erase only isolated constructors of a selected label in private analysis
+/// representatives. Check every reachable state's active patterns for possible
+/// access. This is not runtime GC, a payload-only projection or a fairness rule.
+pub fn analyse_inert(
+    graph: Graph,
+    contract: Option<&Contract>,
+    limits: Limits,
+    label: &str,
+) -> Result<Report> {
+    analyse_impl(graph, contract, limits, Some(label))
+}
+
+/// Local obligation checker, also useful for conformance tests. Successful
+/// projection alone does NOT prove future revisions preserve noninterference.
+pub fn project_inert(execution: &Execution, label: &str, limits: Limits) -> Result<(Graph, usize)> {
+    let mut budget = Budget::new(limits.max_comparison_work, LimitKind::ComparisonWork);
+    project(execution, label, &mut budget)
+}
+
+fn project(execution: &Execution, label: &str, budget: &mut Budget) -> Result<(Graph, usize)> {
+    let graph = execution.graph();
+    budget.charge(graph.retention_units())?;
+    // Active LHSs are record-closed. A contextual reference to a candidate atom
+    // is impossible when that atom has zero incoming incidence.
+    for rule in execution.view()?.active_rules() {
+        for id in &rule.lhs {
+            budget.charge(1)?;
+            let unsafe_access = match &graph.atom(*id)?.kind {
+                Kind::Constructor(s) => s == label,
+                Kind::PatternVariable { admits, binding } => {
+                    *binding == Binding::Free && admits.contains(&Sort::Constructor)
+                }
+                _ => false,
+            };
+            if unsafe_access {
+                return Err(Diagnostic::new(
+                    ErrorKind::InvalidBinding,
+                    "unsupported inert abstraction: an active pattern can read the erased label",
+                )
+                .at_atom(rule.head)
+                .at_atom(*id));
+            }
+        }
+    }
+    let mut erased = std::collections::BTreeSet::new();
+    for (id, atom) in graph.iter() {
+        if matches!(&atom.kind, Kind::Constructor(s) if s == label) {
+            budget.charge(1)?;
+            let incoming = graph.references_to(id);
+            budget.charge(incoming.len())?;
+            if incoming.is_empty() {
+                erased.insert(id);
+            }
+        }
+    }
+    let mut projected = graph.clone();
+    projected.remove_set(&erased)?;
+    Ok((projected, erased.len()))
+}
+
+fn analyse_impl(
+    graph: Graph,
+    contract: Option<&Contract>,
+    limits: Limits,
+    label: Option<&str>,
+) -> Result<Report> {
     let names = contract.map(Contract::names).transpose()?;
-    let first = Execution::new(graph, limits.execution)?;
+    if label.is_some_and(|s| names.as_ref().is_some_and(|names| names.contains(s))) {
+        return Err(Diagnostic::new(
+            ErrorKind::InvalidBinding,
+            "unsupported inert abstraction: declared payload uses erased label",
+        ));
+    }
+    let mut budget = Budget::new(limits.max_comparison_work, LimitKind::ComparisonWork);
+    let mut first = Execution::new(graph, limits.execution)?;
+    let mut abstraction = None;
+    if let Some(label) = label {
+        let (g, n) = project(&first, label, &mut budget)?;
+        first = Execution::new(g, limits.execution)?;
+        abstraction = Some(Abstraction {
+            kind: "isolated-inert-constructors-v1",
+            label: label.into(),
+            initially_erased: n,
+            edge_erasure_count: 0,
+        });
+    }
     let (anchors, status, legitimate) = if let Some(c) = contract {
         c.inspect(&first, names.as_ref().unwrap(), None)?
     } else {
@@ -200,7 +297,6 @@ pub fn analyse(graph: Graph, contract: Option<&Contract>, limits: Limits) -> Res
     if limits.max_states == 0 {
         return Err(exhausted("meta state bound"));
     }
-    let mut budget = Budget::new(limits.max_comparison_work, LimitKind::ComparisonWork);
     let mut states = vec![State {
         execution: first,
         observation,
@@ -222,6 +318,14 @@ pub fn analyse(graph: Graph, contract: Option<&Contract>, limits: Limits) -> Res
             let mut branch = states[cursor].execution.fork();
             let prepared = branch.prepare(step.binding().clone())?;
             let event = branch.commit(prepared)?;
+            if let Some(a) = &mut abstraction {
+                let (g, n) = project(&branch, &a.label, &mut budget)?;
+                a.edge_erasure_count = a
+                    .edge_erasure_count
+                    .checked_add(n)
+                    .ok_or_else(|| exhausted("erasure count overflow"))?;
+                branch = Execution::new(g, limits.execution)?;
+            }
             let (_, status, legitimate) = if let Some(c) = contract {
                 c.inspect(&branch, names.as_ref().unwrap(), Some(&anchors))?
             } else {
@@ -327,8 +431,13 @@ pub fn analyse(graph: Graph, contract: Option<&Contract>, limits: Limits) -> Res
         *i = meta_ids[*i];
     }
     let mut report = Report {
-        schema: "meta-activity-analysis-v1",
+        schema: if abstraction.is_some() {
+            "meta-activity-analysis-v2"
+        } else {
+            "meta-activity-analysis-v1"
+        },
         complete: true,
+        abstraction,
         states: states.len(),
         edges,
         legitimate: None,

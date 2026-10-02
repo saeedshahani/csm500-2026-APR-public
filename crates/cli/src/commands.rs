@@ -104,8 +104,10 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["lambda-readback", "--help"]
         || args == ["stability-check", "--help"]
         || args == ["meta-check", "--help"]
+        || args == ["meta-abstract", "--help"]
         || args == ["repair-statuses", "--help"]
     {
+        io::stdout().lock().write_all(b"Inert abstraction: cli meta-abstract INPUT MODE CONTRACT_OR_none LABEL [bounded options]\nPrivately erase only isolated constructors of LABEL after checking every reachable state's active patterns. Unsupported abstraction exits 2, not a safety refutation. Reports use meta-activity-analysis-v2; complete refers to the reduced quotient. Runtime graphs, trace semantics and scheduling are unchanged. No fairness or bounded-memory claim.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Meta-activity analysis: cli meta-check INPUT MODE CONTRACT_OR_none [bounded options]\nModes: finite-edits, edit-burst, meta-invocations, meta-burst, productive. Productive requires a recovery contract; none omits it. INPUT or CONTRACT may be - for stdin, not both. Bounds and exit codes match stability-check. Finite edits count transactions changing decoded rules, not every meta-mode invocation. Burst guarantees use maximum_bound over all reachable states. GC and execution are unchanged.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Recovery analysis: cli stability-check INPUT CONTRACT [--max-states N] [--max-edges N] [--max-comparison-work N] [--max-retained-units N] [--max-work N] [--max-candidates N]\nComplete reachable-carrier analysis, not a bounded trace test. JSON report: exit 0 certified, 7 refuted, 3 inconclusive resource bound, 2 malformed input. Contracts: recovery-contract-v1 or v2; v2 can require declared-output agreement and allow absent/duplicate statuses outside legitimacy. No external fault transition or scheduler fairness is inferred.\nExternal maintenance: cli repair-statuses INPUT CONTRACT RETRY_LABEL\nRequires core-valid input and an allowed non-legitimate retry label. Returns a recomputation-verified receipt and new baseline, not a rewrite-history continuation or proof of completed work.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Execution profiles: --execution-profile reference-v1 (default) | indexed-v2 | framed-v3 | joined-v4\nOperator envelope: GRAPH_EXECUTION_ENVELOPE=large-local-v1 enables the documented larger local source/trace limits; unset retains defaults.\nExplicit legacy migration: cli trace-migrate TRACE [--output NEW_PATH]\nMigration rechecks the full history under reference-v1; it never overwrites its input.\n").map_err(|e| Failure::new(1, e.to_string()))?;
@@ -121,7 +123,7 @@ pub(crate) fn main_command() -> Result<u8> {
     if args[0] == "stability-check" {
         return stability_command(&args);
     }
-    if args[0] == "meta-check" {
+    if args[0] == "meta-check" || args[0] == "meta-abstract" {
         return meta_command(&args);
     }
     if args[0] == "repair-statuses" {
@@ -469,10 +471,11 @@ fn analysis_limits(options: &[String]) -> Result<engine::stability::Limits> {
 }
 
 fn meta_command(args: &[String]) -> Result<u8> {
-    if args.len() < 4 || (args[1] == "-" && args[3] == "-") {
+    let offset = if args[0] == "meta-abstract" { 5 } else { 4 };
+    if args.len() < offset || (args[1] == "-" && args[3] == "-") {
         return Err(Failure::new(
             2,
-            "usage: cli meta-check INPUT MODE CONTRACT_OR_none [bounded options]",
+            "usage: cli meta-check INPUT MODE CONTRACT_OR_none [bounded options]; cli meta-abstract INPUT MODE CONTRACT_OR_none LABEL [bounded options]",
         ));
     }
     let mode = args[2].as_str();
@@ -486,7 +489,7 @@ fn meta_command(args: &[String]) -> Result<u8> {
             "invalid mode or missing productive contract",
         ));
     }
-    let limits = analysis_limits(&args[4..])?;
+    let limits = analysis_limits(&args[offset..])?;
     let text = read_source(&args[1], ParseLimits::default().graph.max_input_bytes)?;
     let graph = parser::load(&text).map_err(|errors| {
         Failure::new(
@@ -509,11 +512,17 @@ fn meta_command(args: &[String]) -> Result<u8> {
                 .map_err(|e| Failure::new(2, e.to_string()))?,
         )
     };
-    let (code, output) = match engine::meta_activity::analyse(
-        graph.into_graph(),
-        contract.as_ref(),
-        limits,
-    ) {
+    let analysis = if offset == 5 {
+        engine::meta_activity::analyse_inert(
+            graph.into_graph(),
+            contract.as_ref(),
+            limits,
+            &args[4],
+        )
+    } else {
+        engine::meta_activity::analyse(graph.into_graph(), contract.as_ref(), limits)
+    };
+    let (code, output) = match analysis {
         Ok(report) => {
             let verdict = match mode {
                 "finite-edits" => report.total_edits.verdict,
@@ -529,7 +538,7 @@ fn meta_command(args: &[String]) -> Result<u8> {
         }
         Err(e) if e.kind() == ErrorKind::ResourceExhaustion => (
             3,
-            serde_json::json!({"schema":"meta-activity-analysis-v1","mode":mode,"complete":false,"verdict":"inconclusive","reason":e.to_string(),"limit":format!("{:?}",e.context().limit)}),
+            serde_json::json!({"schema":if offset==5 {"meta-activity-analysis-v2"} else {"meta-activity-analysis-v1"},"mode":mode,"complete":false,"verdict":"inconclusive","reason":e.to_string(),"limit":format!("{:?}",e.context().limit)}),
         ),
         Err(e) => return Err(Failure::new(2, e.to_string())),
     };

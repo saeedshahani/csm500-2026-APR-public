@@ -39,6 +39,8 @@ jobs:
           node scripts/verify-loop-d.mjs
           node scripts/verify-loop-e.mjs
           node scripts/verify-loop-f.mjs
+          node scripts/verify-loop-f2.mjs
+          cargo run --release --locked -p cli -- meta-abstract examples/practical/inert-log.graph finite-edits none Log
           cargo run --release --locked -p cli -- meta-check examples/practical/credit-spawn.graph finite-edits none
           cargo run --release --locked -p cli -- stability-check examples/practical/repair-policy.graph examples/practical/repair-policy.contract.json
           node scripts/verify-loop-d.mjs benchmarks/results/loop-d-01
