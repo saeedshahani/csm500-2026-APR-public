@@ -1,0 +1,35 @@
+{
+  "schema": "browser-reproduction-receipt-v1",
+  "browser": "HeadlessChrome/154.0.0.0",
+  "host": "macOS arm64",
+  "url": "http://127.0.0.1:4175",
+  "source_revision": "6751446aa9f681740f71e4131a8599236e4e3498",
+  "source_scope": "frontend and native engine unchanged during Loop M; production build from this source",
+  "foreign_collection": "reproduction-m-linux-two",
+  "case": "context",
+  "actions": [
+    "import trace",
+    "inspect state 0",
+    "inspect state 6",
+    "export trace"
+  ],
+  "exact_json_agreement": true,
+  "events": 6,
+  "outcome": "NormalForm",
+  "trace_sha256": "0b684c2227d556e4ef08877e3824f01816d7dafb7f6a50e388f37221e130646d",
+  "console_note": "One favicon.ico 404; no engine or application exception observed",
+  "assets": {
+    "emulator-session-CbEwqe36.js": "a03e236aa49cf5e956b60f700a1c4080561830e3e59eb903cf1fff22d097a54f",
+    "engine.worker-DU0XL6lG.js": "29168062318ee1fa1fbb20640a014815f27a198d355ce98ac676034f38532dc4",
+    "hosted-session-kaID1iXw.js": "5900b1deaca34ff27d00a7eb9e0fcb52fecdef2305f6846f18f84bcf835ed2d8",
+    "index-BMqgkTE6.js": "8ca0a4e5a4f5d6a2fa44f129435eedd9361dd4020d4bae13e221f712b78920a3",
+    "index-CsT9VMuJ.css": "03c54209e8102580a5f54ffa3beaa8c0ca6bcc525b6d9462ef484df9f3a599f7",
+    "index.esm-B5GWHz6j.js": "f96a1b379ffcaaad85ff46ec35ffa2a5a8809ed9d8ea7fe8c6c7c24361e503dc",
+    "wasm_bridge_bg-qw_AfT68.wasm": "8b9477889d139d10051e3cceb6644733d0338fd10bf663f921eee8ae7ff0e1e9"
+  },
+  "screenshot_sha256": "05ced03daabedae54fff07c741ca4bc1a4d1663ce79efe4427b88f265b3d252b",
+  "independent_browser_ci": {
+    "run": 37153867814,
+    "status": "success"
+  }
+}

@@ -115,6 +115,10 @@ cargo run -p cli -- trace-explain stable.trace.json --event 0 --query source-rev
 
 Use the zero-based index of an event present in your trace. `exact` asks whether that particular occurrence remains admitted after selected earlier events are omitted; `source-revision` asks whether that rule version has any admitted match. Every retained prefix step is replayed through native admission. Reports distinguish impossible prefixes, unavailable targets and rejected targets, and retain alternative minimal successful selections. The default prefix limit is eight; `--max-prefix` can raise it to twelve. Cost grows exponentially. This is a separate offline explanation, not general causality or a browser feature; the [research account](docs/research/reflective-recovery.md#condition-sensitive-interventions-loop-g) states its precise limits.
 
+### Reproducing research results
+
+Run `node scripts/verify-reproduction.mjs --check benchmarks/results/reproduction-m/report.json` to check the retained cross-environment evidence without compiling or executing archived source. For a fresh reconstruction of the reviewed experiment, use `node scripts/reproduce-frozen.mjs benchmarks/results/reproduction-m-macos-02 NEW_OUTPUT` after the [documented tool provisioning](benchmarks/results/reproduction-m/README.md). The study distinguishes exact execution/proposal agreement, controlled same-target binary identity, cross-host WASM differences and measured timing/RSS. A seed alone does not establish all these properties, and a hash does not authenticate an unknown source bundle.
+
 ### Core interfaces
 
 The [assurance investigation](docs/research/assurance.md) includes Lean-checked owned-field mutation/reference-search properties and an independent native admission audit. Reproduce the finite native campaign with `cargo build --release --locked -p engine --example admission_audit` and `node scripts/admission-study.mjs verify benchmarks/results/admission-01 --live`; add `--proof` with Lean 4.19.0 installed to check proofs and both campaigns. This is scoped assurance, not verification of the entire Rust engine.

@@ -48,6 +48,9 @@ jobs:
           node scripts/learning-study.mjs verify benchmarks/results/learning-02 --live
           node --test scripts/meaning.test.mjs
           node scripts/meaning-study.mjs verify benchmarks/results/meaning-01 --live
+          cargo build --release --locked -p wasm-bridge --example protocol
+          node --test scripts/reproducibility.test.mjs scripts/reproduction-evidence.test.mjs
+          node scripts/verify-reproduction.mjs --check benchmarks/results/reproduction-m/report.json
           cargo test --locked -p engine --example admission_audit
           cargo build --release --locked -p engine --example admission_audit
           node scripts/admission-study.mjs verify benchmarks/results/admission-01 --live

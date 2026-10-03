@@ -10,6 +10,19 @@ import {createHash} from 'node:crypto';
 import {sourceFiles} from './research-source-files.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('reproduction claims separate cross-environment semantics from byte identity and theorem scope',()=>{
+  const r=JSON.parse(readFileSync('benchmarks/results/reproduction-m/report.json'));
+  assert.equal(r.counts.native_builds,12);assert.equal(r.counts.measurements,90);assert.equal(r.counts.warmups,18);
+  assert.equal(r.primary.semantic_equal,true);assert.equal(r.primary.wasm_bytes_equal,false);assert.equal(r.linux_bytes_equal,true);
+  for(const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    const body=readFileSync(file,'utf8').split('# Bibliography')[0];
+    for(const text of ['Lamb and Zacchiroli','macOS','Linux','768','144','theorem domains'])assert.ok(body.includes(text),`${file}: ${text}`);
+    assert.doesNotMatch(body,/\]\((?:\.\.\/)*docs\//);
+  }
+  assert.ok(readFileSync('docs/task-list.md','utf8').includes('- [x] S6-233 —'));
+  assert.ok(readFileSync('docs/task-list.md','utf8').includes('- [ ] S6-234 —'));
+  execFileSync(process.execPath,['scripts/verify-reproduction.mjs','--check','benchmarks/results/reproduction-m/report.json'],{env:{...process.env,PATH:''}});
+});
 test('research source collection is recursive, deterministic and refuses nonregular entries', () => {
   const dir=mkdtempSync(join(tmpdir(),'reflective-source-files-'));
   try {

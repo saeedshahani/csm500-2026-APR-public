@@ -1,0 +1,51 @@
+   Compiling libc v0.2.189
+   Compiling zerocopy v0.8.57
+   Compiling zerocopy-derive v0.8.57
+   Compiling getrandom v0.2.17
+   Compiling rand_core v0.6.4
+   Compiling serde v1.0.228
+   Compiling autocfg v1.5.1
+   Compiling num-traits v0.2.19
+   Compiling rand_xoshiro v0.6.0
+   Compiling regex-syntax v0.8.11
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.3.1
+   Compiling im v15.1.0
+   Compiling graph-core v0.1.0 (/tmp/reflective-loop-m-83yg0N/longer-source-directory-remap-b/crates/graph-core)
+   Compiling rand v0.8.5
+   Compiling half v2.7.1
+   Compiling clap_lex v1.1.1
+   Compiling ciborium-io v0.2.2
+   Compiling anstyle v1.0.14
+   Compiling either v1.18.0
+   Compiling itertools v0.10.5
+   Compiling clap_builder v4.6.7
+   Compiling ciborium-ll v0.2.2
+   Compiling regex-automata v0.4.18
+   Compiling rand_xorshift v0.3.0
+   Compiling cast v0.3.0
+   Compiling bitflags v2.13.2
+   Compiling lazy_static v1.5.0
+   Compiling same-file v1.0.6
+   Compiling equivalent v1.0.2
+   Compiling unarray v0.1.4
+   Compiling hashbrown v0.15.5
+   Compiling indexmap v2.7.1
+   Compiling proptest v1.6.0
+   Compiling walkdir v2.5.0
+   Compiling criterion-plot v0.5.0
+   Compiling engine v0.1.0 (/tmp/reflective-loop-m-83yg0N/longer-source-directory-remap-b/crates/engine)
+   Compiling regex v1.13.1
+   Compiling parser v0.1.0 (/tmp/reflective-loop-m-83yg0N/longer-source-directory-remap-b/crates/parser)
+   Compiling ciborium v0.2.2
+   Compiling clap v4.6.7
+   Compiling tinytemplate v1.2.1
+   Compiling is-terminal v0.4.17
+   Compiling fixedbitset v0.4.2
+   Compiling anes v0.1.6
+   Compiling once_cell v1.21.4
+   Compiling oorandom v11.1.5
+   Compiling criterion v0.5.1
+   Compiling petgraph v0.6.5
+   Compiling cli v0.1.0 (/tmp/reflective-loop-m-83yg0N/longer-source-directory-remap-b/crates/cli)
+    Finished `release` profile [optimized] target(s) in 1m 11s

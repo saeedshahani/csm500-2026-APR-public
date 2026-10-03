@@ -1,0 +1,405 @@
+{
+  "schema": "loop-m-audit-v1",
+  "primary": {
+    "schema": "reproduction-comparison-v1",
+    "semantic_equal": true,
+    "proposal_equal": true,
+    "environments": [
+      {
+        "directory": "benchmarks/results/reproduction-m-macos-02",
+        "environment": {
+          "platform": "darwin",
+          "release": "25.6.0",
+          "arch": "arm64",
+          "cpu": "Apple M4 Pro",
+          "memory_bytes": 51539607552,
+          "node": "v24.21.0",
+          "rust": "rustc 1.85.0 (4d91de4e4 2025-02-17)\nbinary: rustc\ncommit-hash: 4d91de4e48198da2e33413efdcd9cd2cc0c46688\ncommit-date: 2025-02-17\nhost: aarch64-apple-darwin\nrelease: 1.85.0\nLLVM version: 19.1.7\n",
+          "cargo": "cargo 1.85.0 (d73d2caf9 2024-12-31)\n",
+          "linker": "Apple clang version 21.0.0 (clang-2100.3.34.2)\nTarget: arm64-apple-darwin25.6.0\nThread model: posix\nInstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin\n",
+          "sdk": "27.0\n",
+          "runner_image": null,
+          "runner_os": null,
+          "github_run": null,
+          "github_attempt": null
+        },
+        "binary": "23ba4e00b8d4f4e3849c3e641d94378c8f78719cc59c484b8f3eba550cbdd3a3",
+        "wasm": "77346341e3f2d2ccf83e80d35c0f3cc2f93451e081ddbbc7930168ef11969e76",
+        "source_digest": "64d699144b0be456b9f4e1eb985a8c63361dd28c49a84b6c55aeb826a4685e19",
+        "performance": [
+          {
+            "cell": "lambda-closed",
+            "time": {
+              "a": 10560166,
+              "b": 10693292,
+              "difference": 133126,
+              "allowance": 2640041.5,
+              "accepted": true
+            },
+            "rss": {
+              "a": 3801088,
+              "b": 3801088,
+              "difference": 0,
+              "allowance": 4194304,
+              "accepted": true
+            }
+          },
+          {
+            "cell": "lambda-open",
+            "time": {
+              "a": 11698625,
+              "b": 11816458,
+              "difference": 117833,
+              "allowance": 2924656.25,
+              "accepted": true
+            },
+            "rss": {
+              "a": 3784704,
+              "b": 3801088,
+              "difference": 16384,
+              "allowance": 4194304,
+              "accepted": true
+            }
+          },
+          {
+            "cell": "framed-1000",
+            "time": {
+              "a": 178311375,
+              "b": 180367958,
+              "difference": 2056583,
+              "allowance": 44577843.75,
+              "accepted": true
+            },
+            "rss": {
+              "a": 109838336,
+              "b": 111067136,
+              "difference": 1228800,
+              "allowance": 27459584,
+              "accepted": true
+            }
+          }
+        ]
+      },
+      {
+        "directory": "benchmarks/results/reproduction-m-linux-one",
+        "environment": {
+          "platform": "linux",
+          "release": "6.17.0-1022-azure",
+          "arch": "x64",
+          "cpu": "AMD EPYC 9V74 80-Core Processor",
+          "memory_bytes": 8323969024,
+          "node": "v24.21.0",
+          "rust": "rustc 1.85.0 (4d91de4e4 2025-02-17)\nbinary: rustc\ncommit-hash: 4d91de4e48198da2e33413efdcd9cd2cc0c46688\ncommit-date: 2025-02-17\nhost: x86_64-unknown-linux-gnu\nrelease: 1.85.0\nLLVM version: 19.1.7\n",
+          "cargo": "cargo 1.85.0 (d73d2caf9 2024-12-31)\n",
+          "linker": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "sdk": null,
+          "runner_image": "20260927.320.1",
+          "runner_os": "Linux",
+          "github_run": "37153895525",
+          "github_attempt": "1"
+        },
+        "binary": "90f8258143bec8ae399e46ebb62d504e57e73aa0a08cdb9d6872b191fe29708d",
+        "wasm": "ab05695306f3ac55da9b74708390a42c2c6d536d2b46a9c9e746d6010607caa0",
+        "source_digest": "64d699144b0be456b9f4e1eb985a8c63361dd28c49a84b6c55aeb826a4685e19",
+        "performance": [
+          {
+            "cell": "lambda-closed",
+            "time": {
+              "a": 22353146,
+              "b": 22247838,
+              "difference": 105308,
+              "allowance": 5561959.5,
+              "accepted": true
+            },
+            "rss": {
+              "a": 3485696,
+              "b": 3424256,
+              "difference": 61440,
+              "allowance": 4194304,
+              "accepted": true
+            }
+          },
+          {
+            "cell": "lambda-open",
+            "time": {
+              "a": 25306619,
+              "b": 25043183,
+              "difference": 263436,
+              "allowance": 6260795.75,
+              "accepted": true
+            },
+            "rss": {
+              "a": 3424256,
+              "b": 3489792,
+              "difference": 65536,
+              "allowance": 4194304,
+              "accepted": true
+            }
+          },
+          {
+            "cell": "framed-1000",
+            "time": {
+              "a": 410217648,
+              "b": 410037146,
+              "difference": 180502,
+              "allowance": 102509286.5,
+              "accepted": true
+            },
+            "rss": {
+              "a": 91549696,
+              "b": 91836416,
+              "difference": 286720,
+              "allowance": 22887424,
+              "accepted": true
+            }
+          }
+        ]
+      },
+      {
+        "directory": "benchmarks/results/reproduction-m-linux-two",
+        "environment": {
+          "platform": "linux",
+          "release": "6.17.0-1022-azure",
+          "arch": "x64",
+          "cpu": "AMD EPYC 9V45 96-Core Processor",
+          "memory_bytes": 8323964928,
+          "node": "v24.21.0",
+          "rust": "rustc 1.85.0 (4d91de4e4 2025-02-17)\nbinary: rustc\ncommit-hash: 4d91de4e48198da2e33413efdcd9cd2cc0c46688\ncommit-date: 2025-02-17\nhost: x86_64-unknown-linux-gnu\nrelease: 1.85.0\nLLVM version: 19.1.7\n",
+          "cargo": "cargo 1.85.0 (d73d2caf9 2024-12-31)\n",
+          "linker": "cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+          "sdk": null,
+          "runner_image": "20260927.320.1",
+          "runner_os": "Linux",
+          "github_run": "37153895525",
+          "github_attempt": "1"
+        },
+        "binary": "90f8258143bec8ae399e46ebb62d504e57e73aa0a08cdb9d6872b191fe29708d",
+        "wasm": "ab05695306f3ac55da9b74708390a42c2c6d536d2b46a9c9e746d6010607caa0",
+        "source_digest": "64d699144b0be456b9f4e1eb985a8c63361dd28c49a84b6c55aeb826a4685e19",
+        "performance": [
+          {
+            "cell": "lambda-closed",
+            "time": {
+              "a": 12950814,
+              "b": 13053890,
+              "difference": 103076,
+              "allowance": 3237703.5,
+              "accepted": true
+            },
+            "rss": {
+              "a": 3514368,
+              "b": 3620864,
+              "difference": 106496,
+              "allowance": 4194304,
+              "accepted": true
+            }
+          },
+          {
+            "cell": "lambda-open",
+            "time": {
+              "a": 14566484,
+              "b": 14618974,
+              "difference": 52490,
+              "allowance": 3641621,
+              "accepted": true
+            },
+            "rss": {
+              "a": 3588096,
+              "b": 3620864,
+              "difference": 32768,
+              "allowance": 4194304,
+              "accepted": true
+            }
+          },
+          {
+            "cell": "framed-1000",
+            "time": {
+              "a": 255833463,
+              "b": 258682778,
+              "difference": 2849315,
+              "allowance": 63958365.75,
+              "accepted": true
+            },
+            "rss": {
+              "a": 91938816,
+              "b": 92188672,
+              "difference": 249856,
+              "allowance": 22984704,
+              "accepted": true
+            }
+          }
+        ]
+      }
+    ],
+    "wasm_bytes_equal": false,
+    "native_bytes_equal": false
+  },
+  "counts": {
+    "environments": 3,
+    "platform_architectures": 2,
+    "native_builds": 12,
+    "native_case_executions": 168,
+    "events_per_panel": 54,
+    "wasm_builds": 6,
+    "wasm_case_executions": 84,
+    "calendar_tasks": 768,
+    "context_tasks": 144,
+    "measurements": 90,
+    "warmups": 18
+  },
+  "within_host_tolerances_pass": true,
+  "linux_bytes_equal": true,
+  "historical": {
+    "verified": true,
+    "historical": true,
+    "builds": 4,
+    "binary_equal": {
+      "plain": false,
+      "remap": true
+    },
+    "panel_cases": 3,
+    "performance": [],
+    "source_digest": "49777112e721eb78afd505cf90635a65312fdaf3760c3867fbcb0d5e44321838"
+  },
+  "frozen_source_reconstruction": {
+    "semantic_equal": true,
+    "native_bytes_equal": true,
+    "wasm_bytes_equal": true
+  },
+  "wasm_diagnostic": {
+    "sections": [
+      {
+        "kind": "raw_sections",
+        "differing": [
+          {
+            "id": 1,
+            "name": null
+          },
+          {
+            "id": 3,
+            "name": null
+          },
+          {
+            "id": 7,
+            "name": null
+          },
+          {
+            "id": 9,
+            "name": null
+          },
+          {
+            "id": 10,
+            "name": null
+          },
+          {
+            "id": 11,
+            "name": null
+          },
+          {
+            "id": 0,
+            "name": "name"
+          }
+        ],
+        "equal": [
+          {
+            "id": 2,
+            "name": null
+          },
+          {
+            "id": 4,
+            "name": null
+          },
+          {
+            "id": 5,
+            "name": null
+          },
+          {
+            "id": 6,
+            "name": null
+          },
+          {
+            "id": 0,
+            "name": "__wasm_bindgen_unstable"
+          },
+          {
+            "id": 0,
+            "name": "producers"
+          },
+          {
+            "id": 0,
+            "name": "target_features"
+          }
+        ]
+      },
+      {
+        "kind": "bound_sections",
+        "differing": [
+          {
+            "id": 3,
+            "name": null
+          },
+          {
+            "id": 7,
+            "name": null
+          },
+          {
+            "id": 9,
+            "name": null
+          },
+          {
+            "id": 10,
+            "name": null
+          },
+          {
+            "id": 11,
+            "name": null
+          },
+          {
+            "id": 0,
+            "name": "name"
+          }
+        ],
+        "equal": [
+          {
+            "id": 1,
+            "name": null
+          },
+          {
+            "id": 2,
+            "name": null
+          },
+          {
+            "id": 4,
+            "name": null
+          },
+          {
+            "id": 5,
+            "name": null
+          },
+          {
+            "id": 6,
+            "name": null
+          },
+          {
+            "id": 0,
+            "name": "producers"
+          },
+          {
+            "id": 0,
+            "name": "target_features"
+          }
+        ]
+      }
+    ],
+    "sysroot_remapping_changes_bytes": [
+      {
+        "platform": "darwin",
+        "changed": false
+      },
+      {
+        "platform": "linux",
+        "changed": false
+      }
+    ]
+  }
+}

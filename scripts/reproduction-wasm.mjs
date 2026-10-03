@@ -7,6 +7,7 @@ import {spawnSync} from 'node:child_process';
 import {gzipSync,gunzipSync} from 'node:zlib';
 import {verify,safePath,sha,PROTOCOL} from './reproducibility.mjs';
 import {wasmPanel} from './reproduction-panel.mjs';
+import {sections} from './wasm-sections.mjs';
 
 const [source,out]=process.argv.slice(2);assert.ok(source&&out);verify(source);
 assert.ok(!fs.existsSync(out));fs.mkdirSync(out,{recursive:true});
@@ -18,14 +19,6 @@ const run=(command,args,env=process.env,cwd=temp)=>{
   const p=spawnSync(command,args,{cwd,env,encoding:'utf8',timeout:600000,maxBuffer:64*1024*1024});
   assert.ok(!p.error&&!p.signal,p.error?.message??p.signal);assert.equal(p.status,0,p.stdout+p.stderr);return p;
 };
-function sections(bytes) {
-  assert.equal(bytes.subarray(0,8).toString('hex'),'0061736d01000000');let at=8;
-  const leb=()=>{let n=0,shift=0,b;do{assert.ok(at<bytes.length&&shift<=28);b=bytes[at++];n+=(b&127)*2**shift;shift+=7;}while(b&128);return n;};
-  const result=[];while(at<bytes.length){const id=bytes[at++],length=leb(),start=at,end=at+length;assert.ok(end<=bytes.length);let name=null;
-    if(id===0){const size=leb();assert.ok(at+size<=end);name=bytes.subarray(at,at+size).toString();}
-    result.push({id,name,length,sha256:sha(bytes.subarray(start,end))});at=end;
-  }return result;
-}
 const binder=process.env.REPRO_BINDGEN??path.resolve('target/tools/bin/wasm-bindgen');
 const cargo=process.env.CARGO_HOME??path.join(os.homedir(),'.cargo');
 const sysroot=run('rustc',['--print','sysroot']).stdout.trim();
