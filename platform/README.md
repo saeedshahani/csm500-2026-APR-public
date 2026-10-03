@@ -1,5 +1,26 @@
 # Local developer API
 
+## Adaptive workflows with stability contracts
+
+The optional workflow facility checks a complete supported graph against declared terminal statuses, weighted processing routes and permitted rule revisions. It can certify task completion while internal rules continue changing. It cannot certify arbitrary self-modifying programs, and rejection does not mean divergence.
+
+Build the CLI and start the ordinary local service as described below. In Projects, connect and select/create a project, then expand **Stability contracts and adaptive tasks**. Select Adaptive routing or Branching task, check the contract, and run. The task table shows persistent identities, payloads and statuses; Inspect workflow trace opens the actual native history in the workbench. Branching creates child tasks representing validation and indexing requests; it does not implement document validation or indexing. Results are ephemeral and should be downloaded if needed; these requests are not saved platform jobs.
+
+From the repository root:
+
+```sh
+cargo build --release --locked -p cli
+target/release/cli workflow-check examples/practical/workflow-routing.request.json
+target/release/cli workflow-run examples/practical/workflow-branching.request.json
+target/release/cli workflow-example branching 4 finite
+```
+
+Authenticated `POST /v1/workflows/check` and `/v1/workflows/run` accept the example JSON directly: `source`, `contract`, `max_steps` (0–1,000) and `meta_burst` (0–32). The latter bounds rule edits between task steps. The request contract remains external and unchanged throughout the run. Existing authentication, one-native-operation concurrency and process restrictions apply; source is capped at 256 KiB, total request at 1 MiB, execution at 30 seconds and native output at 16 MiB. Large-local mode does not enlarge these workflow limits.
+
+`certified` states a conditional guarantee, not that execution has occurred. `Completed` means every task reached a declared terminal status; `StepLimit` means only a prefix ran. `unsupported` means outside the recogniser's class, and `inconclusive` means resources prevented a result. Completed need not be NormalForm, and different permitted routes can produce different results. Downloaded `trace` fields are ordinary portable histories accepted by `trace-check`; their replay checks commits, not the workflow scheduler's service promise. The CLI returns 0 for successful check/completion, 3 for step/resource limits and 2 for unsupported input.
+
+The checker accepts disjoint task/rule components, active status processors with bounded branching, and guarded RHS revisions. Every processing step must reduce aggregate remaining work including children. Persistent task identities remain in a FIFO queue across rule revisions. The guarantee is at most `(meta_burst+1) × initial work weight` commits to task completion, assuming sufficient resources. Finite-permit configurations additionally have an all-orders bound. Arbitrary rule edits, corruption repair, semantic correctness of payload labels and unbounded input streams are not supported. Native correspondence is manually argued; only the abstract ranking/fairness component is Lean checked. The feature is available in source/local builds; the hosted pilot is not updated by these instructions.
+
 ## Large calendar-normalisation application
 
 An explicit `large-local-v1` route processes the complete UCI Online Shoppers Purchasing Intention CSV through graph rewriting. It is a local developer deployment, not an increase to hosted Firebase quotas. Use a separate store for this route. It requires local owner-token authentication and refuses Firebase production/emulator modes or supplied remote storage.

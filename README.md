@@ -6,6 +6,8 @@ Open the [hosted application](https://reflective-graph-f1cd4.web.app/#projects),
 
 ## Documentation
 
+Optional [adaptive workflow contracts](platform/README.md#adaptive-workflows-with-stability-contracts) check a restricted class of graph-resident routing rules and run persistent tasks across body revisions, including bounded task branching. The native CLI/API and browser Projects panel report completion separately from normal form, resource limits and unsupported inputs. This source-level addition is not a claim that the hosted pilot has been redeployed.
+
 For the browser's concepts and practical views, read [Understanding the graph workbench](docs/guides/workbench.md). It explains data, rules, execution history, stopping conditions and large-dataset limits without requiring source-code knowledge.
 
 The [example catalogue and capability audit](examples/README.md) indexes eighteen complete programs across all seven required research categories and the practical work-item profiles. It records exact run settings, expected results, independent evidence and limitations. The browser uses the same manifest: choose an example, apply its settings, then load and run it.

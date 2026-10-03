@@ -106,7 +106,11 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["meta-check", "--help"]
         || args == ["meta-abstract", "--help"]
         || args == ["repair-statuses", "--help"]
+        || args == ["workflow-check", "--help"]
+        || args == ["workflow-run", "--help"]
+        || args == ["workflow-example", "--help"]
     {
+        io::stdout().lock().write_all(b"Workflow contracts: cli workflow-example routing|branching COUNT emits a request; cli workflow-check REQUEST and cli workflow-run REQUEST accept a file or -. JSON fields: source, contract, max_steps (0..1000), meta_burst (0..32). No reachable-state enumeration. Persistent revisions require the opt-in FIFO work scheduler; ordinary run is unchanged. Runs return Completed or StepLimit plus a portable trace without a scheduler-verification claim. Unsupported is not refuted; resource exhaustion is inconclusive.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Inert abstraction: cli meta-abstract INPUT MODE CONTRACT_OR_none LABEL [bounded options]\nPrivately erase only isolated constructors of LABEL after checking every reachable state's active patterns. Unsupported abstraction exits 2, not a safety refutation. Reports use meta-activity-analysis-v2; complete refers to the reduced quotient. Runtime graphs, trace semantics and scheduling are unchanged. No fairness or bounded-memory claim.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Meta-activity analysis: cli meta-check INPUT MODE CONTRACT_OR_none [bounded options]\nModes: finite-edits, edit-burst, meta-invocations, meta-burst, productive. Productive requires a recovery contract; none omits it. INPUT or CONTRACT may be - for stdin, not both. Bounds and exit codes match stability-check. Finite edits count transactions changing decoded rules, not every meta-mode invocation. Burst guarantees use maximum_bound over all reachable states. GC and execution are unchanged.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Recovery analysis: cli stability-check INPUT CONTRACT [--max-states N] [--max-edges N] [--max-comparison-work N] [--max-retained-units N] [--max-work N] [--max-candidates N]\nComplete reachable-carrier analysis, not a bounded trace test. JSON report: exit 0 certified, 7 refuted, 3 inconclusive resource bound, 2 malformed input. Contracts: recovery-contract-v1 or v2; v2 can require declared-output agreement and allow absent/duplicate statuses outside legitimacy. No external fault transition or scheduler fairness is inferred.\nExternal maintenance: cli repair-statuses INPUT CONTRACT RETRY_LABEL\nRequires core-valid input and an allowed non-legitimate retry label. Returns a recomputation-verified receipt and new baseline, not a rewrite-history continuation or proof of completed work.\n").map_err(|e|Failure::new(1,e.to_string()))?;
@@ -122,6 +126,9 @@ pub(crate) fn main_command() -> Result<u8> {
     }
     if args[0] == "stability-check" {
         return stability_command(&args);
+    }
+    if ["workflow-check", "workflow-run", "workflow-example"].contains(&args[0].as_str()) {
+        return workflow_command(&args);
     }
     if args[0] == "meta-check" || args[0] == "meta-abstract" {
         return meta_command(&args);
@@ -596,6 +603,131 @@ fn stability_command(args: &[String]) -> Result<u8> {
                 "{}\n",
                 serde_json::to_string_pretty(&output)
                     .map_err(|e| Failure::new(1, e.to_string()))?
+            )
+            .as_bytes(),
+        )
+        .map_err(|e| Failure::new(1, e.to_string()))?;
+    Ok(code)
+}
+
+fn workflow_command(args: &[String]) -> Result<u8> {
+    use engine::workflow::{self, Contract, Session};
+    #[derive(serde::Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct Request {
+        source: String,
+        contract: Contract,
+        #[serde(default)]
+        max_steps: usize,
+        #[serde(default)]
+        meta_burst: usize,
+    }
+    let limits = ExecutionLimits::default();
+    let result: std::result::Result<serde_json::Value, Diagnostic> = (|| {
+        if args[0] == "workflow-example" {
+            if !(3..=4).contains(&args.len())
+                || !["routing", "branching"].contains(&args[1].as_str())
+                || args
+                    .get(3)
+                    .is_some_and(|s| !["finite", "persistent"].contains(&s.as_str()))
+            {
+                return Err(Diagnostic::new(
+                    ErrorKind::MalformedInput,
+                    "usage: workflow-example routing|branching COUNT [persistent|finite]",
+                ));
+            }
+            let count = args[2]
+                .parse::<usize>()
+                .map_err(|_| Diagnostic::new(ErrorKind::MalformedInput, "invalid count"))?;
+            let (graph, contract) = workflow::example(
+                args[1] == "branching",
+                count,
+                args.get(3).is_none_or(|s| s == "persistent"),
+            )?;
+            let source = print_with_limits(&graph, &ParseLimits::default())?;
+            return Ok(
+                serde_json::json!({"source":source,"contract":contract,"max_steps":100,"meta_burst":1}),
+            );
+        }
+        if args.len() != 2 {
+            return Err(Diagnostic::new(
+                ErrorKind::MalformedInput,
+                "usage: workflow-check|workflow-run REQUEST_JSON_OR_-",
+            ));
+        }
+        let text = read_source(&args[1], 1024 * 1024)
+            .map_err(|e| Diagnostic::new(ErrorKind::MalformedInput, e.message))?;
+        let request: Request = serde_json::from_str(&text)
+            .map_err(|e| Diagnostic::new(ErrorKind::MalformedInput, e.to_string()))?;
+        if request.max_steps > 1000 || request.meta_burst > 32 {
+            return Err(Diagnostic::new(
+                ErrorKind::MalformedInput,
+                "workflow max_steps <= 1000 and meta_burst <= 32 required",
+            ));
+        }
+        let loaded =
+            load_with_limits(&request.source, &ParseLimits::default()).map_err(|errors| {
+                errors
+                    .iter()
+                    .find(|e| e.diagnostic.kind() == ErrorKind::ResourceExhaustion)
+                    .or_else(|| errors.first())
+                    .map_or_else(
+                        || Diagnostic::new(ErrorKind::MalformedInput, "source rejected"),
+                        |e| e.diagnostic.clone(),
+                    )
+            })?;
+        let graph = loaded.into_graph();
+        if args[0] == "workflow-check" {
+            return serde_json::to_value(workflow::check(&graph, &request.contract, limits)?)
+                .map_err(|e| Diagnostic::new(ErrorKind::MalformedInput, e.to_string()));
+        }
+        let mut run = Session::new(
+            graph,
+            request.contract,
+            limits,
+            engine::recording::RecordingLimits::default(),
+            request.meta_burst,
+        )?;
+        let bound = run.completion_bound();
+        for _ in 0..request.max_steps {
+            if run.report().unfinished == 0 {
+                break;
+            }
+            if run.step()?.is_none() {
+                return Err(Diagnostic::new(
+                    ErrorKind::InvalidConfiguration,
+                    "certified unfinished workflow deadlocked",
+                ));
+            }
+        }
+        let trace = engine::trace::TraceDocument::from_recording(
+            run.recording(),
+            &Observer::all(),
+            Some(engine::trace::sha256(request.source.as_bytes())),
+            engine::trace::TraceOptions::default(),
+            engine::trace::TraceLimits::default(),
+        )?;
+        Ok(
+            serde_json::json!({"schema":"workflow-run-v1","outcome":if run.report().unfinished == 0 {"Completed"} else {"StepLimit"}, "scheduler":"persistent-work-fifo-v1", "meta_burst":request.meta_burst,"completion_step_bound":bound,"report":run.report(),"trace":trace}),
+        )
+    })();
+    let (code, output) = match result {
+        Ok(v) => (if v["outcome"] == "StepLimit" { 3 } else { 0 }, v),
+        Err(e) if e.kind() == ErrorKind::ResourceExhaustion => (
+            3,
+            serde_json::json!({"verdict":"inconclusive","reason":e.to_string()}),
+        ),
+        Err(e) => (
+            2,
+            serde_json::json!({"verdict":"unsupported","reason":e.to_string(),"refuted":false}),
+        ),
+    };
+    io::stdout()
+        .lock()
+        .write_all(
+            format!(
+                "{}\n",
+                serde_json::to_string(&output).map_err(|e| Failure::new(1, e.to_string()))?
             )
             .as_bytes(),
         )

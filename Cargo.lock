@@ -131,6 +131,7 @@ dependencies = [
  "graph-core",
  "parser",
  "proptest",
+ "serde",
  "serde_json",
 ]
 

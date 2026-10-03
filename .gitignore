@@ -7,6 +7,7 @@ docs/archive/*
 !docs/archive/README.md
 !docs/archive/dissertation-full.md
 !docs/archive/literature.md
+!docs/archive/self-modification-theory/
 docs/worked-examples.md
 docs/simple.md
 docs/decisions.md

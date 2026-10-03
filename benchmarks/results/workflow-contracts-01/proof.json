@@ -1,0 +1,4 @@
+{
+  "output": "'WorkflowContracts.processing_decreases' depends on axioms: [propext, Quot.sound]\n'WorkflowContracts.administration_decreases' depends on axioms: [propext, Quot.sound]\n'WorkflowContracts.initial_bound' depends on axioms: [propext]\n'WorkflowContracts.branching_decreases' depends on axioms: [propext, Quot.sound]\n'WorkflowContracts.record_nonincrease' depends on axioms: [propext, Quot.sound]\n'WorkflowContracts.no_infinite_descent' depends on axioms: [propext, Quot.sound]\n'WorkflowContracts.fair_recovery' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+  "version": "Lean (version 4.19.0, arm64-apple-darwin23.6.0, commit 6caaee842e94, Release)\n"
+}

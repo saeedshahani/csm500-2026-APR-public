@@ -4,7 +4,7 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args: ['build', '-f', 'platform/Dockerfile', '-t', 'reflective-native-test', '.']
   - name: gcr.io/cloud-builders/docker
-    args: ['run', '--rm', '--network=none', '--memory=512m', '--cpus=1', '--pids-limit=128', '--read-only', '--tmpfs=/tmp:rw,noexec,nosuid,size=128m', 'reflective-native-test', 'node', '--test', 'platform/tests/platform.test.mjs']
+    args: ['run', '--rm', '--network=none', '--memory=512m', '--cpus=1', '--pids-limit=128', '--read-only', '--tmpfs=/tmp:rw,noexec,nosuid,size=128m', 'reflective-native-test', 'node', '--test', 'platform/tests/platform.test.mjs', 'platform/tests/workflow.test.mjs']
 timeout: 1200s
 options:
   logging: CLOUD_LOGGING_ONLY

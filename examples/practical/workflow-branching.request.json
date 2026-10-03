@@ -1,0 +1,62 @@
+{
+  "contract": {
+    "routes": [
+      {
+        "children": [],
+        "from": "received",
+        "to": "review"
+      },
+      {
+        "children": [],
+        "from": "received",
+        "to": "archive"
+      },
+      {
+        "children": [],
+        "from": "review",
+        "to": "archive"
+      },
+      {
+        "children": [
+          {
+            "payload": "id:validate",
+            "stage": "received"
+          },
+          {
+            "payload": "id:index",
+            "stage": "received"
+          }
+        ],
+        "from": "split",
+        "to": "archive"
+      }
+    ],
+    "schema": "workflow-stability-v1",
+    "terminal": [
+      "archive"
+    ],
+    "updates": [
+      {
+        "from": "received",
+        "old": "review",
+        "permit": null,
+        "to": "archive"
+      },
+      {
+        "from": "received",
+        "old": "archive",
+        "permit": null,
+        "to": "review"
+      }
+    ],
+    "weights": {
+      "archive": "0",
+      "received": "2",
+      "review": "1",
+      "split": "5"
+    }
+  },
+  "max_steps": 100,
+  "meta_burst": 1,
+  "source": "program {\n  atom a0 = RuleHead;\n  atom a1 = Constructor(\"Ticket\");\n  atom a2 = Record[ObjectLink](\"received\", a1, a1);\n  atom a3 = Record[Lhs](a0, a2);\n  atom a4 = Record[Lhs](a0, a1);\n  atom a5 = Record[Rhs](a0, a1);\n  atom a6 = Record[ObjectLink](\"review\", a1, a1);\n  atom a7 = Record[Rhs](a0, a6);\n  atom a8 = Record[Active](a0);\n  atom a9 = Record[ModeObject](a0);\n  atom a10 = Nat();\n  atom a11 = Record[Rank](a0, a10);\n  atom a12 = Record[Revision](a0);\n  atom a13 = RuleHead;\n  atom a14 = Constructor(\"Ticket\");\n  atom a15 = Record[ObjectLink](\"review\", a14, a14);\n  atom a16 = Record[Lhs](a13, a15);\n  atom a17 = Record[Lhs](a13, a14);\n  atom a18 = Record[Rhs](a13, a14);\n  atom a19 = Record[ObjectLink](\"archive\", a14, a14);\n  atom a20 = Record[Rhs](a13, a19);\n  atom a21 = Record[Active](a13);\n  atom a22 = Record[ModeObject](a13);\n  atom a23 = Nat();\n  atom a24 = Record[Rank](a13, a23);\n  atom a25 = Record[Revision](a13);\n  atom a26 = RuleHead;\n  atom a27 = Constructor(\"Ticket\");\n  atom a28 = Record[ObjectLink](\"split\", a27, a27);\n  atom a29 = Record[Lhs](a26, a28);\n  atom a30 = Record[Lhs](a26, a27);\n  atom a31 = Constructor(\"Ticket\");\n  atom a32 = Record[Rhs](a26, a31);\n  atom a33 = Constructor(\"Ticket\");\n  atom a34 = Record[Rhs](a26, a33);\n  atom a35 = Constructor(\"id:validate\");\n  atom a36 = Record[ObjectLink](\"id\", a31, a35);\n  atom a37 = Record[Rhs](a26, a36);\n  atom a38 = Constructor(\"id:index\");\n  atom a39 = Record[ObjectLink](\"id\", a33, a38);\n  atom a40 = Record[Rhs](a26, a39);\n  atom a41 = Record[Rhs](a26, a27);\n  atom a42 = Record[ObjectLink](\"archive\", a27, a27);\n  atom a43 = Record[Rhs](a26, a42);\n  atom a44 = Record[Rhs](a26, a35);\n  atom a45 = Record[Rhs](a26, a38);\n  atom a46 = Record[ObjectLink](\"received\", a31, a31);\n  atom a47 = Record[Rhs](a26, a46);\n  atom a48 = Record[ObjectLink](\"received\", a33, a33);\n  atom a49 = Record[Rhs](a26, a48);\n  atom a50 = Record[Active](a26);\n  atom a51 = Record[ModeObject](a26);\n  atom a52 = Nat();\n  atom a53 = Record[Rank](a26, a52);\n  atom a54 = Record[Revision](a26);\n  atom a55 = RuleHead;\n  atom a56 = Constructor(\"Ticket\");\n  atom a57 = Record[ObjectLink](\"received\", a56, a56);\n  atom a58 = Record[Lhs](a55, a57);\n  atom a59 = PatternVariable[RuleHead] Free;\n  atom a60 = Record[Lhs](a59, a57);\n  atom a61 = Record[Lhs](a55, a60);\n  atom a62 = Record[Lhs](a55, a56);\n  atom a63 = Record[ObjectLink](\"review\", a56, a56);\n  atom a64 = Record[Rhs](a59, a63);\n  atom a65 = Record[Lhs](a55, a64);\n  atom a66 = Record[Lhs](a55, a63);\n  atom a67 = Record[Revision](a59);\n  atom a68 = Record[Lhs](a55, a67);\n  atom a69 = Record[Lhs](a55, a59);\n  atom a70 = Record[ModeObject](a59);\n  atom a71 = Record[Lhs](a55, a70);\n  atom a72 = Record[Rhs](a55, a57);\n  atom a73 = Record[Rhs](a55, a60);\n  atom a74 = Record[Rhs](a55, a56);\n  atom a75 = Record[ObjectLink](\"archive\", a56, a56);\n  atom a76 = Record[Rhs](a59, a75);\n  atom a77 = Record[Rhs](a55, a76);\n  atom a78 = Record[Rhs](a55, a75);\n  atom a79 = Record[Revision](a59);\n  atom a80 = Record[Rhs](a55, a79);\n  atom a81 = Record[Rhs](a55, a59);\n  atom a82 = Record[Rhs](a55, a70);\n  atom a83 = Record[Active](a55);\n  atom a84 = Record[ModeMeta](a55);\n  atom a85 = Nat();\n  atom a86 = Nat(a85);\n  atom a87 = Record[Rank](a55, a86);\n  atom a88 = Record[Revision](a55);\n  atom a89 = RuleHead;\n  atom a90 = Constructor(\"Ticket\");\n  atom a91 = Record[ObjectLink](\"received\", a90, a90);\n  atom a92 = Record[Lhs](a89, a91);\n  atom a93 = PatternVariable[RuleHead] Free;\n  atom a94 = Record[Lhs](a93, a91);\n  atom a95 = Record[Lhs](a89, a94);\n  atom a96 = Record[Lhs](a89, a90);\n  atom a97 = Record[ObjectLink](\"archive\", a90, a90);\n  atom a98 = Record[Rhs](a93, a97);\n  atom a99 = Record[Lhs](a89, a98);\n  atom a100 = Record[Lhs](a89, a97);\n  atom a101 = Record[Revision](a93);\n  atom a102 = Record[Lhs](a89, a101);\n  atom a103 = Record[Lhs](a89, a93);\n  atom a104 = Record[ModeObject](a93);\n  atom a105 = Record[Lhs](a89, a104);\n  atom a106 = Record[Rhs](a89, a91);\n  atom a107 = Record[Rhs](a89, a94);\n  atom a108 = Record[Rhs](a89, a90);\n  atom a109 = Record[ObjectLink](\"review\", a90, a90);\n  atom a110 = Record[Rhs](a93, a109);\n  atom a111 = Record[Rhs](a89, a110);\n  atom a112 = Record[Rhs](a89, a109);\n  atom a113 = Record[Revision](a93);\n  atom a114 = Record[Rhs](a89, a113);\n  atom a115 = Record[Rhs](a89, a93);\n  atom a116 = Record[Rhs](a89, a104);\n  atom a117 = Record[Active](a89);\n  atom a118 = Record[ModeMeta](a89);\n  atom a119 = Nat();\n  atom a120 = Nat(a119);\n  atom a121 = Record[Rank](a89, a120);\n  atom a122 = Record[Revision](a89);\n  atom a123 = Constructor(\"Ticket\");\n  atom a124 = Constructor(\"id:request-0\");\n  atom a125 = Record[ObjectLink](\"id\", a123, a124);\n  atom a126 = Record[ObjectLink](\"split\", a123, a123);\n  atom a127 = Constructor(\"Ticket\");\n  atom a128 = Constructor(\"id:request-1\");\n  atom a129 = Record[ObjectLink](\"id\", a127, a128);\n  atom a130 = Record[ObjectLink](\"split\", a127, a127);\n}\n"
+}

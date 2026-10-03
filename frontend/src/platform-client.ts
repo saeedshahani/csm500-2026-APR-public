@@ -5,6 +5,9 @@ export type Members = {owner_uid:string;members:{uid:string;role:'editor'|'viewe
 export type DatasetRecord = {id:string;project_id:string;name:string;schema:string;items:number;document_sha256:string;source_sha256:string;validated_engine_sha256:string;parent_dataset_id:string|null;created_at:string};
 export type RunSummary = {schema:string;trace_sha256:string;outcome:string|null;commits:number;initial:{atoms:number;fields:number};final:{atoms:number;fields:number};consumed_total:number;produced_total:number;altered_rule_identities:string[];limitation:string};
 export type TokenProvider = ()=>Promise<string>;
+export type WorkflowRequest = {source:string;contract:unknown;max_steps?:number;meta_burst?:number};
+export type WorkflowReport = {verdict:string;guarantee:string;proof_scope:string;unfinished:number;work_potential:string;records:{ticket:string;payload:string;stage:string}[]};
+export type WorkflowResult = {verdict?:string;reason?:string;outcome?:string;completion_step_bound?:string;report?:WorkflowReport;trace?:unknown;guarantee?:string;proof_scope?:string;unfinished?:number;work_potential?:string;records?:WorkflowReport['records'];engine_sha256:string};
 export type VersionRecord = ProjectRecord & {project_id:string;source_sha256:string;validated_engine_sha256:string;parent_version_id?:string|null;application?:{schema:string;rows:number;policy:string;input_sha256:string}};
 export type JobSettings = {max_steps:number;max_work:number;max_candidates:number;seed:string|null;detect_cycles:boolean;deadline_ms:number;execution_profile?:'reference-v1'|'indexed-v2'|'framed-v3'|'joined-v4'};
 export type MonthPage = Page<{id:number;fields:string[];source_month:string;month_number:string|null;status:string}> & {complete:boolean;normalised:number;invalid_total:number;trace_sha256:string};
@@ -99,6 +102,10 @@ export class PlatformClient {
     return [...first.items,...second.items];
   }
   validate(source:string){return this.#json<{valid:true;source_sha256:string;engine_sha256:string}>('/v1/validate',{source});}
+  async workflow(action:'check'|'run',request:WorkflowRequest):Promise<WorkflowResult>{
+    const {bytes}=await this.#request(`/v1/workflows/${action}`,request,16*1024*1024);
+    return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(bytes)) as WorkflowResult;
+  }
   saveVersion(project:string,name:string,source:string,parent:string|null){return this.#json<VersionRecord>(`/v1/projects/${id(project)}/versions`,{name,source,parent_version_id:parent});}
   async datasets(project:string):Promise<DatasetRecord[]>{
     const first=await this.#json<Page<DatasetRecord>>(`/v1/projects/${id(project)}/datasets?limit=100`);

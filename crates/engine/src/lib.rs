@@ -15,6 +15,7 @@ pub mod scheduling;
 mod screened;
 pub mod stability;
 pub mod trace;
+pub mod workflow;
 pub use checked::{
     CandidateSearch, Execution, ExecutionLimits, GroundMatch, GroundRule, OperationalBinding,
     PreparedStep, SearchLimits,

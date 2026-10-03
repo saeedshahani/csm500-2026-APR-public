@@ -81,6 +81,16 @@ export class Worker {
     if (r.code !== 0) fail(422, 'invalid_dataset', r.stderr.slice(0, 8192));
     return { source: r.stdout, engine_sha256: this.identity };
   }
+  async workflow(action, request) {
+    if (!['check', 'run'].includes(action)) fail(400, 'invalid_workflow_action', 'Expected check or run');
+    this.assertBinary();
+    const r = await native(this.binary, [`workflow-${action}`, '-'], JSON.stringify(request),
+      { deadline: 30000, maximum: 16 * 1024 * 1024, limits: this.limits });
+    if (r.cause) return { verdict: 'inconclusive', reason: r.cause, engine_sha256: this.identity };
+    if (![0, 2, 3].includes(r.code)) fail(422, 'workflow_failure', r.stderr.slice(0, 8192));
+    let result; try { result = JSON.parse(r.stdout); } catch { fail(422, 'workflow_failure', 'Invalid native response'); }
+    return { ...result, engine_sha256: this.identity };
+  }
   kick() {
     if (this.active || this.stopping || this.canDispatch?.() === false) return;
     const job = this.store.state.jobs.find(j => j.status === 'queued');

@@ -6,7 +6,7 @@ test('OpenAPI routes, operation identities and local schema references are compl
   const doc = JSON.parse(fs.readFileSync('platform/openapi.json'));
   assert.equal(doc.openapi, '3.1.0');
   const operations = Object.values(doc.paths).flatMap(p => Object.values(p));
-  assert.equal(operations.length, 25);
+  assert.equal(operations.length, 27);
   assert.deepEqual(doc.paths['/v1/health'].get.responses['200'].content['application/json'].schema.properties.execution_envelope.enum,['pilot-v1','large-local-v1']);
   assert.equal(new Set(operations.map(o => o.operationId)).size, operations.length);
   const visit = value => {

@@ -59,6 +59,29 @@ try{
   const health=await call(owner,'/v1/health');assert.equal(health.status,200,JSON.stringify(health.body));assert.equal(health.body.uid,owner.uid);
   assert.equal(health.body.mode,'firebase-production');assert.match(health.headers.get('cache-control'),/no-store/);
   pass('real password identity, verified-email gate and private response caching');
+  for(const family of ['routing','branching']){
+    const request=JSON.parse(readFileSync(`examples/practical/workflow-${family}.request.json`,'utf8'));
+    assert.equal((await call(null,'/v1/workflows/check',request)).status,401);
+    assert.equal((await call(unverified,'/v1/workflows/check',request)).status,403);
+    const certified=await call(owner,'/v1/workflows/check',request,{retry:true});
+    assert.equal(certified.status,200,JSON.stringify(certified.body));assert.equal(certified.body.verdict,'certified');
+    const prefix=await call(owner,'/v1/workflows/run',{...request,max_steps:0},{retry:true});
+    assert.equal(prefix.status,200,JSON.stringify(prefix.body));assert.equal(prefix.body.outcome,'StepLimit');
+    assert.ok(prefix.body.report.unfinished>0);
+    const completed=await call(owner,'/v1/workflows/run',request,{retry:true});
+    assert.equal(completed.status,200,JSON.stringify(completed.body));assert.equal(completed.body.outcome,'Completed');
+    assert.equal(completed.body.engine_sha256,health.body.engine_sha256);
+    assert.equal(completed.body.report.unfinished,0);
+    assert.equal(completed.body.report.records.length,family==='routing'?4:6);
+    assert.ok(BigInt(completed.body.trace.events.length)<=BigInt(completed.body.completion_step_bound));
+    const replay=spawnSync('target/release/cli',['trace-check','-'],{input:JSON.stringify(completed.body.trace),encoding:'utf8',timeout:30000});
+    assert.equal(replay.status,0,replay.stderr);
+    const invalid=structuredClone(request);invalid.contract.weights.received='0';
+    const rejected=await call(owner,'/v1/workflows/check',invalid,{retry:true});
+    assert.equal(rejected.status,200,JSON.stringify(rejected.body));assert.equal(rejected.body.verdict,'unsupported');
+    assert.equal(rejected.body.refuted,false);
+    pass(`hosted ${family}: contract, bounded prefix, completion, rejection and native replay`);
+  }
   const created=await call(owner,'/v1/projects',{name:`Hosted acceptance ${run}`});assert.equal(created.status,201,JSON.stringify(created.body));
   const project=created.body,route=`/v1/projects/${project.id}`;
   assert.equal((await call(stranger,route+'/versions')).status,404);

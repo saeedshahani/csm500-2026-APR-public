@@ -145,14 +145,17 @@
                     "api": {
                       "type": "string"
                     },
-                "mode": {
-                  "type": "string"
-                },
-                "execution_envelope": {
-                  "type": "string",
-                  "enum": ["pilot-v1", "large-local-v1"],
-                  "description": "Operator-selected allowances. An absent field denotes the pilot contract; clients cannot select or enlarge this route through job settings."
-                },
+                    "mode": {
+                      "type": "string"
+                    },
+                    "execution_envelope": {
+                      "type": "string",
+                      "enum": [
+                        "pilot-v1",
+                        "large-local-v1"
+                      ],
+                      "description": "Operator-selected allowances. An absent field denotes the pilot contract; clients cannot select or enlarge this route through job settings."
+                    },
                     "uid": {
                       "type": "string",
                       "description": "Authenticated UID in Firebase identity modes"
@@ -1588,6 +1591,84 @@
           }
         }
       }
+    },
+    "/v1/workflows/check": {
+      "post": {
+        "operationId": "checkWorkflow",
+        "summary": "Check a whole-carrier sufficient workflow contract",
+        "description": "Authenticated, synchronous, one native slot. No persisted job or automatic retry. Inspect verdict/outcome: unsupported is not refuted; resource/timeout is inconclusive; StepLimit is not completion. Native rules and normal run semantics are unchanged.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Native report or bounded run; engine_sha256 identifies the binary. Trace replay validates transactions, not FIFO-policy conformance.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Authentication, request, busy or native process failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workflows/run": {
+      "post": {
+        "operationId": "runWorkflow",
+        "summary": "Run an opt-in persistent-task FIFO workflow and return a portable trace",
+        "description": "Authenticated, synchronous, one native slot. No persisted job or automatic retry. Inspect verdict/outcome: unsupported is not refuted; resource/timeout is inconclusive; StepLimit is not completion. Native rules and normal run semantics are unchanged.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WorkflowRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Native report or bounded run; engine_sha256 identifies the binary. Trace replay validates transactions, not FIFO-policy conformance.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Authentication, request, busy or native process failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2047,6 +2128,143 @@
               "string",
               "null"
             ]
+          }
+        }
+      },
+      "WorkflowRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source",
+          "contract"
+        ],
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 262144
+          },
+          "contract": {
+            "$ref": "#/components/schemas/WorkflowContract"
+          },
+          "max_steps": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000,
+            "default": 0
+          },
+          "meta_burst": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 32,
+            "default": 0
+          }
+        }
+      },
+      "WorkflowContract": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "schema",
+          "weights",
+          "terminal",
+          "routes",
+          "updates"
+        ],
+        "properties": {
+          "schema": {
+            "const": "workflow-stability-v1"
+          },
+          "weights": {
+            "type": "object",
+            "minProperties": 1,
+            "maxProperties": 64,
+            "additionalProperties": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            }
+          },
+          "terminal": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "routes": {
+            "type": "array",
+            "maxItems": 128,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "from",
+                "to"
+              ],
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "children": {
+                  "type": "array",
+                  "maxItems": 8,
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                      "stage",
+                      "payload"
+                    ],
+                    "properties": {
+                      "stage": {
+                        "type": "string"
+                      },
+                      "payload": {
+                        "type": "string",
+                        "pattern": "^id:",
+                        "maxLength": 256
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "updates": {
+            "type": "array",
+            "maxItems": 64,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "from",
+                "old",
+                "to"
+              ],
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "old": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                },
+                "permit": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "pattern": "^Permit:",
+                  "maxLength": 256
+                }
+              }
+            }
           }
         }
       }

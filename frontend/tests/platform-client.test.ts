@@ -4,6 +4,16 @@ import {PlatformClient,readBounded,defaultJobSettings,type VersionRecord} from '
 const token='local_test_token_012345678901234567890';
 const identity='00000000-0000-0000-0000-000000000001';
 
+test('workflow transport preserves reports without converting unsupported into refutation',async t=>{
+  t.mock.method(globalThis,'fetch',async(url:unknown,options:RequestInit)=>{
+    assert.equal(String(url),'http://127.0.0.1:8787/v1/workflows/check');
+    assert.deepEqual(JSON.parse(options.body as string),{source:'program {}',contract:{schema:'workflow-stability-v1'}});
+    return Response.json({verdict:'unsupported',reason:'outside profile',refuted:false});
+  });
+  const client=new PlatformClient('http://127.0.0.1:8787',token);
+  assert.equal((await client.workflow('check',{source:'program {}',contract:{schema:'workflow-stability-v1'}})).verdict,'unsupported');client.close();
+});
+
 test('hosted panel requests are serialised and queued work stops on disconnect',async t=>{
   let release!:(response:Response)=>void,calls=0;
   t.mock.method(globalThis,'fetch',async()=>{calls++;return new Promise<Response>(resolve=>{release=resolve;});});

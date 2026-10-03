@@ -88,7 +88,7 @@ if(action==='prepare'){
   const build=await api(`${service('cloudbuild')}/v1/projects/${P}/locations/${R}/builds`,'POST',{
     source:{storageSource:{bucket:buildBucket,object}},serviceAccount:`projects/${P}/serviceAccounts/${builder}`,
     steps:[{name:'gcr.io/cloud-builders/docker',args:['build','-f','platform/Dockerfile','-t',`${image}:${sha.slice(0,16)}`,'.']},
-      {name:'gcr.io/cloud-builders/docker',args:['run','--rm','--network=none','--memory=512m','--cpus=1','--pids-limit=128','--read-only','--tmpfs=/tmp:rw,noexec,nosuid,size=128m',`${image}:${sha.slice(0,16)}`,'node','--test','platform/tests/platform.test.mjs']}],
+      {name:'gcr.io/cloud-builders/docker',args:['run','--rm','--network=none','--memory=512m','--cpus=1','--pids-limit=128','--read-only','--tmpfs=/tmp:rw,noexec,nosuid,size=128m',`${image}:${sha.slice(0,16)}`,'node','--test','platform/tests/platform.test.mjs','platform/tests/workflow.test.mjs']}],
     images:[`${image}:${sha.slice(0,16)}`],timeout:'1200s',options:{logging:'CLOUD_LOGGING_ONLY',machineType:'E2_MEDIUM'}});
   console.log(JSON.stringify({source_sha256:sha,operation:build.name,build_id:build.metadata?.build?.id,image:`${image}:${sha.slice(0,16)}`}));
 }else if(action==='deploy'){

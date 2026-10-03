@@ -104,6 +104,17 @@ export async function start({ directory, binary, token, port = 0, recover = fals
       if (method === 'POST' && url.pathname === '/v1/validate') {
         const b = await body(req,large); object(b, ['source']); return send(200, await validate(source(b.source,large)));
       }
+      if (method === 'POST' && ['/v1/workflows/check', '/v1/workflows/run'].includes(url.pathname)) {
+        const b = await body(req); object(b, ['source', 'contract', 'max_steps', 'meta_burst'], ['source', 'contract']);
+        source(b.source);
+        if (!b.contract || typeof b.contract !== 'object' || Array.isArray(b.contract)) fail(400, 'invalid_contract', 'Expected a workflow contract object');
+        if (Object.hasOwn(b, 'max_steps') && (!Number.isSafeInteger(b.max_steps) || b.max_steps < 0 || b.max_steps > 1000)) fail(400, 'invalid_steps', 'max_steps must be 0–1000');
+        if (Object.hasOwn(b, 'meta_burst') && (!Number.isSafeInteger(b.meta_burst) || b.meta_burst < 0 || b.meta_burst > 32)) fail(400, 'invalid_burst', 'meta_burst must be 0–32');
+        if (validating || worker.active) fail(429, 'busy', 'Native slot busy; retry later');
+        validating = true;
+        try { return send(200, await worker.workflow(parts[2], b)); }
+        finally { validating = false; worker.kick(); }
+      }
       if (parts[1] === 'projects' && parts.length === 2) {
         if (method === 'GET') return send(200, page(store.state.projects.filter(p => role(p, uid, auth.mode)).map(visible), url));
         if (method === 'POST') {

@@ -4,6 +4,7 @@ import './platform.css';
 import {ProjectMembers} from './ProjectMembers';
 import {ProjectDatasets} from './ProjectDatasets';
 import {RunReport} from './RunReport';
+import {WorkflowContracts} from './WorkflowContracts';
 import {MonthImport,MonthResults} from './MonthApplication';
 import type {EmulatorSession} from './emulator-session';
 import {hostedApi,hostedOrigins,hostedProject} from './hosted-config';
@@ -110,6 +111,7 @@ export function Platform({active,draft,inspectorBusy,onSource,onTrace}:{active:b
       <header className="project-title"><h2>{chosenProject.name}</h2><code>{chosenProject.id}</code>{chosenProject.role&&<span>Your role: {chosenProject.role}</span>}</header>
       {chosenProject.role==='owner'&&client.current&&<ProjectMembers key={`${uid}:${project}`} api={client.current} project={project}/>}
       {client.current&&<ProjectDatasets key={`data:${uid}:${project}`} api={client.current} project={project} canEdit={canEdit} onDirty={setDatasetDirty} onVersion={saved=>{setVersions(list=>[...list,saved]);setVersion(saved.id);}}/>}
+      {client.current&&<WorkflowContracts key={`workflow:${uid}:${project}`} busy={busy} inspectorBusy={inspectorBusy} perform={action} onTrace={onTrace}/>}
       {large&&client.current&&<MonthImport onDirty={setMonthDirty} key={`months:${uid}:${project}`} api={client.current} project={project} disabled={busy||!canEdit} onVersion={saved=>{setVersions(list=>[...list,saved]);setVersion(saved.id);setConfig({max_steps:20000,max_work:10000000,max_candidates:20000,deadline_ms:120000,seed:'42',detect_cycles:true,execution_profile:'joined-v4'});setNotice(`Imported ${saved.application?.rows} rows. Submit the selected version to transform them.`);}}/>}
       <section className="platform-section" aria-label="Program versions"><div className="platform-section-heading"><h2>Program versions</h2><span>{versions.length} saved</span></div><p>A version contains the data and rules together. Saving validates a new immutable source; it does not change a running graph.</p>
         <label>Saved version<select value={version} disabled={busy} onChange={e=>setVersion(e.target.value)}><option value="">Choose a version</option>{versions.map(v=><option key={v.id} value={v.id}>{v.name} · {short(v.id)}</option>)}</select></label>
