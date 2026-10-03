@@ -1,0 +1,20 @@
+{
+  "schema": "minimality-study-v1",
+  "complete": true,
+  "parent": "e2add5cd84bb40ed3bc05a312d88ec9ba383035b",
+  "created": "2026-10-03T14:40:25.216Z",
+  "source_sha256": "36039b72e941e515698949fdf8468496723164d6bc3497d49e0a2a3eb94a7589",
+  "binary_sha256": "5862cef81ba5d2a86f903d9b6b05acb3cd86d67b33bb66e0f05d21a915606750",
+  "environment": {
+    "node": "v24.21.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Pro",
+    "rust": "rustc 1.85.0 (4d91de4e4 2025-02-17)"
+  },
+  "files": {
+    "native.json.gz": "7df73c09a42bd2ff3c090f96e042dbbffb0f93758e5a1aa1359ee2c6d3ee2258",
+    "report.json": "27d9d74fb241cb10454c6d73c0df34447b02f18655076984594e00a3e300793c"
+  },
+  "failure": null
+}

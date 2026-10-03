@@ -33,6 +33,12 @@ jobs:
           node --test scripts/intervention-model.test.mjs
           cargo build --release --locked -p engine --example interventions
           node scripts/intervention-study.mjs verify benchmarks/results/interventions-03 --live
+          node --test scripts/minimality.test.mjs
+          cargo test --locked -p engine --example minimality
+          cargo build --release --locked -p engine --example minimality
+          node scripts/minimality-study.mjs verify benchmarks/results/minimality-01
+          node scripts/minimality-study.mjs verify benchmarks/results/minimality-02
+          node scripts/minimality-study.mjs verify benchmarks/results/minimality-03 --live
           node --test scripts/documentation.test.mjs
           node scripts/reproduce-cycle.mjs --verify benchmarks/results/s6-cycle01-reproduction
           node scripts/verify-scale-study.mjs

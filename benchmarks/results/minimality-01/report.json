@@ -1,0 +1,2013 @@
+{
+  "snapshots": 69,
+  "native_cases": 477,
+  "translated_queries": 954,
+  "statuses": {
+    "Admitted": 138,
+    "InvalidBinding": 325,
+    "Guardedness": 8,
+    "Dangling": 4,
+    "InvalidConfiguration": 2
+  },
+  "rows": [
+    {
+      "name": "fixture/a2",
+      "prefix": 0,
+      "n": 31,
+      "f": 39,
+      "edge_vertices": 10,
+      "edge_entities": 21,
+      "T": {
+        "nodes": 88,
+        "arcs": 167,
+        "n": 31,
+        "f0": 21,
+        "f1": 18,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 65,
+        "arcs": 105,
+        "n": 31,
+        "f0": 21,
+        "f1": 18,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "fixture/a2",
+      "prefix": 1,
+      "n": 27,
+      "f": 35,
+      "edge_vertices": 8,
+      "edge_entities": 19,
+      "T": {
+        "nodes": 80,
+        "arcs": 151,
+        "n": 27,
+        "f0": 19,
+        "f1": 16,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 59,
+        "arcs": 95,
+        "n": 27,
+        "f0": 19,
+        "f1": 16,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "fixture/a4",
+      "prefix": 0,
+      "n": 33,
+      "f": 47,
+      "edge_vertices": 7,
+      "edge_entities": 26,
+      "T": {
+        "nodes": 98,
+        "arcs": 193,
+        "n": 33,
+        "f0": 27,
+        "f1": 20,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 69,
+        "arcs": 117,
+        "n": 33,
+        "f0": 27,
+        "f1": 20,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "fixture/a4",
+      "prefix": 1,
+      "n": 46,
+      "f": 62,
+      "edge_vertices": 11,
+      "edge_entities": 35,
+      "T": {
+        "nodes": 127,
+        "arcs": 254,
+        "n": 46,
+        "f0": 36,
+        "f1": 26,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 89,
+        "arcs": 154,
+        "n": 46,
+        "f0": 36,
+        "f1": 26,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "fixture/a4",
+      "prefix": 2,
+      "n": 59,
+      "f": 77,
+      "edge_vertices": 15,
+      "edge_entities": 44,
+      "T": {
+        "nodes": 156,
+        "arcs": 315,
+        "n": 59,
+        "f0": 45,
+        "f1": 32,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      },
+      "P": {
+        "nodes": 109,
+        "arcs": 191,
+        "n": 59,
+        "f0": 45,
+        "f1": 32,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      }
+    },
+    {
+      "name": "fixture/a4",
+      "prefix": 3,
+      "n": 72,
+      "f": 92,
+      "edge_vertices": 19,
+      "edge_entities": 53,
+      "T": {
+        "nodes": 185,
+        "arcs": 376,
+        "n": 72,
+        "f0": 54,
+        "f1": 38,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      },
+      "P": {
+        "nodes": 129,
+        "arcs": 228,
+        "n": 72,
+        "f0": 54,
+        "f1": 38,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      }
+    },
+    {
+      "name": "fixture/b2",
+      "prefix": 0,
+      "n": 23,
+      "f": 31,
+      "edge_vertices": 6,
+      "edge_entities": 17,
+      "T": {
+        "nodes": 73,
+        "arcs": 139,
+        "n": 23,
+        "f0": 19,
+        "f1": 12,
+        "v": 2,
+        "a": 2,
+        "b": 1
+      },
+      "P": {
+        "nodes": 52,
+        "arcs": 87,
+        "n": 23,
+        "f0": 19,
+        "f1": 12,
+        "v": 2,
+        "a": 2,
+        "b": 1
+      }
+    },
+    {
+      "name": "fixture/b2",
+      "prefix": 1,
+      "n": 22,
+      "f": 30,
+      "edge_vertices": 5,
+      "edge_entities": 17,
+      "T": {
+        "nodes": 71,
+        "arcs": 135,
+        "n": 22,
+        "f0": 18,
+        "f1": 12,
+        "v": 2,
+        "a": 2,
+        "b": 1
+      },
+      "P": {
+        "nodes": 51,
+        "arcs": 85,
+        "n": 22,
+        "f0": 18,
+        "f1": 12,
+        "v": 2,
+        "a": 2,
+        "b": 1
+      }
+    },
+    {
+      "name": "fixture/c1",
+      "prefix": 0,
+      "n": 81,
+      "f": 117,
+      "edge_vertices": 17,
+      "edge_entities": 64,
+      "T": {
+        "nodes": 219,
+        "arcs": 462,
+        "n": 81,
+        "f0": 67,
+        "f1": 50,
+        "v": 4,
+        "a": 4,
+        "b": 2
+      },
+      "P": {
+        "nodes": 150,
+        "arcs": 276,
+        "n": 81,
+        "f0": 67,
+        "f1": 50,
+        "v": 4,
+        "a": 4,
+        "b": 2
+      }
+    },
+    {
+      "name": "behaviour/collapse.graph",
+      "prefix": 0,
+      "n": 17,
+      "f": 19,
+      "edge_vertices": 6,
+      "edge_entities": 11,
+      "T": {
+        "nodes": 55,
+        "arcs": 96,
+        "n": 17,
+        "f0": 11,
+        "f1": 8,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 42,
+        "arcs": 64,
+        "n": 17,
+        "f0": 11,
+        "f1": 8,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "behaviour/collapse.graph",
+      "prefix": 1,
+      "n": 16,
+      "f": 17,
+      "edge_vertices": 6,
+      "edge_entities": 10,
+      "T": {
+        "nodes": 52,
+        "arcs": 89,
+        "n": 16,
+        "f0": 10,
+        "f1": 7,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 40,
+        "arcs": 60,
+        "n": 16,
+        "f0": 10,
+        "f1": 7,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "behaviour/oscillating.graph",
+      "prefix": 0,
+      "n": 36,
+      "f": 46,
+      "edge_vertices": 10,
+      "edge_entities": 26,
+      "T": {
+        "nodes": 103,
+        "arcs": 202,
+        "n": 36,
+        "f0": 26,
+        "f1": 20,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      },
+      "P": {
+        "nodes": 75,
+        "arcs": 128,
+        "n": 36,
+        "f0": 26,
+        "f1": 20,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      }
+    },
+    {
+      "name": "behaviour/oscillating.graph",
+      "prefix": 1,
+      "n": 36,
+      "f": 46,
+      "edge_vertices": 10,
+      "edge_entities": 26,
+      "T": {
+        "nodes": 103,
+        "arcs": 202,
+        "n": 36,
+        "f0": 26,
+        "f1": 20,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      },
+      "P": {
+        "nodes": 75,
+        "arcs": 128,
+        "n": 36,
+        "f0": 26,
+        "f1": 20,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      }
+    },
+    {
+      "name": "behaviour/oscillating.graph",
+      "prefix": 2,
+      "n": 36,
+      "f": 46,
+      "edge_vertices": 10,
+      "edge_entities": 26,
+      "T": {
+        "nodes": 103,
+        "arcs": 202,
+        "n": 36,
+        "f0": 26,
+        "f1": 20,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      },
+      "P": {
+        "nodes": 75,
+        "arcs": 128,
+        "n": 36,
+        "f0": 26,
+        "f1": 20,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      }
+    },
+    {
+      "name": "behaviour/oscillating.graph",
+      "prefix": 3,
+      "n": 36,
+      "f": 46,
+      "edge_vertices": 10,
+      "edge_entities": 26,
+      "T": {
+        "nodes": 103,
+        "arcs": 202,
+        "n": 36,
+        "f0": 26,
+        "f1": 20,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      },
+      "P": {
+        "nodes": 75,
+        "arcs": 128,
+        "n": 36,
+        "f0": 26,
+        "f1": 20,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      }
+    },
+    {
+      "name": "behaviour/stable.graph",
+      "prefix": 0,
+      "n": 20,
+      "f": 25,
+      "edge_vertices": 6,
+      "edge_entities": 14,
+      "T": {
+        "nodes": 64,
+        "arcs": 117,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 48,
+        "arcs": 76,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "behaviour/stable.graph",
+      "prefix": 1,
+      "n": 20,
+      "f": 25,
+      "edge_vertices": 6,
+      "edge_entities": 14,
+      "T": {
+        "nodes": 64,
+        "arcs": 117,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 48,
+        "arcs": 76,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "independent/disjoint.graph",
+      "prefix": 0,
+      "n": 22,
+      "f": 25,
+      "edge_vertices": 8,
+      "edge_entities": 14,
+      "T": {
+        "nodes": 66,
+        "arcs": 119,
+        "n": 22,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 50,
+        "arcs": 78,
+        "n": 22,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "independent/disjoint.graph",
+      "prefix": 1,
+      "n": 22,
+      "f": 25,
+      "edge_vertices": 8,
+      "edge_entities": 14,
+      "T": {
+        "nodes": 66,
+        "arcs": 119,
+        "n": 22,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 50,
+        "arcs": 78,
+        "n": 22,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "independent/disjoint.graph",
+      "prefix": 2,
+      "n": 22,
+      "f": 25,
+      "edge_vertices": 8,
+      "edge_entities": 14,
+      "T": {
+        "nodes": 66,
+        "arcs": 119,
+        "n": 22,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 50,
+        "arcs": 78,
+        "n": 22,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "independent/shared-read.graph",
+      "prefix": 0,
+      "n": 20,
+      "f": 25,
+      "edge_vertices": 6,
+      "edge_entities": 14,
+      "T": {
+        "nodes": 64,
+        "arcs": 117,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 48,
+        "arcs": 76,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "independent/shared-read.graph",
+      "prefix": 1,
+      "n": 20,
+      "f": 25,
+      "edge_vertices": 6,
+      "edge_entities": 14,
+      "T": {
+        "nodes": 64,
+        "arcs": 117,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 48,
+        "arcs": 76,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "independent/shared-read.graph",
+      "prefix": 2,
+      "n": 20,
+      "f": 25,
+      "edge_vertices": 6,
+      "edge_entities": 14,
+      "T": {
+        "nodes": 64,
+        "arcs": 117,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 48,
+        "arcs": 76,
+        "n": 20,
+        "f0": 14,
+        "f1": 11,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/context.lambda",
+      "prefix": 0,
+      "n": 569,
+      "f": 891,
+      "edge_vertices": 107,
+      "edge_entities": 462,
+      "T": {
+        "nodes": 1512,
+        "arcs": 3363,
+        "n": 569,
+        "f0": 462,
+        "f1": 429,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1048,
+        "arcs": 2008,
+        "n": 569,
+        "f0": 462,
+        "f1": 429,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/context.lambda",
+      "prefix": 1,
+      "n": 573,
+      "f": 897,
+      "edge_vertices": 108,
+      "edge_entities": 465,
+      "T": {
+        "nodes": 1522,
+        "arcs": 3385,
+        "n": 573,
+        "f0": 465,
+        "f1": 432,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1055,
+        "arcs": 2021,
+        "n": 573,
+        "f0": 465,
+        "f1": 432,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/context.lambda",
+      "prefix": 2,
+      "n": 577,
+      "f": 903,
+      "edge_vertices": 109,
+      "edge_entities": 468,
+      "T": {
+        "nodes": 1532,
+        "arcs": 3407,
+        "n": 577,
+        "f0": 468,
+        "f1": 435,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1062,
+        "arcs": 2034,
+        "n": 577,
+        "f0": 468,
+        "f1": 435,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/context.lambda",
+      "prefix": 3,
+      "n": 581,
+      "f": 909,
+      "edge_vertices": 110,
+      "edge_entities": 471,
+      "T": {
+        "nodes": 1542,
+        "arcs": 3429,
+        "n": 581,
+        "f0": 471,
+        "f1": 438,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1069,
+        "arcs": 2047,
+        "n": 581,
+        "f0": 471,
+        "f1": 438,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/erasure.lambda",
+      "prefix": 0,
+      "n": 587,
+      "f": 909,
+      "edge_vertices": 116,
+      "edge_entities": 471,
+      "T": {
+        "nodes": 1548,
+        "arcs": 3435,
+        "n": 587,
+        "f0": 471,
+        "f1": 438,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1075,
+        "arcs": 2053,
+        "n": 587,
+        "f0": 471,
+        "f1": 438,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/erasure.lambda",
+      "prefix": 1,
+      "n": 591,
+      "f": 915,
+      "edge_vertices": 117,
+      "edge_entities": 474,
+      "T": {
+        "nodes": 1558,
+        "arcs": 3457,
+        "n": 591,
+        "f0": 474,
+        "f1": 441,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1082,
+        "arcs": 2066,
+        "n": 591,
+        "f0": 474,
+        "f1": 441,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/erasure.lambda",
+      "prefix": 2,
+      "n": 595,
+      "f": 921,
+      "edge_vertices": 118,
+      "edge_entities": 477,
+      "T": {
+        "nodes": 1568,
+        "arcs": 3479,
+        "n": 595,
+        "f0": 477,
+        "f1": 444,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1089,
+        "arcs": 2079,
+        "n": 595,
+        "f0": 477,
+        "f1": 444,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/erasure.lambda",
+      "prefix": 3,
+      "n": 599,
+      "f": 927,
+      "edge_vertices": 119,
+      "edge_entities": 480,
+      "T": {
+        "nodes": 1578,
+        "arcs": 3501,
+        "n": 599,
+        "f0": 480,
+        "f1": 447,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1096,
+        "arcs": 2092,
+        "n": 599,
+        "f0": 480,
+        "f1": 447,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/identity.lambda",
+      "prefix": 0,
+      "n": 563,
+      "f": 885,
+      "edge_vertices": 104,
+      "edge_entities": 459,
+      "T": {
+        "nodes": 1500,
+        "arcs": 3339,
+        "n": 563,
+        "f0": 459,
+        "f1": 426,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1039,
+        "arcs": 1993,
+        "n": 563,
+        "f0": 459,
+        "f1": 426,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/identity.lambda",
+      "prefix": 1,
+      "n": 567,
+      "f": 891,
+      "edge_vertices": 105,
+      "edge_entities": 462,
+      "T": {
+        "nodes": 1510,
+        "arcs": 3361,
+        "n": 567,
+        "f0": 462,
+        "f1": 429,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1046,
+        "arcs": 2006,
+        "n": 567,
+        "f0": 462,
+        "f1": 429,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/identity.lambda",
+      "prefix": 2,
+      "n": 571,
+      "f": 897,
+      "edge_vertices": 106,
+      "edge_entities": 465,
+      "T": {
+        "nodes": 1520,
+        "arcs": 3383,
+        "n": 571,
+        "f0": 465,
+        "f1": 432,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1053,
+        "arcs": 2019,
+        "n": 571,
+        "f0": 465,
+        "f1": 432,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/identity.lambda",
+      "prefix": 3,
+      "n": 571,
+      "f": 897,
+      "edge_vertices": 106,
+      "edge_entities": 465,
+      "T": {
+        "nodes": 1520,
+        "arcs": 3383,
+        "n": 571,
+        "f0": 465,
+        "f1": 432,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1053,
+        "arcs": 2019,
+        "n": 571,
+        "f0": 465,
+        "f1": 432,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/omega.lambda",
+      "prefix": 0,
+      "n": 571,
+      "f": 893,
+      "edge_vertices": 108,
+      "edge_entities": 463,
+      "T": {
+        "nodes": 1516,
+        "arcs": 3371,
+        "n": 571,
+        "f0": 463,
+        "f1": 430,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1051,
+        "arcs": 2013,
+        "n": 571,
+        "f0": 463,
+        "f1": 430,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/omega.lambda",
+      "prefix": 1,
+      "n": 575,
+      "f": 899,
+      "edge_vertices": 109,
+      "edge_entities": 466,
+      "T": {
+        "nodes": 1526,
+        "arcs": 3393,
+        "n": 575,
+        "f0": 466,
+        "f1": 433,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1058,
+        "arcs": 2026,
+        "n": 575,
+        "f0": 466,
+        "f1": 433,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/omega.lambda",
+      "prefix": 2,
+      "n": 579,
+      "f": 905,
+      "edge_vertices": 110,
+      "edge_entities": 469,
+      "T": {
+        "nodes": 1536,
+        "arcs": 3415,
+        "n": 579,
+        "f0": 469,
+        "f1": 436,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1065,
+        "arcs": 2039,
+        "n": 579,
+        "f0": 469,
+        "f1": 436,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/omega.lambda",
+      "prefix": 3,
+      "n": 583,
+      "f": 911,
+      "edge_vertices": 111,
+      "edge_entities": 472,
+      "T": {
+        "nodes": 1546,
+        "arcs": 3437,
+        "n": 583,
+        "f0": 472,
+        "f1": 439,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1072,
+        "arcs": 2052,
+        "n": 583,
+        "f0": 472,
+        "f1": 439,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/repetition.lambda",
+      "prefix": 0,
+      "n": 567,
+      "f": 889,
+      "edge_vertices": 106,
+      "edge_entities": 461,
+      "T": {
+        "nodes": 1508,
+        "arcs": 3355,
+        "n": 567,
+        "f0": 461,
+        "f1": 428,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1045,
+        "arcs": 2003,
+        "n": 567,
+        "f0": 461,
+        "f1": 428,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/repetition.lambda",
+      "prefix": 1,
+      "n": 571,
+      "f": 895,
+      "edge_vertices": 107,
+      "edge_entities": 464,
+      "T": {
+        "nodes": 1518,
+        "arcs": 3377,
+        "n": 571,
+        "f0": 464,
+        "f1": 431,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1052,
+        "arcs": 2016,
+        "n": 571,
+        "f0": 464,
+        "f1": 431,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/repetition.lambda",
+      "prefix": 2,
+      "n": 575,
+      "f": 901,
+      "edge_vertices": 108,
+      "edge_entities": 467,
+      "T": {
+        "nodes": 1528,
+        "arcs": 3399,
+        "n": 575,
+        "f0": 467,
+        "f1": 434,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1059,
+        "arcs": 2029,
+        "n": 575,
+        "f0": 467,
+        "f1": 434,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/repetition.lambda",
+      "prefix": 3,
+      "n": 579,
+      "f": 907,
+      "edge_vertices": 109,
+      "edge_entities": 470,
+      "T": {
+        "nodes": 1538,
+        "arcs": 3421,
+        "n": 579,
+        "f0": 470,
+        "f1": 437,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1066,
+        "arcs": 2042,
+        "n": 579,
+        "f0": 470,
+        "f1": 437,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/shadowing.lambda",
+      "prefix": 0,
+      "n": 565,
+      "f": 887,
+      "edge_vertices": 105,
+      "edge_entities": 460,
+      "T": {
+        "nodes": 1504,
+        "arcs": 3347,
+        "n": 565,
+        "f0": 460,
+        "f1": 427,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1042,
+        "arcs": 1998,
+        "n": 565,
+        "f0": 460,
+        "f1": 427,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/shadowing.lambda",
+      "prefix": 1,
+      "n": 569,
+      "f": 893,
+      "edge_vertices": 106,
+      "edge_entities": 463,
+      "T": {
+        "nodes": 1514,
+        "arcs": 3369,
+        "n": 569,
+        "f0": 463,
+        "f1": 430,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1049,
+        "arcs": 2011,
+        "n": 569,
+        "f0": 463,
+        "f1": 430,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "lambda/shadowing.lambda",
+      "prefix": 2,
+      "n": 573,
+      "f": 899,
+      "edge_vertices": 107,
+      "edge_entities": 466,
+      "T": {
+        "nodes": 1524,
+        "arcs": 3391,
+        "n": 573,
+        "f0": 466,
+        "f1": 433,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      },
+      "P": {
+        "nodes": 1056,
+        "arcs": 2024,
+        "n": 573,
+        "f0": 466,
+        "f1": 433,
+        "v": 35,
+        "a": 35,
+        "b": 0
+      }
+    },
+    {
+      "name": "practical/policy-enable.graph",
+      "prefix": 0,
+      "n": 60,
+      "f": 72,
+      "edge_vertices": 20,
+      "edge_entities": 40,
+      "T": {
+        "nodes": 151,
+        "arcs": 298,
+        "n": 60,
+        "f0": 41,
+        "f1": 31,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 108,
+        "arcs": 183,
+        "n": 60,
+        "f0": 41,
+        "f1": 31,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "practical/policy-enable.graph",
+      "prefix": 1,
+      "n": 60,
+      "f": 73,
+      "edge_vertices": 19,
+      "edge_entities": 41,
+      "T": {
+        "nodes": 152,
+        "arcs": 301,
+        "n": 60,
+        "f0": 42,
+        "f1": 31,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 108,
+        "arcs": 184,
+        "n": 60,
+        "f0": 42,
+        "f1": 31,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "practical/policy-enable.graph",
+      "prefix": 2,
+      "n": 60,
+      "f": 73,
+      "edge_vertices": 19,
+      "edge_entities": 41,
+      "T": {
+        "nodes": 152,
+        "arcs": 301,
+        "n": 60,
+        "f0": 42,
+        "f1": 31,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 108,
+        "arcs": 184,
+        "n": 60,
+        "f0": 42,
+        "f1": 31,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "practical/policy-enable.graph",
+      "prefix": 3,
+      "n": 60,
+      "f": 73,
+      "edge_vertices": 19,
+      "edge_entities": 41,
+      "T": {
+        "nodes": 152,
+        "arcs": 301,
+        "n": 60,
+        "f0": 42,
+        "f1": 31,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 108,
+        "arcs": 184,
+        "n": 60,
+        "f0": 42,
+        "f1": 31,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "practical/work-items.graph",
+      "prefix": 0,
+      "n": 33,
+      "f": 37,
+      "edge_vertices": 13,
+      "edge_entities": 20,
+      "T": {
+        "nodes": 88,
+        "arcs": 163,
+        "n": 33,
+        "f0": 20,
+        "f1": 17,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 66,
+        "arcs": 104,
+        "n": 33,
+        "f0": 20,
+        "f1": 17,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "practical/work-items.graph",
+      "prefix": 1,
+      "n": 33,
+      "f": 37,
+      "edge_vertices": 13,
+      "edge_entities": 20,
+      "T": {
+        "nodes": 88,
+        "arcs": 163,
+        "n": 33,
+        "f0": 20,
+        "f1": 17,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 66,
+        "arcs": 104,
+        "n": 33,
+        "f0": 20,
+        "f1": 17,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "practical/work-items.graph",
+      "prefix": 2,
+      "n": 33,
+      "f": 37,
+      "edge_vertices": 13,
+      "edge_entities": 20,
+      "T": {
+        "nodes": 88,
+        "arcs": 163,
+        "n": 33,
+        "f0": 20,
+        "f1": 17,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 66,
+        "arcs": 104,
+        "n": 33,
+        "f0": 20,
+        "f1": 17,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "practical/work-items.graph",
+      "prefix": 3,
+      "n": 33,
+      "f": 37,
+      "edge_vertices": 13,
+      "edge_entities": 20,
+      "T": {
+        "nodes": 88,
+        "arcs": 163,
+        "n": 33,
+        "f0": 20,
+        "f1": 17,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 66,
+        "arcs": 104,
+        "n": 33,
+        "f0": 20,
+        "f1": 17,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/arithmetic.graph",
+      "prefix": 0,
+      "n": 31,
+      "f": 39,
+      "edge_vertices": 10,
+      "edge_entities": 21,
+      "T": {
+        "nodes": 88,
+        "arcs": 167,
+        "n": 31,
+        "f0": 21,
+        "f1": 18,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 65,
+        "arcs": 105,
+        "n": 31,
+        "f0": 21,
+        "f1": 18,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/arithmetic.graph",
+      "prefix": 1,
+      "n": 27,
+      "f": 35,
+      "edge_vertices": 8,
+      "edge_entities": 19,
+      "T": {
+        "nodes": 80,
+        "arcs": 151,
+        "n": 27,
+        "f0": 19,
+        "f1": 16,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 59,
+        "arcs": 95,
+        "n": 27,
+        "f0": 19,
+        "f1": 16,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/mutual-regress.graph",
+      "prefix": 0,
+      "n": 81,
+      "f": 117,
+      "edge_vertices": 17,
+      "edge_entities": 64,
+      "T": {
+        "nodes": 219,
+        "arcs": 462,
+        "n": 81,
+        "f0": 67,
+        "f1": 50,
+        "v": 4,
+        "a": 4,
+        "b": 2
+      },
+      "P": {
+        "nodes": 150,
+        "arcs": 276,
+        "n": 81,
+        "f0": 67,
+        "f1": 50,
+        "v": 4,
+        "a": 4,
+        "b": 2
+      }
+    },
+    {
+      "name": "programs/restoration.graph",
+      "prefix": 0,
+      "n": 100,
+      "f": 142,
+      "edge_vertices": 25,
+      "edge_entities": 75,
+      "T": {
+        "nodes": 262,
+        "arcs": 551,
+        "n": 100,
+        "f0": 82,
+        "f1": 60,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      },
+      "P": {
+        "nodes": 178,
+        "arcs": 325,
+        "n": 100,
+        "f0": 82,
+        "f1": 60,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/restoration.graph",
+      "prefix": 1,
+      "n": 99,
+      "f": 141,
+      "edge_vertices": 24,
+      "edge_entities": 75,
+      "T": {
+        "nodes": 260,
+        "arcs": 547,
+        "n": 99,
+        "f0": 81,
+        "f1": 60,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      },
+      "P": {
+        "nodes": 177,
+        "arcs": 323,
+        "n": 99,
+        "f0": 81,
+        "f1": 60,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/restoration.graph",
+      "prefix": 2,
+      "n": 100,
+      "f": 142,
+      "edge_vertices": 25,
+      "edge_entities": 75,
+      "T": {
+        "nodes": 262,
+        "arcs": 551,
+        "n": 100,
+        "f0": 82,
+        "f1": 60,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      },
+      "P": {
+        "nodes": 178,
+        "arcs": 325,
+        "n": 100,
+        "f0": 82,
+        "f1": 60,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/restoration.graph",
+      "prefix": 3,
+      "n": 99,
+      "f": 141,
+      "edge_vertices": 24,
+      "edge_entities": 75,
+      "T": {
+        "nodes": 260,
+        "arcs": 547,
+        "n": 99,
+        "f0": 81,
+        "f1": 60,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      },
+      "P": {
+        "nodes": 177,
+        "arcs": 323,
+        "n": 99,
+        "f0": 81,
+        "f1": 60,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/self-modify.graph",
+      "prefix": 0,
+      "n": 58,
+      "f": 79,
+      "edge_vertices": 16,
+      "edge_entities": 42,
+      "T": {
+        "nodes": 158,
+        "arcs": 324,
+        "n": 58,
+        "f0": 47,
+        "f1": 32,
+        "v": 4,
+        "a": 4,
+        "b": 1
+      },
+      "P": {
+        "nodes": 109,
+        "arcs": 196,
+        "n": 58,
+        "f0": 47,
+        "f1": 32,
+        "v": 4,
+        "a": 4,
+        "b": 1
+      }
+    },
+    {
+      "name": "programs/self-modify.graph",
+      "prefix": 1,
+      "n": 59,
+      "f": 78,
+      "edge_vertices": 17,
+      "edge_entities": 42,
+      "T": {
+        "nodes": 158,
+        "arcs": 322,
+        "n": 59,
+        "f0": 46,
+        "f1": 32,
+        "v": 4,
+        "a": 4,
+        "b": 1
+      },
+      "P": {
+        "nodes": 110,
+        "arcs": 196,
+        "n": 59,
+        "f0": 46,
+        "f1": 32,
+        "v": 4,
+        "a": 4,
+        "b": 1
+      }
+    },
+    {
+      "name": "programs/self-modify.graph",
+      "prefix": 2,
+      "n": 60,
+      "f": 79,
+      "edge_vertices": 18,
+      "edge_entities": 42,
+      "T": {
+        "nodes": 160,
+        "arcs": 326,
+        "n": 60,
+        "f0": 47,
+        "f1": 32,
+        "v": 4,
+        "a": 4,
+        "b": 1
+      },
+      "P": {
+        "nodes": 111,
+        "arcs": 198,
+        "n": 60,
+        "f0": 47,
+        "f1": 32,
+        "v": 4,
+        "a": 4,
+        "b": 1
+      }
+    },
+    {
+      "name": "programs/self-modify.graph",
+      "prefix": 3,
+      "n": 61,
+      "f": 78,
+      "edge_vertices": 19,
+      "edge_entities": 42,
+      "T": {
+        "nodes": 160,
+        "arcs": 324,
+        "n": 61,
+        "f0": 46,
+        "f1": 32,
+        "v": 4,
+        "a": 4,
+        "b": 1
+      },
+      "P": {
+        "nodes": 112,
+        "arcs": 198,
+        "n": 61,
+        "f0": 46,
+        "f1": 32,
+        "v": 4,
+        "a": 4,
+        "b": 1
+      }
+    },
+    {
+      "name": "programs/staging.graph",
+      "prefix": 0,
+      "n": 34,
+      "f": 47,
+      "edge_vertices": 8,
+      "edge_entities": 26,
+      "T": {
+        "nodes": 99,
+        "arcs": 194,
+        "n": 34,
+        "f0": 27,
+        "f1": 20,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      },
+      "P": {
+        "nodes": 70,
+        "arcs": 118,
+        "n": 34,
+        "f0": 27,
+        "f1": 20,
+        "v": 1,
+        "a": 1,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/staging.graph",
+      "prefix": 1,
+      "n": 47,
+      "f": 62,
+      "edge_vertices": 12,
+      "edge_entities": 35,
+      "T": {
+        "nodes": 128,
+        "arcs": 255,
+        "n": 47,
+        "f0": 36,
+        "f1": 26,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      },
+      "P": {
+        "nodes": 90,
+        "arcs": 155,
+        "n": 47,
+        "f0": 36,
+        "f1": 26,
+        "v": 2,
+        "a": 2,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/staging.graph",
+      "prefix": 2,
+      "n": 60,
+      "f": 77,
+      "edge_vertices": 16,
+      "edge_entities": 44,
+      "T": {
+        "nodes": 157,
+        "arcs": 316,
+        "n": 60,
+        "f0": 45,
+        "f1": 32,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      },
+      "P": {
+        "nodes": 110,
+        "arcs": 192,
+        "n": 60,
+        "f0": 45,
+        "f1": 32,
+        "v": 3,
+        "a": 3,
+        "b": 0
+      }
+    },
+    {
+      "name": "programs/staging.graph",
+      "prefix": 3,
+      "n": 73,
+      "f": 92,
+      "edge_vertices": 20,
+      "edge_entities": 53,
+      "T": {
+        "nodes": 186,
+        "arcs": 377,
+        "n": 73,
+        "f0": 54,
+        "f1": 38,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      },
+      "P": {
+        "nodes": 130,
+        "arcs": 229,
+        "n": 73,
+        "f0": 54,
+        "f1": 38,
+        "v": 4,
+        "a": 4,
+        "b": 0
+      }
+    }
+  ],
+  "gadgets": [
+    {
+      "internal": 1,
+      "total": 7,
+      "reachable": 1,
+      "ordered": 0,
+      "min_edges": null,
+      "witness": null
+    },
+    {
+      "internal": 2,
+      "total": 121,
+      "reachable": 10,
+      "ordered": 8,
+      "min_edges": 3,
+      "witness": [
+        [
+          1,
+          2
+        ],
+        [
+          3
+        ]
+      ]
+    },
+    {
+      "internal": 3,
+      "total": 4096,
+      "reachable": 259,
+      "ordered": 224,
+      "min_edges": 4,
+      "witness": [
+        [
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4
+        ]
+      ]
+    },
+    {
+      "internal": 4,
+      "total": 234256,
+      "reachable": 12294,
+      "ordered": 11412,
+      "min_edges": 5,
+      "witness": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          5
+        ]
+      ]
+    }
+  ]
+}

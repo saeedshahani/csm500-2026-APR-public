@@ -9,6 +9,18 @@ import {gzipSync, gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('minimality papers retain the verified comparison and condensed word budget', () => {
+  const short=readFileSync('docs/dissertation.md','utf8').split('# Bibliography')[0];
+  const full=readFileSync('docs/archive/dissertation-full.md','utf8').split('# Bibliography')[0];
+  assert.ok(short.trim().split(/\s+/).length<=8000,'condensed body exceeds its working budget');
+  for(const text of [short,full]) {
+    for(const required of ['U_M','U_T','U_P','238,480','1,431'])assert.ok(text.includes(required),required);
+    assert.match(text,/variable-heavy|128 additional unowned/);
+  }
+  const report=JSON.parse(readFileSync('benchmarks/results/minimality-03/report.json','utf8'));
+  assert.equal(report.native_cases,477);assert.equal(report.translated_queries,1431);
+  assert.equal(report.gadgets.reduce((sum,row)=>sum+row.total,0),238480);
+});
 test('S6 loop plans have one task ledger and valid planning anchors', () => {
   const loops = readFileSync('docs/research/loop-plans.md', 'utf8');
   const tasks = readFileSync('docs/task-list.md', 'utf8');
