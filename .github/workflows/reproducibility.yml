@@ -1,0 +1,35 @@
+name: Independent reproduction study
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  clean-linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        replica: [one, two]
+    env:
+      REPRO_BINDGEN: ${{ runner.temp }}/repro-tools/bin/wasm-bindgen
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - name: Provision pinned tools and dependency sources without restoring build caches
+        run: |
+          rustup toolchain install 1.85.0 --profile minimal
+          rustup target add wasm32-unknown-unknown --toolchain 1.85.0
+          cargo fetch --locked
+          cargo install wasm-bindgen-cli --version 0.2.100 --locked --root "$RUNNER_TEMP/repro-tools"
+      - name: Four fresh builds, native and WASM agreement, current measurements
+        run: node scripts/reproducibility.mjs collect output/loop-m-linux-${{ matrix.replica }}
+      - name: Retain complete evidence, including unsuccessful comparisons
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: loop-m-linux-${{ matrix.replica }}
+          path: output/loop-m-linux-${{ matrix.replica }}/
+          if-no-files-found: error
