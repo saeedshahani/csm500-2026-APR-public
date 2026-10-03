@@ -1,0 +1,12 @@
+{
+  "training": [
+    {"token": "01", "context": "calendar", "expected": "01"},
+    {"token": "01", "context": "fiscal", "expected": "04"},
+    {"token": "01", "context": "noncalendar", "expected": null}
+  ],
+  "validation": [
+    {"token": "02", "context": "calendar", "expected": "02"},
+    {"token": "02", "context": "fiscal", "expected": "05"},
+    {"token": "02", "context": "noncalendar", "expected": null}
+  ]
+}

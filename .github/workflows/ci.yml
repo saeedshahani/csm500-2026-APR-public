@@ -46,6 +46,8 @@ jobs:
           node --test scripts/learning.test.mjs
           node scripts/learning-study.mjs verify benchmarks/results/learning-01 --pilot-linear
           node scripts/learning-study.mjs verify benchmarks/results/learning-02 --live
+          node --test scripts/meaning.test.mjs
+          node scripts/meaning-study.mjs verify benchmarks/results/meaning-01 --live
           cargo test --locked -p engine --example admission_audit
           cargo build --release --locked -p engine --example admission_audit
           node scripts/admission-study.mjs verify benchmarks/results/admission-01 --live

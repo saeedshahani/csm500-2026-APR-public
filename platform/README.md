@@ -17,6 +17,21 @@ The fit response includes `selected`, `consensus`, all 64 training scores, and `
 
 Results include `compiled.source`, the validation trace, the execution `trace`, and row-level observations. The source is ordinary graph code which can be inspected or loaded through existing project-version workflows. That manual import does not provide a new server-enforced learning policy. A null output means the token was unresolved; `NormalForm` means no enabled graph step, not that every row has a correct month. Preserve the returned code/outcome if processing reaches a limit. Each invocation starts a new history and never modifies existing project versions or files. Inputs are bounded to 128 examples/rows and 128 characters per token. See the [research study](../docs/research/learning.md) for tests, counterexamples and why the learner does not outperform a complete hand-written policy.
 
+## Contextual interpretation
+
+The local context interpreter resolves ordinal tokens using graph-resident tables. For example, `03` is March in a calendar context, June in an April-start fiscal context, and explicitly not applicable in a non-calendar context. It is a bounded domain interpreter, not an interpreter for the graph engine or a claim of intrinsic meaning. Fitting remains outside the carrier; the native graph actually joins each row's token and context to its declared value.
+
+```sh
+cargo build --release --locked -p cli
+node scripts/interpret-context.mjs fit examples/practical/context-meaning.request.json
+node --test scripts/meaning.test.mjs
+node scripts/meaning-study.mjs verify benchmarks/results/meaning-01 --live
+```
+
+Review the returned `model`, candidate errors and `review`. To execute, create a request containing that `model`, the same `validation`, `approval_sha256` from the review, and `rows`, for example `[{"token":"03","context":"calendar"},{"token":"03","context":"fiscal"},{"token":"03","context":"noncalendar"}]`. Run `node scripts/interpret-context.mjs run YOUR_REQUEST.json`; both commands also accept `-` for standard input. The approval digest binds the model and validation but is not authentication. Execution repeats native validation and returns compiled source, checked traces and observations. An incomplete run retains its nonzero native `code`; inspect this field and the outcome rather than assuming JSON output means completion.
+
+`processed: true, value: null` means a declared not-applicable answer. `processed: false, value: null` means unresolved input. Unknown contexts remain unresolved even at normal form. Inputs permit 1–64 rows and 1–8 declared contexts with two-digit tokens `01`–`12`; each policy is a cyclic offset or not-applicable. These are input bounds, not a guarantee of completion within native search limits. The main study uses three contexts and nine test rows. A changed context convention requires new fitting/review; missing context is not guessed. This local module/CLI does not add a hosted endpoint, browser panel or autonomous online learner.
+
 ## Adaptive workflows with stability contracts
 
 The optional workflow facility checks a complete supported graph against declared terminal statuses, weighted processing routes and permitted rule revisions. It can certify task completion while internal rules continue changing. It cannot certify arbitrary self-modifying programs, and rejection does not mean divergence.

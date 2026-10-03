@@ -26,10 +26,21 @@ test('research source collection is recursive, deterministic and refuses nonregu
   } finally {rmSync(dir,{recursive:true,force:true});}
 });
 test('frozen research verification needs neither rg nor any executable on PATH', () => {
-  for(const [script,collection] of [['lambda-open-study.mjs','lambda-open-01'],['admission-study.mjs','admission-01'],['learning-study.mjs','learning-02']]) {
+  for(const [script,collection] of [['lambda-open-study.mjs','lambda-open-01'],['admission-study.mjs','admission-01'],['learning-study.mjs','learning-02'],['meaning-study.mjs','meaning-01']]) {
     const output=execFileSync(process.execPath,[`scripts/${script}`,'verify',`benchmarks/results/${collection}`],{env:{...process.env,PATH:''},encoding:'utf8'});
     assert.match(output,/Verified|verified/);
   }
+});
+test('meaning claims distinguish normality, useful interpretation and intrinsic grounding',()=>{
+  const r=JSON.parse(readFileSync('benchmarks/results/meaning-01/report.json'));
+  assert.equal(r.native_runs,444);assert.equal(r.main_commits,3600);assert.equal(r.intervention_runs,120);assert.equal(r.intervention_commits,1092);
+  for(const [method,correct]of [['adaptive',1296],['fixed',1296],['blind',468],['shuffled',36],['rule-free',0]])assert.equal(r.summary[method].correct,correct);
+  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    const body=readFileSync(path,'utf8').split('# Bibliography')[0];
+    for(const required of ['1,296','444','3,600','120','1,092','Harnad','context','unresolved'])assert.ok(body.includes(required),`${path}: ${required}`);
+    assert.doesNotMatch(body,/\]\((?:\.\.\/)*docs\//);
+  }
+  const tasks=readFileSync('docs/task-list.md','utf8');for(const id of ['S6-183','S6-232'])assert.ok(tasks.includes(`- [x] ${id} —`));
 });
 test('learning claims retain strong baselines, native scope and both standalone papers',()=>{
   const r=JSON.parse(readFileSync('benchmarks/results/learning-02/report.json'));

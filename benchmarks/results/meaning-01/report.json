@@ -1,0 +1,308 @@
+{
+  "schema": "meaning-study-v1",
+  "date": "2026-10-03T20:08:01.128Z",
+  "revision": "e3afa33bc220531f6f40186e219595da0691e75e",
+  "source_sha256": "5b60e5244dc31897fef7a55df6686c94dd274f1a956602269cb4ba14ee2a604a",
+  "data_sha256": "06faf5853d83a147392686eb14f7bbb6b6c9e1e138f8d59c3ac4f1a3229d8435",
+  "binary_sha256": "83ec30cf8ad8931437fb30888a12d1e8cf4ced351577e9cc743d06b642cc4e01",
+  "node": "v24.21.0",
+  "platform": "darwin",
+  "arch": "arm64",
+  "summary": {
+    "adaptive": {
+      "tasks": 144,
+      "rows": 1296,
+      "correct": 1296,
+      "processed": 1296,
+      "unresolved": 0,
+      "validation_rejected": 0,
+      "by_start": [
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        }
+      ]
+    },
+    "fixed": {
+      "tasks": 144,
+      "rows": 1296,
+      "correct": 1296,
+      "processed": 1296,
+      "unresolved": 0,
+      "validation_rejected": 0,
+      "by_start": [
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        },
+        {
+          "correct": 108,
+          "total": 108
+        }
+      ]
+    },
+    "blind": {
+      "tasks": 144,
+      "rows": 1296,
+      "correct": 468,
+      "processed": 1296,
+      "unresolved": 0,
+      "validation_rejected": 144,
+      "by_start": [
+        {
+          "correct": 72,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 36,
+          "total": 108
+        }
+      ]
+    },
+    "shuffled": {
+      "tasks": 144,
+      "rows": 1296,
+      "correct": 36,
+      "processed": 1296,
+      "unresolved": 0,
+      "validation_rejected": 144,
+      "by_start": [
+        {
+          "correct": 36,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        }
+      ]
+    },
+    "rule-free": {
+      "tasks": 144,
+      "rows": 1296,
+      "correct": 0,
+      "processed": 0,
+      "unresolved": 1296,
+      "validation_rejected": 0,
+      "by_start": [
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        },
+        {
+          "correct": 0,
+          "total": 108
+        }
+      ]
+    }
+  },
+  "native_runs": 444,
+  "main_commits": 3600,
+  "intervention_runs": 120,
+  "intervention_commits": 1092,
+  "collection_ms": 70877.077417
+}
