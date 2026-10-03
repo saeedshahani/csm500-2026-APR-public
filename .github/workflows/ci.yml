@@ -43,6 +43,9 @@ jobs:
           cargo build --release --locked -p cli --example lambda_open_probe
           node scripts/lambda-open-study.mjs verify benchmarks/results/lambda-open-01 --live
           node --test scripts/admission.test.mjs
+          node --test scripts/learning.test.mjs
+          node scripts/learning-study.mjs verify benchmarks/results/learning-01 --pilot-linear
+          node scripts/learning-study.mjs verify benchmarks/results/learning-02 --live
           cargo test --locked -p engine --example admission_audit
           cargo build --release --locked -p engine --example admission_audit
           node scripts/admission-study.mjs verify benchmarks/results/admission-01 --live

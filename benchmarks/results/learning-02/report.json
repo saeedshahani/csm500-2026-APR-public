@@ -1,0 +1,495 @@
+{
+  "schema": "learning-study-v1",
+  "date": "2026-10-03T19:31:22.289Z",
+  "revision": "6a9678a356ac9ad1d008b5a9129943218b26b222",
+  "source_sha256": "1c3352139c9e686b88326a69f8227adf55536d252d68c4b3c435906592e85b88",
+  "data_sha256": "ae37d8936435cec25a0c8a635736c626f0c6dbb646a3d777753dd3c74dc2032f",
+  "binary_sha256": "83ec30cf8ad8931437fb30888a12d1e8cf4ced351577e9cc743d06b642cc4e01",
+  "model": "calendar-subsets-v1",
+  "provider": null,
+  "prompts": null,
+  "inference_cost": 0,
+  "node": "v24.21.0",
+  "hardware": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Pro"
+  },
+  "summary": {
+    "learned": {
+      "tasks": 768,
+      "accepted": 768,
+      "positive_correct": 2304,
+      "positives": 2304,
+      "false_acceptance": 0,
+      "unresolved": 0,
+      "accepted_test_failures": 0,
+      "by_rotation": [
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        }
+      ]
+    },
+    "consensus": {
+      "tasks": 768,
+      "accepted": 768,
+      "positive_correct": 2304,
+      "positives": 2304,
+      "false_acceptance": 0,
+      "unresolved": 0,
+      "accepted_test_failures": 0,
+      "by_rotation": [
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        }
+      ]
+    },
+    "exact": {
+      "tasks": 768,
+      "accepted": 12,
+      "positive_correct": 39,
+      "positives": 2304,
+      "false_acceptance": 0,
+      "unresolved": 2265,
+      "accepted_test_failures": 0,
+      "by_rotation": [
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 4,
+          "total": 192
+        },
+        {
+          "correct": 4,
+          "total": 192
+        },
+        {
+          "correct": 4,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        }
+      ]
+    },
+    "human": {
+      "tasks": 768,
+      "accepted": 768,
+      "positive_correct": 2304,
+      "positives": 2304,
+      "false_acceptance": 0,
+      "unresolved": 0,
+      "accepted_test_failures": 0,
+      "by_rotation": [
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        }
+      ]
+    },
+    "search": {
+      "tasks": 768,
+      "accepted": 768,
+      "positive_correct": 2304,
+      "positives": 2304,
+      "false_acceptance": 0,
+      "unresolved": 0,
+      "accepted_test_failures": 0,
+      "by_rotation": [
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        },
+        {
+          "correct": 192,
+          "total": 192
+        }
+      ]
+    },
+    "random": {
+      "tasks": 768,
+      "accepted": 165,
+      "positive_correct": 504,
+      "positives": 2304,
+      "false_acceptance": 0,
+      "unresolved": 1800,
+      "accepted_test_failures": 0,
+      "by_rotation": [
+        {
+          "correct": 39,
+          "total": 192
+        },
+        {
+          "correct": 33,
+          "total": 192
+        },
+        {
+          "correct": 39,
+          "total": 192
+        },
+        {
+          "correct": 39,
+          "total": 192
+        },
+        {
+          "correct": 51,
+          "total": 192
+        },
+        {
+          "correct": 48,
+          "total": 192
+        },
+        {
+          "correct": 43,
+          "total": 192
+        },
+        {
+          "correct": 47,
+          "total": 192
+        },
+        {
+          "correct": 33,
+          "total": 192
+        },
+        {
+          "correct": 51,
+          "total": 192
+        },
+        {
+          "correct": 45,
+          "total": 192
+        },
+        {
+          "correct": 36,
+          "total": 192
+        }
+      ]
+    },
+    "shuffled": {
+      "tasks": 768,
+      "accepted": 12,
+      "positive_correct": 39,
+      "positives": 2304,
+      "false_acceptance": 0,
+      "unresolved": 2265,
+      "accepted_test_failures": 0,
+      "by_rotation": [
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 4,
+          "total": 192
+        },
+        {
+          "correct": 4,
+          "total": 192
+        },
+        {
+          "correct": 4,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        },
+        {
+          "correct": 3,
+          "total": 192
+        }
+      ]
+    },
+    "memory": {
+      "tasks": 768,
+      "accepted": 0,
+      "positive_correct": 0,
+      "positives": 2304,
+      "false_acceptance": 0,
+      "unresolved": 2304,
+      "accepted_test_failures": 0,
+      "by_rotation": [
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        },
+        {
+          "correct": 0,
+          "total": 192
+        }
+      ]
+    }
+  },
+  "native_cases": 201,
+  "native_commits": 2412,
+  "native_wall_ms": 6732.532792
+}

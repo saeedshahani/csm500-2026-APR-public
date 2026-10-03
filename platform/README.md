@@ -1,5 +1,22 @@
 # Local developer API
 
+## Local learned calendar proposals
+
+The optional local learner selects a small text-cleaning policy from labelled month examples. It does not call an AI provider. It compiles its proposed decisions into graph-resident rule bodies; a checked meta-rule activates them only in the explicitly promoted run. Learning itself occurs outside the graph. This is a CLI/module facility, not a new HTTP endpoint or browser training panel.
+
+From the repository root:
+
+```sh
+cargo build --release --locked -p cli
+node scripts/learn-calendar.mjs fit examples/practical/calendar-learning.request.json
+node --test scripts/learning.test.mjs
+node scripts/learning-study.mjs verify benchmarks/results/learning-02 --live
+```
+
+The fit response includes `selected`, `consensus`, all 64 training scores, and `review`. Check the examples, chosen operations and validation result. A successful review is not proof about future data. To execute, create a JSON request with `model` copied from `selected` (or a separately reviewed consensus proposal), the original `validation` array, a `rows` array such as `[" MONTH=MAY. ", "unknown"]`, and `approval_sha256` copied from the corresponding review. Then run `node scripts/learn-calendar.mjs run YOUR_REQUEST.json`. Both commands also accept `-` for standard input. A changed proposal or validation set requires a newly computed review digest; the exported `gate` function provides review for a consensus model. The digest is a change-detection check, not a credential.
+
+Results include `compiled.source`, the validation trace, the execution `trace`, and row-level observations. The source is ordinary graph code which can be inspected or loaded through existing project-version workflows. That manual import does not provide a new server-enforced learning policy. A null output means the token was unresolved; `NormalForm` means no enabled graph step, not that every row has a correct month. Preserve the returned code/outcome if processing reaches a limit. Each invocation starts a new history and never modifies existing project versions or files. Inputs are bounded to 128 examples/rows and 128 characters per token. See the [research study](../docs/research/learning.md) for tests, counterexamples and why the learner does not outperform a complete hand-written policy.
+
 ## Adaptive workflows with stability contracts
 
 The optional workflow facility checks a complete supported graph against declared terminal statuses, weighted processing routes and permitted rule revisions. It can certify task completion while internal rules continue changing. It cannot certify arbitrary self-modifying programs, and rejection does not mean divergence.

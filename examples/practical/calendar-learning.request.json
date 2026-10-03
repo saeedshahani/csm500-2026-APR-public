@@ -1,0 +1,11 @@
+{
+  "training": [
+    {"input": " MONTH=JAN. ", "expected": "01"},
+    {"input": " MONTH=FEB. ", "expected": "02"}
+  ],
+  "validation": [
+    {"input": " MONTH=MAR. ", "expected": "03"},
+    {"input": " MONTH=APR. ", "expected": "04"},
+    {"input": "unknown", "expected": null}
+  ]
+}

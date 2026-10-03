@@ -6,6 +6,8 @@ Open the [hosted application](https://reflective-graph-f1cd4.web.app/#projects),
 
 ## Documentation
 
+The optional [local calendar learner](platform/README.md#local-learned-calendar-proposals) learns a bounded cleaning policy from examples, exposes it for review and executes explicitly promoted graph rules with checked traces. It uses no model provider. The [evaluation](docs/research/learning.md) distinguishes held-out category transfer from domain correctness and records its lack of advantage over stronger human/search baselines.
+
 Optional [adaptive workflow contracts](platform/README.md#adaptive-workflows-with-stability-contracts) check a restricted class of graph-resident routing rules and run persistent tasks across body revisions, including bounded task branching. The native CLI/API and browser Projects panel report completion separately from normal form, resource limits and unsupported inputs. The workflow panel is available in hosted Projects and through the local API; its results are ephemeral rather than saved jobs.
 
 For the browser's concepts and practical views, read [Understanding the graph workbench](docs/guides/workbench.md). It explains data, rules, execution history, stopping conditions and large-dataset limits without requiring source-code knowledge.
