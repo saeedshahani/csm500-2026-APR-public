@@ -1,0 +1,53 @@
+   Compiling libc v0.2.189
+   Compiling zerocopy v0.8.57
+   Compiling serde v1.0.228
+   Compiling autocfg v1.5.1
+   Compiling regex-syntax v0.8.11
+   Compiling anstyle v1.0.14
+   Compiling clap_lex v1.1.1
+   Compiling zerocopy-derive v0.8.57
+   Compiling ciborium-io v0.2.2
+   Compiling either v1.18.0
+   Compiling unarray v0.1.4
+   Compiling cast v0.3.0
+   Compiling lazy_static v1.5.0
+   Compiling same-file v1.0.6
+   Compiling hashbrown v0.15.5
+   Compiling bitflags v2.13.2
+   Compiling equivalent v1.0.2
+   Compiling walkdir v2.5.0
+   Compiling once_cell v1.21.4
+   Compiling clap_builder v4.6.7
+   Compiling itertools v0.10.5
+   Compiling oorandom v11.1.5
+   Compiling num-traits v0.2.19
+   Compiling anes v0.1.6
+   Compiling fixedbitset v0.4.2
+   Compiling indexmap v2.7.1
+   Compiling petgraph v0.6.5
+   Compiling criterion-plot v0.5.0
+   Compiling tinytemplate v1.2.1
+   Compiling regex-automata v0.4.18
+   Compiling getrandom v0.2.17
+   Compiling cpufeatures v0.2.17
+   Compiling is-terminal v0.4.17
+   Compiling clap v4.6.7
+   Compiling sha2 v0.10.8
+   Compiling rand_core v0.6.4
+   Compiling rand_xoshiro v0.6.0
+   Compiling im v15.1.0
+   Compiling rand_xorshift v0.3.0
+   Compiling regex v1.13.1
+   Compiling graph-core v0.1.0 (/private/var/folders/bq/j1xk_4b56d79yrn3lrwz52200000gn/T/reflective-loop-m-EzwToV/remap-a/crates/graph-core)
+   Compiling parser v0.1.0 (/private/var/folders/bq/j1xk_4b56d79yrn3lrwz52200000gn/T/reflective-loop-m-EzwToV/remap-a/crates/parser)
+   Compiling ppv-lite86 v0.2.21
+   Compiling half v2.7.1
+   Compiling rand_chacha v0.3.1
+   Compiling rand v0.8.5
+   Compiling ciborium-ll v0.2.2
+   Compiling ciborium v0.2.2
+   Compiling proptest v1.6.0
+   Compiling engine v0.1.0 (/private/var/folders/bq/j1xk_4b56d79yrn3lrwz52200000gn/T/reflective-loop-m-EzwToV/remap-a/crates/engine)
+   Compiling criterion v0.5.1
+   Compiling cli v0.1.0 (/private/var/folders/bq/j1xk_4b56d79yrn3lrwz52200000gn/T/reflective-loop-m-EzwToV/remap-a/crates/cli)
+    Finished `release` profile [optimized] target(s) in 7.91s

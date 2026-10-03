@@ -1,0 +1,29 @@
+name: Cross-host WASM diagnosis
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  wasm:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - name: Provision pinned tools without compiled caches
+        run: |
+          rustup toolchain install 1.85.0 --profile minimal
+          rustup target add wasm32-unknown-unknown --toolchain 1.85.0
+          cargo fetch --locked
+          cargo install wasm-bindgen-cli --version 0.2.100 --locked --root "$RUNNER_TEMP/repro-tools"
+      - name: Diagnose the frozen source and retain the actual binaries
+        env:
+          REPRO_BINDGEN: ${{ runner.temp }}/repro-tools/bin/wasm-bindgen
+        run: node scripts/reproduction-wasm.mjs benchmarks/results/reproduction-m-macos-02 output/loop-m-wasm-linux
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: loop-m-wasm-linux
+          path: output/loop-m-wasm-linux/
+          if-no-files-found: error

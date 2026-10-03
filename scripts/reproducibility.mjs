@@ -60,6 +60,9 @@ export function measureSummary(rows) {return PROTOCOL.performance.map(([id])=>{
 });}
 export function verify(directory) {
   const m=JSON.parse(fs.readFileSync(path.join(directory,'manifest.json')));assert.equal(m.complete,true);assert.deepEqual(m.protocol,PROTOCOL);
+  assert.equal(m.failure,null);
+  const required=['sources.json.gz',...PROTOCOL.variants.flatMap(name=>[`${name}-panel.json.gz`,`${name}-build.log`]),...(!m.historical?['remap-a','remap-b'].flatMap(name=>[`${name}-probes.log`,`${name}-wasm.log`]):[])];
+  assert.deepEqual(Object.keys(m.artifacts).sort(),required.sort(),'Incomplete artifact inventory');
   for(const[p,hash]of Object.entries(m.artifacts))assert.equal(sha(fs.readFileSync(path.join(directory,safePath(p)))),hash,`Changed artifact ${p}`);
   const sources=JSON.parse(gunzipSync(fs.readFileSync(path.join(directory,'sources.json.gz'))));
   assert.deepEqual(Object.keys(sources).sort(),Object.keys(m.sources).sort());for(const[p,b]of Object.entries(sources)){safePath(p);assert.equal(sha(Buffer.from(b,'base64')),m.sources[p]);}
