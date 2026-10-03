@@ -11,8 +11,6 @@ jobs:
       fail-fast: false
       matrix:
         replica: [one, two]
-    env:
-      REPRO_BINDGEN: ${{ runner.temp }}/repro-tools/bin/wasm-bindgen
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -25,6 +23,8 @@ jobs:
           cargo fetch --locked
           cargo install wasm-bindgen-cli --version 0.2.100 --locked --root "$RUNNER_TEMP/repro-tools"
       - name: Four fresh builds, native and WASM agreement, current measurements
+        env:
+          REPRO_BINDGEN: ${{ runner.temp }}/repro-tools/bin/wasm-bindgen
         run: node scripts/reproducibility.mjs collect output/loop-m-linux-${{ matrix.replica }}
       - name: Retain complete evidence, including unsuccessful comparisons
         if: always()
