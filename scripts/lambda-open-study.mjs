@@ -4,13 +4,11 @@ import {readFileSync,writeFileSync,existsSync,mkdirSync} from 'node:fs';
 import {spawnSync,execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import os from 'node:os';
+import {sourceFiles} from './research-source-files.mjs';
 const [mode,dir,...flags]=process.argv.slice(2);
 assert.ok(['collect','verify'].includes(mode)&&dir,'collect|verify DIR [--live]');
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const binary='target/release/examples/lambda_open_probe';
-const paths=['Cargo.lock','rust-toolchain.toml','crates/parser/src/lambda.rs','crates/cli/examples/lambda_open_probe.rs','crates/cli/tests/lambda_open.rs','examples/lambda/open/evidence.json','scripts/lambda-open-study.mjs'];
-// Include the complete native dependency implementation, not only the adapter.
-paths.push(...execFileSync('rg',['--files','crates/engine/src','crates/graph-core/src'],{encoding:'utf8'}).trim().split('\n'));
 function check(r) {
  assert.equal(r.schema,'lambda-open-cost-v1');assert.ok(['closed-cbn-v1','open-cbn-v1'].includes(r.profile));
  assert.ok([0,4,16].includes(r.depth));assert.equal(r.terminal,true);assert.equal(r.beta,r.depth);
@@ -30,6 +28,9 @@ function run(profile,depth,timed) {
 if(mode==='collect') {
  assert.ok(!existsSync(dir),'never overwrite a collection');
  assert.ok(['darwin','linux'].includes(os.platform()));
+ const paths=['Cargo.lock','rust-toolchain.toml','crates/parser/src/lambda.rs','crates/cli/examples/lambda_open_probe.rs','crates/cli/tests/lambda_open.rs','examples/lambda/open/evidence.json','scripts/lambda-open-study.mjs','scripts/research-source-files.mjs'];
+ // Include the complete native dependency implementation, not only the adapter.
+ paths.push(...sourceFiles(['crates/engine/src','crates/graph-core/src']));
  mkdirSync(dir,{recursive:true});
  const sources=Object.fromEntries(paths.sort().map(p=>[p,readFileSync(p,'utf8')]));
  const bytes=JSON.stringify(sources);writeFileSync(`${dir}/sources.json`,bytes+'\n');

@@ -2,13 +2,35 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync, spawnSync} from 'node:child_process';
-import {readFileSync, writeFileSync, existsSync, mkdtempSync, cpSync, rmSync} from 'node:fs';
+import {readFileSync, writeFileSync, existsSync, mkdtempSync, mkdirSync, cpSync, rmSync, symlinkSync} from 'node:fs';
 import {resolve, dirname, relative, join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {gzipSync, gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
+import {sourceFiles} from './research-source-files.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('research source collection is recursive, deterministic and refuses nonregular entries', () => {
+  const dir=mkdtempSync(join(tmpdir(),'reflective-source-files-'));
+  try {
+    mkdirSync(join(dir,'nested'));
+    for(const path of ['z.rs','a.rs','nested/b.rs','.hidden'])writeFileSync(join(dir,path),'fixture');
+    const expected=['.hidden','a.rs','nested/b.rs','z.rs'].map(p=>`${dir}/${p}`);
+    assert.deepEqual(sourceFiles([dir]),expected);
+    // Exercise the collector with no executable search path, not just verification.
+    const script=`import {sourceFiles} from ${JSON.stringify(new URL('./research-source-files.mjs',import.meta.url).href)}; console.log(JSON.stringify(sourceFiles(${JSON.stringify([dir])})));`;
+    const output=execFileSync(process.execPath,['--input-type=module','-e',script],{env:{...process.env,PATH:''},encoding:'utf8'});
+    assert.deepEqual(JSON.parse(output),expected);
+    symlinkSync(join(dir,'nested'),join(dir,'link'),'dir');
+    assert.throws(()=>sourceFiles([dir]),/Unsupported source entry/);
+  } finally {rmSync(dir,{recursive:true,force:true});}
+});
+test('frozen research verification needs neither rg nor any executable on PATH', () => {
+  for(const [script,collection] of [['lambda-open-study.mjs','lambda-open-01'],['admission-study.mjs','admission-01']]) {
+    const output=execFileSync(process.execPath,[`scripts/${script}`,'verify',`benchmarks/results/${collection}`],{env:{...process.env,PATH:''},encoding:'utf8'});
+    assert.match(output,/Verified|verified/);
+  }
+});
 test('admission assurance retains exact scope, results and both standalone accounts', () => {
   const report=JSON.parse(readFileSync('benchmarks/results/admission-01/report.json','utf8'));
   assert.deepEqual(report.counts,{abstract_cases:4930,closure_accepted:2080,countermodels:6,native_queries:3738,candidates:11739,admitted:7153,rejected:4586,boundary_queries:4});

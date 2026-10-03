@@ -7,6 +7,7 @@ import {createHash} from 'node:crypto';
 import os from 'node:os';
 import {abstractInputs,countermodels,checkAbstract,nativeInputs,checkNative,boundaryInputs,checkBoundary} from './admission-model.mjs';
 import {checkProof} from './check-admission-proof.mjs';
+import {sourceFiles} from './research-source-files.mjs';
 const [mode,dir,...flags]=process.argv.slice(2);
 assert.ok(['collect','verify'].includes(mode)&&dir,'collect|verify DIR [--live] [--proof]');
 const hash=b=>createHash('sha256').update(b).digest('hex');
@@ -40,7 +41,7 @@ if(mode==='collect') {
   assert.ok(!existsSync(dir),'collections are immutable; choose a new path');
   const proof=checkProof();const start=performance.now();const rows=campaign(proof);const counts=verify(rows);
   const paths=['Cargo.lock','rust-toolchain.toml','crates/engine/examples/admission_audit.rs','crates/engine/tests/support/mod.rs','crates/engine/proofs/Admission.lean','crates/engine/proofs/AdmissionRunner.lean','scripts/admission-model.mjs','scripts/check-admission-proof.mjs','scripts/admission-study.mjs','scripts/admission.test.mjs'];
-  paths.push(...execFileSync('rg',['--files','crates/engine/src','crates/graph-core/src'],{encoding:'utf8'}).trim().split('\n'));
+  paths.push('scripts/research-source-files.mjs',...sourceFiles(['crates/engine/src','crates/graph-core/src']));
   const sources=Buffer.from(JSON.stringify(Object.fromEntries(paths.sort().map(p=>[p,readFileSync(p,'utf8')]))));
   const data=Buffer.from(JSON.stringify(rows));
   const report={schema:'admission-study-v1',date:new Date().toISOString(),revision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),counts,proof:proof.evidence,source_sha256:hash(sources),data_sha256:hash(data),binary_sha256:hash(readFileSync(native)),compiler:execFileSync('rustc',['--version'],{encoding:'utf8'}).trim(),hardware:{platform:os.platform(),release:os.release(),arch:os.arch(),cpu:os.cpus()[0].model,memory_bytes:os.totalmem()},campaign_wall_ms:performance.now()-start};
