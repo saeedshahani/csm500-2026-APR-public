@@ -51,7 +51,7 @@ const report=JSON.parse(readFileSync(`${dir}/report.json`));assert.equal(report.
 const sources=gunzipSync(readFileSync(`${dir}/sources.json.gz`)),data=gunzipSync(readFileSync(`${dir}/outcomes.json.gz`));
 assert.equal(hash(sources),report.source_sha256);assert.equal(hash(data),report.data_sha256);assert.deepEqual(verify(JSON.parse(data)),report.counts);
 if(flags.includes('--live')) {
-  const rows=JSON.parse(data);const current=batch(native,[],[...nativeInputs(),...boundaryInputs()]);
+  const rows=JSON.parse(data);const current=batch(native,[],[...nativeInputs(),...boundaryInputs]);
   assert.deepEqual(current,[...rows.native,...rows.boundaries]);
 }
 if(flags.includes('--proof')) {
