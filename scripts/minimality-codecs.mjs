@@ -66,7 +66,7 @@ export function decode(wire,variant='P',cap=100000) {
     if(type.length){assert.equal(type.length,1);data.set(id,sortTags.indexOf(type[0]));used.add(id);}
   }
   const own = id => {assert.ok(!used.has(id),'gadget shared or confused with data');used.add(id);assert.equal(nodes[id].label,null);};
-  const atoms={};
+  const atoms=Object.create(null);
   for(const [id,index] of data) {
     const node=nodes[id], sort=sorts[index];
     let remaining=node.arcs.filter(x=>x!==sortTags[index]),kind;
@@ -156,7 +156,7 @@ function decodeMultiplicity(wire,cap) {
   for(const n of Object.values(nodes)){assert.deepEqual(Object.keys(n).sort(),['arcs','label']);assert.ok(n.label===null||typeof n.label==='string');assert.ok(Array.isArray(n.arcs));arcs+=n.arcs.length;labels+=n.label?.length??0;assert.ok(arcs<=4*cap&&labels<=1024*cap);for(const id of n.arcs)assert.ok(Object.hasOwn(nodes,id));}
   const tags=[];let cur=wire.root;
   for(let i=0;i<19;i++){assert.ok(Object.hasOwn(nodes,cur)&&!tags.includes(cur));assert.equal(nodes[cur].label,null);assert.equal(nodes[cur].arcs.length,i===18?0:1);tags.push(cur);cur=nodes[cur].arcs[0];}
-  const registry=new Set(tags),used=new Set(tags),data=new Set(ids.filter(id=>!registry.has(id)&&nodes[id].arcs.some(x=>tags.slice(1,6).includes(x)||x===tags[16]||x===tags[17]))),atoms={};
+  const registry=new Set(tags),used=new Set(tags),data=new Set(ids.filter(id=>!registry.has(id)&&nodes[id].arcs.some(x=>tags.slice(1,6).includes(x)||x===tags[16]||x===tags[17]))),atoms=Object.create(null);
   for(const id of data)used.add(id);
   for(const id of data) {
     const node=nodes[id],references=node.arcs.filter(x=>registry.has(x)),fields=[];

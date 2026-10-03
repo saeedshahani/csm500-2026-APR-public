@@ -85,3 +85,11 @@ test('multiplicity is a real alternative, not uniformly dominated by positional 
 test('empty carriers have only the required immutable registry',()=>{
   for(const v of ['M','T','P'])roundtrip({next_identity:'0',atoms:{}},v);
 });
+test('opaque identities may coincide with JavaScript object-property names',()=>{
+  const g={next_identity:'1',atoms:{0:{kind:{Constructor:'payload'},fields:[]}}};
+  for(const v of ['M','T','P'])for(const name of ['__proto__','constructor','toString']) {
+    const {wire,mapping}=encode(g,v), old=mapping[0],change=id=>id===old?name:id;
+    const renamed={root:change(wire.root),nodes:Object.fromEntries(Object.entries(wire.nodes).map(([id,n])=>[change(id),{label:n.label,arcs:n.arcs.map(change)}]))};
+    assert.deepEqual(restore(decode(renamed,v),{0:name},g.next_identity),g);
+  }
+});
