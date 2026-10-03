@@ -40,6 +40,12 @@ jobs:
           node scripts/minimality-study.mjs verify benchmarks/results/minimality-02
           node scripts/minimality-study.mjs verify benchmarks/results/minimality-03 --live
           node --test scripts/documentation.test.mjs
+          cargo build --release --locked -p cli --example lambda_open_probe
+          node scripts/lambda-open-study.mjs verify benchmarks/results/lambda-open-01 --live
+          node --test scripts/admission.test.mjs
+          cargo test --locked -p engine --example admission_audit
+          cargo build --release --locked -p engine --example admission_audit
+          node scripts/admission-study.mjs verify benchmarks/results/admission-01 --live
           node scripts/reproduce-cycle.mjs --verify benchmarks/results/s6-cycle01-reproduction
           node scripts/verify-scale-study.mjs
           node scripts/verify-loop-b.mjs
@@ -66,6 +72,13 @@ jobs:
           cargo build --release --locked -p engine --example measure
           node scripts/benchmark.mjs /tmp/reflective-benchmark-smoke --smoke
           node scripts/verify-benchmark.mjs
+      - name: Pinned kernel proofs and independent admission campaigns
+        shell: bash
+        run: |
+          proof_tools=$(mktemp -d)
+          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst --output "$proof_tools/lean.tar.zst"
+          tar --zstd -xf "$proof_tools/lean.tar.zst" -C "$proof_tools"
+          LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" node scripts/admission-study.mjs verify benchmarks/results/admission-01 --proof
       - name: Check production WebAssembly dependencies
         run: |
           rustup target add wasm32-unknown-unknown --toolchain 1.85.0

@@ -1,0 +1,7930 @@
+{
+  "cases": [
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 567,
+      "initial_atoms": 567,
+      "readbacks": [
+        "x",
+        "x"
+      ],
+      "source": "x",
+      "terminal": true,
+      "transitions": [
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 569,
+      "initial_atoms": 569,
+      "readbacks": [
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "y",
+      "terminal": true,
+      "transitions": [
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 569,
+      "initial_atoms": 569,
+      "readbacks": [
+        "(λ.0)"
+      ],
+      "source": "(λ.0)",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 571,
+      "initial_atoms": 571,
+      "readbacks": [
+        "(λ.x)"
+      ],
+      "source": "(λ.x)",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 573,
+      "initial_atoms": 573,
+      "readbacks": [
+        "(λ.y)"
+      ],
+      "source": "(λ.y)",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 571,
+      "initial_atoms": 571,
+      "readbacks": [
+        "(λ.(λ.0))"
+      ],
+      "source": "(λ.(λ.0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 573,
+      "initial_atoms": 573,
+      "readbacks": [
+        "(λ.(λ.1))"
+      ],
+      "source": "(λ.(λ.1))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(λ.(λ.x))"
+      ],
+      "source": "(λ.(λ.x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.y))"
+      ],
+      "source": "(λ.(λ.y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 571,
+      "readbacks": [
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "(x x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 573,
+      "readbacks": [
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "(x y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 573,
+      "readbacks": [
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "(y x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "(y y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 573,
+      "initial_atoms": 573,
+      "readbacks": [
+        "(λ.(λ.(λ.0)))"
+      ],
+      "source": "(λ.(λ.(λ.0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(λ.(λ.(λ.1)))"
+      ],
+      "source": "(λ.(λ.(λ.1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.(λ.2)))"
+      ],
+      "source": "(λ.(λ.(λ.2)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(λ.x)))"
+      ],
+      "source": "(λ.(λ.(λ.x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(λ.y)))"
+      ],
+      "source": "(λ.(λ.(λ.y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 573,
+      "initial_atoms": 573,
+      "readbacks": [
+        "(λ.(0 0))"
+      ],
+      "source": "(λ.(0 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(λ.(0 x))"
+      ],
+      "source": "(λ.(0 x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(0 y))"
+      ],
+      "source": "(λ.(0 y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(λ.(x 0))"
+      ],
+      "source": "(λ.(x 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(x x))"
+      ],
+      "source": "(λ.(x x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(x y))"
+      ],
+      "source": "(λ.(x y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(y 0))"
+      ],
+      "source": "(λ.(y 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(y x))"
+      ],
+      "source": "(λ.(y x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(y y))"
+      ],
+      "source": "(λ.(y y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 573,
+      "readbacks": [
+        "(x (λ.0))",
+        "(x (λ.0))",
+        "(x (λ.0))"
+      ],
+      "source": "(x (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(x (λ.x))",
+        "(x (λ.x))",
+        "(x (λ.x))"
+      ],
+      "source": "(x (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(x (λ.y))",
+        "(x (λ.y))",
+        "(x (λ.y))"
+      ],
+      "source": "(x (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(y (λ.0))",
+        "(y (λ.0))",
+        "(y (λ.0))",
+        "(y (λ.0))"
+      ],
+      "source": "(y (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(y (λ.x))",
+        "(y (λ.x))",
+        "(y (λ.x))",
+        "(y (λ.x))"
+      ],
+      "source": "(y (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(y (λ.y))",
+        "(y (λ.y))",
+        "(y (λ.y))",
+        "(y (λ.y))"
+      ],
+      "source": "(y (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 573,
+      "readbacks": [
+        "((λ.0) x)",
+        "((λ.0) x)",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.0) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 575,
+      "readbacks": [
+        "((λ.0) y)",
+        "((λ.0) y)",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.0) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 575,
+      "readbacks": [
+        "((λ.x) x)",
+        "((λ.x) x)",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.x) y)",
+        "((λ.x) y)",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.y) x)",
+        "((λ.y) x)",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.y) y)",
+        "((λ.y) y)",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.0))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.1))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.2))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.3))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.3))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.x))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.y))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(λ.(λ.(0 0)))"
+      ],
+      "source": "(λ.(λ.(0 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.(0 1)))"
+      ],
+      "source": "(λ.(λ.(0 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(0 x)))"
+      ],
+      "source": "(λ.(λ.(0 x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(0 y)))"
+      ],
+      "source": "(λ.(λ.(0 y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.(1 0)))"
+      ],
+      "source": "(λ.(λ.(1 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(1 1)))"
+      ],
+      "source": "(λ.(λ.(1 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(1 x)))"
+      ],
+      "source": "(λ.(λ.(1 x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(1 y)))"
+      ],
+      "source": "(λ.(λ.(1 y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(x 0)))"
+      ],
+      "source": "(λ.(λ.(x 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(x 1)))"
+      ],
+      "source": "(λ.(λ.(x 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(x x)))"
+      ],
+      "source": "(λ.(λ.(x x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(x y)))"
+      ],
+      "source": "(λ.(λ.(x y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(y 0)))"
+      ],
+      "source": "(λ.(λ.(y 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(y 1)))"
+      ],
+      "source": "(λ.(λ.(y 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(y x)))"
+      ],
+      "source": "(λ.(λ.(y x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(y y)))"
+      ],
+      "source": "(λ.(λ.(y y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(λ.(0 (λ.0)))"
+      ],
+      "source": "(λ.(0 (λ.0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(0 (λ.1)))"
+      ],
+      "source": "(λ.(0 (λ.1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(0 (λ.x)))"
+      ],
+      "source": "(λ.(0 (λ.x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(0 (λ.y)))"
+      ],
+      "source": "(λ.(0 (λ.y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(x (λ.0)))"
+      ],
+      "source": "(λ.(x (λ.0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(x (λ.1)))"
+      ],
+      "source": "(λ.(x (λ.1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(x (λ.x)))"
+      ],
+      "source": "(λ.(x (λ.x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(x (λ.y)))"
+      ],
+      "source": "(λ.(x (λ.y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(y (λ.0)))"
+      ],
+      "source": "(λ.(y (λ.0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(y (λ.1)))"
+      ],
+      "source": "(λ.(y (λ.1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(y (λ.x)))"
+      ],
+      "source": "(λ.(y (λ.x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(y (λ.y)))"
+      ],
+      "source": "(λ.(y (λ.y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 575,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(λ.((λ.0) 0))"
+      ],
+      "source": "(λ.((λ.0) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.((λ.0) x))"
+      ],
+      "source": "(λ.((λ.0) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((λ.0) y))"
+      ],
+      "source": "(λ.((λ.0) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.((λ.1) 0))"
+      ],
+      "source": "(λ.((λ.1) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((λ.1) x))"
+      ],
+      "source": "(λ.((λ.1) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.1) y))"
+      ],
+      "source": "(λ.((λ.1) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((λ.x) 0))"
+      ],
+      "source": "(λ.((λ.x) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.x) x))"
+      ],
+      "source": "(λ.((λ.x) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.x) y))"
+      ],
+      "source": "(λ.((λ.x) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.y) 0))"
+      ],
+      "source": "(λ.((λ.y) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.y) x))"
+      ],
+      "source": "(λ.((λ.y) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((λ.y) y))"
+      ],
+      "source": "(λ.((λ.y) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(x (λ.(λ.0)))",
+        "(x (λ.(λ.0)))",
+        "(x (λ.(λ.0)))"
+      ],
+      "source": "(x (λ.(λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(x (λ.(λ.1)))",
+        "(x (λ.(λ.1)))",
+        "(x (λ.(λ.1)))"
+      ],
+      "source": "(x (λ.(λ.1)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x (λ.(λ.x)))",
+        "(x (λ.(λ.x)))",
+        "(x (λ.(λ.x)))"
+      ],
+      "source": "(x (λ.(λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x (λ.(λ.y)))",
+        "(x (λ.(λ.y)))",
+        "(x (λ.(λ.y)))"
+      ],
+      "source": "(x (λ.(λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 575,
+      "readbacks": [
+        "(x (x x))",
+        "(x (x x))",
+        "(x (x x))"
+      ],
+      "source": "(x (x x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(x (x y))",
+        "(x (x y))",
+        "(x (x y))"
+      ],
+      "source": "(x (x y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(x (y x))",
+        "(x (y x))",
+        "(x (y x))"
+      ],
+      "source": "(x (y x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x (y y))",
+        "(x (y y))",
+        "(x (y y))"
+      ],
+      "source": "(x (y y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(y (λ.(λ.0)))",
+        "(y (λ.(λ.0)))",
+        "(y (λ.(λ.0)))",
+        "(y (λ.(λ.0)))"
+      ],
+      "source": "(y (λ.(λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(y (λ.(λ.1)))",
+        "(y (λ.(λ.1)))",
+        "(y (λ.(λ.1)))",
+        "(y (λ.(λ.1)))"
+      ],
+      "source": "(y (λ.(λ.1)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y (λ.(λ.x)))",
+        "(y (λ.(λ.x)))",
+        "(y (λ.(λ.x)))",
+        "(y (λ.(λ.x)))"
+      ],
+      "source": "(y (λ.(λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y (λ.(λ.y)))",
+        "(y (λ.(λ.y)))",
+        "(y (λ.(λ.y)))",
+        "(y (λ.(λ.y)))"
+      ],
+      "source": "(y (λ.(λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(y (x x))",
+        "(y (x x))",
+        "(y (x x))",
+        "(y (x x))"
+      ],
+      "source": "(y (x x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(y (x y))",
+        "(y (x y))",
+        "(y (x y))",
+        "(y (x y))"
+      ],
+      "source": "(y (x y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(y (y x))",
+        "(y (y x))",
+        "(y (y x))",
+        "(y (y x))"
+      ],
+      "source": "(y (y x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y (y y))",
+        "(y (y y))",
+        "(y (y y))",
+        "(y (y y))"
+      ],
+      "source": "(y (y y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 575,
+      "readbacks": [
+        "((λ.0) (λ.0))",
+        "((λ.0) (λ.0))",
+        "(λ.0)",
+        "(λ.0)"
+      ],
+      "source": "((λ.0) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.0) (λ.x))",
+        "((λ.0) (λ.x))",
+        "(λ.x)",
+        "(λ.x)"
+      ],
+      "source": "((λ.0) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.0) (λ.y))",
+        "((λ.0) (λ.y))",
+        "(λ.y)",
+        "(λ.y)"
+      ],
+      "source": "((λ.0) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.x) (λ.0))",
+        "((λ.x) (λ.0))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.x) (λ.x))",
+        "((λ.x) (λ.x))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.x) (λ.y))",
+        "((λ.x) (λ.y))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.y) (λ.0))",
+        "((λ.y) (λ.0))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.y) (λ.x))",
+        "((λ.y) (λ.x))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.y) (λ.y))",
+        "((λ.y) (λ.y))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 575,
+      "readbacks": [
+        "((λ.(λ.0)) x)",
+        "((λ.(λ.0)) x)",
+        "(λ.0)"
+      ],
+      "source": "((λ.(λ.0)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.(λ.0)) y)",
+        "((λ.(λ.0)) y)",
+        "(λ.0)"
+      ],
+      "source": "((λ.(λ.0)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.(λ.1)) x)",
+        "((λ.(λ.1)) x)",
+        "(λ.x)"
+      ],
+      "source": "((λ.(λ.1)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(λ.1)) y)",
+        "((λ.(λ.1)) y)",
+        "(λ.y)"
+      ],
+      "source": "((λ.(λ.1)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(λ.x)) x)",
+        "((λ.(λ.x)) x)",
+        "(λ.x)"
+      ],
+      "source": "((λ.(λ.x)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(λ.x)) y)",
+        "((λ.(λ.x)) y)",
+        "(λ.x)"
+      ],
+      "source": "((λ.(λ.x)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(λ.y)) x)",
+        "((λ.(λ.y)) x)",
+        "(λ.y)"
+      ],
+      "source": "((λ.(λ.y)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(λ.y)) y)",
+        "((λ.(λ.y)) y)",
+        "(λ.y)"
+      ],
+      "source": "((λ.(λ.y)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 575,
+      "readbacks": [
+        "((x x) x)",
+        "((x x) x)",
+        "((x x) x)",
+        "((x x) x)"
+      ],
+      "source": "((x x) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((x x) y)",
+        "((x x) y)",
+        "((x x) y)",
+        "((x x) y)"
+      ],
+      "source": "((x x) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((x y) x)",
+        "((x y) x)",
+        "((x y) x)",
+        "((x y) x)"
+      ],
+      "source": "((x y) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((x y) y)",
+        "((x y) y)",
+        "((x y) y)",
+        "((x y) y)"
+      ],
+      "source": "((x y) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((y x) x)",
+        "((y x) x)",
+        "((y x) x)",
+        "((y x) x)",
+        "((y x) x)"
+      ],
+      "source": "((y x) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((y x) y)",
+        "((y x) y)",
+        "((y x) y)",
+        "((y x) y)",
+        "((y x) y)"
+      ],
+      "source": "((y x) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((y y) x)",
+        "((y y) x)",
+        "((y y) x)",
+        "((y y) x)",
+        "((y y) x)"
+      ],
+      "source": "((y y) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((y y) y)",
+        "((y y) y)",
+        "((y y) y)",
+        "((y y) y)",
+        "((y y) y)"
+      ],
+      "source": "((y y) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.(λ.0)))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.(λ.0)))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.(λ.1)))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.(λ.1)))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.(λ.2)))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.(λ.2)))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.(λ.3)))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.(λ.3)))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.(λ.4)))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.(λ.4)))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.(λ.x)))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.(λ.x)))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(λ.(λ.(λ.(λ.y)))))"
+      ],
+      "source": "(λ.(λ.(λ.(λ.(λ.y)))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.(λ.(0 0))))"
+      ],
+      "source": "(λ.(λ.(λ.(0 0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(λ.(0 1))))"
+      ],
+      "source": "(λ.(λ.(λ.(0 1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(λ.(0 2))))"
+      ],
+      "source": "(λ.(λ.(λ.(0 2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(λ.(0 x))))"
+      ],
+      "source": "(λ.(λ.(λ.(0 x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(λ.(0 y))))"
+      ],
+      "source": "(λ.(λ.(λ.(0 y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(λ.(1 0))))"
+      ],
+      "source": "(λ.(λ.(λ.(1 0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(λ.(1 1))))"
+      ],
+      "source": "(λ.(λ.(λ.(1 1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(λ.(1 2))))"
+      ],
+      "source": "(λ.(λ.(λ.(1 2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(λ.(1 x))))"
+      ],
+      "source": "(λ.(λ.(λ.(1 x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(λ.(1 y))))"
+      ],
+      "source": "(λ.(λ.(λ.(1 y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(λ.(2 0))))"
+      ],
+      "source": "(λ.(λ.(λ.(2 0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(λ.(2 1))))"
+      ],
+      "source": "(λ.(λ.(λ.(2 1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(λ.(2 2))))"
+      ],
+      "source": "(λ.(λ.(λ.(2 2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(λ.(2 x))))"
+      ],
+      "source": "(λ.(λ.(λ.(2 x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(λ.(λ.(2 y))))"
+      ],
+      "source": "(λ.(λ.(λ.(2 y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(λ.(x 0))))"
+      ],
+      "source": "(λ.(λ.(λ.(x 0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(λ.(x 1))))"
+      ],
+      "source": "(λ.(λ.(λ.(x 1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(λ.(x 2))))"
+      ],
+      "source": "(λ.(λ.(λ.(x 2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(λ.(λ.(x x))))"
+      ],
+      "source": "(λ.(λ.(λ.(x x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 591,
+      "readbacks": [
+        "(λ.(λ.(λ.(x y))))"
+      ],
+      "source": "(λ.(λ.(λ.(x y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(λ.(y 0))))"
+      ],
+      "source": "(λ.(λ.(λ.(y 0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(λ.(y 1))))"
+      ],
+      "source": "(λ.(λ.(λ.(y 1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(λ.(λ.(y 2))))"
+      ],
+      "source": "(λ.(λ.(λ.(y 2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 591,
+      "readbacks": [
+        "(λ.(λ.(λ.(y x))))"
+      ],
+      "source": "(λ.(λ.(λ.(y x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 593,
+      "readbacks": [
+        "(λ.(λ.(λ.(y y))))"
+      ],
+      "source": "(λ.(λ.(λ.(y y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.(0 (λ.0))))"
+      ],
+      "source": "(λ.(λ.(0 (λ.0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(0 (λ.1))))"
+      ],
+      "source": "(λ.(λ.(0 (λ.1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(0 (λ.2))))"
+      ],
+      "source": "(λ.(λ.(0 (λ.2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(0 (λ.x))))"
+      ],
+      "source": "(λ.(λ.(0 (λ.x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(0 (λ.y))))"
+      ],
+      "source": "(λ.(λ.(0 (λ.y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.(1 (λ.0))))"
+      ],
+      "source": "(λ.(λ.(1 (λ.0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(1 (λ.1))))"
+      ],
+      "source": "(λ.(λ.(1 (λ.1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(1 (λ.2))))"
+      ],
+      "source": "(λ.(λ.(1 (λ.2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(1 (λ.x))))"
+      ],
+      "source": "(λ.(λ.(1 (λ.x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(1 (λ.y))))"
+      ],
+      "source": "(λ.(λ.(1 (λ.y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.(x (λ.0))))"
+      ],
+      "source": "(λ.(λ.(x (λ.0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(x (λ.1))))"
+      ],
+      "source": "(λ.(λ.(x (λ.1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(x (λ.2))))"
+      ],
+      "source": "(λ.(λ.(x (λ.2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(x (λ.x))))"
+      ],
+      "source": "(λ.(λ.(x (λ.x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(λ.(x (λ.y))))"
+      ],
+      "source": "(λ.(λ.(x (λ.y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.(y (λ.0))))"
+      ],
+      "source": "(λ.(λ.(y (λ.0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.(y (λ.1))))"
+      ],
+      "source": "(λ.(λ.(y (λ.1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.(y (λ.2))))"
+      ],
+      "source": "(λ.(λ.(y (λ.2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(λ.(y (λ.x))))"
+      ],
+      "source": "(λ.(λ.(y (λ.x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 591,
+      "readbacks": [
+        "(λ.(λ.(y (λ.y))))"
+      ],
+      "source": "(λ.(λ.(y (λ.y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(λ.((λ.0) 0)))"
+      ],
+      "source": "(λ.(λ.((λ.0) 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.((λ.0) 1)))"
+      ],
+      "source": "(λ.(λ.((λ.0) 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.((λ.0) x)))"
+      ],
+      "source": "(λ.(λ.((λ.0) x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.((λ.0) y)))"
+      ],
+      "source": "(λ.(λ.((λ.0) y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(λ.((λ.1) 0)))"
+      ],
+      "source": "(λ.(λ.((λ.1) 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.((λ.1) 1)))"
+      ],
+      "source": "(λ.(λ.((λ.1) 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.((λ.1) x)))"
+      ],
+      "source": "(λ.(λ.((λ.1) x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.((λ.1) y)))"
+      ],
+      "source": "(λ.(λ.((λ.1) y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(λ.((λ.2) 0)))"
+      ],
+      "source": "(λ.(λ.((λ.2) 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.((λ.2) 1)))"
+      ],
+      "source": "(λ.(λ.((λ.2) 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.((λ.2) x)))"
+      ],
+      "source": "(λ.(λ.((λ.2) x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.((λ.2) y)))"
+      ],
+      "source": "(λ.(λ.((λ.2) y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(λ.((λ.x) 0)))"
+      ],
+      "source": "(λ.(λ.((λ.x) 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.((λ.x) 1)))"
+      ],
+      "source": "(λ.(λ.((λ.x) 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.((λ.x) x)))"
+      ],
+      "source": "(λ.(λ.((λ.x) x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(λ.((λ.x) y)))"
+      ],
+      "source": "(λ.(λ.((λ.x) y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(λ.((λ.y) 0)))"
+      ],
+      "source": "(λ.(λ.((λ.y) 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(λ.((λ.y) 1)))"
+      ],
+      "source": "(λ.(λ.((λ.y) 1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(λ.((λ.y) x)))"
+      ],
+      "source": "(λ.(λ.((λ.y) x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 591,
+      "readbacks": [
+        "(λ.(λ.((λ.y) y)))"
+      ],
+      "source": "(λ.(λ.((λ.y) y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(0 (λ.(λ.0))))"
+      ],
+      "source": "(λ.(0 (λ.(λ.0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(0 (λ.(λ.1))))"
+      ],
+      "source": "(λ.(0 (λ.(λ.1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(0 (λ.(λ.2))))"
+      ],
+      "source": "(λ.(0 (λ.(λ.2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(0 (λ.(λ.x))))"
+      ],
+      "source": "(λ.(0 (λ.(λ.x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(0 (λ.(λ.y))))"
+      ],
+      "source": "(λ.(0 (λ.(λ.y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.(0 (0 0)))"
+      ],
+      "source": "(λ.(0 (0 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(0 (0 x)))"
+      ],
+      "source": "(λ.(0 (0 x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(0 (0 y)))"
+      ],
+      "source": "(λ.(0 (0 y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(0 (x 0)))"
+      ],
+      "source": "(λ.(0 (x 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(0 (x x)))"
+      ],
+      "source": "(λ.(0 (x x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(0 (x y)))"
+      ],
+      "source": "(λ.(0 (x y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(0 (y 0)))"
+      ],
+      "source": "(λ.(0 (y 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(0 (y x)))"
+      ],
+      "source": "(λ.(0 (y x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(0 (y y)))"
+      ],
+      "source": "(λ.(0 (y y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(x (λ.(λ.0))))"
+      ],
+      "source": "(λ.(x (λ.(λ.0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(x (λ.(λ.1))))"
+      ],
+      "source": "(λ.(x (λ.(λ.1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(x (λ.(λ.2))))"
+      ],
+      "source": "(λ.(x (λ.(λ.2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(x (λ.(λ.x))))"
+      ],
+      "source": "(λ.(x (λ.(λ.x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(x (λ.(λ.y))))"
+      ],
+      "source": "(λ.(x (λ.(λ.y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.(x (0 0)))"
+      ],
+      "source": "(λ.(x (0 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(x (0 x)))"
+      ],
+      "source": "(λ.(x (0 x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(x (0 y)))"
+      ],
+      "source": "(λ.(x (0 y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(x (x 0)))"
+      ],
+      "source": "(λ.(x (x 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(x (x x)))"
+      ],
+      "source": "(λ.(x (x x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(x (x y)))"
+      ],
+      "source": "(λ.(x (x y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(x (y 0)))"
+      ],
+      "source": "(λ.(x (y 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(x (y x)))"
+      ],
+      "source": "(λ.(x (y x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(x (y y)))"
+      ],
+      "source": "(λ.(x (y y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(y (λ.(λ.0))))"
+      ],
+      "source": "(λ.(y (λ.(λ.0))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(y (λ.(λ.1))))"
+      ],
+      "source": "(λ.(y (λ.(λ.1))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(y (λ.(λ.2))))"
+      ],
+      "source": "(λ.(y (λ.(λ.2))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(y (λ.(λ.x))))"
+      ],
+      "source": "(λ.(y (λ.(λ.x))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(y (λ.(λ.y))))"
+      ],
+      "source": "(λ.(y (λ.(λ.y))))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.(y (0 0)))"
+      ],
+      "source": "(λ.(y (0 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(y (0 x)))"
+      ],
+      "source": "(λ.(y (0 x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(y (0 y)))"
+      ],
+      "source": "(λ.(y (0 y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.(y (x 0)))"
+      ],
+      "source": "(λ.(y (x 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(y (x x)))"
+      ],
+      "source": "(λ.(y (x x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(y (x y)))"
+      ],
+      "source": "(λ.(y (x y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.(y (y 0)))"
+      ],
+      "source": "(λ.(y (y 0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.(y (y x)))"
+      ],
+      "source": "(λ.(y (y x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.(y (y y)))"
+      ],
+      "source": "(λ.(y (y y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.((λ.0) (λ.0)))"
+      ],
+      "source": "(λ.((λ.0) (λ.0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((λ.0) (λ.1)))"
+      ],
+      "source": "(λ.((λ.0) (λ.1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.0) (λ.x)))"
+      ],
+      "source": "(λ.((λ.0) (λ.x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.0) (λ.y)))"
+      ],
+      "source": "(λ.((λ.0) (λ.y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((λ.1) (λ.0)))"
+      ],
+      "source": "(λ.((λ.1) (λ.0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.1) (λ.1)))"
+      ],
+      "source": "(λ.((λ.1) (λ.1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.1) (λ.x)))"
+      ],
+      "source": "(λ.((λ.1) (λ.x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((λ.1) (λ.y)))"
+      ],
+      "source": "(λ.((λ.1) (λ.y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.x) (λ.0)))"
+      ],
+      "source": "(λ.((λ.x) (λ.0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.x) (λ.1)))"
+      ],
+      "source": "(λ.((λ.x) (λ.1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((λ.x) (λ.x)))"
+      ],
+      "source": "(λ.((λ.x) (λ.x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.((λ.x) (λ.y)))"
+      ],
+      "source": "(λ.((λ.x) (λ.y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.y) (λ.0)))"
+      ],
+      "source": "(λ.((λ.y) (λ.0)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((λ.y) (λ.1)))"
+      ],
+      "source": "(λ.((λ.y) (λ.1)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.((λ.y) (λ.x)))"
+      ],
+      "source": "(λ.((λ.y) (λ.x)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.((λ.y) (λ.y)))"
+      ],
+      "source": "(λ.((λ.y) (λ.y)))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.((λ.(λ.0)) 0))"
+      ],
+      "source": "(λ.((λ.(λ.0)) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((λ.(λ.0)) x))"
+      ],
+      "source": "(λ.((λ.(λ.0)) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.(λ.0)) y))"
+      ],
+      "source": "(λ.((λ.(λ.0)) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((λ.(λ.1)) 0))"
+      ],
+      "source": "(λ.((λ.(λ.1)) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.(λ.1)) x))"
+      ],
+      "source": "(λ.((λ.(λ.1)) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.(λ.1)) y))"
+      ],
+      "source": "(λ.((λ.(λ.1)) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((λ.(λ.2)) 0))"
+      ],
+      "source": "(λ.((λ.(λ.2)) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.(λ.2)) x))"
+      ],
+      "source": "(λ.((λ.(λ.2)) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((λ.(λ.2)) y))"
+      ],
+      "source": "(λ.((λ.(λ.2)) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((λ.(λ.x)) 0))"
+      ],
+      "source": "(λ.((λ.(λ.x)) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((λ.(λ.x)) x))"
+      ],
+      "source": "(λ.((λ.(λ.x)) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.((λ.(λ.x)) y))"
+      ],
+      "source": "(λ.((λ.(λ.x)) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((λ.(λ.y)) 0))"
+      ],
+      "source": "(λ.((λ.(λ.y)) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.((λ.(λ.y)) x))"
+      ],
+      "source": "(λ.((λ.(λ.y)) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.((λ.(λ.y)) y))"
+      ],
+      "source": "(λ.((λ.(λ.y)) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 577,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(λ.((0 0) 0))"
+      ],
+      "source": "(λ.((0 0) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((0 0) x))"
+      ],
+      "source": "(λ.((0 0) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((0 0) y))"
+      ],
+      "source": "(λ.((0 0) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((0 x) 0))"
+      ],
+      "source": "(λ.((0 x) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((0 x) x))"
+      ],
+      "source": "(λ.((0 x) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((0 x) y))"
+      ],
+      "source": "(λ.((0 x) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((0 y) 0))"
+      ],
+      "source": "(λ.((0 y) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((0 y) x))"
+      ],
+      "source": "(λ.((0 y) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((0 y) y))"
+      ],
+      "source": "(λ.((0 y) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 579,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(λ.((x 0) 0))"
+      ],
+      "source": "(λ.((x 0) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((x 0) x))"
+      ],
+      "source": "(λ.((x 0) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((x 0) y))"
+      ],
+      "source": "(λ.((x 0) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((x x) 0))"
+      ],
+      "source": "(λ.((x x) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((x x) x))"
+      ],
+      "source": "(λ.((x x) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((x x) y))"
+      ],
+      "source": "(λ.((x x) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((x y) 0))"
+      ],
+      "source": "(λ.((x y) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((x y) x))"
+      ],
+      "source": "(λ.((x y) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.((x y) y))"
+      ],
+      "source": "(λ.((x y) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(λ.((y 0) 0))"
+      ],
+      "source": "(λ.((y 0) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((y 0) x))"
+      ],
+      "source": "(λ.((y 0) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((y 0) y))"
+      ],
+      "source": "(λ.((y 0) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(λ.((y x) 0))"
+      ],
+      "source": "(λ.((y x) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((y x) x))"
+      ],
+      "source": "(λ.((y x) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.((y x) y))"
+      ],
+      "source": "(λ.((y x) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(λ.((y y) 0))"
+      ],
+      "source": "(λ.((y y) 0))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(λ.((y y) x))"
+      ],
+      "source": "(λ.((y y) x))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 589,
+      "readbacks": [
+        "(λ.((y y) y))"
+      ],
+      "source": "(λ.((y y) y))",
+      "terminal": true,
+      "transitions": []
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(x (λ.(λ.(λ.0))))",
+        "(x (λ.(λ.(λ.0))))",
+        "(x (λ.(λ.(λ.0))))"
+      ],
+      "source": "(x (λ.(λ.(λ.0))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x (λ.(λ.(λ.1))))",
+        "(x (λ.(λ.(λ.1))))",
+        "(x (λ.(λ.(λ.1))))"
+      ],
+      "source": "(x (λ.(λ.(λ.1))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x (λ.(λ.(λ.2))))",
+        "(x (λ.(λ.(λ.2))))",
+        "(x (λ.(λ.(λ.2))))"
+      ],
+      "source": "(x (λ.(λ.(λ.2))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(x (λ.(λ.(λ.x))))",
+        "(x (λ.(λ.(λ.x))))",
+        "(x (λ.(λ.(λ.x))))"
+      ],
+      "source": "(x (λ.(λ.(λ.x))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(x (λ.(λ.(λ.y))))",
+        "(x (λ.(λ.(λ.y))))",
+        "(x (λ.(λ.(λ.y))))"
+      ],
+      "source": "(x (λ.(λ.(λ.y))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(x (λ.(0 0)))",
+        "(x (λ.(0 0)))",
+        "(x (λ.(0 0)))"
+      ],
+      "source": "(x (λ.(0 0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x (λ.(0 x)))",
+        "(x (λ.(0 x)))",
+        "(x (λ.(0 x)))"
+      ],
+      "source": "(x (λ.(0 x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x (λ.(0 y)))",
+        "(x (λ.(0 y)))",
+        "(x (λ.(0 y)))"
+      ],
+      "source": "(x (λ.(0 y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x (λ.(x 0)))",
+        "(x (λ.(x 0)))",
+        "(x (λ.(x 0)))"
+      ],
+      "source": "(x (λ.(x 0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x (λ.(x x)))",
+        "(x (λ.(x x)))",
+        "(x (λ.(x x)))"
+      ],
+      "source": "(x (λ.(x x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(x (λ.(x y)))",
+        "(x (λ.(x y)))",
+        "(x (λ.(x y)))"
+      ],
+      "source": "(x (λ.(x y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x (λ.(y 0)))",
+        "(x (λ.(y 0)))",
+        "(x (λ.(y 0)))"
+      ],
+      "source": "(x (λ.(y 0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(x (λ.(y x)))",
+        "(x (λ.(y x)))",
+        "(x (λ.(y x)))"
+      ],
+      "source": "(x (λ.(y x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(x (λ.(y y)))",
+        "(x (λ.(y y)))",
+        "(x (λ.(y y)))"
+      ],
+      "source": "(x (λ.(y y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(x (x (λ.0)))",
+        "(x (x (λ.0)))",
+        "(x (x (λ.0)))"
+      ],
+      "source": "(x (x (λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x (x (λ.x)))",
+        "(x (x (λ.x)))",
+        "(x (x (λ.x)))"
+      ],
+      "source": "(x (x (λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x (x (λ.y)))",
+        "(x (x (λ.y)))",
+        "(x (x (λ.y)))"
+      ],
+      "source": "(x (x (λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x (y (λ.0)))",
+        "(x (y (λ.0)))",
+        "(x (y (λ.0)))"
+      ],
+      "source": "(x (y (λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x (y (λ.x)))",
+        "(x (y (λ.x)))",
+        "(x (y (λ.x)))"
+      ],
+      "source": "(x (y (λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(x (y (λ.y)))",
+        "(x (y (λ.y)))",
+        "(x (y (λ.y)))"
+      ],
+      "source": "(x (y (λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 581,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(x ((λ.0) x))",
+        "(x ((λ.0) x))",
+        "(x ((λ.0) x))"
+      ],
+      "source": "(x ((λ.0) x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x ((λ.0) y))",
+        "(x ((λ.0) y))",
+        "(x ((λ.0) y))"
+      ],
+      "source": "(x ((λ.0) y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(x ((λ.x) x))",
+        "(x ((λ.x) x))",
+        "(x ((λ.x) x))"
+      ],
+      "source": "(x ((λ.x) x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x ((λ.x) y))",
+        "(x ((λ.x) y))",
+        "(x ((λ.x) y))"
+      ],
+      "source": "(x ((λ.x) y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(x ((λ.y) x))",
+        "(x ((λ.y) x))",
+        "(x ((λ.y) x))"
+      ],
+      "source": "(x ((λ.y) x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(x ((λ.y) y))",
+        "(x ((λ.y) y))",
+        "(x ((λ.y) y))"
+      ],
+      "source": "(x ((λ.y) y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(y (λ.(λ.(λ.0))))",
+        "(y (λ.(λ.(λ.0))))",
+        "(y (λ.(λ.(λ.0))))",
+        "(y (λ.(λ.(λ.0))))"
+      ],
+      "source": "(y (λ.(λ.(λ.0))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y (λ.(λ.(λ.1))))",
+        "(y (λ.(λ.(λ.1))))",
+        "(y (λ.(λ.(λ.1))))",
+        "(y (λ.(λ.(λ.1))))"
+      ],
+      "source": "(y (λ.(λ.(λ.1))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y (λ.(λ.(λ.2))))",
+        "(y (λ.(λ.(λ.2))))",
+        "(y (λ.(λ.(λ.2))))",
+        "(y (λ.(λ.(λ.2))))"
+      ],
+      "source": "(y (λ.(λ.(λ.2))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(y (λ.(λ.(λ.x))))",
+        "(y (λ.(λ.(λ.x))))",
+        "(y (λ.(λ.(λ.x))))",
+        "(y (λ.(λ.(λ.x))))"
+      ],
+      "source": "(y (λ.(λ.(λ.x))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(y (λ.(λ.(λ.y))))",
+        "(y (λ.(λ.(λ.y))))",
+        "(y (λ.(λ.(λ.y))))",
+        "(y (λ.(λ.(λ.y))))"
+      ],
+      "source": "(y (λ.(λ.(λ.y))))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(y (λ.(0 0)))",
+        "(y (λ.(0 0)))",
+        "(y (λ.(0 0)))",
+        "(y (λ.(0 0)))"
+      ],
+      "source": "(y (λ.(0 0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y (λ.(0 x)))",
+        "(y (λ.(0 x)))",
+        "(y (λ.(0 x)))",
+        "(y (λ.(0 x)))"
+      ],
+      "source": "(y (λ.(0 x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y (λ.(0 y)))",
+        "(y (λ.(0 y)))",
+        "(y (λ.(0 y)))",
+        "(y (λ.(0 y)))"
+      ],
+      "source": "(y (λ.(0 y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y (λ.(x 0)))",
+        "(y (λ.(x 0)))",
+        "(y (λ.(x 0)))",
+        "(y (λ.(x 0)))"
+      ],
+      "source": "(y (λ.(x 0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y (λ.(x x)))",
+        "(y (λ.(x x)))",
+        "(y (λ.(x x)))",
+        "(y (λ.(x x)))"
+      ],
+      "source": "(y (λ.(x x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(y (λ.(x y)))",
+        "(y (λ.(x y)))",
+        "(y (λ.(x y)))",
+        "(y (λ.(x y)))"
+      ],
+      "source": "(y (λ.(x y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y (λ.(y 0)))",
+        "(y (λ.(y 0)))",
+        "(y (λ.(y 0)))",
+        "(y (λ.(y 0)))"
+      ],
+      "source": "(y (λ.(y 0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(y (λ.(y x)))",
+        "(y (λ.(y x)))",
+        "(y (λ.(y x)))",
+        "(y (λ.(y x)))"
+      ],
+      "source": "(y (λ.(y x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 587,
+      "readbacks": [
+        "(y (λ.(y y)))",
+        "(y (λ.(y y)))",
+        "(y (λ.(y y)))",
+        "(y (λ.(y y)))"
+      ],
+      "source": "(y (λ.(y y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(y (x (λ.0)))",
+        "(y (x (λ.0)))",
+        "(y (x (λ.0)))",
+        "(y (x (λ.0)))"
+      ],
+      "source": "(y (x (λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y (x (λ.x)))",
+        "(y (x (λ.x)))",
+        "(y (x (λ.x)))",
+        "(y (x (λ.x)))"
+      ],
+      "source": "(y (x (λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y (x (λ.y)))",
+        "(y (x (λ.y)))",
+        "(y (x (λ.y)))",
+        "(y (x (λ.y)))"
+      ],
+      "source": "(y (x (λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y (y (λ.0)))",
+        "(y (y (λ.0)))",
+        "(y (y (λ.0)))",
+        "(y (y (λ.0)))"
+      ],
+      "source": "(y (y (λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y (y (λ.x)))",
+        "(y (y (λ.x)))",
+        "(y (y (λ.x)))",
+        "(y (y (λ.x)))"
+      ],
+      "source": "(y (y (λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(y (y (λ.y)))",
+        "(y (y (λ.y)))",
+        "(y (y (λ.y)))",
+        "(y (y (λ.y)))"
+      ],
+      "source": "(y (y (λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 583,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(y ((λ.0) x))",
+        "(y ((λ.0) x))",
+        "(y ((λ.0) x))",
+        "(y ((λ.0) x))"
+      ],
+      "source": "(y ((λ.0) x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y ((λ.0) y))",
+        "(y ((λ.0) y))",
+        "(y ((λ.0) y))",
+        "(y ((λ.0) y))"
+      ],
+      "source": "(y ((λ.0) y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(y ((λ.x) x))",
+        "(y ((λ.x) x))",
+        "(y ((λ.x) x))",
+        "(y ((λ.x) x))"
+      ],
+      "source": "(y ((λ.x) x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y ((λ.x) y))",
+        "(y ((λ.x) y))",
+        "(y ((λ.x) y))",
+        "(y ((λ.x) y))"
+      ],
+      "source": "(y ((λ.x) y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(y ((λ.y) x))",
+        "(y ((λ.y) x))",
+        "(y ((λ.y) x))",
+        "(y ((λ.y) x))"
+      ],
+      "source": "(y ((λ.y) x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(y ((λ.y) y))",
+        "(y ((λ.y) y))",
+        "(y ((λ.y) y))",
+        "(y ((λ.y) y))"
+      ],
+      "source": "(y ((λ.y) y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.0) (λ.(λ.0)))",
+        "((λ.0) (λ.(λ.0)))",
+        "(λ.(λ.0))",
+        "(λ.(λ.0))"
+      ],
+      "source": "((λ.0) (λ.(λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.0) (λ.(λ.1)))",
+        "((λ.0) (λ.(λ.1)))",
+        "(λ.(λ.1))",
+        "(λ.(λ.1))"
+      ],
+      "source": "((λ.0) (λ.(λ.1)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.0) (λ.(λ.x)))",
+        "((λ.0) (λ.(λ.x)))",
+        "(λ.(λ.x))",
+        "(λ.(λ.x))"
+      ],
+      "source": "((λ.0) (λ.(λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.0) (λ.(λ.y)))",
+        "((λ.0) (λ.(λ.y)))",
+        "(λ.(λ.y))",
+        "(λ.(λ.y))"
+      ],
+      "source": "((λ.0) (λ.(λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.0) (x x))",
+        "((λ.0) (x x))",
+        "(x x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "((λ.0) (x x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.0) (x y))",
+        "((λ.0) (x y))",
+        "(x y)",
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "((λ.0) (x y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.0) (y x))",
+        "((λ.0) (y x))",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "((λ.0) (y x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.0) (y y))",
+        "((λ.0) (y y))",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "((λ.0) (y y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupZero",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.x) (λ.(λ.0)))",
+        "((λ.x) (λ.(λ.0)))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (λ.(λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.x) (λ.(λ.1)))",
+        "((λ.x) (λ.(λ.1)))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (λ.(λ.1)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.x) (λ.(λ.x)))",
+        "((λ.x) (λ.(λ.x)))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (λ.(λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.x) (λ.(λ.y)))",
+        "((λ.x) (λ.(λ.y)))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (λ.(λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.x) (x x))",
+        "((λ.x) (x x))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (x x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.x) (x y))",
+        "((λ.x) (x y))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (x y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.x) (y x))",
+        "((λ.x) (y x))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (y x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.x) (y y))",
+        "((λ.x) (y y))",
+        "x",
+        "x",
+        "x"
+      ],
+      "source": "((λ.x) (y y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.y) (λ.(λ.0)))",
+        "((λ.y) (λ.(λ.0)))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (λ.(λ.0)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.y) (λ.(λ.1)))",
+        "((λ.y) (λ.(λ.1)))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (λ.(λ.1)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.y) (λ.(λ.x)))",
+        "((λ.y) (λ.(λ.x)))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (λ.(λ.x)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 587,
+      "readbacks": [
+        "((λ.y) (λ.(λ.y)))",
+        "((λ.y) (λ.(λ.y)))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (λ.(λ.y)))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.y) (x x))",
+        "((λ.y) (x x))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (x x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.y) (x y))",
+        "((λ.y) (x y))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (x y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.y) (y x))",
+        "((λ.y) (y x))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (y x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.y) (y y))",
+        "((λ.y) (y y))",
+        "y",
+        "y",
+        "y",
+        "y"
+      ],
+      "source": "((λ.y) (y y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.(λ.0)) (λ.0))",
+        "((λ.(λ.0)) (λ.0))",
+        "(λ.0)"
+      ],
+      "source": "((λ.(λ.0)) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(λ.0)) (λ.x))",
+        "((λ.(λ.0)) (λ.x))",
+        "(λ.0)"
+      ],
+      "source": "((λ.(λ.0)) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(λ.0)) (λ.y))",
+        "((λ.(λ.0)) (λ.y))",
+        "(λ.0)"
+      ],
+      "source": "((λ.(λ.0)) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(λ.1)) (λ.0))",
+        "((λ.(λ.1)) (λ.0))",
+        "(λ.(λ.0))"
+      ],
+      "source": "((λ.(λ.1)) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(λ.1)) (λ.x))",
+        "((λ.(λ.1)) (λ.x))",
+        "(λ.(λ.x))"
+      ],
+      "source": "((λ.(λ.1)) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(λ.1)) (λ.y))",
+        "((λ.(λ.1)) (λ.y))",
+        "(λ.(λ.y))"
+      ],
+      "source": "((λ.(λ.1)) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(λ.x)) (λ.0))",
+        "((λ.(λ.x)) (λ.0))",
+        "(λ.x)"
+      ],
+      "source": "((λ.(λ.x)) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(λ.x)) (λ.x))",
+        "((λ.(λ.x)) (λ.x))",
+        "(λ.x)"
+      ],
+      "source": "((λ.(λ.x)) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.(λ.x)) (λ.y))",
+        "((λ.(λ.x)) (λ.y))",
+        "(λ.x)"
+      ],
+      "source": "((λ.(λ.x)) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(λ.y)) (λ.0))",
+        "((λ.(λ.y)) (λ.0))",
+        "(λ.y)"
+      ],
+      "source": "((λ.(λ.y)) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.(λ.y)) (λ.x))",
+        "((λ.(λ.y)) (λ.x))",
+        "(λ.y)"
+      ],
+      "source": "((λ.(λ.y)) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 587,
+      "readbacks": [
+        "((λ.(λ.y)) (λ.y))",
+        "((λ.(λ.y)) (λ.y))",
+        "(λ.y)"
+      ],
+      "source": "((λ.(λ.y)) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((x x) (λ.0))",
+        "((x x) (λ.0))",
+        "((x x) (λ.0))",
+        "((x x) (λ.0))"
+      ],
+      "source": "((x x) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((x x) (λ.x))",
+        "((x x) (λ.x))",
+        "((x x) (λ.x))",
+        "((x x) (λ.x))"
+      ],
+      "source": "((x x) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((x x) (λ.y))",
+        "((x x) (λ.y))",
+        "((x x) (λ.y))",
+        "((x x) (λ.y))"
+      ],
+      "source": "((x x) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((x y) (λ.0))",
+        "((x y) (λ.0))",
+        "((x y) (λ.0))",
+        "((x y) (λ.0))"
+      ],
+      "source": "((x y) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((x y) (λ.x))",
+        "((x y) (λ.x))",
+        "((x y) (λ.x))",
+        "((x y) (λ.x))"
+      ],
+      "source": "((x y) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((x y) (λ.y))",
+        "((x y) (λ.y))",
+        "((x y) (λ.y))",
+        "((x y) (λ.y))"
+      ],
+      "source": "((x y) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((y x) (λ.0))",
+        "((y x) (λ.0))",
+        "((y x) (λ.0))",
+        "((y x) (λ.0))",
+        "((y x) (λ.0))"
+      ],
+      "source": "((y x) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((y x) (λ.x))",
+        "((y x) (λ.x))",
+        "((y x) (λ.x))",
+        "((y x) (λ.x))",
+        "((y x) (λ.x))"
+      ],
+      "source": "((y x) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((y x) (λ.y))",
+        "((y x) (λ.y))",
+        "((y x) (λ.y))",
+        "((y x) (λ.y))",
+        "((y x) (λ.y))"
+      ],
+      "source": "((y x) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((y y) (λ.0))",
+        "((y y) (λ.0))",
+        "((y y) (λ.0))",
+        "((y y) (λ.0))",
+        "((y y) (λ.0))"
+      ],
+      "source": "((y y) (λ.0))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((y y) (λ.x))",
+        "((y y) (λ.x))",
+        "((y y) (λ.x))",
+        "((y y) (λ.x))",
+        "((y y) (λ.x))"
+      ],
+      "source": "((y y) (λ.x))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((y y) (λ.y))",
+        "((y y) (λ.y))",
+        "((y y) (λ.y))",
+        "((y y) (λ.y))",
+        "((y y) (λ.y))"
+      ],
+      "source": "((y y) (λ.y))",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.(λ.(λ.0))) x)",
+        "((λ.(λ.(λ.0))) x)",
+        "(λ.(λ.0))"
+      ],
+      "source": "((λ.(λ.(λ.0))) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(λ.(λ.0))) y)",
+        "((λ.(λ.(λ.0))) y)",
+        "(λ.(λ.0))"
+      ],
+      "source": "((λ.(λ.(λ.0))) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(λ.(λ.1))) x)",
+        "((λ.(λ.(λ.1))) x)",
+        "(λ.(λ.1))"
+      ],
+      "source": "((λ.(λ.(λ.1))) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(λ.(λ.1))) y)",
+        "((λ.(λ.(λ.1))) y)",
+        "(λ.(λ.1))"
+      ],
+      "source": "((λ.(λ.(λ.1))) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(λ.(λ.2))) x)",
+        "((λ.(λ.(λ.2))) x)",
+        "(λ.(λ.x))"
+      ],
+      "source": "((λ.(λ.(λ.2))) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(λ.(λ.2))) y)",
+        "((λ.(λ.(λ.2))) y)",
+        "(λ.(λ.y))"
+      ],
+      "source": "((λ.(λ.(λ.2))) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(λ.(λ.x))) x)",
+        "((λ.(λ.(λ.x))) x)",
+        "(λ.(λ.x))"
+      ],
+      "source": "((λ.(λ.(λ.x))) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.(λ.(λ.x))) y)",
+        "((λ.(λ.(λ.x))) y)",
+        "(λ.(λ.x))"
+      ],
+      "source": "((λ.(λ.(λ.x))) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.(λ.(λ.y))) x)",
+        "((λ.(λ.(λ.y))) x)",
+        "(λ.(λ.y))"
+      ],
+      "source": "((λ.(λ.(λ.y))) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 587,
+      "readbacks": [
+        "((λ.(λ.(λ.y))) y)",
+        "((λ.(λ.(λ.y))) y)",
+        "(λ.(λ.y))"
+      ],
+      "source": "((λ.(λ.(λ.y))) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((λ.(0 0)) x)",
+        "((λ.(0 0)) x)",
+        "(x x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "((λ.(0 0)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupZero",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(0 0)) y)",
+        "((λ.(0 0)) y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "((λ.(0 0)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupZero",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(0 x)) x)",
+        "((λ.(0 x)) x)",
+        "(x x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "((λ.(0 x)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupZero",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(0 x)) y)",
+        "((λ.(0 x)) y)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "((λ.(0 x)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupZero",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(0 y)) x)",
+        "((λ.(0 y)) x)",
+        "(x y)",
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "((λ.(0 y)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupZero",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(0 y)) y)",
+        "((λ.(0 y)) y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "((λ.(0 y)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupZero",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((λ.(x 0)) x)",
+        "((λ.(x 0)) x)",
+        "(x x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "((λ.(x 0)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(x 0)) y)",
+        "((λ.(x 0)) y)",
+        "(x y)",
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "((λ.(x 0)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(x x)) x)",
+        "((λ.(x x)) x)",
+        "(x x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "((λ.(x x)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(x x)) y)",
+        "((λ.(x x)) y)",
+        "(x x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "((λ.(x x)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(x y)) x)",
+        "((λ.(x y)) x)",
+        "(x y)",
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "((λ.(x y)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 597,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.(x y)) y)",
+        "((λ.(x y)) y)",
+        "(x y)",
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "((λ.(x y)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((λ.(y 0)) x)",
+        "((λ.(y 0)) x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "((λ.(y 0)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(y 0)) y)",
+        "((λ.(y 0)) y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "((λ.(y 0)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((λ.(y x)) x)",
+        "((λ.(y x)) x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "((λ.(y x)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 597,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.(y x)) y)",
+        "((λ.(y x)) y)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "((λ.(y x)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 597,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((λ.(y y)) x)",
+        "((λ.(y y)) x)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "((λ.(y y)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 599,
+      "initial_atoms": 587,
+      "readbacks": [
+        "((λ.(y y)) y)",
+        "((λ.(y y)) y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "((λ.(y y)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Beta",
+        "Push",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 585,
+      "initial_atoms": 577,
+      "readbacks": [
+        "((x (λ.0)) x)",
+        "((x (λ.0)) x)",
+        "((x (λ.0)) x)",
+        "((x (λ.0)) x)"
+      ],
+      "source": "((x (λ.0)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((x (λ.0)) y)",
+        "((x (λ.0)) y)",
+        "((x (λ.0)) y)",
+        "((x (λ.0)) y)"
+      ],
+      "source": "((x (λ.0)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((x (λ.x)) x)",
+        "((x (λ.x)) x)",
+        "((x (λ.x)) x)",
+        "((x (λ.x)) x)"
+      ],
+      "source": "((x (λ.x)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((x (λ.x)) y)",
+        "((x (λ.x)) y)",
+        "((x (λ.x)) y)",
+        "((x (λ.x)) y)"
+      ],
+      "source": "((x (λ.x)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((x (λ.y)) x)",
+        "((x (λ.y)) x)",
+        "((x (λ.y)) x)",
+        "((x (λ.y)) x)"
+      ],
+      "source": "((x (λ.y)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((x (λ.y)) y)",
+        "((x (λ.y)) y)",
+        "((x (λ.y)) y)",
+        "((x (λ.y)) y)"
+      ],
+      "source": "((x (λ.y)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 587,
+      "initial_atoms": 579,
+      "readbacks": [
+        "((y (λ.0)) x)",
+        "((y (λ.0)) x)",
+        "((y (λ.0)) x)",
+        "((y (λ.0)) x)",
+        "((y (λ.0)) x)"
+      ],
+      "source": "((y (λ.0)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((y (λ.0)) y)",
+        "((y (λ.0)) y)",
+        "((y (λ.0)) y)",
+        "((y (λ.0)) y)",
+        "((y (λ.0)) y)"
+      ],
+      "source": "((y (λ.0)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 581,
+      "readbacks": [
+        "((y (λ.x)) x)",
+        "((y (λ.x)) x)",
+        "((y (λ.x)) x)",
+        "((y (λ.x)) x)",
+        "((y (λ.x)) x)"
+      ],
+      "source": "((y (λ.x)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((y (λ.x)) y)",
+        "((y (λ.x)) y)",
+        "((y (λ.x)) y)",
+        "((y (λ.x)) y)",
+        "((y (λ.x)) y)"
+      ],
+      "source": "((y (λ.x)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 583,
+      "readbacks": [
+        "((y (λ.y)) x)",
+        "((y (λ.y)) x)",
+        "((y (λ.y)) x)",
+        "((y (λ.y)) x)",
+        "((y (λ.y)) x)"
+      ],
+      "source": "((y (λ.y)) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 585,
+      "readbacks": [
+        "((y (λ.y)) y)",
+        "((y (λ.y)) y)",
+        "((y (λ.y)) y)",
+        "((y (λ.y)) y)",
+        "((y (λ.y)) y)"
+      ],
+      "source": "((y (λ.y)) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 589,
+      "initial_atoms": 577,
+      "readbacks": [
+        "(((λ.0) x) x)",
+        "(((λ.0) x) x)",
+        "(((λ.0) x) x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "(((λ.0) x) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupZero",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(((λ.0) x) y)",
+        "(((λ.0) x) y)",
+        "(((λ.0) x) y)",
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "(((λ.0) x) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupZero",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(((λ.0) y) x)",
+        "(((λ.0) y) x)",
+        "(((λ.0) y) x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "(((λ.0) y) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupZero",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(((λ.0) y) y)",
+        "(((λ.0) y) y)",
+        "(((λ.0) y) y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "(((λ.0) y) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupZero",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 591,
+      "initial_atoms": 579,
+      "readbacks": [
+        "(((λ.x) x) x)",
+        "(((λ.x) x) x)",
+        "(((λ.x) x) x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "(((λ.x) x) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(((λ.x) x) y)",
+        "(((λ.x) x) y)",
+        "(((λ.x) x) y)",
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "(((λ.x) x) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(((λ.x) y) x)",
+        "(((λ.x) y) x)",
+        "(((λ.x) y) x)",
+        "(x x)",
+        "(x x)",
+        "(x x)"
+      ],
+      "source": "(((λ.x) y) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(((λ.x) y) y)",
+        "(((λ.x) y) y)",
+        "(((λ.x) y) y)",
+        "(x y)",
+        "(x y)",
+        "(x y)"
+      ],
+      "source": "(((λ.x) y) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 593,
+      "initial_atoms": 581,
+      "readbacks": [
+        "(((λ.y) x) x)",
+        "(((λ.y) x) x)",
+        "(((λ.y) x) x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "(((λ.y) x) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(((λ.y) x) y)",
+        "(((λ.y) x) y)",
+        "(((λ.y) x) y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "(((λ.y) x) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 595,
+      "initial_atoms": 583,
+      "readbacks": [
+        "(((λ.y) y) x)",
+        "(((λ.y) y) x)",
+        "(((λ.y) y) x)",
+        "(y x)",
+        "(y x)",
+        "(y x)",
+        "(y x)"
+      ],
+      "source": "(((λ.y) y) x)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    },
+    {
+      "context": [
+        "x",
+        "y"
+      ],
+      "final_atoms": 597,
+      "initial_atoms": 585,
+      "readbacks": [
+        "(((λ.y) y) y)",
+        "(((λ.y) y) y)",
+        "(((λ.y) y) y)",
+        "(y y)",
+        "(y y)",
+        "(y y)",
+        "(y y)"
+      ],
+      "source": "(((λ.y) y) y)",
+      "terminal": true,
+      "transitions": [
+        "Push",
+        "Push",
+        "Beta",
+        "LookupSucc",
+        "LookupSucc",
+        "LookupZero"
+      ]
+    }
+  ],
+  "graph_step_bound": 24,
+  "oracle": "locally-nameless-substitution-v1",
+  "profile": "open-cbn-v1",
+  "tree_sizes": [
+    1,
+    6
+  ]
+}

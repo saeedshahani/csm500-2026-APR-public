@@ -9,6 +9,31 @@ import {gzipSync, gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('admission assurance retains exact scope, results and both standalone accounts', () => {
+  const report=JSON.parse(readFileSync('benchmarks/results/admission-01/report.json','utf8'));
+  assert.deepEqual(report.counts,{abstract_cases:4930,closure_accepted:2080,countermodels:6,native_queries:3738,candidates:11739,admitted:7153,rejected:4586,boundary_queries:4});
+  assert.equal(Object.keys(report.proof.axioms).length,7);
+  assert.equal(report.proof.negative.length,6);
+  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    const text=readFileSync(path,'utf8').split('# Bibliography')[0];
+    for(const required of ['4,930','11,739','3,738','7,153','4,586','fresh','refinement','Söldner'])assert.ok(text.includes(required),`${path}: ${required}`);
+    assert.doesNotMatch(text,/\]\((?:\.\.\/)*docs\//);
+  }
+  execFileSync(process.execPath,['scripts/admission-study.mjs','verify','benchmarks/results/admission-01']);
+});
+test('open lambda extension retains scoped evidence, compatibility and standalone paper coverage', () => {
+  const evidence=JSON.parse(readFileSync('examples/lambda/open/evidence.json','utf8'));
+  assert.equal(evidence.profile,'open-cbn-v1');assert.equal(evidence.cases.length,450);
+  assert.equal(new Set(evidence.cases.map(r=>r.source)).size,450);
+  assert.equal(evidence.cases.filter(r=>!/[xy]/.test(r.source)).length,62);
+  assert.equal(evidence.cases.reduce((n,r)=>n+r.transitions.length,0),704);
+  for(const row of evidence.cases)assert.equal(row.readbacks.length,row.transitions.length+1);
+  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    const text=readFileSync(path,'utf8').split('# Bibliography')[0];
+    for(const required of ['450','704','capture','neutral','Γ'])assert.ok(text.includes(required),`${path}: ${required}`);
+  }
+  execFileSync(process.execPath,['scripts/lambda-open-study.mjs','verify','benchmarks/results/lambda-open-01']);
+});
 test('minimality papers retain the verified comparison and condensed word budget', () => {
   const short=readFileSync('docs/dissertation.md','utf8').split('# Bibliography')[0];
   const full=readFileSync('docs/archive/dissertation-full.md','utf8').split('# Bibliography')[0];

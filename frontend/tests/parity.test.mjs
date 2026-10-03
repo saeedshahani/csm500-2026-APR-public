@@ -26,6 +26,17 @@ test('lambda translation, interpretation, history and failures share native/WASM
  const trace=compare([{command:'import',trace:replies[1].trace},{command:'jump',state:'1'}]);assert.equal(trace[1].state.lambda.term,'((λ.0) (λ.0))');
 });
 const source=name=>readFileSync(new URL(`examples/${name}`,root),'utf8');
+test('open symbolic lambda profiles retain capture avoidance and replay parity',()=>{
+ const input='((\\z. (\\x. z)) x)';
+ const preview=compare([{command:'lambda_compile',source:input,profile:'open-cbn-v1',free_names:['x']}])[0];assert.equal(preview.ok,true);
+ const replies=compare([{command:'load',source:preview.compiled,config:{max_steps:'20'}},{command:'advance',batch:'20'},{command:'jump',state:'0'}]);
+ assert.equal(replies[1].state.status,'NormalForm');assert.equal(replies[1].state.lambda.term,'(λ.x)');
+ assert.equal(replies[2].state.lambda.term,'((λ.(λ.1)) x)');
+ const imported=compare([{command:'import',trace:replies[1].trace},{command:'state'}]);assert.equal(imported[1].state.lambda.term,'(λ.x)');
+ const history=compare([{command:'import',trace:replies[1].trace},...Array.from({length:replies[1].state.events.length+1},(_,i)=>({command:'jump',state:String(i)}))]);assert.ok(history.every(r=>r.ok&&r.state.lambda.term));
+ const cli=execFileSync('target/debug/cli',['lambda-compile','-','--profile','open-cbn-v1','--free','x'],{cwd:root,input,encoding:'utf8'});assert.equal(cli.trim(),preview.compiled.trim());
+ const rejected=compare([{command:'lambda_compile',source:'x',profile:'unknown',free_names:['x']},{command:'lambda_compile',source:'x',free_names:['x']},{command:'lambda_compile',source:'x',profile:'open-cbn-v1',free_names:['x','x']}]);assert.ok(rejected.every(r=>!r.ok));
+});
 execFileSync('cargo',['build','-p','wasm-bridge','--example','protocol','--locked'],{cwd:root,stdio:'inherit'});
 execFileSync('cargo',['build','-p','cli','--locked'],{cwd:root,stdio:'inherit'});
 test('complete catalogue has exact CLI/native/WASM execution, trace and historical parity',()=>{

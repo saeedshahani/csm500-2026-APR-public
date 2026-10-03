@@ -1,5 +1,7 @@
 # Closed lambda examples
 
+These original fixtures retain the default `closed-cbn-v1` encoding. The separate [open symbolic examples](open/README.md) use the opt-in `open-cbn-v1` profile and do not alter this catalogue's reference histories.
+
 All inputs use the closed, pure, untyped lambda fragment. Application is binary and fully parenthesised; abstractions use ASCII `\`. Bound names may be renamed. Free names, constants and effects are excluded. Evaluation is call-by-name to weak head form, not reduction under lambdas. The compiler creates the eleven graph-resident rules documented in [the encoding](../../docs/reference/lambda-encoding.md).
 
 Write `I = (\x. x)`, `K = (\x. (\y. x))`, `D = (\x. (x x))`, `Ω = (D D)`. Independent hand calculations are:

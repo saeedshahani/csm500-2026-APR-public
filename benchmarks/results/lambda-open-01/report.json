@@ -1,0 +1,395 @@
+{
+  "schema": "lambda-open-study-v1",
+  "date": "2026-10-03T16:01:45.495Z",
+  "revision": "cb02baf1628bfed057952fb7235f15780f1ffa9e",
+  "source_sha256": "b314dddfa23eea7d8622ec9708fa13d945769104d83ee1bf7092f926525f4980",
+  "binary_sha256": "5999543f32ed82be97038cb9a72d5e0c83e989471f70d00c25a9364f32deec00",
+  "compiler": "rustc 1.85.0 (4d91de4e4 2025-02-17)",
+  "hardware": {
+    "platform": "darwin",
+    "release": "25.6.0",
+    "arch": "arm64",
+    "cpu": "Apple M4 Pro",
+    "memory_bytes": 51539607552
+  },
+  "rows": [
+    {
+      "result": {
+        "beta": 0,
+        "commits": 0,
+        "compile_ns": 821542,
+        "depth": 0,
+        "execution_ns": 724500,
+        "final_atoms": 557,
+        "initial_atoms": 557,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 696042,
+        "schema": "lambda-open-cost-v1",
+        "source": "(\\z. z)",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3276800,
+      "raw_time": "        0.25 real         0.00 user         0.00 sys\n             3276800  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 374  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n            49446672  instructions retired\n            16272902  cycles elapsed\n             2343224  peak memory footprint\n",
+      "repetition": 1,
+      "wall_ms": 254.342042
+    },
+    {
+      "result": {
+        "beta": 0,
+        "commits": 0,
+        "compile_ns": 633375,
+        "depth": 0,
+        "execution_ns": 674042,
+        "final_atoms": 557,
+        "initial_atoms": 557,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 536208,
+        "schema": "lambda-open-cost-v1",
+        "source": "(\\z. z)",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3325952,
+      "raw_time": "        0.00 real         0.00 user         0.00 sys\n             3325952  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 377  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   3  involuntary context switches\n            47521720  instructions retired\n            14290364  cycles elapsed\n             2392376  peak memory footprint\n",
+      "repetition": 2,
+      "wall_ms": 6.354582999999991
+    },
+    {
+      "result": {
+        "beta": 0,
+        "commits": 0,
+        "compile_ns": 667417,
+        "depth": 0,
+        "execution_ns": 708584,
+        "final_atoms": 557,
+        "initial_atoms": 557,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 524667,
+        "schema": "lambda-open-cost-v1",
+        "source": "(\\z. z)",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3325952,
+      "raw_time": "        0.00 real         0.00 user         0.00 sys\n             3325952  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 377  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n            47489838  instructions retired\n            13424361  cycles elapsed\n             2392376  peak memory footprint\n",
+      "repetition": 3,
+      "wall_ms": 5.326250000000016
+    },
+    {
+      "result": {
+        "beta": 4,
+        "commits": 12,
+        "compile_ns": 718458,
+        "depth": 4,
+        "execution_ns": 10311792,
+        "final_atoms": 613,
+        "initial_atoms": 581,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 609083,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) (\\z. z)))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3899392,
+      "raw_time": "        0.01 real         0.01 user         0.00 sys\n             3899392  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 412  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   7  involuntary context switches\n           236224686  instructions retired\n            55824203  cycles elapsed\n             2916664  peak memory footprint\n",
+      "repetition": 1,
+      "wall_ms": 15.161333999999954
+    },
+    {
+      "result": {
+        "beta": 4,
+        "commits": 12,
+        "compile_ns": 623750,
+        "depth": 4,
+        "execution_ns": 9474042,
+        "final_atoms": 613,
+        "initial_atoms": 581,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 566250,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) (\\z. z)))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3801088,
+      "raw_time": "        0.01 real         0.01 user         0.00 sys\n             3801088  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 406  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n           236158613  instructions retired\n            53226936  cycles elapsed\n             2818360  peak memory footprint\n",
+      "repetition": 2,
+      "wall_ms": 14.18037499999997
+    },
+    {
+      "result": {
+        "beta": 4,
+        "commits": 12,
+        "compile_ns": 589459,
+        "depth": 4,
+        "execution_ns": 9907500,
+        "final_atoms": 613,
+        "initial_atoms": 581,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 584167,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) (\\z. z)))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3850240,
+      "raw_time": "        0.01 real         0.01 user         0.00 sys\n             3850240  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 409  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n           235957081  instructions retired\n            53522671  cycles elapsed\n             2867512  peak memory footprint\n",
+      "repetition": 3,
+      "wall_ms": 14.297750000000008
+    },
+    {
+      "result": {
+        "beta": 16,
+        "commits": 48,
+        "compile_ns": 781833,
+        "depth": 16,
+        "execution_ns": 99936416,
+        "final_atoms": 781,
+        "initial_atoms": 653,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 653167,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) (\\z. z)))))))))))))))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 4292608,
+      "raw_time": "        0.10 real         0.10 user         0.00 sys\n             4292608  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 436  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  12  involuntary context switches\n          1987095170  instructions retired\n           436937538  cycles elapsed\n             3309880  peak memory footprint\n",
+      "repetition": 1,
+      "wall_ms": 107.03395899999998
+    },
+    {
+      "result": {
+        "beta": 16,
+        "commits": 48,
+        "compile_ns": 657875,
+        "depth": 16,
+        "execution_ns": 96694917,
+        "final_atoms": 781,
+        "initial_atoms": 653,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 677417,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) (\\z. z)))))))))))))))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 4243456,
+      "raw_time": "        0.10 real         0.09 user         0.00 sys\n             4243456  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 433  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   6  involuntary context switches\n          1986781617  instructions retired\n           428592096  cycles elapsed\n             3260728  peak memory footprint\n",
+      "repetition": 2,
+      "wall_ms": 101.88
+    },
+    {
+      "result": {
+        "beta": 16,
+        "commits": 48,
+        "compile_ns": 662292,
+        "depth": 16,
+        "execution_ns": 97495584,
+        "final_atoms": 781,
+        "initial_atoms": 653,
+        "profile": "closed-cbn-v1",
+        "readback": "(λ.0)",
+        "readback_ns": 656959,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) (\\z. z)))))))))))))))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 4210688,
+      "raw_time": "        0.10 real         0.09 user         0.00 sys\n             4210688  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 431  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   4  involuntary context switches\n          1986830414  instructions retired\n           432945754  cycles elapsed\n             3227960  peak memory footprint\n",
+      "repetition": 3,
+      "wall_ms": 102.34904200000005
+    },
+    {
+      "result": {
+        "beta": 0,
+        "commits": 1,
+        "compile_ns": 617584,
+        "depth": 0,
+        "execution_ns": 1292625,
+        "final_atoms": 562,
+        "initial_atoms": 562,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 515417,
+        "schema": "lambda-open-cost-v1",
+        "source": "database",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3457024,
+      "raw_time": "        0.00 real         0.00 user         0.00 sys\n             3457024  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 385  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n            60138208  instructions retired\n            16516960  cycles elapsed\n             2490680  peak memory footprint\n",
+      "repetition": 1,
+      "wall_ms": 5.852375000000052
+    },
+    {
+      "result": {
+        "beta": 0,
+        "commits": 1,
+        "compile_ns": 579917,
+        "depth": 0,
+        "execution_ns": 1235708,
+        "final_atoms": 562,
+        "initial_atoms": 562,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 509083,
+        "schema": "lambda-open-cost-v1",
+        "source": "database",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3457024,
+      "raw_time": "        0.00 real         0.00 user         0.00 sys\n             3457024  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 385  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n            60067871  instructions retired\n            15859163  cycles elapsed\n             2490680  peak memory footprint\n",
+      "repetition": 2,
+      "wall_ms": 5.356999999999971
+    },
+    {
+      "result": {
+        "beta": 0,
+        "commits": 1,
+        "compile_ns": 602208,
+        "depth": 0,
+        "execution_ns": 1288708,
+        "final_atoms": 562,
+        "initial_atoms": 562,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 494583,
+        "schema": "lambda-open-cost-v1",
+        "source": "database",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3489792,
+      "raw_time": "        0.00 real         0.00 user         0.00 sys\n             3489792  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 387  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n            60136840  instructions retired\n            15123749  cycles elapsed\n             2523448  peak memory footprint\n",
+      "repetition": 3,
+      "wall_ms": 5.209415999999919
+    },
+    {
+      "result": {
+        "beta": 4,
+        "commits": 13,
+        "compile_ns": 604583,
+        "depth": 4,
+        "execution_ns": 10905000,
+        "final_atoms": 618,
+        "initial_atoms": 586,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 542875,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) database))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3866624,
+      "raw_time": "        0.01 real         0.01 user         0.00 sys\n             3866624  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 410  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n           260855824  instructions retired\n            58306469  cycles elapsed\n             2883896  peak memory footprint\n",
+      "repetition": 1,
+      "wall_ms": 14.908958999999982
+    },
+    {
+      "result": {
+        "beta": 4,
+        "commits": 13,
+        "compile_ns": 593000,
+        "depth": 4,
+        "execution_ns": 10658125,
+        "final_atoms": 618,
+        "initial_atoms": 586,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 531084,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) database))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3817472,
+      "raw_time": "        0.01 real         0.01 user         0.00 sys\n             3817472  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 407  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n           260708263  instructions retired\n            57225032  cycles elapsed\n             2834744  peak memory footprint\n",
+      "repetition": 2,
+      "wall_ms": 14.622792000000004
+    },
+    {
+      "result": {
+        "beta": 4,
+        "commits": 13,
+        "compile_ns": 620541,
+        "depth": 4,
+        "execution_ns": 10743667,
+        "final_atoms": 618,
+        "initial_atoms": 586,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 552333,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) database))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 3850240,
+      "raw_time": "        0.01 real         0.01 user         0.00 sys\n             3850240  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 409  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n           260794075  instructions retired\n            57564862  cycles elapsed\n             2867512  peak memory footprint\n",
+      "repetition": 3,
+      "wall_ms": 14.804665999999997
+    },
+    {
+      "result": {
+        "beta": 16,
+        "commits": 49,
+        "compile_ns": 644709,
+        "depth": 16,
+        "execution_ns": 107380917,
+        "final_atoms": 786,
+        "initial_atoms": 658,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 672916,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) database))))))))))))))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 4292608,
+      "raw_time": "        0.11 real         0.10 user         0.00 sys\n             4292608  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 436  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   5  involuntary context switches\n          2195385044  instructions retired\n           473628309  cycles elapsed\n             3309880  peak memory footprint\n",
+      "repetition": 1,
+      "wall_ms": 111.69216700000004
+    },
+    {
+      "result": {
+        "beta": 16,
+        "commits": 49,
+        "compile_ns": 651916,
+        "depth": 16,
+        "execution_ns": 107548458,
+        "final_atoms": 786,
+        "initial_atoms": 658,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 684708,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) database))))))))))))))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 4276224,
+      "raw_time": "        0.11 real         0.10 user         0.00 sys\n             4276224  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 435  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                   9  involuntary context switches\n          2196038610  instructions retired\n           473939870  cycles elapsed\n             3293496  peak memory footprint\n",
+      "repetition": 2,
+      "wall_ms": 112.467625
+    },
+    {
+      "result": {
+        "beta": 16,
+        "commits": 49,
+        "compile_ns": 657791,
+        "depth": 16,
+        "execution_ns": 107130083,
+        "final_atoms": 786,
+        "initial_atoms": 658,
+        "profile": "open-cbn-v1",
+        "readback": "database",
+        "readback_ns": 687042,
+        "schema": "lambda-open-cost-v1",
+        "source": "((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) ((\\z. z) database))))))))))))))))",
+        "terminal": true
+      },
+      "peak_rss_bytes": 4243456,
+      "raw_time": "        0.11 real         0.10 user         0.00 sys\n             4243456  maximum resident set size\n                   0  average shared memory size\n                   0  average unshared data size\n                   0  average unshared stack size\n                 433  page reclaims\n                   0  page faults\n                   0  swaps\n                   0  block input operations\n                   0  block output operations\n                   1  messages sent\n                   0  messages received\n                   0  signals received\n                   0  voluntary context switches\n                  15  involuntary context switches\n          2197301387  instructions retired\n           474530504  cycles elapsed\n             3260728  peak memory footprint\n",
+      "repetition": 3,
+      "wall_ms": 111.89545799999996
+    }
+  ]
+}

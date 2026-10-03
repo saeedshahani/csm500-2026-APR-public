@@ -1,0 +1,88 @@
+{
+  "schema": "admission-study-v1",
+  "date": "2026-10-03T17:15:40.503Z",
+  "revision": "cb02baf1628bfed057952fb7235f15780f1ffa9e",
+  "counts": {
+    "abstract_cases": 4930,
+    "closure_accepted": 2080,
+    "countermodels": 6,
+    "native_queries": 3738,
+    "candidates": 11739,
+    "admitted": 7153,
+    "rejected": 4586,
+    "boundary_queries": 4
+  },
+  "proof": {
+    "version": "Lean (version 4.19.0, arm64-apple-darwin23.6.0, commit 6caaee842e94, Release)",
+    "axioms": {
+      "preservation": [
+        "propext",
+        "Quot.sound"
+      ],
+      "exact_admission": [
+        "propext",
+        "Quot.sound"
+      ],
+      "checker_exact": [
+        "propext",
+        "Quot.sound"
+      ],
+      "retained_immutable": [
+        "propext",
+        "Quot.sound"
+      ],
+      "unique_preserved": [
+        "propext",
+        "Quot.sound"
+      ],
+      "assignments_exact": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "search_exact": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    },
+    "negative": [
+      {
+        "statement": "closedCheck (patch [(0,[1]),(1,[])] [1] []) = true",
+        "diagnostic": "<temporary>/False0.lean:3:67: error: tactic 'decide' proved that the proposition\n  closedCheck (patch [(0, [1]), (1, [])] [1] []) = true\nis false\n"
+      },
+      {
+        "statement": "admissionCheck [(0,[])] [] [(1,[2])] = true",
+        "diagnostic": "<temporary>/False1.lean:3:60: error: tactic 'decide' proved that the proposition\n  admissionCheck [(0, [])] [] [(1, [2])] = true\nis false\n"
+      },
+      {
+        "statement": "admissionCheck [] [] [(0,[1]),(1,[0])] = false",
+        "diagnostic": "<temporary>/False2.lean:3:63: error: tactic 'decide' proved that the proposition\n  admissionCheck [] [] [(0, [1]), (1, [0])] = false\nis false\n"
+      },
+      {
+        "statement": "freshCheck [(0,[])] [(0,[])] = true",
+        "diagnostic": "<temporary>/False3.lean:3:52: error: tactic 'decide' proved that the proposition\n  freshCheck [(0, [])] [(0, [])] = true\nis false\n"
+      },
+      {
+        "statement": "closedCheck (patch [(0,[1])] [] []) = true",
+        "diagnostic": "<temporary>/False4.lean:3:59: error: tactic 'decide' proved that the proposition\n  closedCheck (patch [(0, [1])] [] []) = true\nis false\n"
+      },
+      {
+        "statement": "(patch [] [] [(0,[]),(0,[])]).map Prod.fst |>.Nodup",
+        "diagnostic": "<temporary>/False5.lean:3:68: error: tactic 'decide' proved that the proposition\n  (List.map Prod.fst (patch [] [] [(0, []), (0, [])])).Nodup\nis false\n"
+      }
+    ]
+  },
+  "source_sha256": "4fb8ec3ad199e7620a89a3e45e2d2f028436ee41064c3b9cdc142345a18b4528",
+  "data_sha256": "a0570cfc7caf295fdd0242f3ffcf3058bb392322c4454144bb5f9242a376b6ce",
+  "binary_sha256": "5404e8b1fea576edd63048cf64ee145a2aeb97a5e40be916a8d949bc63114a35",
+  "compiler": "rustc 1.85.0 (4d91de4e4 2025-02-17)",
+  "hardware": {
+    "platform": "darwin",
+    "release": "25.6.0",
+    "arch": "arm64",
+    "cpu": "Apple M4 Pro",
+    "memory_bytes": 51539607552
+  },
+  "campaign_wall_ms": 1638.051125
+}

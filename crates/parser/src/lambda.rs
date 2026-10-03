@@ -16,6 +16,83 @@
 use graph_core::{AtomKey, Binding, Graph, Kind, Role, Sort};
 use std::collections::{BTreeMap, BTreeSet};
 
+pub const CLOSED_PROFILE: &str = "closed-cbn-v1";
+pub const OPEN_PROFILE: &str = "open-cbn-v1";
+
+/// Shared version-dispatched entry point for native and WebAssembly clients.
+pub fn compile_profile(
+    text: &str,
+    profile: &str,
+    free_names: Vec<String>,
+    limits: Limits,
+) -> Result<Encoded, Error> {
+    match profile {
+        CLOSED_PROFILE if free_names.is_empty() => encode(&parse(text, limits)?, limits),
+        OPEN_PROFILE => encode_open(&parse_open(text, free_names, limits)?, limits),
+        CLOSED_PROFILE => Err(Error::InvalidSource(
+            "closed profile cannot declare free names",
+        )),
+        _ => Err(Error::InvalidSource("unknown lambda profile")),
+    }
+}
+
+/// An open term in an explicit ordered context. Indices beyond local binders
+/// address this context; names are symbols, never executable external values.
+#[derive(Clone, Debug)]
+pub struct OpenTerm {
+    term: Term,
+    free_names: Vec<String>,
+}
+
+fn check_names(names: &[String], limits: Limits) -> Result<(), Error> {
+    if names.len() > limits.max_nodes
+        || names
+            .iter()
+            .try_fold(0usize, |n, s| n.checked_add(s.len()))
+            .is_none_or(|n| n > limits.max_work)
+    {
+        return Err(Error::ResourceLimit);
+    }
+    let mut seen = BTreeSet::new();
+    for name in names {
+        if !name.as_bytes().first().is_some_and(u8::is_ascii_alphabetic)
+            || !name.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'_')
+            || !seen.insert(name)
+        {
+            return Err(Error::InvalidSource("invalid or duplicate free name"));
+        }
+    }
+    Ok(())
+}
+
+impl OpenTerm {
+    pub fn new(
+        nodes: Vec<Node>,
+        root: usize,
+        free_names: Vec<String>,
+        limits: Limits,
+    ) -> Result<Self, Error> {
+        check_names(&free_names, limits)?;
+        Ok(Self {
+            term: Term::scoped(nodes, root, free_names.len(), limits)?,
+            free_names,
+        })
+    }
+    pub fn nodes(&self) -> &[Node] {
+        self.term.nodes()
+    }
+    pub fn root(&self) -> usize {
+        self.term.root()
+    }
+    pub fn free_names(&self) -> &[String] {
+        &self.free_names
+    }
+    /// Bound occurrences use indices; unresolved inputs retain their names.
+    pub fn display(&self, limits: Limits) -> Result<String, Error> {
+        self.term.display_scoped(&self.free_names, limits)
+    }
+}
+
 /// Source arena nodes; children must precede their parent. Shared syntax is allowed.
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub enum Node {
@@ -83,6 +160,18 @@ fn spend(work: &mut usize) -> Result<(), Error> {
 /// Read fully parenthesised named terms: `x`, `(\\x. term)`, `(term term)`.
 /// Names are resolved to the nearest binder; free names are rejected.
 pub fn parse(text: &str, limits: Limits) -> Result<Term, Error> {
+    parse_scoped(text, &[], limits)
+}
+
+pub fn parse_open(text: &str, free_names: Vec<String>, limits: Limits) -> Result<OpenTerm, Error> {
+    check_names(&free_names, limits)?;
+    Ok(OpenTerm {
+        term: parse_scoped(text, &free_names, limits)?,
+        free_names,
+    })
+}
+
+fn parse_scoped(text: &str, free_names: &[String], limits: Limits) -> Result<Term, Error> {
     if text.len() > limits.max_work || limits.max_depth > 128 {
         return Err(Error::ResourceLimit);
     }
@@ -91,6 +180,7 @@ pub fn parse(text: &str, limits: Limits) -> Result<Term, Error> {
         at: usize,
         nodes: Vec<Node>,
         binders: Vec<String>,
+        free_names: &'a [String],
         limits: Limits,
     }
     impl Reader<'_> {
@@ -154,6 +244,12 @@ pub fn parse(text: &str, limits: Limits) -> Result<Term, Error> {
                         .iter()
                         .rev()
                         .position(|n| n == &name)
+                        .or_else(|| {
+                            self.free_names
+                                .iter()
+                                .position(|n| n == &name)
+                                .map(|i| self.binders.len() + i)
+                        })
                         .ok_or(Error::InvalidSource("free variable"))?,
                 )
             };
@@ -170,6 +266,7 @@ pub fn parse(text: &str, limits: Limits) -> Result<Term, Error> {
         at: 0,
         nodes: Vec::new(),
         binders: Vec::new(),
+        free_names,
         limits,
     };
     let root = reader.term(0)?;
@@ -177,7 +274,7 @@ pub fn parse(text: &str, limits: Limits) -> Result<Term, Error> {
     if reader.at != text.len() {
         return Err(Error::InvalidSource("trailing input"));
     }
-    Term::new(reader.nodes, root, limits)
+    Term::scoped(reader.nodes, root, free_names.len(), limits)
 }
 
 /// Interpret a uniquely identified, unquoted machine at an inspected state.
@@ -198,13 +295,36 @@ pub fn interpret(graph: &Graph, limits: Limits) -> Result<Option<String>, Error>
         .collect();
     match roots.as_slice() {
         [] => Ok(None),
-        [root] => Ok(Some(readback(graph, *root, limits)?.display(limits)?)),
+        [root] => {
+            let open = graph.iter().any(|(id, a)| {
+                !representation.contains(&id)
+                    && a.kind
+                        == Kind::Record {
+                            role: Role::ObjectLink,
+                            label: Some("lc.profile".into()),
+                        }
+                    && a.fields[0] == *root
+            });
+            Ok(Some(if open {
+                readback_open(graph, *root, limits)?.display(limits)?
+            } else {
+                readback(graph, *root, limits)?.display(limits)?
+            }))
+        }
         _ => Err(Error::InvalidGraph("multiple lambda machines")),
     }
 }
 
 impl Term {
     pub fn new(nodes: Vec<Node>, root: usize, limits: Limits) -> Result<Self, Error> {
+        Self::scoped(nodes, root, 0, limits)
+    }
+    fn scoped(
+        nodes: Vec<Node>,
+        root: usize,
+        free_count: usize,
+        limits: Limits,
+    ) -> Result<Self, Error> {
         if nodes.len() > limits.max_nodes || limits.max_depth > 128 {
             return Err(Error::ResourceLimit);
         }
@@ -231,7 +351,9 @@ impl Term {
             }
             reached.insert(id);
             match nodes[id] {
-                Node::Var(n) if n >= binders => return Err(Error::InvalidSource("free variable")),
+                Node::Var(n) if n >= binders + free_count => {
+                    return Err(Error::InvalidSource("free variable"))
+                }
                 Node::Var(_) => (),
                 Node::Lam(b) => todo.push((b, binders + 1, depth + 1)),
                 Node::App(f, a) => {
@@ -254,30 +376,45 @@ impl Term {
 
     /// Canonical nameless syntax, independent of arena sharing and allocation order.
     pub fn display(&self, limits: Limits) -> Result<String, Error> {
+        self.display_scoped(&[], limits)
+    }
+    fn display_scoped(&self, names: &[String], limits: Limits) -> Result<String, Error> {
         fn go(
             t: &Term,
             id: usize,
             depth: usize,
+            scope: (usize, &[String]),
             work: &mut usize,
             limits: Limits,
             out: &mut String,
         ) -> Result<(), Error> {
+            let (binders, names) = scope;
             spend(work)?;
             if depth > limits.max_depth || depth > 128 {
                 return Err(Error::ResourceLimit);
             }
             match t.nodes[id] {
-                Node::Var(n) => out.push_str(&n.to_string()),
+                Node::Var(n) => {
+                    if n < binders {
+                        out.push_str(&n.to_string());
+                    } else {
+                        out.push_str(
+                            names
+                                .get(n - binders)
+                                .ok_or(Error::InvalidSource("free variable"))?,
+                        );
+                    }
+                }
                 Node::Lam(b) => {
                     out.push_str("(λ.");
-                    go(t, b, depth + 1, work, limits, out)?;
+                    go(t, b, depth + 1, (binders + 1, names), work, limits, out)?;
                     out.push(')');
                 }
                 Node::App(f, a) => {
                     out.push('(');
-                    go(t, f, depth + 1, work, limits, out)?;
+                    go(t, f, depth + 1, scope, work, limits, out)?;
                     out.push(' ');
-                    go(t, a, depth + 1, work, limits, out)?;
+                    go(t, a, depth + 1, scope, work, limits, out)?;
                     out.push(')');
                 }
             }
@@ -285,7 +422,7 @@ impl Term {
         }
         let mut out = String::new();
         let mut work = limits.max_work;
-        go(self, self.root, 0, &mut work, limits, &mut out)?;
+        go(self, self.root, 0, (0, names), &mut work, limits, &mut out)?;
         Ok(out)
     }
 }
@@ -320,11 +457,27 @@ fn edge(g: &mut Graph, name: &str, from: AtomKey, to: AtomKey) -> Result<AtomKey
 
 /// Compile without source evaluation. Eleven fixed alias-specialised graph rules.
 pub fn encode(term: &Term, limits: Limits) -> Result<Encoded, Error> {
+    encode_scoped(term, None, limits)
+}
+
+/// Compile open weak-head call-by-name without changing the eleven resident rules.
+/// The explicit context and encoding version remain in the graph and its trace.
+pub fn encode_open(term: &OpenTerm, limits: Limits) -> Result<Encoded, Error> {
+    check_names(&term.free_names, limits)?;
+    encode_scoped(&term.term, Some(&term.free_names), limits)
+}
+
+fn encode_scoped(term: &Term, names: Option<&[String]>, limits: Limits) -> Result<Encoded, Error> {
     // Recheck caller bounds even if the Term was validated with larger allowances.
     if term.nodes.len() > limits.max_nodes {
         return Err(Error::ResourceLimit);
     }
-    Term::new(term.nodes.clone(), term.root, limits)?;
+    Term::scoped(
+        term.nodes.clone(),
+        term.root,
+        names.map_or(0, <[String]>::len),
+        limits,
+    )?;
     let mut graph = Graph::new();
     let rules = machine_rules(&mut graph)?;
     let mut ids = Vec::new();
@@ -357,8 +510,25 @@ pub fn encode(term: &Term, limits: Limits) -> Result<Encoded, Error> {
         ids.push(id);
     }
     let root = ctor(&mut graph, "Machine")?;
-    let env = ctor(&mut graph, "NilEnv")?;
+    let nil_env = ctor(&mut graph, "NilEnv")?;
+    let mut env = nil_env;
     let stack = ctor(&mut graph, "NilStack")?;
+    if let Some(names) = names {
+        let profile = ctor(
+            &mut graph,
+            &format!("Profile:{OPEN_PROFILE}:{}", names.join(",")),
+        )?;
+        edge(&mut graph, "profile", root, profile)?;
+        for name in names.iter().rev() {
+            spend(&mut work)?;
+            let symbol = ctor(&mut graph, &format!("Free:{name}"))?;
+            let next = ctor(&mut graph, "Env")?;
+            edge(&mut graph, "term", next, symbol)?;
+            edge(&mut graph, "env", next, nil_env)?;
+            edge(&mut graph, "tail", next, env)?;
+            env = next;
+        }
+    }
     edge(&mut graph, "term", root, ids[term.root])?;
     edge(&mut graph, "env", root, env)?;
     edge(&mut graph, "stack", root, stack)?;
@@ -526,6 +696,7 @@ struct Reader<'a> {
     nodes: Vec<Node>,
     work: usize,
     limits: Limits,
+    free_names: Vec<String>,
 }
 impl Reader<'_> {
     fn label(&mut self, id: AtomKey) -> Result<&str, Error> {
@@ -556,6 +727,7 @@ impl Reader<'_> {
         e: AtomKey,
         binders: usize,
         depth: usize,
+        lift: usize,
     ) -> Result<usize, Error> {
         if depth > self.limits.max_depth || depth > 128 {
             return Err(Error::ResourceLimit);
@@ -563,14 +735,14 @@ impl Reader<'_> {
         match self.label(t)? {
             "lc.Lam" => {
                 let b = self.link(t, "body")?;
-                let b = self.term(b, e, binders + 1, depth + 1)?;
+                let b = self.term(b, e, binders + 1, depth + 1, lift)?;
                 self.add(Node::Lam(b))
             }
             "lc.App" => {
                 let f = self.link(t, "fun")?;
                 let a = self.link(t, "arg")?;
-                let f = self.term(f, e, binders, depth + 1)?;
-                let a = self.term(a, e, binders, depth + 1)?;
+                let f = self.term(f, e, binders, depth + 1, lift)?;
+                let a = self.term(a, e, binders, depth + 1, lift)?;
                 self.add(Node::App(f, a))
             }
             "lc.Z" | "lc.S" => {
@@ -601,11 +773,18 @@ impl Reader<'_> {
                 }
                 let a = self.link(env, "term")?;
                 let f = self.link(env, "env")?;
-                // Stored closures are closed after environment substitution, so
-                // inserting their readback under binders needs no free-variable shift.
-                self.term(a, f, 0, depth + 1)
+                // A captured closure is closed relative to the named context.
+                // Lift only its free occurrences, not its locally bound indices.
+                self.term(a, f, 0, depth + 1, lift + binders)
             }
-            _ => Err(Error::InvalidGraph("not lambda syntax")),
+            _ => {
+                let label = self.label(t)?.to_owned();
+                let index = label
+                    .strip_prefix("lc.Free:")
+                    .and_then(|name| self.free_names.iter().position(|n| n == name))
+                    .ok_or(Error::InvalidGraph("not lambda syntax or declared symbol"))?;
+                self.add(Node::Var(index + binders + lift))
+            }
         }
     }
 }
@@ -614,6 +793,19 @@ impl Reader<'_> {
 /// Not a beta evaluator, a normal-form test, or validation of the simulation invariant.
 /// The correspondence applies to reachable encoded states; arbitrary graphs can fail.
 pub fn readback(graph: &Graph, root: AtomKey, limits: Limits) -> Result<Term, Error> {
+    Ok(readback_scoped(graph, root, limits, false)?.term)
+}
+
+pub fn readback_open(graph: &Graph, root: AtomKey, limits: Limits) -> Result<OpenTerm, Error> {
+    readback_scoped(graph, root, limits, true)
+}
+
+fn readback_scoped(
+    graph: &Graph,
+    root: AtomKey,
+    limits: Limits,
+    open: bool,
+) -> Result<OpenTerm, Error> {
     if limits.max_depth > 128 {
         return Err(Error::ResourceLimit);
     }
@@ -623,6 +815,7 @@ pub fn readback(graph: &Graph, root: AtomKey, limits: Limits) -> Result<Term, Er
         nodes: Vec::new(),
         work: limits.max_work,
         limits,
+        free_names: Vec::new(),
     };
     // Rule descriptions contain both old and new control fields. They are not
     // live machine records and must not participate in source readback.
@@ -658,22 +851,39 @@ pub fn readback(graph: &Graph, root: AtomKey, limits: Limits) -> Result<Term, Er
     if reader.label(root)? != "lc.Machine" {
         return Err(Error::InvalidGraph("not machine root"));
     }
+    let profile = reader.links.get(&(root, "lc.profile".into())).copied();
+    match (open, profile) {
+        (true, Some(id)) => {
+            let label = reader.label(id)?;
+            let names = label
+                .strip_prefix("lc.Profile:open-cbn-v1:")
+                .ok_or(Error::InvalidGraph("unknown lambda profile"))?;
+            reader.free_names = if names.is_empty() {
+                Vec::new()
+            } else {
+                names.split(',').map(str::to_owned).collect()
+            };
+            check_names(&reader.free_names, limits)?;
+        }
+        (false, None) => (),
+        _ => return Err(Error::InvalidGraph("lambda profile mismatch")),
+    }
     let t = reader.link(root, "term")?;
     let e = reader.link(root, "env")?;
     let mut s = reader.link(root, "stack")?;
-    let mut result = reader.term(t, e, 0, 0)?;
+    let mut result = reader.term(t, e, 0, 0, 0)?;
     loop {
         match reader.label(s)? {
             "lc.NilStack" => break,
             "lc.Stack" => {
                 let a = reader.link(s, "term")?;
                 let f = reader.link(s, "env")?;
-                let a = reader.term(a, f, 0, 0)?;
+                let a = reader.term(a, f, 0, 0, 0)?;
                 result = reader.add(Node::App(result, a))?;
                 s = reader.link(s, "tail")?;
             }
             _ => return Err(Error::InvalidGraph("invalid stack")),
         }
     }
-    Term::new(reader.nodes, result, limits)
+    OpenTerm::new(reader.nodes, result, reader.free_names, limits)
 }

@@ -42,6 +42,9 @@ enum Command {
     LambdaCompile {
         source: String,
         max_work: Option<Number>,
+        profile: Option<String>,
+        #[serde(default)]
+        free_names: Vec<String>,
     },
     Load {
         source: String,
@@ -421,13 +424,18 @@ impl Workbench {
     }
     fn execute(&mut self, command: Command) -> Result<Reply> {
         match command {
-            Command::LambdaCompile { source, max_work } => {
+            Command::LambdaCompile {
+                source,
+                max_work,
+                profile,
+                free_names,
+            } => {
                 let mut limits = parser::lambda::Limits::default();
                 if let Some(work) = max_work {
                     limits.max_work = limits.max_work.min(work.size()?);
                 }
-                let translated = parser::lambda::parse(&source, limits)
-                    .and_then(|term| parser::lambda::encode(&term, limits))
+                let translated = parser::lambda::compile_profile(&source,
+                    profile.as_deref().unwrap_or(parser::lambda::CLOSED_PROFILE), free_names, limits)
                     .map_err(|e| {
                         if matches!(e, parser::lambda::Error::ResourceLimit)
                             || matches!(&e, parser::lambda::Error::Core(d) if d.kind() == ErrorKind::ResourceExhaustion) {

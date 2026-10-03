@@ -2,6 +2,38 @@ use serde_json::{json, Value};
 use wasm_bridge::Workbench;
 
 #[test]
+fn open_lambda_preview_replay_and_rejection_preserve_the_loaded_session() {
+    let mut w = Workbench::default();
+    let preview = request(
+        &mut w,
+        json!({"command":"lambda_compile","source":"((\\z. (\\x. z)) x)","profile":"open-cbn-v1","free_names":["x"]}),
+    );
+    assert_eq!(preview["ok"], true, "{preview}");
+    request(
+        &mut w,
+        json!({"command":"load","source":preview["compiled"],"config":{"max_steps":"20"}}),
+    );
+    let final_state = request(&mut w, json!({"command":"advance","batch":"20"}));
+    assert_eq!(final_state["state"]["status"], "NormalForm");
+    assert_eq!(final_state["state"]["lambda"]["term"], "(λ.x)");
+    let mut imported = Workbench::default();
+    let replay = request(
+        &mut imported,
+        json!({"command":"import","trace":final_state["trace"]}),
+    );
+    assert_eq!(replay["state"]["lambda"]["term"], "(λ.x)");
+    let rejected = request(
+        &mut w,
+        json!({"command":"lambda_compile","source":"x","profile":"open-cbn-v1","free_names":[]}),
+    );
+    assert_eq!(rejected["ok"], false);
+    let retained = request(&mut w, json!({"command":"state"}));
+    assert_eq!(retained["trace"], final_state["trace"]);
+    let initial = request(&mut imported, json!({"command":"jump","state":"0"}));
+    assert_eq!(initial["state"]["lambda"]["term"], "((λ.(λ.1)) x)");
+}
+
+#[test]
 fn source_diagnostics_preserve_every_parser_span_and_related_location_atomically() {
     let mut w = Workbench::default();
     let initial = request(&mut w, json!({"command":"load","source":"program {}"}));

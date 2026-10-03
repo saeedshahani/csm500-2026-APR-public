@@ -1,8 +1,11 @@
 use std::io::Write;
 use std::process::{Command, Output, Stdio};
 fn invoke(command: &str, input: &str) -> Output {
+    invoke_args(&[command, "-"], input)
+}
+fn invoke_args(args: &[&str], input: &str) -> Output {
     let mut child = Command::new(env!("CARGO_BIN_EXE_cli"))
-        .args([command, "-"])
+        .args(args)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
@@ -15,6 +18,40 @@ fn invoke(command: &str, input: &str) -> Output {
         .write_all(input.as_bytes())
         .unwrap();
     child.wait_with_output().unwrap()
+}
+
+#[test]
+fn open_profile_commands_preserve_symbols_and_reject_ambiguous_options() {
+    let compiled = invoke_args(
+        &[
+            "lambda-compile",
+            "-",
+            "--profile",
+            "open-cbn-v1",
+            "--free",
+            "x",
+        ],
+        "((\\z. (\\x. z)) x)",
+    );
+    assert!(compiled.status.success());
+    let source = std::str::from_utf8(&compiled.stdout).unwrap();
+    let read = invoke("lambda-readback", source);
+    assert!(read.status.success());
+    assert_eq!(
+        std::str::from_utf8(&read.stdout).unwrap().trim(),
+        "((λ.(λ.1)) x)"
+    );
+    for options in [
+        vec!["--profile"],
+        vec!["--profile", "wrong"],
+        vec!["--free", "x"],
+        vec!["--profile", "open-cbn-v1", "--free", "x,x"],
+        vec!["--profile", "open-cbn-v1", "--profile", "open-cbn-v1"],
+    ] {
+        let mut args = vec!["lambda-compile", "-"];
+        args.extend(options);
+        assert_eq!(invoke_args(&args, "x").status.code(), Some(2));
+    }
 }
 #[test]
 fn compiled_lambda_commands_preserve_meaning_and_distinguish_input_resource_failures() {

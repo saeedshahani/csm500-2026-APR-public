@@ -119,7 +119,7 @@ pub(crate) fn main_command() -> Result<u8> {
         io::stdout().lock().write_all(b"Execution profiles: --execution-profile reference-v1 (default) | indexed-v2 | framed-v3 | joined-v4\nOperator envelope: GRAPH_EXECUTION_ENVELOPE=large-local-v1 enables the documented larger local source/trace limits; unset retains defaults.\nExplicit legacy migration: cli trace-migrate TRACE [--output NEW_PATH]\nMigration rechecks the full history under reference-v1; it never overwrites its input.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Continuation: cli export INPUT --max-steps N --batch-steps N [export options]\n              cli resume TRACE --batch-steps N [--output PATH]\nA yielded checkpoint exits 0 without claiming completion. Resume preserves the original run limits and only accepts a verified yielded endpoint.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Dataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
-        io::stdout().lock().write_all(b"Lambda adapters: cli lambda-compile SOURCE | cli lambda-readback GRAPH\nBoth accept a file or -; compilation emits ordinary graph source.\nUse cli replay TRACE --at N | cli lambda-readback - for recorded terms.\n\n").map_err(|e| Failure::new(1, e.to_string()))?;
+        io::stdout().lock().write_all(b"Lambda adapters: cli lambda-compile SOURCE [--profile closed-cbn-v1|open-cbn-v1] [--free x,y] | cli lambda-readback GRAPH\nBoth accept a file or -; compilation emits ordinary graph source. Closed call-by-name is the default.\nUse cli replay TRACE --at N | cli lambda-readback - for recorded terms.\n\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout()
             .lock()
             .write_all(format!("{HELP}\nScheduling: --strategy deterministic (default), or --strategy seeded --seed U64.\nOrdering: source identity, then (template identity, host identity) tuples.\nObservers: --observer FILE (observer-v1); --detect-cycles true|false (default false).\nBounds: --max-observation-work N, --max-comparison-work N, --max-history-units N.\nRecurrence is diagnostic, not proof of infinite behaviour; exit 6 CycleDetected.\nShared API cancellation stops at transaction boundaries (exit 5); CLI does not install a signal handler.\nNormal form takes precedence over recurrence and step limits; recurrence precedes step limit.\n").as_bytes())
@@ -230,17 +230,36 @@ pub(crate) fn main_command() -> Result<u8> {
         return Ok(0);
     }
     if matches!(args[0].as_str(), "lambda-compile" | "lambda-readback") {
-        if args.len() != 2 {
+        if args.len() < 2 || (args[0] == "lambda-readback" && args.len() != 2) {
             return Err(Failure::new(
                 2,
-                "usage: cli lambda-compile SOURCE | lambda-readback GRAPH (file or -)",
+                "usage: cli lambda-compile SOURCE [--profile PROFILE] [--free x,y] | lambda-readback GRAPH (file or -)",
             ));
         }
         let text = read_source(&args[1], ParseLimits::default().graph.max_input_bytes)?;
         let limits = parser::lambda::Limits::default();
         let output = if args[0] == "lambda-compile" {
-            let term = parser::lambda::parse(&text, limits).map_err(lambda_failure)?;
-            let encoded = parser::lambda::encode(&term, limits).map_err(lambda_failure)?;
+            let mut profile = parser::lambda::CLOSED_PROFILE;
+            let mut free_names = Vec::new();
+            let mut seen = std::collections::BTreeSet::new();
+            for pair in args[2..].chunks(2) {
+                if pair.len() != 2 || !seen.insert(&pair[0]) {
+                    return Err(Failure::new(2, "missing or duplicate lambda option"));
+                }
+                match pair[0].as_str() {
+                    "--profile" => profile = &pair[1],
+                    "--free" => {
+                        free_names = if pair[1].is_empty() {
+                            Vec::new()
+                        } else {
+                            pair[1].split(',').map(str::to_owned).collect()
+                        }
+                    }
+                    _ => return Err(Failure::new(2, "unknown lambda option")),
+                }
+            }
+            let encoded = parser::lambda::compile_profile(&text, profile, free_names, limits)
+                .map_err(lambda_failure)?;
             format!(
                 "// Lambda source: {}\n{}",
                 text.trim().replace(['\n', '\r'], " "),
