@@ -1,0 +1,25 @@
+
+[stderr]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: native verification requires the recorded binary
++ actual - expected
+
++ '30d688337bbe1ae1df147f1de7c25a0574e2de119a48f8a8053a45beaddbffd9'
+- '28c33ddb9a33c7f163df7da4f3ae20207ec0d81d3d3ddac224416ab879b76559'
+
+    at file:///Users/saeedshahani/MEGA/Programming/UoL/10.%20Project/Human%20Ontology/final-project-codebase/scripts/workflow-study.mjs:51:47
+    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)
+    at async node:internal/modules/esm/loader:647:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: '30d688337bbe1ae1df147f1de7c25a0574e2de119a48f8a8053a45beaddbffd9',
+  expected: '28c33ddb9a33c7f163df7da4f3ae20207ec0d81d3d3ddac224416ab879b76559',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.21.0

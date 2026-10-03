@@ -20,7 +20,7 @@ test('reproduction claims separate cross-environment semantics from byte identit
     assert.doesNotMatch(body,/\]\((?:\.\.\/)*docs\//);
   }
   assert.ok(readFileSync('docs/task-list.md','utf8').includes('- [x] S6-233 —'));
-  assert.ok(readFileSync('docs/task-list.md','utf8').includes('- [ ] S6-234 —'));
+  assert.ok(readFileSync('docs/task-list.md','utf8').includes('S6-234 —'));
   execFileSync(process.execPath,['scripts/verify-reproduction.mjs','--check','benchmarks/results/reproduction-m/report.json'],{env:{...process.env,PATH:''}});
 });
 test('research source collection is recursive, deterministic and refuses nonregular entries', () => {

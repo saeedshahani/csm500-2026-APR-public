@@ -1,0 +1,52 @@
+
+> reflective-graph-workbench@0.1.0 test:parity
+> npm run wasm:node && node --test tests/parity.test.mjs
+
+
+> reflective-graph-workbench@0.1.0 wasm:node
+> node scripts/build-wasm.mjs nodejs
+
+   Compiling wasm-bridge v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/wasm-bridge)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.56s
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.02s
+Dangling: dangling reference
+✔ all source ranges and related locations agree across native and WASM without changing history (415.392791ms)
+✔ lambda translation, interpretation, history and failures share native/WASM semantics (1667.166541ms)
+✔ open symbolic lambda profiles retain capture avoidance and replay parity (1376.671334ms)
+✔ complete catalogue has exact CLI/native/WASM execution, trace and historical parity (27612.699875ms)
+✔ indexed-v2 has exact CLI/native/WASM replay, resume and reset parity (903.166834ms)
+✔ framed-v3 has exact CLI/native/WASM replay, resume and reset parity (681.532917ms)
+✔ joined-v4 has exact CLI/native/WASM replay, resume and reset parity (667.910667ms)
+✔ breakpoint pause, revision, resume and reset agree exactly across native and WASM (1057.15125ms)
+✔ practical fixed CLI/WASM and project parity (465.885167ms)
+✔ practical guarded_enable CLI/WASM and project parity (551.025375ms)
+✔ larger practical dataset reports a bounded failure without invented events (2453.687209ms)
+✔ exact native/WASM protocol parity: programs/arithmetic.graph (43.143875ms)
+✔ exact native/WASM protocol parity: programs/staging.graph (209.366334ms)
+✔ exact native/WASM protocol parity: programs/self-modify.graph (192.421875ms)
+✔ exact native/WASM protocol parity: programs/restoration.graph (942.476625ms)
+✔ exact native/WASM protocol parity: independent/disjoint.graph (44.437125ms)
+✔ exact native/WASM protocol parity: independent/shared-read.graph (42.558667ms)
+✔ invalid source, limits, empty graph and disposal agree (18.582792ms)
+✔ multiple batch sizes preserve recurrence and RNG: all (189.607834ms)
+✔ multiple batch sizes preserve recurrence and RNG: value (113.650042ms)
+✔ CLI transfer, import, historical inspection and independent handles (625.220375ms)
+✔ yielded WASM trace resumes identically after native revalidation (67.310375ms)
+✔ all identity bits survive native/WASM import and replay (14.867042ms)
+✔ read-only rule, historical and local analysis has exact native/WASM parity (25.456667ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 41077.059042
+
+[stderr]
+[INFO]: 🎯  Checking for the Wasm target...
+[INFO]: 🌀  Compiling to Wasm...
+    Finished `release` profile [optimized] target(s) in 0.02s
+[INFO]: Optional fields missing from Cargo.toml: 'description', 'repository', and 'license'. These are not necessary, but recommended
+[INFO]: ✨   Done in 0.22s
+[INFO]: 📦   Your wasm pkg is ready to publish at ../frontend/pkg-node.

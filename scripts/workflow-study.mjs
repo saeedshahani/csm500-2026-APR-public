@@ -5,8 +5,23 @@ import {spawnSync,execFileSync} from 'node:child_process';
 import {createHash} from 'node:crypto';
 import {gzipSync,gunzipSync} from 'node:zlib';
 import {resolve} from 'node:path';
+import {pathToFileURL} from 'node:url';
+
+export function compareWorkflowResults(current,recorded) {
+  const strip=result=>{
+    const {implementation,...trace}=result.trace;
+    assert.match(implementation,/^engine-0\.1\.0-source-sha256=[a-f0-9]{64}$/);
+    return {...result,trace};
+  };
+  assert.deepEqual(strip(current),strip(recorded));
+  return {recorded:recorded.trace.implementation,current:current.trace.implementation};
+}
+
+if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href) {
 const [mode,directory]=process.argv.slice(2);
-assert.ok(['collect','verify'].includes(mode)&&directory,'collect|verify DIRECTORY [--native]');
+assert.ok(['collect','verify'].includes(mode)&&directory,'collect|verify DIRECTORY [--native|--live]');
+const flags=process.argv.slice(4);
+assert.ok(flags.every(f=>['--native','--live'].includes(f))&&flags.length<=1&&(mode==='verify'||flags.length===0),'unknown or incompatible verification option');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const binary=resolve('target/release/cli');
 function call(args,input){const r=spawnSync(binary,args,{input,encoding:'utf8',timeout:30000,maxBuffer:16*1024*1024});return {code:r.status,signal:r.signal,error:r.error?.message??null,stdout:r.stdout??'',stderr:r.stderr??''};}
@@ -49,6 +64,20 @@ if(mode==='collect'){
   const m=JSON.parse(readFileSync(resolve(directory,'manifest.json')));assert.equal(m.complete,true);assert.equal(m.rows.length,48);
   assert.equal(sha(readFileSync(resolve(directory,'sources.json.gz'))),m.source_bundle_sha256);assert.equal(sha(readFileSync(resolve(directory,'proof.json'))),m.proof_sha256);
   if(process.argv.includes('--native'))assert.equal(sha(readFileSync(binary)),m.binary_sha256,'native verification requires the recorded binary');
-  for(const row of m.rows){const bytes=readFileSync(resolve(directory,row.filename));assert.equal(sha(bytes),row.sha256);const actual=verifyCell(JSON.parse(gunzipSync(bytes)),process.argv.includes('--native'));const{filename,sha256,...expected}=row;assert.deepEqual(actual,expected);}
-  console.log(`Verified ${m.rows.length} cells, ${m.rows.reduce((s,r)=>s+r.commits,0)} committed transitions; native replay ${process.argv.includes('--native')?'repeated':'not repeated'}.`);
+  for(const row of m.rows){
+    const bytes=readFileSync(resolve(directory,row.filename));assert.equal(sha(bytes),row.sha256);
+    const cell=JSON.parse(gunzipSync(bytes)),live=flags.includes('--live');
+    const actual=verifyCell(cell,flags.includes('--native')||live);const{filename,sha256,...expected}=row;assert.deepEqual(actual,expected);
+    if(live){
+      const run=call(['workflow-run','-'],JSON.stringify(cell.request));assert.equal(run.code,0,run.stderr);
+      const result=JSON.parse(run.stdout),replay=call(['trace-check','-'],JSON.stringify(result.trace));
+      assert.equal(replay.code,0,replay.stderr);verifyCell({...cell,run,replay});
+      // Both unmodified traces have passed replay before comparing. Only producer
+      // implementation identity differs; retain both rather than forge old bytes.
+      const producers=compareWorkflowResults(result,JSON.parse(cell.run.stdout));
+      console.log(JSON.stringify({cell:row.filename,producers}));
+    }
+  }
+  console.log(`Verified ${m.rows.length} cells, ${m.rows.reduce((s,r)=>s+r.commits,0)} committed transitions; ${flags.includes('--live')?'current-build compatibility checked (only producer implementation identity excluded)':flags.includes('--native')?'recorded-binary replay repeated':'native replay not repeated'}.`);
+}
 }

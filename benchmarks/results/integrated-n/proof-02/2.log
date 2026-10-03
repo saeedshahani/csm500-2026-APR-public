@@ -1,0 +1,9 @@
+'WorkflowContracts.processing_decreases' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.administration_decreases' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.initial_bound' depends on axioms: [propext]
+'WorkflowContracts.branching_decreases' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.record_nonincrease' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.no_infinite_descent' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.fair_recovery' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+[stderr]

@@ -1,0 +1,7 @@
+{
+  "version": "Lean (version 4.19.0, arm64-apple-darwin23.6.0, commit 6caaee842e94, Release)",
+  "source_sha256": "a695d4cf645aec0d59a2b2ca0646fe986fb4fbeca3783cc705f674a25f53b4d2",
+  "output": "'MinimalityBounds.capacity' depends on axioms: [propext, Quot.sound]\n'MinimalityBounds.unary_boundary' depends on axioms: [propext, Quot.sound]\n'MinimalityBounds.binary_boundary' depends on axioms: [propext, Quot.sound]\n'MinimalityBounds.minimum_three_arcs' depends on axioms: [propext, Quot.sound]\n'MinimalityBounds.one_root_symmetry' depends on axioms: [propext]\n"
+}
+
+[stderr]

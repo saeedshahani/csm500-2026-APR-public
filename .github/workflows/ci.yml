@@ -40,6 +40,7 @@ jobs:
           node scripts/minimality-study.mjs verify benchmarks/results/minimality-02
           node scripts/minimality-study.mjs verify benchmarks/results/minimality-03 --live
           node --test scripts/documentation.test.mjs
+          node --test scripts/integrated-review.test.mjs
           cargo build --release --locked -p cli --example lambda_open_probe
           node scripts/lambda-open-study.mjs verify benchmarks/results/lambda-open-01 --live
           node --test scripts/admission.test.mjs

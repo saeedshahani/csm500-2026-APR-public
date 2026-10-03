@@ -1,0 +1,33 @@
+
+> reflective-graph-local-platform@0.1.0 test:emulator
+> node emulator.mjs --test
+
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-reflective-graph", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: node --test platform/tests/emulator/*.test.mjs
+✔ real emulator users: project isolation, role matrix, immutable versions and native verified artefacts (293.17825ms)
+✔ permission revocation during native validation prevents publication (112.146542ms)
+✔ missing, wrong-audience, expired, disabled and revoked identities fail closed (1135.107625ms)
+✔ request-scoped storage releases idle leases, executes one batch and preserves duplicate deliveries (642.134084ms)
+✔ Firestore/Storage adapters fence stale owners, reserve uploads and reject corruption (184.451083ms)
+✔ real API uses emulator metadata and artefacts across restart and concurrent idempotent requests (281.714209ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1641.184416
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+[stderr]

@@ -1,0 +1,45 @@
+
+> reflective-graph-workbench@0.1.0 test:unit
+> node --experimental-strip-types --test tests/controller.test.ts tests/presentation.test.ts tests/projects.test.ts tests/diagnostics.test.ts tests/platform-client.test.ts
+
+✔ failed debugger recovery retains the original acknowledged settings for retry (1.085ms)
+✔ recovery restores breakpoints and rediscovers the same paused occurrence even after its checkbox is cleared (0.49125ms)
+✔ synchronous worker send failure releases the request and permits recovery (0.380292ms)
+✔ recovery restores a historical inspection cursor, not just the endpoint (0.2725ms)
+✔ worker failure rejects later requests until recovery (0.304042ms)
+✔ late replies, repeated replacement and disposal cannot publish old sessions (0.245834ms)
+✔ out-of-order identities and concurrent commands are rejected (0.099042ms)
+✔ a failed load does not replace the recovery prefix (0.093ms)
+✔ UTF-8 spans become exact UTF-16 ranges across Unicode, tabs and mixed newlines (0.8905ms)
+✔ all primary and related locations retain their own ranges, including EOF and multiline spans (0.124417ms)
+✔ invalid or non-character boundaries are not presented as precise source locations (0.10425ms)
+✔ workflow transport preserves reports without converting unsupported into refutation (13.555917ms)
+✔ hosted panel requests are serialised and queued work stops on disconnect (2.596875ms)
+✔ hosted transport pins Firebase origins and requires refreshable identity (0.368834ms)
+✔ client refuses external, credential-bearing and path-bearing API addresses (0.1355ms)
+✔ pause and resume are explicit authenticated requests without changed settings (0.419292ms)
+✔ submission reuses its key after an uncertain response but deliberate new jobs receive new keys (0.647125ms)
+✔ artefact content and advertised digest both have to match the saved identity (2.251ms)
+✔ byte limits cover advertised and chunked responses (0.292166ms)
+✔ disconnect aborts requests and rejects late responses (0.182042ms)
+✔ structured API errors are preserved without automatic retries (0.168375ms)
+✔ refreshable identities are obtained per request and never sent after disconnect (0.207042ms)
+✔ projection preserves loops and parallel identities, hides quotation and retains unprojectable data (1.51ms)
+✔ observer does not change projection and deleted identity uses prior payload (0.183833ms)
+✔ rapid scrubbing runs only active and latest pending query and suppresses stale publication (0.146333ms)
+✔ replacement invalidates in-flight and queued inspections including late errors (0.093166ms)
+✔ project format preserves Unicode and keeps presentation separate (0.785958ms)
+✔ execution profile is optional for old projects and explicit for indexed projects (0.240625ms)
+✔ presentation preferences are strings, not coercible arrays or objects (0.090083ms)
+✔ file input preserves Unicode and rejects invalid UTF-8 (0.284459ms)
+✔ project validation rejects unknown, malformed and over-budget parts (17.807042ms)
+ℹ tests 31
+ℹ suites 0
+ℹ pass 31
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 112.261125
+
+[stderr]

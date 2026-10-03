@@ -1,0 +1,4 @@
+Verified 18 cells, 54 process samples, 6132 query/subset outcomes; native trace replay not repeated.
+Fresh-build Boolean oracle and native replay passed for all 18 cells (no cross-platform timing comparison).
+
+[stderr]
