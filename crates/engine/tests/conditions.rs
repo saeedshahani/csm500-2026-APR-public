@@ -107,6 +107,15 @@ fn exhaustive_two_side_oracle_and_both_removal_orders() {
             let trace = verified(&log);
             let report = conditions::extract(&trace, Default::default()).unwrap();
             let consumer = EventId(expected.len() as u64);
+            let explanation =
+                engine::counterfactual::analyse(&trace, consumer, Default::default()).unwrap();
+            assert_eq!(explanation.trials.len(), 1 << expected.len());
+            assert_eq!(
+                explanation.minimal_supports,
+                vec![(0..expected.len())
+                    .map(|i| EventId(i as u64))
+                    .collect::<Vec<_>>()]
+            );
             assert_eq!(report.witnesses.len(), expected.len());
             for (w, (membership, removed_by)) in report.witnesses.iter().zip(expected) {
                 assert_eq!(

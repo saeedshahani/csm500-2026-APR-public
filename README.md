@@ -104,6 +104,15 @@ cargo run -p cli -- replay stable.trace.json --at 1
 
 A trace saves the starting graph and what each rewrite did. Loading it checks the steps again instead of trusting the file. Checkpoints let the engine revisit earlier states while keeping the right identity numbers. A paused run can continue with the same random choices and memory of earlier states; simply looking at an old state does not change the original run. Existing output files are never overwritten. A saved run may have stopped at a limit, so successful file validation does not mean the program finished its work. See the [full contract](docs/reference/trace-format.md) and [annotated example](examples/traces/README.md).
 
+### Explain a short recorded history
+
+```sh
+cargo run -p cli -- trace-explain stable.trace.json --event 0 --query exact
+cargo run -p cli -- trace-explain stable.trace.json --event 0 --query source-revision
+```
+
+Use the zero-based index of an event present in your trace. `exact` asks whether that particular occurrence remains admitted after selected earlier events are omitted; `source-revision` asks whether that rule version has any admitted match. Every retained prefix step is replayed through native admission. Reports distinguish impossible prefixes, unavailable targets and rejected targets, and retain alternative minimal successful selections. The default prefix limit is eight; `--max-prefix` can raise it to twelve. Cost grows exponentially. This is a separate offline explanation, not general causality or a browser feature; the [research account](docs/research/reflective-recovery.md#condition-sensitive-interventions-loop-g) states its precise limits.
+
 ### Core interfaces
 
 Sprint 3 adds repeatable rule selection, bounded graph comparison and automated tests that generate varied cases and shrink failures into smaller examples. This found a slow comparison on a nested rule package; the improved comparator and the reduced failing case are retained.

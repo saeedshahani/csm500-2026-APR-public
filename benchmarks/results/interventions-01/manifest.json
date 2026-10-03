@@ -1,0 +1,19 @@
+{
+  "schema": "intervention-study-v1",
+  "complete": false,
+  "created": "2026-10-03T12:59:33.957Z",
+  "parent": "6d4f35ee97078b1c26926bc2742929a2353be013",
+  "source_sha256": "18e1144f7780a53b6b9ce0ee309718595d3142625b8ee21fdde2bc6b07961461",
+  "binary_sha256": "8625c1fdcb7a1d9414b83d8ae07bb77dc2f54318a64c8690be6ecea07adc2585",
+  "cli_sha256": "28c33ddb9a33c7f163df7da4f3ae20207ec0d81d3d3ddac224416ab879b76559",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Pro",
+    "memory_bytes": 51539607552,
+    "node": "v24.21.0",
+    "rust": "rustc 1.85.0 (4d91de4e4 2025-02-17)"
+  },
+  "rows": [],
+  "failure": "AssertionError [ERR_ASSERTION]:         0.28 real         0.00 user         0.00 sys\ntime: sysctl kern.clockrate: Operation not permitted\n\n\n1 !== 0\n\n    at file:///Users/saeedshahani/MEGA/Programming/UoL/10.%20Project/Human%20Ontology/final-project-codebase/scripts/intervention-study.mjs:63:16\n    at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\n    at async node:internal/modules/esm/loader:647:26\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)"
+}

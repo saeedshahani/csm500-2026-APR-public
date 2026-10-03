@@ -198,6 +198,38 @@ fn dataset_adapter_and_condition_sidecar_are_checked_commands() {
     assert_eq!(json["analysis"]["schema"], engine::conditions::SCHEMA);
     assert_eq!(json["analysis"]["witnesses"].as_array().unwrap().len(), 0);
     assert!(!stdin(&["trace-conditions", "-"], b"{}").status.success());
+    for query in ["exact", "source-revision"] {
+        let explained = stdin(
+            &["trace-explain", "-", "--event", "0", "--query", query],
+            &exported.stdout,
+        );
+        assert!(
+            explained.status.success(),
+            "{}",
+            String::from_utf8_lossy(&explained.stderr)
+        );
+        let value: serde_json::Value = serde_json::from_slice(&explained.stdout).unwrap();
+        assert_eq!(value["analysis"]["schema"], engine::counterfactual::SCHEMA);
+        assert_eq!(
+            value["analysis"]["trials"][0]["outcome"]["kind"],
+            "Admitted"
+        );
+    }
+    assert_eq!(
+        stdin(&["trace-explain", "-"], &exported.stdout)
+            .status
+            .code(),
+        Some(2)
+    );
+    assert_eq!(
+        stdin(&["trace-explain", "-", "--event", "1"], &exported.stdout)
+            .status
+            .code(),
+        Some(2)
+    );
+    assert!(!stdin(&["trace-explain", "-", "--event", "0"], b"{}")
+        .status
+        .success());
     assert!(!stdin(
         &["dataset-compile", "-"],
         br#"{"schema":"work-items-v1","policy":"fixed","items":[],"extra":1}"#

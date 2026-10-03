@@ -99,6 +99,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["trace-check", "--help"]
         || args == ["trace-migrate", "--help"]
         || args == ["trace-conditions", "--help"]
+        || args == ["trace-explain", "--help"]
         || args == ["dataset-compile", "--help"]
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
@@ -110,6 +111,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["workflow-run", "--help"]
         || args == ["workflow-example", "--help"]
     {
+        io::stdout().lock().write_all(b"Counterfactual explanation: cli trace-explain TRACE --event N [--query exact|source-revision] [--max-prefix N]\nOrder-preserving deletion interventions; default prefix 8, hard maximum 12. Full native admission, not general causality or independence. Whole report fails on resource exhaustion; old trace-conditions remains unchanged.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Workflow contracts: cli workflow-example routing|branching COUNT emits a request; cli workflow-check REQUEST and cli workflow-run REQUEST accept a file or -. JSON fields: source, contract, max_steps (0..1000), meta_burst (0..32). No reachable-state enumeration. Persistent revisions require the opt-in FIFO work scheduler; ordinary run is unchanged. Runs return Completed or StepLimit plus a portable trace without a scheduler-verification claim. Unsupported is not refuted; resource exhaustion is inconclusive.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Inert abstraction: cli meta-abstract INPUT MODE CONTRACT_OR_none LABEL [bounded options]\nPrivately erase only isolated constructors of LABEL after checking every reachable state's active patterns. Unsupported abstraction exits 2, not a safety refutation. Reports use meta-activity-analysis-v2; complete refers to the reduced quotient. Runtime graphs, trace semantics and scheduling are unchanged. No fairness or bounded-memory claim.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Meta-activity analysis: cli meta-check INPUT MODE CONTRACT_OR_none [bounded options]\nModes: finite-edits, edit-burst, meta-invocations, meta-burst, productive. Productive requires a recovery contract; none omits it. INPUT or CONTRACT may be - for stdin, not both. Bounds and exit codes match stability-check. Finite edits count transactions changing decoded rules, not every meta-mode invocation. Burst guarantees use maximum_bound over all reachable states. GC and execution are unchanged.\n").map_err(|e|Failure::new(1,e.to_string()))?;
@@ -204,7 +206,7 @@ pub(crate) fn main_command() -> Result<u8> {
     }
     if matches!(
         args[0].as_str(),
-        "replay" | "trace-check" | "trace-conditions" | "trace-migrate"
+        "replay" | "trace-check" | "trace-conditions" | "trace-explain" | "trace-migrate"
     ) {
         return trace_command(&args);
     }
@@ -821,6 +823,8 @@ fn trace_command(args: &[String]) -> Result<u8> {
         ));
     }
     let mut index = None;
+    let mut explain_limits = engine::counterfactual::Limits::default();
+    let mut explain_query = engine::counterfactual::Query::ExactOccurrence;
     let mut output = None;
     let mut seen = BTreeSet::new();
     for pair in args[2..].chunks(2) {
@@ -829,11 +833,30 @@ fn trace_command(args: &[String]) -> Result<u8> {
         }
         match pair[0].as_str() {
             "--at" if args[0] == "replay" => index = Some(number::<usize>(&pair[1], "--at")?),
+            "--event" if args[0] == "trace-explain" => {
+                index = Some(number::<usize>(&pair[1], "--event")?)
+            }
+            "--max-prefix" if args[0] == "trace-explain" => {
+                explain_limits.max_prefix = number::<usize>(&pair[1], "--max-prefix")?
+            }
+            "--query" if args[0] == "trace-explain" => {
+                explain_query = match pair[1].as_str() {
+                    "exact" => engine::counterfactual::Query::ExactOccurrence,
+                    "source-revision" => engine::counterfactual::Query::SourceRevision,
+                    _ => return Err(Failure::new(2, "--query must be exact or source-revision")),
+                }
+            }
             "--output" if args[0] == "replay" || args[0] == "trace-migrate" => {
                 output = Some(PathBuf::from(&pair[1]))
             }
             _ => return Err(Failure::new(2, "unsupported replay option")),
         }
+    }
+    if args[0] == "trace-explain" && index.is_none() {
+        return Err(Failure::new(
+            2,
+            "usage: cli trace-explain TRACE --event N [--max-prefix N (0..12; default 8)]",
+        ));
     }
     let limits = trace_limits();
     let text = read_source(&args[1], limits.max_bytes)?;
@@ -860,6 +883,22 @@ fn trace_command(args: &[String]) -> Result<u8> {
                 .map_err(engine_failure)?,
         )
         .map_err(|e| Failure::new(1, e.to_string()))?
+    } else if args[0] == "trace-explain" {
+        if index.unwrap() >= trace.document().events.len() {
+            return Err(Failure::new(2, "target event out of range"));
+        }
+        let report = engine::counterfactual::analyse_query(
+            &trace,
+            engine::recording::EventId(index.unwrap() as u64),
+            explain_query,
+            explain_limits,
+        )
+        .map_err(engine_failure)?;
+        let value = serde_json::json!({"source_trace_sha256": engine::trace::sha256(text.as_bytes()), "analysis": report});
+        format!(
+            "{}\n",
+            serde_json::to_string_pretty(&value).map_err(|e| Failure::new(1, e.to_string()))?
+        )
     } else if args[0] == "trace-conditions" {
         let report = engine::conditions::extract(&trace, engine::causal::AnalysisLimits::default())
             .map_err(engine_failure)?;

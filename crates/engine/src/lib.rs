@@ -4,6 +4,7 @@ pub mod causal;
 mod checked;
 pub mod conditions;
 pub mod conflict;
+pub mod counterfactual;
 pub mod indexed;
 mod matching;
 pub mod meta_activity;

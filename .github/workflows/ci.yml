@@ -30,6 +30,9 @@ jobs:
           node --test scripts/import-study-data.test.mjs
           node --test scripts/research-methods.test.mjs
           node --test scripts/stabilisation-model.test.mjs
+          node --test scripts/intervention-model.test.mjs
+          cargo build --release --locked -p engine --example interventions
+          node scripts/intervention-study.mjs verify benchmarks/results/interventions-03 --live
           node --test scripts/documentation.test.mjs
           node scripts/reproduce-cycle.mjs --verify benchmarks/results/s6-cycle01-reproduction
           node scripts/verify-scale-study.mjs

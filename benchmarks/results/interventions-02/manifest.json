@@ -1,0 +1,560 @@
+{
+  "schema": "intervention-study-v1",
+  "complete": true,
+  "created": "2026-10-03T13:00:12.725Z",
+  "parent": "6d4f35ee97078b1c26926bc2742929a2353be013",
+  "source_sha256": "18e1144f7780a53b6b9ce0ee309718595d3142625b8ee21fdde2bc6b07961461",
+  "binary_sha256": "8625c1fdcb7a1d9414b83d8ae07bb77dc2f54318a64c8690be6ecea07adc2585",
+  "cli_sha256": "83ec30cf8ad8931437fb30888a12d1e8cf4ced351577e9cc743d06b642cc4e01",
+  "environment": {
+    "platform": "darwin",
+    "arch": "arm64",
+    "cpu": "Apple M4 Pro",
+    "memory_bytes": 51539607552,
+    "node": "v24.21.0",
+    "rust": "rustc 1.85.0 (4d91de4e4 2025-02-17)"
+  },
+  "rows": [
+    {
+      "family": "conjunction",
+      "prefix": 0,
+      "filename": "conjunction-0.json.gz",
+      "sha256": "5df9bc98e9f32285ada9ca0437912a21971d26a54c5d5c650a3fdaf87fce4ffd",
+      "trials_per_query": 1,
+      "elapsed_ns": [
+        [
+          "19000",
+          "13792"
+        ],
+        [
+          "19500",
+          "15917"
+        ],
+        [
+          "16292",
+          "13916"
+        ]
+      ],
+      "peak_rss_bytes": [
+        2949120,
+        2916352,
+        2916352
+      ],
+      "report_bytes": [
+        774,
+        773
+      ]
+    },
+    {
+      "family": "conjunction",
+      "prefix": 1,
+      "filename": "conjunction-1.json.gz",
+      "sha256": "55a47bc255faf8dc8064c50b541db06e5e3e08f8250a85502f076fd05bc9db52",
+      "trials_per_query": 2,
+      "elapsed_ns": [
+        [
+          "58292",
+          "55334"
+        ],
+        [
+          "59125",
+          "62709"
+        ],
+        [
+          "60625",
+          "67959"
+        ]
+      ],
+      "peak_rss_bytes": [
+        3440640,
+        3473408,
+        3424256
+      ],
+      "report_bytes": [
+        919,
+        924
+      ]
+    },
+    {
+      "family": "conjunction",
+      "prefix": 2,
+      "filename": "conjunction-2.json.gz",
+      "sha256": "39f91688688293d636b0a73b92f9835a116316db74ce022a033f85e0df8e5cd2",
+      "trials_per_query": 4,
+      "elapsed_ns": [
+        [
+          "170833",
+          "179334"
+        ],
+        [
+          "161416",
+          "182375"
+        ],
+        [
+          "161250",
+          "178542"
+        ]
+      ],
+      "peak_rss_bytes": [
+        3784704,
+        3850240,
+        3833856
+      ],
+      "report_bytes": [
+        1199,
+        1216
+      ]
+    },
+    {
+      "family": "conjunction",
+      "prefix": 3,
+      "filename": "conjunction-3.json.gz",
+      "sha256": "ac54bc806d712422e52377aebac99dc0d18c747107f2cce629d60ee1d64f3296",
+      "trials_per_query": 8,
+      "elapsed_ns": [
+        [
+          "439166",
+          "517709"
+        ],
+        [
+          "439916",
+          "513958"
+        ],
+        [
+          "473417",
+          "554959"
+        ]
+      ],
+      "peak_rss_bytes": [
+        4046848,
+        4128768,
+        4161536
+      ],
+      "report_bytes": [
+        1748,
+        1789
+      ]
+    },
+    {
+      "family": "conjunction",
+      "prefix": 4,
+      "filename": "conjunction-4.json.gz",
+      "sha256": "bd80d14a1e05a7a0056b61ab8b37bebd2a56a9ba9cbc847cd9c4e03b4989635b",
+      "trials_per_query": 16,
+      "elapsed_ns": [
+        [
+          "1187958",
+          "1399250"
+        ],
+        [
+          "1184209",
+          "1395709"
+        ],
+        [
+          "1222542",
+          "1441167"
+        ]
+      ],
+      "peak_rss_bytes": [
+        4456448,
+        4358144,
+        4358144
+      ],
+      "report_bytes": [
+        2840,
+        2929
+      ]
+    },
+    {
+      "family": "conjunction",
+      "prefix": 5,
+      "filename": "conjunction-5.json.gz",
+      "sha256": "7e635ddc490f8a6e4b419efeb9521f25e1d1f53516a38cb31fef8d52284f58a5",
+      "trials_per_query": 32,
+      "elapsed_ns": [
+        [
+          "3230416",
+          "3768500"
+        ],
+        [
+          "3213750",
+          "3804125"
+        ],
+        [
+          "3133375",
+          "3688584"
+        ]
+      ],
+      "peak_rss_bytes": [
+        4816896,
+        4800512,
+        4767744
+      ],
+      "report_bytes": [
+        5036,
+        5222
+      ]
+    },
+    {
+      "family": "conjunction",
+      "prefix": 6,
+      "filename": "conjunction-6.json.gz",
+      "sha256": "7767aa0a74b62343e15265fa31e1cbe0632d69755b9679bedc65f9ec4f0caecf",
+      "trials_per_query": 64,
+      "elapsed_ns": [
+        [
+          "8350625",
+          "9792750"
+        ],
+        [
+          "8529667",
+          "9952875"
+        ],
+        [
+          "8749375",
+          "10241958"
+        ]
+      ],
+      "peak_rss_bytes": [
+        5177344,
+        5193728,
+        5193728
+      ],
+      "report_bytes": [
+        9473,
+        9850
+      ]
+    },
+    {
+      "family": "conjunction",
+      "prefix": 7,
+      "filename": "conjunction-7.json.gz",
+      "sha256": "cee38e94e804f2efdc3a020639bfcb08ac287952b1cbfde99f79582e923ee7e9",
+      "trials_per_query": 128,
+      "elapsed_ns": [
+        [
+          "21879833",
+          "24963375"
+        ],
+        [
+          "21875542",
+          "24995000"
+        ],
+        [
+          "21638417",
+          "24892084"
+        ]
+      ],
+      "peak_rss_bytes": [
+        5718016,
+        5750784,
+        5767168
+      ],
+      "report_bytes": [
+        18453,
+        19214
+      ]
+    },
+    {
+      "family": "conjunction",
+      "prefix": 8,
+      "filename": "conjunction-8.json.gz",
+      "sha256": "955e74cfc101e29fc946672b01fb1b5dcdd493caf5b8e687c253bf06571d7f84",
+      "trials_per_query": 256,
+      "elapsed_ns": [
+        [
+          "54277750",
+          "61837250"
+        ],
+        [
+          "54361083",
+          "61391667"
+        ],
+        [
+          "54860666",
+          "61126292"
+        ]
+      ],
+      "peak_rss_bytes": [
+        7110656,
+        6963200,
+        6946816
+      ],
+      "report_bytes": [
+        36652,
+        38181
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 0,
+      "filename": "alternatives-0.json.gz",
+      "sha256": "2f970d5eaa68cb3596f1957eb5b81a437e72b2fb96e6ce17a0df52b2221910af",
+      "trials_per_query": 1,
+      "elapsed_ns": [
+        [
+          "19875",
+          "14459"
+        ],
+        [
+          "17459",
+          "17709"
+        ],
+        [
+          "15417",
+          "15208"
+        ]
+      ],
+      "peak_rss_bytes": [
+        2932736,
+        2949120,
+        2932736
+      ],
+      "report_bytes": [
+        774,
+        773
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 1,
+      "filename": "alternatives-1.json.gz",
+      "sha256": "e0f371afe3397086be207d70f19850bf157133cda392118aded0a8afcba760aa",
+      "trials_per_query": 2,
+      "elapsed_ns": [
+        [
+          "56959",
+          "60625"
+        ],
+        [
+          "50667",
+          "61459"
+        ],
+        [
+          "59375",
+          "62958"
+        ]
+      ],
+      "peak_rss_bytes": [
+        3473408,
+        3440640,
+        3407872
+      ],
+      "report_bytes": [
+        919,
+        924
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 2,
+      "filename": "alternatives-2.json.gz",
+      "sha256": "32e3f488f30a9c70bfcbcc32a23ddf612f15a8dcd414682530f40e3d5b83c5cf",
+      "trials_per_query": 4,
+      "elapsed_ns": [
+        [
+          "151959",
+          "183625"
+        ],
+        [
+          "158083",
+          "188250"
+        ],
+        [
+          "153667",
+          "185625"
+        ]
+      ],
+      "peak_rss_bytes": [
+        3735552,
+        3751936,
+        3751936
+      ],
+      "report_bytes": [
+        1132,
+        1093
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 3,
+      "filename": "alternatives-3.json.gz",
+      "sha256": "212e5edb143e8ce6761654a5c6223d9f0936ed5d8473d3683089a3532c668153",
+      "trials_per_query": 8,
+      "elapsed_ns": [
+        [
+          "404500",
+          "545833"
+        ],
+        [
+          "417750",
+          "572750"
+        ],
+        [
+          "425291",
+          "571375"
+        ]
+      ],
+      "peak_rss_bytes": [
+        3948544,
+        3932160,
+        3932160
+      ],
+      "report_bytes": [
+        1567,
+        1440
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 4,
+      "filename": "alternatives-4.json.gz",
+      "sha256": "2f2181dbf21dc0d707df25e3398253367c125398d8207ba3f8466de8d17fbfe5",
+      "trials_per_query": 16,
+      "elapsed_ns": [
+        [
+          "1023708",
+          "1486667"
+        ],
+        [
+          "1083417",
+          "1572750"
+        ],
+        [
+          "1145667",
+          "1646000"
+        ]
+      ],
+      "peak_rss_bytes": [
+        4079616,
+        4079616,
+        4096000
+      ],
+      "report_bytes": [
+        2451,
+        2142
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 5,
+      "filename": "alternatives-5.json.gz",
+      "sha256": "91a3b4913fde48f837c490c447bfaed35b355023704e47b97396a39a1899ce04",
+      "trials_per_query": 32,
+      "elapsed_ns": [
+        [
+          "2681292",
+          "4064708"
+        ],
+        [
+          "2823708",
+          "3972792"
+        ],
+        [
+          "2783708",
+          "4161125"
+        ]
+      ],
+      "peak_rss_bytes": [
+        4472832,
+        4440064,
+        4440064
+      ],
+      "report_bytes": [
+        4251,
+        3573
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 6,
+      "filename": "alternatives-6.json.gz",
+      "sha256": "416ad1390800b1b23a6c154b080ded30c46c7c3c9ae01c52de522165141c32f1",
+      "trials_per_query": 64,
+      "elapsed_ns": [
+        [
+          "6983959",
+          "10677834"
+        ],
+        [
+          "7003417",
+          "10630083"
+        ],
+        [
+          "7255917",
+          "11132334"
+        ]
+      ],
+      "peak_rss_bytes": [
+        4849664,
+        4866048,
+        4849664
+      ],
+      "report_bytes": [
+        7916,
+        6491
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 7,
+      "filename": "alternatives-7.json.gz",
+      "sha256": "4ab8be4f1bd7b961bf158ed6753adcc2e5b8871029846b3866e461cc37b52cb5",
+      "trials_per_query": 128,
+      "elapsed_ns": [
+        [
+          "18265709",
+          "28945209"
+        ],
+        [
+          "18162125",
+          "28800375"
+        ],
+        [
+          "17858875",
+          "28203708"
+        ]
+      ],
+      "peak_rss_bytes": [
+        5570560,
+        5586944,
+        5570560
+      ],
+      "report_bytes": [
+        15372,
+        12449
+      ]
+    },
+    {
+      "family": "alternatives",
+      "prefix": 8,
+      "filename": "alternatives-8.json.gz",
+      "sha256": "1d05995c8597c226cc50c4b4f259fb3634694119e95a6296e21116b8807a0543",
+      "trials_per_query": 256,
+      "elapsed_ns": [
+        [
+          "44619375",
+          "72305417"
+        ],
+        [
+          "44509750",
+          "73089625"
+        ],
+        [
+          "45021417",
+          "72082958"
+        ]
+      ],
+      "peak_rss_bytes": [
+        6750208,
+        6782976,
+        6701056
+      ],
+      "report_bytes": [
+        30541,
+        24616
+      ]
+    }
+  ],
+  "failure": null
+}
