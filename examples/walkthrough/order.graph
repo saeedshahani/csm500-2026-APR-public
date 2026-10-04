@@ -28,7 +28,7 @@ program {
     lhs { dispatch_lx: dispatch_x; dispatch_ly: dispatch_y; dispatch_old: packed_pattern; }
     rhs { dispatch_rx: dispatch_x; dispatch_ry: dispatch_y; dispatch_new: dispatched_result; }
   }
-  // These are the live data. The pending relationship is replaced by each rule.
+  // Live data: pack replaces pending with packed; dispatch replaces packed with dispatched.
   atom order = Constructor("Order 1042");
   atom warehouse = Constructor("Warehouse");
   atom status = Record[ObjectLink]("pending", order, warehouse);

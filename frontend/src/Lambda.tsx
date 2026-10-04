@@ -2,17 +2,18 @@ import {useState} from 'react';
 import type {Command,EngineState,Reply} from './types';
 const examples=import.meta.glob('../../examples/lambda/*.lambda',{query:'?raw',import:'default',eager:true}) as Record<string,string>;
 
-export function LambdaInput({request,prepare,disabled}:{request:(c:Command)=>Promise<Reply|undefined|null>;prepare:(s:string)=>void;disabled:boolean}){
+export function LambdaInput({request,prepare,disabled}:{request:(c:Command)=>Promise<Reply|undefined|null>;prepare:(s:string,example?:string)=>void;disabled:boolean}){
   const [source,setSource]=useState('((\\x. x) (\\y. y))');
+  const [example,setExample]=useState('');
   const [profile,setProfile]=useState('closed-cbn-v1');
   const [freeNames,setFreeNames]=useState('database,select');
   return <details className="lambda-input"><summary>Lambda program</summary>
     <p>Call-by-name evaluation to weak head form. Use <code>(\x. x)</code> for a function and <code>(f a)</code> for application. Evaluation stops at a function or an unresolved input; it does not simplify everything inside them.</p>
     <label>Lambda profile<select aria-label="Lambda profile" disabled={disabled} value={profile} onChange={e=>setProfile(e.target.value)}><option value="closed-cbn-v1">Closed · closed-cbn-v1</option><option value="open-cbn-v1">Symbolic inputs · open-cbn-v1</option></select></label>
-    {profile==='open-cbn-v1'&&<><label>Unresolved inputs<input aria-label="Unresolved inputs" disabled={disabled} value={freeNames} onChange={e=>setFreeNames(e.target.value)}/></label><p>Comma-separated names. These are symbols, not database connections or external calls.</p><button disabled={disabled} onClick={()=>{setFreeNames('database,select');setSource('((\\source. (select source)) database)');}}>Use symbolic query example</button></>}
-    <label>Lambda example<select aria-label="Lambda example" disabled={disabled} value="" onChange={e=>setSource(examples[e.target.value])}><option value="">Choose a term</option>{Object.keys(examples).sort().map(path=><option key={path} value={path}>{path.split('/').pop()?.replace('.lambda','')}</option>)}</select></label>
-    <label>Source term<textarea aria-label="Lambda source" value={source} disabled={disabled} onChange={e=>setSource(e.target.value)}/></label>
-    <button disabled={disabled} onClick={async()=>{const reply=await request({command:'lambda_compile',source,profile,free_names:profile==='open-cbn-v1'&&freeNames.trim()?freeNames.split(',').map(n=>n.trim()):[]});if(reply?.ok&&reply.compiled)prepare(reply.compiled);}}>Prepare lambda graph</button>
+    {profile==='open-cbn-v1'&&<><label>Unresolved inputs<input aria-label="Unresolved inputs" disabled={disabled} value={freeNames} onChange={e=>setFreeNames(e.target.value)}/></label><p>Comma-separated names. These are symbols, not database connections or external calls.</p><button disabled={disabled} onClick={()=>{setExample('');setFreeNames('database,select');setSource('((\\source. (select source)) database)');}}>Use symbolic query example</button></>}
+    <label>Lambda example<select aria-label="Lambda example" disabled={disabled} value={example} onChange={e=>{const path=e.target.value;setExample(path);if(path)setSource(examples[path]);}}><option value="">Custom term</option>{Object.keys(examples).sort().map(path=><option key={path} value={path}>{path.split('/').pop()?.replace('.lambda','')}</option>)}</select></label>
+    <label>Source term<textarea aria-label="Lambda source" value={source} disabled={disabled} onChange={e=>{setSource(e.target.value);setExample('');}}/></label>
+    <button disabled={disabled} onClick={async()=>{const reply=await request({command:'lambda_compile',source,profile,free_names:profile==='open-cbn-v1'&&freeNames.trim()?freeNames.split(',').map(n=>n.trim()):[]});if(reply?.ok&&reply.compiled)prepare(reply.compiled,example?example.replace('../../examples/','').replace('.lambda','.graph'):undefined);}}>Prepare lambda graph</button>
     <p>Replaces the draft. Press Load program to run it.</p>
   </details>;
 }

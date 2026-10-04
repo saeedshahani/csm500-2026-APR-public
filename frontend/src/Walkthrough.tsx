@@ -55,7 +55,9 @@ export function Walkthrough(){
   const packed=state?project(state).links[0]:null;
   const panel=current.view==='rule'||current.view==='history';
   const bubbleX=anchor?panel&&anchor.width>=900?anchor.width-312:Math.max(12,Math.min(anchor.width-292,anchor.x+40)):24;
-  const bubbleY=anchor?Math.max(24,Math.min(anchor.height-anchor.bubbleHeight-16,panel?(anchor.width>=900?80:anchor.targetBottom+130):anchor.y+45)):60;
+  const below=anchor?anchor.targetBottom+50:60;
+  const graphBubbleY=anchor&&below+anchor.bubbleHeight>anchor.height-16?2*anchor.y-anchor.targetBottom-anchor.bubbleHeight-50:below;
+  const bubbleY=anchor?Math.max(24,Math.min(anchor.height-anchor.bubbleHeight-16,panel?(anchor.width>=900?80:anchor.targetBottom+130):graphBubbleY)):60;
   const action=step===3?(Number(state?.endpoint??0)>0?'Inspect packing step':'Apply pack rule'):step===4?(Number(state?.endpoint??0)>1?'Inspect dispatch step':'Apply dispatch rule'):step===5?'Check for more work':'Next';
   return <article className="walkthrough" aria-label="Order walkthrough">
     <header className="tour-header"><div><p className="tour-eyebrow">Guided sample</p><h1>From order to dispatch</h1></div><a href="#workspace">Exit walkthrough</a></header>
@@ -71,6 +73,10 @@ export function Walkthrough(){
         {anchor&&<svg className="tour-pointer" aria-hidden="true"><line x1={anchor.x} y1={anchor.y} x2={bubbleX+16} y2={bubbleY+16}/><circle cx={anchor.x} cy={anchor.y} r="8"/></svg>}
         <aside ref={bubble} className="tour-bubble" style={{left:bubbleX,top:bubbleY}} aria-label={`Annotation ${step+1}`}><span className="tour-number">{step+1}</span><h2 ref={heading} tabIndex={-1}>{current.title}</h2><p>{current.text}</p></aside>
       </div>
+      <section className="tour-discussion" aria-label="Research significance" aria-live="polite">
+        <h2>{current.research}</h2><p>{current.implication}</p>
+        {step===tourSteps.length-1&&<><h3>Implications for the project</h3><p>The example brings representation, execution and evidence into one inspectable process. A developer can follow an entity across changes, inspect the rules responsible and examine the dependencies that connect the results. These capabilities support the investigation of adaptive workflows, transformation tools and auditable processing.</p><p>The wider research examines guarded self-modification, conditional recovery and alternative graph representations. RQ5 studies computational expressiveness through a separate lambda-calculus encoding: eleven resident rules evaluate closed and explicit-context open terms to weak head form. That correspondence and the recovery results have explicit assumptions. The order example illustrates the underlying mechanisms on a small, finite computation.</p></>}
+      </section>
       <details className="tour-source"><summary>Annotated sample source</summary><pre>{source}</pre></details>
     </>}
   </article>;

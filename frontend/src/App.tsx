@@ -1,4 +1,4 @@
-import {useEffect,useRef,useState} from 'react';
+import {useEffect,useReducer,useRef,useState} from 'react';
 import {EngineClient,type WorkerPort} from './controller';
 import type {Analysis,Command,EngineState,Reply} from './types';
 import {GraphCanvas} from './GraphCanvas';
@@ -8,12 +8,13 @@ import {Timeline} from './Timeline';
 import {Rules,HistoryAnalysis} from './Inspection';
 import {Editor,EditorDiagnostics} from './Editor';
 import {EventList} from './EventList';
-import {DatasetInput,WorkItems} from './Datasets';
+import {DatasetInput,WorkItems,type Preview} from './Datasets';
 import {LambdaInput,LambdaResult} from './Lambda';
 import {Guide} from './Guide';
 import {Walkthrough} from './Walkthrough';
 import {Platform} from './Platform';
 import {parseProject,readLocal,readUtf8,saveLocal,type Theme,type Project} from './projects';
+import {settingsReducer,effectiveSettings,exampleSettings,engineConfig,importedSettings,datasetSettings,type RunSettings} from './run-settings';
 import manifest from '../../examples/manifest.json';
 import './workspace.css';
 import './application.css';
@@ -21,6 +22,9 @@ const examples=import.meta.glob('../../examples/{programs,behaviour,independent,
 const choices=manifest.map(m=>{const key='../../examples/'+m.file;if(!(key in examples))throw new Error(`Missing gallery source: ${m.file}`);return key;}).sort();
 const initial=choices.find(k=>k.endsWith('/independent/shared-read.graph'))!;
 const observers=import.meta.glob('../../examples/observers/*.observer',{query:'?raw',import:'default',eager:true}) as Record<string,string>;
+const initialSettings=exampleSettings(manifest.find(m=>initial.endsWith(m.file))!.profile);
+const lambdaSettings=exampleSettings(manifest.find(m=>m.file==='lambda/identity.graph')!.profile);
+const workItemSettings=exampleSettings(manifest.find(m=>m.file==='practical/work-items.graph')!.profile);
 const all=observers[Object.keys(observers).find(k=>k.endsWith('/all.observer'))!];
 const valueObserver=observers[Object.keys(observers).find(k=>k.endsWith('/value.observer'))!];
 function download(text:string,name:string){const url=URL.createObjectURL(new Blob([text],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
@@ -28,22 +32,26 @@ export default function App(){
   const client=useRef<EngineClient|null>(null),loop=useRef(false),epoch=useRef(0),workspaceGuard=useRef({locked:true,hasSession:false});
   const [source,setSource]=useState(examples[initial]),[example,setExample]=useState(initial),[state,setState]=useState<EngineState|null>(null),[trace,setTrace]=useState<string|null>(null);
   const [busy,setBusy]=useState(false),[initialising,setInitialising]=useState(true),[diagnostic,setDiagnostic]=useState(''),[selected,setSelected]=useState<string|null>(null),[selectedEvent,setSelectedEvent]=useState<string|null>(null);
-  const [maxSteps,setMaxSteps]=useState('20'),[seed,setSeed]=useState('42'),[cycles,setCycles]=useState(false),[observer,setObserver]=useState('all'),[batch,setBatch]=useState('1'),[dataset,setDataset]=useState(0),[sessionSource,setSessionSource]=useState('');
+  const [settings,dispatchSettings]=useReducer(settingsReducer,{defaults:initialSettings,overrides:{},label:'independent/shared-read'});
+  const effective=effectiveSettings(settings);
+  const {max_steps:maxSteps,max_work:maxWork,max_candidates:maxCandidates,seed,detect_cycles:cycles,observer,execution_profile:executionProfile}=effective;
+  const [batch,setBatch]=useState('1'),[dataset,setDataset]=useState(0),[sessionSource,setSessionSource]=useState('');
   const [atomSearch,setAtomSearch]=useState('');
   const [atomPage,setAtomPage]=useState(0),[inspected,setInspected]=useState<Reply['inspection']>(null);
-  const [maxWork,setMaxWork]=useState('1000000'),[maxCandidates,setMaxCandidates]=useState('1000');
-  const [executionProfile,setExecutionProfile]=useState<'reference-v1'|'indexed-v2'|'framed-v3'|'joined-v4'>('reference-v1');
   const [theme,setTheme]=useState<Theme>('system'),[guide,setGuide]=useState(location.hash==='#guide'),[platform,setPlatform]=useState(location.hash==='#projects'),[storageError,setStorageError]=useState(''),[savedDraft,setSavedDraft]=useState<string|null>(null);
   const [sourceError,setSourceError]=useState<Reply['error']>(null),[jumpError,setJumpError]=useState(0);
   const [walkthrough,setWalkthrough]=useState(location.hash==='#walkthrough');
   useEffect(()=>{const navigate=()=>setWalkthrough(location.hash==='#walkthrough');window.addEventListener('hashchange',navigate);return()=>window.removeEventListener('hashchange',navigate);},[]);
   const [diagnosticTarget,setDiagnosticTarget]=useState<string|null>(null);
   const draft=useRef(source),sourceVersion=useRef(0);
-  function edit(text:string){draft.current=text;sourceVersion.current++;setSource(text);setExample(choices.find(k=>examples[k]===text)??'');setSourceError(null);}
+  function edit(text:string){draft.current=text;sourceVersion.current++;setSource(text);const choice=choices.find(k=>examples[k]===text)??'';setExample(choice);const entry=choice&&manifest.find(m=>choice.endsWith(m.file));if(entry)dispatchSettings({type:'select',defaults:exampleSettings(entry.profile),label:entry.file.replace('.graph','')});setSourceError(null);}
+  function prepareLambda(text:string,file?:string){const entry=manifest.find(m=>m.file===file);dispatchSettings({type:'select',defaults:entry?exampleSettings(entry.profile):lambdaSettings,label:entry?entry.file.replace('.graph',''):'Lambda evaluation'});edit(text);}
+  function datasetDefaults(preview:Preview){return datasetSettings(workItemSettings,preview.pending,preview.dataset.policy);}
+  async function loadDataset(preview:Preview){const defaults=datasetDefaults(preview),selected=settingsReducer(settings,{type:'select',defaults,label:'Work-item dataset'});const reply=await load(preview.source,true,effectiveSettings(selected));if(reply?.ok)dispatchSettings({type:'select',defaults,label:'Work-item dataset'});}
   useEffect(()=>{const t=readLocal('reflective-theme'),d=readLocal('reflective-draft');if(['light','dark','system'].includes(t.value??''))setTheme(t.value as Theme);setSavedDraft(d.value);setStorageError(t.error??d.error??'');const navigate=()=>{setGuide(location.hash==='#guide');setPlatform(location.hash==='#projects');};window.addEventListener('hashchange',navigate);return()=>window.removeEventListener('hashchange',navigate);},[]);
   useEffect(()=>{const media=matchMedia('(prefers-color-scheme: dark)');const apply=()=>{document.documentElement.dataset.theme=theme==='system'?(media.matches?'dark':'light'):theme;};apply();media.addEventListener('change',apply);return()=>media.removeEventListener('change',apply);},[theme]);
   function chooseTheme(t:Theme){setTheme(t);const error=saveLocal('reflective-theme',t);if(error)setStorageError(error);}
-  const pendingConfig=()=>({max_steps:maxSteps,max_work:maxWork,max_candidates:maxCandidates,seed:seed.trim()?seed:null,detect_cycles:cycles,observer:observer==='all'?all:observer==='value'?valueObserver:observer,execution_profile:executionProfile});
+  const pendingConfig=(values:RunSettings=effective)=>engineConfig(values,{all,value:valueObserver});
   const [view,setView]=useState('Practical'),[target,setTarget]=useState(0),[seeking,setSeeking]=useState(false),[playing,setPlaying]=useState(false),[speed,setSpeed]=useState('500'),[pace,setPace]=useState('0');
   const [analysis,setAnalysis]=useState<Analysis|null>(null),[analysisError,setAnalysisError]=useState('');
   const navigator=useRef<LatestQuery<Reply>|null>(null),seekVersion=useRef(0),playback=useRef(false),playVersion=useRef(0);
@@ -54,9 +62,9 @@ export default function App(){
     return ()=>{alive=false;loop.current=false;playback.current=false;navigator.current?.invalidate();epoch.current++;engine.dispose();client.current=null;};
   },[]);
   async function command(payload:Command){if(!client.current)return;const token=epoch.current;setBusy(true);try{const reply=await client.current.request(payload);if(token===epoch.current){publish(reply);return reply;}}catch(e){if(token===epoch.current)setDiagnostic(String(e));}finally{if(token===epoch.current)setBusy(false);}}
-  async function load(text=source,replaceDraft=false){const version=sourceVersion.current;const reply=await command({command:'load',source:text,config:pendingConfig()});if(reply?.ok){setDataset(n=>n+1);setSelected(null);setSelectedEvent(null);setSessionSource(text);setInspected(null);if(replaceDraft&&version===sourceVersion.current)edit(text);}if(version===sourceVersion.current)setSourceError(text===draft.current?(reply?.error??null):null);}
+  async function load(text=source,replaceDraft=false,values=effective){const version=sourceVersion.current;const reply=await command({command:'load',source:text,config:pendingConfig(values)});if(reply?.ok){setDataset(n=>n+1);setSelected(null);setSelectedEvent(null);setSessionSource(text);setInspected(null);if(replaceDraft&&version===sourceVersion.current)edit(text);}if(version===sourceVersion.current)setSourceError(text===draft.current?(reply?.error??null):null);return reply;}
   async function validateDraft(){const version=sourceVersion.current;const reply=await command({command:'validate',source});if(version===sourceVersion.current)setSourceError(reply?.error??null);else setDiagnostic('Validation result belongs to an earlier draft; validate the current text.');}
-  async function importLocal(file:File|undefined,project:boolean){if(!file)return;if(file.size>(project?20:4)*1024*1024){setDiagnostic('File exceeds the import byte limit');return;}const token=epoch.current,version=sourceVersion.current;setBusy(true);try{const text=await readUtf8(file);if(token!==epoch.current)return;if(!project){if(version!==sourceVersion.current)throw Error('Draft changed during file reading; import again to replace it.');edit(text);return;}const p=parseProject(text);const reply=await command({command:'project',source:p.source,trace:p.trace,config:p.config,position:p.position,execution:p.execution});if(reply?.ok&&token===epoch.current){if(version===sourceVersion.current)edit(p.draft);setSessionSource(p.source??'');setMaxSteps(p.config.max_steps);setMaxWork(p.config.max_work);setMaxCandidates(p.config.max_candidates);setSeed(p.config.seed??'');setCycles(p.config.detect_cycles);setExecutionProfile(p.config.execution_profile??'reference-v1');setObserver(p.config.observer===all?'all':p.config.observer===valueObserver?'value':p.config.observer);chooseTheme(p.presentation.theme);setView(p.presentation.view);setDataset(n=>n+1);setInspected(null);}}catch(e){if(token===epoch.current)setDiagnostic(String(e));}finally{if(token===epoch.current)setBusy(false);}}
+  async function importLocal(file:File|undefined,project:boolean){if(!file)return;if(file.size>(project?20:4)*1024*1024){setDiagnostic('File exceeds the import byte limit');return;}const token=epoch.current,version=sourceVersion.current;setBusy(true);try{const text=await readUtf8(file);if(token!==epoch.current)return;if(!project){if(version!==sourceVersion.current)throw Error('Draft changed during file reading; import again to replace it.');edit(text);return;}const p=parseProject(text);const reply=await command({command:'project',source:p.source,trace:p.trace,config:p.config,position:p.position,execution:p.execution});if(reply?.ok&&token===epoch.current){if(version===sourceVersion.current)edit(p.draft);setSessionSource(p.source??'');dispatchSettings({type:'import',values:importedSettings(p.config,{all,value:valueObserver})});chooseTheme(p.presentation.theme);setView(p.presentation.view);setDataset(n=>n+1);setInspected(null);}}catch(e){if(token===epoch.current)setDiagnostic(String(e));}finally{if(token===epoch.current)setBusy(false);}}
   function exportProject(){try{const p:Project={schema:'reflective-project-v1',source:state?(sessionSource||null):source,draft:source,config:pendingConfig(),trace:state?trace:null,execution:state&&trace?JSON.parse(trace).settings:null,position:state?.position??'0',presentation:{theme,view}};const text=JSON.stringify(p,null,2);parseProject(text);download(text,'reflective-graph.project.json');}catch(e){setDiagnostic(String(e));}}
   async function run(){if(!client.current)return;const token=epoch.current;loop.current=true;setBusy(true);try{while(loop.current&&token===epoch.current){const reply=await client.current.request({command:'advance',batch});if(token!==epoch.current)break;publish(reply);if(!reply.ok||!reply.state?.can_advance||reply.state.status==='Breakpoint')break;await new Promise(resolve=>setTimeout(resolve,Number(pace)));}}catch(e){if(token===epoch.current)setDiagnostic(String(e));}finally{if(token===epoch.current){loop.current=false;setBusy(false);}}}
   async function stop(){pausePlayback();navigator.current?.invalidate();seekVersion.current++;setSeeking(false);loop.current=false;const token=++epoch.current;setBusy(true);try{const reply=await client.current!.interrupt();if(token===epoch.current){if(reply)publish(reply);setDiagnostic('Stopped at the last acknowledged state. Any unfinished batch was discarded; continue preserves this prefix.');}}catch(e){if(token===epoch.current)setDiagnostic(String(e));}finally{if(token===epoch.current)setBusy(false);}}
@@ -120,20 +128,20 @@ export default function App(){
     <div className="workspace">
       <section className="source-pane" aria-label="Program editor"><div className="section-heading"><h1>Program</h1></div>
         <label className="example-label">Example<select aria-label="Example" value={example} disabled={locked} onChange={e=>{if(e.target.value)edit(examples[e.target.value]);}}><option value="">Custom source / dataset</option>{choices.map(k=><option key={k} value={k}>{k.replace('../../examples/','').replace('.graph','')}</option>)}</select></label>
-        {exampleInfo&&<div className="example-context"><details><summary>Example notes</summary><p>{exampleInfo.purpose} {exampleInfo.expected} Reference profile: {exampleInfo.observer}; {exampleInfo.limit}.</p></details><button disabled={locked} onClick={()=>{const p=exampleInfo.profile;setMaxSteps(p.max_steps);setSeed(p.seed);setCycles(p.detect_cycles);setMaxWork(p.max_work);setMaxCandidates(p.max_candidates);setObserver(p.observer==='observers/value.observer'?'value':'all');}}>Apply example settings</button></div>}
-        <DatasetInput request={command} load={s=>load(s,true)} disabled={locked} maxSteps={maxSteps}/>
-        <LambdaInput request={command} prepare={edit} disabled={locked}/>
+        {exampleInfo&&<div className="example-context"><details><summary>Example notes</summary><p>{exampleInfo.purpose} {exampleInfo.expected} Reference profile: {exampleInfo.observer}; {exampleInfo.limit}.</p></details><button disabled={locked} onClick={()=>{dispatchSettings({type:'select',defaults:exampleSettings(exampleInfo.profile),label:exampleInfo.file.replace('.graph','')});dispatchSettings({type:'restore'});}}>Apply example settings</button></div>}
+        <DatasetInput request={command} load={loadDataset} disabled={locked} stepBound={p=>effectiveSettings(settingsReducer(settings,{type:'select',defaults:datasetDefaults(p),label:'Work-item dataset'})).max_steps}/>
+        <LambdaInput request={command} prepare={prepareLambda} disabled={locked}/>
         <div className="editor-controls"><button disabled={locked} onClick={()=>void validateDraft()}>Validate draft</button><EditorDiagnostics source={source} error={sourceError} onJump={key=>{setDiagnosticTarget(key);setJumpError(n=>n+1);}}/></div>
         <Editor value={source} onChange={edit} diagnostic={sourceError} jump={jumpError} target={diagnosticTarget}/>
-        <details className="settings"><summary>Run settings <span>Applied on load</span></summary><div className="settings-grid">
-          <label>Absolute step bound<input aria-label="Absolute step bound" inputMode="numeric" value={maxSteps} onChange={e=>setMaxSteps(e.target.value)} disabled={locked}/></label>
-          <label>Seed · blank is deterministic<input aria-label="Seed" value={seed} onChange={e=>setSeed(e.target.value)} disabled={locked}/></label>
-          <label>Search work per step<input aria-label="Search work per step" value={maxWork} onChange={e=>setMaxWork(e.target.value)} disabled={locked}/></label><label>Candidate limit<input aria-label="Candidate limit" value={maxCandidates} onChange={e=>setMaxCandidates(e.target.value)} disabled={locked}/></label>
-          <label>Execution profile<select aria-label="Execution profile" value={executionProfile} onChange={e=>setExecutionProfile(e.target.value as 'reference-v1'|'indexed-v2'|'framed-v3'|'joined-v4')} disabled={locked}><option value="reference-v1">Reference v1</option><option value="indexed-v2">Indexed v2</option><option value="framed-v3">Framed v3</option><option value="joined-v4">Joined v4</option></select></label>
-          <label>Observer<select aria-label="Observer" value={observer} onChange={e=>setObserver(e.target.value)} disabled={locked}><option value="all">Complete carrier</option><option value="value">Value links</option>{!['all','value'].includes(observer)&&<option value={observer}>Imported observer declaration</option>}</select></label>
+        <details className="settings"><summary>Run settings <span>Applied on load</span></summary><div className="settings-origin"><span>Profile: {settings.label} · {Object.keys(settings.overrides).length} user overrides</span><button disabled={locked||!Object.keys(settings.overrides).length} onClick={()=>dispatchSettings({type:'restore'})}>Restore recommended settings</button></div><div className="settings-grid">
+          <label>Absolute step bound<input aria-label="Absolute step bound" inputMode="numeric" value={maxSteps} onChange={e=>dispatchSettings({type:'edit',values:{max_steps:e.target.value}})} disabled={locked}/></label>
+          <label>Seed · blank is deterministic<input aria-label="Seed" value={seed} onChange={e=>dispatchSettings({type:'edit',values:{seed:e.target.value}})} disabled={locked}/></label>
+          <label>Search work per step<input aria-label="Search work per step" value={maxWork} onChange={e=>dispatchSettings({type:'edit',values:{max_work:e.target.value}})} disabled={locked}/></label><label>Candidate limit<input aria-label="Candidate limit" value={maxCandidates} onChange={e=>dispatchSettings({type:'edit',values:{max_candidates:e.target.value}})} disabled={locked}/></label>
+          <label>Execution profile<select aria-label="Execution profile" value={executionProfile} onChange={e=>dispatchSettings({type:'edit',values:{execution_profile:e.target.value as RunSettings['execution_profile']}})} disabled={locked}><option value="reference-v1">Reference v1</option><option value="indexed-v2">Indexed v2</option><option value="framed-v3">Framed v3</option><option value="joined-v4">Joined v4</option></select></label>
+          <label>Observer<select aria-label="Observer" value={observer} onChange={e=>dispatchSettings({type:'edit',values:{observer:e.target.value}})} disabled={locked}><option value="all">Complete carrier</option><option value="value">Value links</option>{!['all','value'].includes(observer)&&<option value={observer}>Imported observer declaration</option>}</select></label>
           <label>Commits per batch<select aria-label="Commits per batch" value={batch} onChange={e=>setBatch(e.target.value)} disabled={locked}><option>1</option><option>2</option><option>5</option><option>10</option></select></label>
           <label>Execution pacing<select aria-label="Execution pacing" value={pace} onChange={e=>setPace(e.target.value)} disabled={locked}><option value="0">Fast</option><option value="250">0.25 seconds per batch</option><option value="1000">1 second per batch</option></select></label>
-          <label className="checkbox"><input type="checkbox" checked={cycles} onChange={e=>setCycles(e.target.checked)} disabled={locked}/> Detect recurrence</label>
+          <label className="checkbox"><input type="checkbox" checked={cycles} onChange={e=>dispatchSettings({type:'edit',values:{detect_cycles:e.target.checked}})} disabled={locked}/> Detect recurrence</label>
         </div>{state?.settings&&<details><summary>Loaded run settings</summary><p>Scheduler: {state.settings.plan?.seed ? `seeded (${state.settings.plan.seed})` : 'deterministic'}. Step bound: {state.settings.plan?.max_steps??'not recorded'}. Search work per step: {state.settings.search?.max_work}; candidate limit: {state.settings.search?.max_candidates}. Recurrence detection: {state.settings.plan?.detect_cycles?'on':'off'}.</p><pre>{JSON.stringify(state.settings,null,2)}</pre></details>}</details>
       </section>
       <section className="graph-pane"><div className="section-heading"><h2>{view}</h2><span>State {state?.position??'—'}</span></div>

@@ -3,14 +3,13 @@ import {readFileSync} from 'node:fs';
 import {execFileSync} from 'node:child_process';
 import path from 'node:path';
 const root=path.resolve('..');
-test('complete example gallery applies reference settings without replacing the loaded history',async({page})=>{
+test('complete example gallery automatically adopts reference settings without replacing the loaded history',async({page})=>{
  test.setTimeout(180_000);
  const entries=JSON.parse(readFileSync(path.join(root,'examples/manifest.json'),'utf8')) as {file:string;profile:{max_steps:string};result:{outcome:string;events:number}}[];
  await page.goto('/');await expect(page.getByTestId('status')).toHaveText('No program loaded');
  let previous='No program loaded';
  for(const entry of entries){
   await page.getByLabel('Example',{exact:true}).selectOption({label:entry.file.replace('.graph','')});
-  await page.getByRole('button',{name:'Apply example settings',exact:true}).click();
   await expect(page.getByTestId('status')).toHaveText(previous);
   await expect(page.getByLabel('Absolute step bound')).toHaveValue(entry.profile.max_steps);
   await page.getByRole('button',{name:'Load program',exact:true}).click();await expect(page.getByTestId('status')).toHaveText('Ready');
@@ -38,6 +37,7 @@ test('reflective changes preserve historical rule inspection and graph controls'
 });
 test('timeline playback, rapid scrubbing, changes and linked views preserve the trace',async({page})=>{
   await page.goto('/');await expect(page.getByTestId('status')).toHaveText('No program loaded');await page.getByLabel('Example',{exact:true}).selectOption({label:'behaviour/oscillating'});
+  await page.locator('summary').filter({hasText:/^Run settings/}).click();await page.getByLabel('Absolute step bound').fill('20');await page.getByLabel('Detect recurrence').uncheck();
   await page.getByRole('button',{name:'Load program',exact:true}).click();await expect(page.getByTestId('status')).toHaveText('Ready');await page.getByRole('button',{name:'Run',exact:true}).click();await expect(page.getByTestId('status')).toHaveText('StepLimit');
   const exported=async()=>{const d=page.waitForEvent('download');await page.getByRole('button',{name:'Export trace'}).click();return JSON.parse(readFileSync((await(await d).path())!,'utf8'));};const initial=await exported();expect(initial.events).toHaveLength(20);
   await page.getByLabel('Inspect state',{exact:true}).fill('1');await expect(page.locator('.timeline-heading')).toContainText('Inspecting state 1 of 20');await expect(page.locator('.change-summary')).toContainText('consumed');

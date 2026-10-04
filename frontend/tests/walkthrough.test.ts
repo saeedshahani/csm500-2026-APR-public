@@ -12,6 +12,13 @@ test('all eight annotations target real data, relationships or rules',()=>{
   assert.equal(tourSelection(snapshot(),1),'3');
   assert.equal(tourSelection(snapshot(),2),'4');
 });
+test('every stage connects its observed result to a scoped research explanation',()=>{
+  for(const step of tourSteps){assert.match(step.research,/RQ[1-4]/);assert.ok(step.implication.length>150);assert.doesNotMatch(step.text,/not a|rather than|not the/);}
+  assert.match(tourSteps[2].implication,/fixed object-mode rules/);
+  assert.match(tourSteps[5].implication,/service integration/);
+  assert.match(tourSteps[6].implication,/pending is 2, packed is 1 and dispatched is 0/);
+  assert.match(tourSteps[7].implication,/Additional enabling conditions/);
+});
 test('forward executes two rewrites and one terminal check; revisiting never duplicates events',async()=>{
   let state=snapshot(),advances=0;
   const request=async(c:Command):Promise<Reply>=>{
