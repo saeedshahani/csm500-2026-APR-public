@@ -1,56 +1,155 @@
-import {useEffect,useRef,useState} from 'react';
-import {forceSimulation,forceLink,forceManyBody,forceCenter,forceCollide,type SimulationNodeDatum,type SimulationLinkDatum} from 'd3-force';
+import {useEffect,useId,useMemo,useRef,useState} from 'react';
 import type {EngineState} from './types';
 import {project,displayName,kindName,atomLabel} from './presentation';
-type Node=SimulationNodeDatum&{id:string};
-type Link=SimulationLinkDatum<Node>&{id:string;label:string;record:string};
-export function GraphCanvas({state,selected,onSelect,practical=false}:{state:EngineState;selected:string|null;onSelect:(id:string)=>void;practical?:boolean}){
-  const positions=useRef(new Map<string,{x:number;y:number}>());
-  const [layout,setLayout]=useState<{nodes:Node[];links:Link[]}>({nodes:[],links:[]});
-  const [zoom,setZoom]=useState(1),[pan,setPan]=useState({x:0,y:0}),[pinned,setPinned]=useState(false);
+import {arrangeGraph,boundsOf,fitCamera,zoomCamera,routeLinks,neighbourhood,NODE_LIMIT,LINK_LIMIT,type Point,type Camera,type GraphLink} from './graph-layout';
+import './graph-canvas.css';
+
+export function GraphCanvas({state,selected,onSelect,practical=false,guided=false}:{state:EngineState;selected:string|null;onSelect:(id:string)=>void;practical?:boolean;guided?:boolean}){
+  const positions=useRef(new Map<string,Point>());
+  const svgRef=useRef<SVGSVGElement>(null);
+  const marker=useId();
+  const [size,setSize]=useState({width:900,height:550});
+  const [manualCamera,setManualCamera]=useState<{key:string;camera:Camera}|null>(null);
+  const [pinned,setPinned]=useState(false),[labels,setLabels]=useState('auto');
   const [filter,setFilter]=useState('all'),[owner,setOwner]=useState('all'),[focus,setFocus]=useState<string|null>(null),[depth,setDepth]=useState(1);
-  const [relation,setRelation]=useState('all');
-  const drag=useRef<{x:number;y:number;px:number;py:number}|null>(null);
-  const projection=project(state),total=Object.keys(state.graph.atoms).length;
+  const [relation,setRelation]=useState('all'),[hovered,setHovered]=useState<string|null>(null);
+  const drag=useRef<{x:number;y:number;camera:Camera}|null>(null);
+
+  const projection=useMemo(()=>project(state),[state]);
+  const total=Object.keys(state.graph.atoms).length;
   const projected=practical?projection.nodes:Object.keys(state.graph.atoms);
-  const ids=projected.filter(id=>(filter==='all'||kindName(state.graph.atoms[id])===filter)&&(owner==='all'||state.rules.find(r=>r.head===owner)?.representation?.includes(id)));
-  const neighbours=new Set<string>();
-  if(focus){neighbours.add(focus);for(let i=0;i<depth;i++){const next=new Set(neighbours);for(const[id,a]of Object.entries(state.graph.atoms))if(neighbours.has(id)||a.fields.some(f=>neighbours.has(f))){next.add(id);a.fields.forEach(f=>next.add(f));}for(const id of next)neighbours.add(id);}}
-  const visible=ids.filter(id=>!focus||neighbours.has(id)).slice(0,250);
-  const signature=JSON.stringify(visible);
+  const allLinks:GraphLink[]=useMemo(()=>practical
+    ?projection.links.filter(l=>relation==='all'||l.label===relation).map(l=>({...l,record:l.id,label:`${l.label} · #${l.id}`}))
+    :Object.entries(state.graph.atoms).flatMap(([id,atom])=>atom.fields.map((target,slot)=>({id:`${id}:${slot}`,record:id,label:String(slot),source:id,target}))),[state,practical,projection,relation]);
+  const ids=projected.filter(id=>(filter==='all'||kindName(state.graph.atoms[id])===filter)&&(owner==='all'||practical||state.rules.find(r=>r.head===owner)?.representation?.includes(id)));
+  const candidates=focus?neighbourhood(ids,allLinks,focus,depth):ids;
+  const visible=candidates.slice(0,NODE_LIMIT),present=new Set(visible);
+  const eligibleLinks=allLinks.filter(l=>present.has(l.source)&&present.has(l.target));
+  const links=eligibleLinks.slice(0,LINK_LIMIT);
+  // Only displayed topology changes the layout. Inspecting an atom cannot jiggle it.
+  const layoutKey=JSON.stringify([practical,visible,links]);
+  const layout=useMemo(()=>{
+    const [isPractical,nodeIds,edges]=JSON.parse(layoutKey) as [boolean,string[],GraphLink[]];
+    return arrangeGraph(nodeIds,edges,isPractical,positions.current,pinned);
+  },[layoutKey,pinned]);
+  useEffect(()=>{positions.current=new Map(layout.nodes.map(n=>[n.id,{x:n.x,y:n.y}]));},[layout]);
+  const routed=useMemo(()=>routeLinks(layout.nodes,JSON.parse(layoutKey)[2] as GraphLink[],practical),[layout,layoutKey,practical]);
+  const bounds=useMemo(()=>boundsOf([...layout.nodes,...routed.flatMap(l=>l.extent)]),[layout,routed]);
+  // Returning from a filtered view can settle the same topology differently.
+  // A camera is valid for exact geometry, not just the same list of identities.
+  const cameraKey=JSON.stringify([layout.nodes,bounds,practical,pinned,size]);
+  const fitted=fitCamera(bounds,size.width,size.height);
+  const camera=manualCamera?.key===cameraKey?manualCamera.camera:fitted;
+  const cameraRef=useRef(camera);cameraRef.current=camera;
+  const cameraKeyRef=useRef(cameraKey);cameraKeyRef.current=cameraKey;
+  const setCamera=(next:Camera)=>setManualCamera({key:cameraKey,camera:next});
+  const fit=()=>setCamera(fitted);
+
   useEffect(()=>{
-    const selectedIds:string[]=JSON.parse(signature);
-    const nodes:Node[]=selectedIds.map((id,i)=>({id,...(positions.current.get(id)??{x:450+240*Math.cos(i*2.399),y:275+170*Math.sin(i*2.399)})}));
-    const present=new Set(selectedIds);
-    const links:Link[]=practical?project(state).links.filter(l=>present.has(l.source)&&present.has(l.target)).map(l=>({...l,record:l.id,label:`${l.label} · #${l.id}`})):nodes.flatMap(n=>state.graph.atoms[n.id].fields.flatMap((target,slot)=>present.has(target)?[{id:`${n.id}:${slot}`,record:n.id,label:String(slot),source:n.id,target}]:[]));
-    if(practical&&relation!=='all'){for(let i=links.length-1;i>=0;i--)if(atomLabel(state.graph.atoms[links[i].record])!==relation)links.splice(i,1);}
-    links.splice(500);
-    const simulation=forceSimulation(nodes).force('link',forceLink<Node,Link>(links).id(n=>n.id).distance(practical?180:90).strength(.5)).force('charge',forceManyBody().strength(practical?-500:-250)).force('center',forceCenter(450,275)).force('collision',forceCollide(practical?55:35));
-    const tick=()=>{for(const n of nodes){n.x=Math.max(45,Math.min(855,n.x??450));n.y=Math.max(50,Math.min(490,n.y??275));}positions.current=new Map(nodes.map(n=>[n.id,{x:n.x!,y:n.y!}]));setLayout({nodes:[...nodes],links});};
-    if(pinned)simulation.stop();else if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){simulation.stop();simulation.tick(100);}else simulation.on('tick',tick);tick();
-    return()=>{simulation.on('tick',null);simulation.stop();};
-  },[state,signature,practical,pinned,relation]);
+    const svg=svgRef.current;if(!svg)return;
+    const observer=new ResizeObserver(entries=>{
+      const {width,height}=entries[0].contentRect;
+      if(width>0&&height>0)setSize({width,height});
+    });
+    observer.observe(svg);
+    const wheel=(event:WheelEvent)=>{
+      // Ordinary scrolling scrolls the page; trackpad pinch / Ctrl+wheel zooms here.
+      if(!event.ctrlKey&&!event.metaKey)return;
+      event.preventDefault();
+      const rect=svg.getBoundingClientRect();
+      const next=zoomCamera(cameraRef.current,Math.exp(-Math.max(-100,Math.min(100,event.deltaY))*.01),{x:event.clientX-rect.left-rect.width/2,y:event.clientY-rect.top-rect.height/2});
+      setManualCamera({key:cameraKeyRef.current,camera:next});
+    };
+    svg.addEventListener('wheel',wheel,{passive:false});
+    return()=>{observer.disconnect();svg.removeEventListener('wheel',wheel);};
+  },[]);
+
   const changes=state.events[Number(state.position)-1]?.footprint;
   const change=(id:string)=>changes?.produced.includes(id)?'produced':changes?.preserved.includes(id)?'preserved':'';
+  const active=guided?selected:hovered??selected;
+  const activeLinks=new Set(routed.filter(l=>l.source===active||l.target===active||l.record===active).map(l=>l.id));
+  const activeNodes=new Set(routed.filter(l=>activeLinks.has(l.id)).flatMap(l=>[l.source,l.target]));
+  if(active&&present.has(active))activeNodes.add(active);
+  const hasHighlight=activeNodes.size>0;
+  const detail=labels==='all'||(labels==='auto'&&camera.zoom>=.8);
+  const fieldDetail=labels==='all'||(labels==='auto'&&camera.zoom>=1.15);
+  const canFocus=selected!==null&&projected.includes(selected);
+  const focusSelected=()=>{
+    setFilter('all');setOwner('all');setRelation('all');setFocus(selected);setDepth(1);
+  };
+
   return <div className="graph-canvas">
     <div className="graph-tools">
-      <button onClick={()=>{setZoom(1);setPan({x:0,y:0});}}>Fit</button><button aria-label="Zoom in" onClick={()=>setZoom(z=>Math.min(4,z*1.25))}>+</button><button aria-label="Zoom out" onClick={()=>setZoom(z=>Math.max(.5,z/1.25))}>−</button>
-      <button disabled={!selected} onClick={()=>{setFocus(selected);setDepth(1);}}>Focus selected</button>{focus&&<><button onClick={()=>setDepth(d=>Math.min(10,d+1))}>Expand neighbourhood</button><button onClick={()=>setFocus(null)}>Show all</button></>}
+      <button onClick={fit}>Fit</button>
+      <button aria-label="Zoom in" onClick={()=>setCamera(zoomCamera(camera,1.3))}>+</button>
+      <button aria-label="Zoom out" onClick={()=>setCamera(zoomCamera(camera,1/1.3))}>−</button>
+      <output className="graph-zoom" aria-label="Graph zoom">{Math.round(camera.zoom*100)}%</output>
+      {!guided&&<>
+      <button disabled={!canFocus} onClick={focusSelected}>Focus selected</button>
+      {focus&&<><button disabled={depth>=10} onClick={()=>setDepth(d=>Math.min(10,d+1))}>Expand neighbourhood</button><button onClick={()=>setFocus(null)}>Show all</button></>}
       <label><input type="checkbox" checked={pinned} onChange={e=>setPinned(e.target.checked)}/> Pin layout</label>
+      <label>Labels<select aria-label="Graph labels" value={labels} onChange={e=>setLabels(e.target.value)}><option value="auto">Auto</option><option value="all">All</option><option value="selected">Selected</option></select></label>
       <label>Kind / role<select aria-label="Graph kind filter" value={filter} onChange={e=>setFilter(e.target.value)}><option value="all">All</option>{[...new Set(projected.map(id=>kindName(state.graph.atoms[id])))].sort().map(k=><option key={k}>{k}</option>)}</select></label>
+      {!practical&&<label>Rule group<select aria-label="Rule ownership filter" value={owner} onChange={e=>{setOwner(e.target.value);setFocus(null);setFilter('all');}}><option value="all">All</option>{state.rules.map(r=><option key={r.head} value={r.head}>{displayName(state,r.head)}</option>)}</select></label>}
       {practical&&<label>Example relationship group<select aria-label="Relationship label filter" value={relation} onChange={e=>setRelation(e.target.value)}><option value="all">All</option>{[...new Set(projection.links.map(l=>l.label))].sort().map(label=><option key={label}>{label}</option>)}</select></label>}
-      {!practical&&<label>Rule group<select aria-label="Rule ownership filter" value={owner} onChange={e=>setOwner(e.target.value)}><option value="all">All</option>{state.rules.map(r=><option key={r.head} value={r.head}>{displayName(state,r.head)}</option>)}</select></label>}
+      </>}
     </div>
-    <p className="view-context">{practical?'Practical projection: relationships map to record identities. Rule syntax and metadata are hidden.':'Internal carrier: circles are atoms; arrows are owned fields, not execution order.'} Showing {visible.length} of {total} atoms{practical?`; ${projection.links.length} eligible relationships, ${projection.hidden} rule/quoted atoms hidden, ${projection.fallback.length} unprojectable data atoms retained`:''}. Filters do not affect execution.</p>
-    <svg viewBox="0 0 900 550" role="group" aria-label={practical?'Practical graph':'Carrier graph: atoms and directed fields'} onPointerDown={e=>{if(e.target===e.currentTarget){drag.current={x:e.clientX,y:e.clientY,px:pan.x,py:pan.y};e.currentTarget.setPointerCapture(e.pointerId);}}} onPointerMove={e=>{if(drag.current){const scale=900/e.currentTarget.getBoundingClientRect().width;setPan({x:drag.current.px+(e.clientX-drag.current.x)*scale,y:drag.current.py+(e.clientY-drag.current.y)*scale});}}} onPointerUp={()=>{drag.current=null;}}>
-      <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
-      <g transform={`translate(${450+pan.x},${275+pan.y}) scale(${zoom}) translate(-450,-275)`}>
-      {layout.links.map(link=>{const a=link.source as Node,b=link.target as Node;const ax=a.x??0,ay=a.y??0,bx=b.x??0,by=b.y??0;const dx=bx-ax,dy=by-ay,len=Math.hypot(dx,dy)||1;const ex=bx-dx/len*22,ey=by-dy/len*22;const peers=layout.links.filter(l=>{const s=l.source as Node,t=l.target as Node;return (s.id===a.id&&t.id===b.id)||(s.id===b.id&&t.id===a.id);});const offset=peers.indexOf(link)-(peers.length-1)/2,bend=offset*42*(a.id<b.id?1:-1);const cx=(ax+ex)/2-dy/len*bend,cy=(ay+ey)/2+dx/len*bend,radius=50+(offset+(peers.length-1)/2)*25;const path=a.id===b.id?`M ${ax} ${ay-18} C ${ax+radius} ${ay-radius-50}, ${ax+radius} ${ay+radius}, ${ax+18} ${ay}`:`M ${ax} ${ay} Q ${cx} ${cy} ${ex} ${ey}`;return <g key={link.id} className={`field ${change(link.record)} ${selected===link.record?'selected-link':''}`} role="button" tabIndex={0} aria-label={`${practical?'Relationship':'Field'} ${link.record}: ${link.label}`} onClick={()=>onSelect(link.record)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onSelect(link.record);}}}><path d={path} markerEnd="url(#arrow)"/><text x={a.id===b.id?ax+radius:cx} y={a.id===b.id?ay-radius/2:cy-5}>{link.label}{practical&&change(link.record)==='produced'?' [new]':''}</text><title>{link.label} · {a.id} → {b.id}</title></g>;})}
-      {layout.nodes.map(n=>{const atom=state.graph.atoms[n.id],rule=state.rules.find(r=>r.head===n.id);if(!atom)return null;return <g key={n.id} role="button" tabIndex={0} aria-label={`Atom ${n.id} ${kindName(atom)} ${atomLabel(atom)}`} aria-pressed={selected===n.id} onClick={()=>onSelect(n.id)} onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onSelect(n.id);}}} transform={`translate(${n.x},${n.y})`} className={`atom ${selected===n.id?'selected':''} ${state.quoted[n.id]!==undefined?'quoted':''} ${rule?'head':''} ${change(n.id)}`}><circle r={practical?27:rule?22:18}/><text className="atom-id" y="4" textAnchor="middle">{practical?atomLabel(atom).slice(0,8):n.id}</text><text className="atom-name" y="37" textAnchor="middle">{(practical?displayName(state,n.id):(state.names?.[n.id]??atomLabel(atom))).slice(0,30)}{change(n.id)==='produced'?' [+]':''}</text>{rule&&<text y="51" textAnchor="middle">{rule.active?'Active':'Inactive'} rule</text>}<title>{displayName(state,n.id)} · {kindName(atom)}{state.quoted[n.id]!==undefined?` · quoted by ${state.quoted[n.id]}`:''}</title></g>;})}
+    {!guided&&<p className="view-context">Showing {visible.length} of {total} atoms · {routed.length} connections{practical?` · ${projection.hidden} rule/quoted atoms hidden`:''}{candidates.length>NODE_LIMIT?` · ${candidates.length-NODE_LIMIT} matching atoms beyond the ${NODE_LIMIT}-atom display limit`:''}{eligibleLinks.length>LINK_LIMIT?` · ${eligibleLinks.length-LINK_LIMIT} connections omitted (${LINK_LIMIT} limit)`:''}</p>}
+    <svg ref={svgRef} viewBox={`0 0 ${size.width} ${size.height}`} role="group" tabIndex={0} aria-label={practical?'Practical graph':'Carrier graph: atoms and directed fields'}
+      onPointerDown={e=>{
+        if(e.button!==0||(e.target as Element).closest('[data-graph-item]'))return;
+        drag.current={x:e.clientX,y:e.clientY,camera};e.currentTarget.setPointerCapture(e.pointerId);
+      }}
+      onPointerMove={e=>{if(drag.current){setCamera({...drag.current.camera,x:drag.current.camera.x-(e.clientX-drag.current.x)/drag.current.camera.zoom,y:drag.current.camera.y-(e.clientY-drag.current.y)/drag.current.camera.zoom});}}}
+      onPointerUp={()=>{drag.current=null;}} onPointerCancel={()=>{drag.current=null;}} onLostPointerCapture={()=>{drag.current=null;}}
+      onKeyDown={e=>{
+        if(e.target!==e.currentTarget)return;
+        if(e.key==='+'||e.key==='='){e.preventDefault();setCamera(zoomCamera(camera,1.3));}
+        else if(e.key==='-'){e.preventDefault();setCamera(zoomCamera(camera,1/1.3));}
+        else if(e.key==='0'){e.preventDefault();fit();}
+        else if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
+          e.preventDefault();setCamera({...camera,x:camera.x+(e.key==='ArrowRight'?60:e.key==='ArrowLeft'?-60:0)/camera.zoom,y:camera.y+(e.key==='ArrowDown'?60:e.key==='ArrowUp'?-60:0)/camera.zoom});
+        }
+      }}>
+      <defs><marker id={marker} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker></defs>
+      <g transform={`translate(${size.width/2},${size.height/2}) scale(${camera.zoom}) translate(${-camera.x},${-camera.y})`}>
+        {!pinned&&!guided&&layout.components.filter(c=>c.ids.length>1).map(component=>{
+          const rules=state.rules.filter(r=>component.ids.includes(r.head));
+          const name=rules.length===1?`Rule ${displayName(state,rules[0].head)}`:rules.length>1?`${rules.length} connected rules`:'Connected atoms';
+          const caption=size.width<600?`${rules.length===1?`#${rules[0].head} · `:''}${component.ids.length} atoms`:`${name} · ${component.ids.length} shown`;
+          const inspectRule=()=>{if(!guided&&rules.length===1){setOwner(rules[0].head);setFocus(null);setFilter('all');}};
+          return <text key={component.ids[0]} className={`component-label ${rules.length===1?'component-action':''}`} style={{fontSize:Math.max(17,12/camera.zoom)}} x={component.bounds.minX} y={component.bounds.minY-5}
+            data-graph-item="component" role={rules.length===1?'button':undefined} tabIndex={rules.length===1?0:undefined} aria-label={rules.length===1?`Inspect rule group ${displayName(state,rules[0].head)}`:undefined}
+            onClick={inspectRule} onKeyDown={e=>{if(rules.length===1&&(e.key==='Enter'||e.key===' ')){e.preventDefault();inspectRule();}}}>{caption}<title>{name} · {component.ids.length} shown</title></text>;
+        })}
+        {routed.map(link=>{
+          const highlighted=activeLinks.has(link.id),showLabel=fieldDetail||highlighted;
+          return <g key={link.id} data-graph-item="field" data-record-id={link.record} className={`field ${change(link.record)} ${selected===link.record?'selected-link':''} ${highlighted?'highlighted':''} ${hasHighlight&&!highlighted?'graph-dimmed':''}`} role="button" tabIndex={0} aria-label={`${practical?'Relationship':'Field'} ${link.record}: ${link.label}`}
+            onClick={()=>onSelect(link.record)} onMouseEnter={()=>setHovered(link.record)} onMouseLeave={()=>setHovered(null)} onFocus={()=>setHovered(link.record)} onBlur={()=>setHovered(null)}
+            onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onSelect(link.record);}}}>
+            <path className="field-line" d={link.path} vectorEffect="non-scaling-stroke" markerEnd={`url(#${marker})`}/><path className="field-hit-area" d={link.path}/>
+            {showLabel&&<text x={link.labelPoint.x} y={link.labelPoint.y}>{link.label}{practical&&change(link.record)==='produced'?' [new]':''}</text>}
+            <title>{link.label} · {link.source} → {link.target}</title>
+          </g>;
+        })}
+        {layout.nodes.map(n=>{
+          const atom=state.graph.atoms[n.id],rule=state.rules.find(r=>r.head===n.id);if(!atom)return null;
+          const highlighted=activeNodes.has(n.id),showDetail=detail||highlighted;
+          return <g key={n.id} data-graph-item="atom" data-atom-id={n.id} role="button" tabIndex={0} aria-label={`Atom ${n.id} ${kindName(atom)} ${atomLabel(atom)}`} aria-pressed={selected===n.id}
+            onClick={()=>onSelect(n.id)} onMouseEnter={()=>setHovered(n.id)} onMouseLeave={()=>setHovered(null)} onFocus={()=>setHovered(n.id)} onBlur={()=>setHovered(null)}
+            onKeyDown={e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();onSelect(n.id);}}}
+            transform={`translate(${n.x},${n.y})`} className={`atom ${selected===n.id?'selected':''} ${state.quoted[n.id]!==undefined?'quoted':''} ${rule?'head':''} ${change(n.id)} ${hasHighlight&&!highlighted?'graph-dimmed':''}`}>
+            <circle r={practical?27:rule?22:18} vectorEffect="non-scaling-stroke"/>
+            {(camera.zoom>=.45||showDetail||rule)&&<text className="atom-id" y="4" textAnchor="middle">{practical&&!guided?atomLabel(atom).slice(0,8):n.id}</text>}
+            {showDetail&&<text className="atom-name" y="37" textAnchor="middle">{(guided&&practical?`${atomLabel(atom)} · #${n.id}`:practical?displayName(state,n.id):(state.names?.[n.id]??atomLabel(atom))).slice(0,30)}{change(n.id)==='produced'?' [+]':''}</text>}
+            {rule&&showDetail&&<text y="51" textAnchor="middle">{rule.active?'Active':'Inactive'} rule</text>}
+            <title>{displayName(state,n.id)} · {kindName(atom)}{state.quoted[n.id]!==undefined?` · quoted by ${state.quoted[n.id]}`:''}</title>
+          </g>;
+        })}
       </g>
     </svg>
     {!total&&<p className="empty-graph">The carrier is empty.</p>}
-    <p className="view-context">Displaying {layout.links.length} connections after filters. Canvas limit: 250 atoms and 500 connections. The inspector searches the complete carrier; use Internal for records not represented by practical edges. Relationship groups use example labels, not an inferred business schema.</p>
-    <div className="legend">○ Atom · ◎ Rule head · dashed: quoted syntax · [+] produced · outlined: preserved. Select a relationship to inspect its record.</div>
+    {!!total&&!visible.length&&<p className="graph-warning">No atoms match this view. Clear the filters or choose another atom.</p>}
+    {!guided&&<div className="legend">○ Atom · ◎ Rule head · dashed: quoted · [+] produced · outlined: preserved</div>}
   </div>;
 }

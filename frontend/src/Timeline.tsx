@@ -11,7 +11,6 @@ export function Timeline({state,target,disabled,playing,onSeek,onPlay,onPause,sp
       <button disabled={disabled||!end} onClick={playing?onPause:onPlay}>{playing?'Pause playback':'Play history'}</button>
       <label>Playback interval<select aria-label="Playback interval" value={speed} onChange={e=>setSpeed(e.target.value)} disabled={playing}><option value="150">0.15 seconds</option><option value="500">0.5 seconds</option><option value="1000">1 second</option></select></label>
     </div>
-    <p>State 0 is the initial graph. Event i leads to state i + 1. Playback inspects recorded states; it creates no rewrites.</p>
     {state.position!==state.endpoint&&<p>Historical state is read-only. Return to Latest to continue a paused run.</p>}
     {recurrence&&<p>Repeated observation: <button disabled={disabled} onClick={()=>onSeek(Number(recurrence.first))}>State {recurrence.first}</button> → <button disabled={disabled} onClick={()=>onSeek(Number(recurrence.repeated))}>State {recurrence.repeated}</button>. {recurrence.complete_state_equal===false?'Hidden change: the selected observation repeats, but the complete carrier differs.':recurrence.complete_state_equal===true?'The complete carriers also agree up to isomorphism; identities may differ.':'Complete-carrier comparison is not supplied.'}</p>}
   </section>;

@@ -13,13 +13,13 @@ export function LambdaInput({request,prepare,disabled}:{request:(c:Command)=>Pro
     <label>Lambda example<select aria-label="Lambda example" disabled={disabled} value="" onChange={e=>setSource(examples[e.target.value])}><option value="">Choose a term</option>{Object.keys(examples).sort().map(path=><option key={path} value={path}>{path.split('/').pop()?.replace('.lambda','')}</option>)}</select></label>
     <label>Source term<textarea aria-label="Lambda source" value={source} disabled={disabled} onChange={e=>setSource(e.target.value)}/></label>
     <button disabled={disabled} onClick={async()=>{const reply=await request({command:'lambda_compile',source,profile,free_names:profile==='open-cbn-v1'&&freeNames.trim()?freeNames.split(',').map(n=>n.trim()):[]});if(reply?.ok&&reply.compiled)prepare(reply.compiled);}}>Prepare lambda graph</button>
-    <p>Replaces the graph draft; press Load program next. Steps include bookkeeping; readback changes only at beta reductions. The source is retained in the generated graph’s opening comment. Resource limits still apply.</p>
+    <p>Replaces the draft. Press Load program to run it.</p>
   </details>;
 }
 export function LambdaResult({state}:{state:EngineState}){
   if(!state.lambda)return null;
   return <section className="lambda-result" aria-label="Lambda interpretation"><h3>Lambda term · state {state.position}</h3>
     {state.lambda.error?<p role="status">Readback unavailable: {state.lambda.error}</p>:<pre data-testid="lambda-term">{state.lambda.term}</pre>}
-    <p>Binding indices count outward: 0 is the nearest function parameter. Unresolved inputs retain their names. This reads the inspected graph, including administrative states; it does not evaluate separately or certify an edited graph. NormalForm means no graph rule is enabled, not necessarily full beta-normal form.</p>
+    <details><summary>Notation</summary><p>0 refers to the nearest bound parameter. Unresolved inputs keep their names. Readback follows the inspected state; NormalForm is weak head form, not full beta-normal form.</p></details>
   </section>;
 }

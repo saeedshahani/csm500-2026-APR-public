@@ -1,0 +1,35 @@
+// Guided sample: one order moves from pending to packed to dispatched.
+// Data and both rule descriptions are stored in this one graph.
+program {
+  rule pack {
+    atom pack_zero = Nat();
+    rank pack_rank = pack_zero;
+    mode pack_mode = ModeObject;
+    revision pack_revision;
+    active pack_active;
+    // x and y stand for the two existing data items. Both are preserved.
+    atom pack_x = PatternVariable[Constructor] Free;
+    atom pack_y = PatternVariable[Constructor] Free;
+    atom pending_pattern = Record[ObjectLink]("pending", pack_x, pack_y);
+    atom packed_result = Record[ObjectLink]("packed", pack_x, pack_y);
+    lhs { pack_lx: pack_x; pack_ly: pack_y; pack_old: pending_pattern; }
+    rhs { pack_rx: pack_x; pack_ry: pack_y; pack_new: packed_result; }
+  }
+  rule dispatch {
+    atom dispatch_zero = Nat();
+    rank dispatch_rank = dispatch_zero;
+    mode dispatch_mode = ModeObject;
+    revision dispatch_revision;
+    active dispatch_active;
+    atom dispatch_x = PatternVariable[Constructor] Free;
+    atom dispatch_y = PatternVariable[Constructor] Free;
+    atom packed_pattern = Record[ObjectLink]("packed", dispatch_x, dispatch_y);
+    atom dispatched_result = Record[ObjectLink]("dispatched", dispatch_x, dispatch_y);
+    lhs { dispatch_lx: dispatch_x; dispatch_ly: dispatch_y; dispatch_old: packed_pattern; }
+    rhs { dispatch_rx: dispatch_x; dispatch_ry: dispatch_y; dispatch_new: dispatched_result; }
+  }
+  // These are the live data. The pending relationship is replaced by each rule.
+  atom order = Constructor("Order 1042");
+  atom warehouse = Constructor("Warehouse");
+  atom status = Record[ObjectLink]("pending", order, warehouse);
+}

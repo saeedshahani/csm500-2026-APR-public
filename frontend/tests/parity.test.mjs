@@ -6,8 +6,28 @@ import {createRequire} from 'node:module';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {verifyExamples} from '../../scripts/verify-examples.mjs';
+import {tourConfig,tourSelection,visitTourStep} from '../src/walkthrough-state.ts';
 const require=createRequire(import.meta.url);const {WorkbenchHandle}=require('../pkg-node/wasm_bridge.js');
 const root=new URL('../../',import.meta.url);
+test('guided order uses real native/WASM rewrites, preserves items and has an isolated history',async()=>{
+ const sample=readFileSync(new URL('examples/walkthrough/order.graph',root),'utf8');
+ const replies=compare([{command:'load',source:sample,config:tourConfig},{command:'advance',batch:'1'},{command:'advance',batch:'1'},{command:'advance',batch:'1'},{command:'jump',state:'0'}]);
+ assert.ok(replies.every(r=>r.ok));assert.equal(replies[3].state.status,'NormalForm');assert.equal(replies[3].state.events.length,2);
+ const initial=replies[0].state,final=replies[3].state;
+ for(const [id,atom] of Object.entries(initial.graph.atoms))if(['Order 1042','Warehouse'].includes(atom.kind?.Constructor))assert.deepEqual(final.graph.atoms[id],atom);
+ assert.ok(final.dependencies.some(d=>d.before==='0'&&d.after==='1'));
+ assert.equal(initial.names[tourSelection(initial,2)],'pack');
+ const workspace=new WorkbenchHandle(),tour=new WorkbenchHandle();
+ const dispatch=c=>tour.dispatch(JSON.stringify(c));
+ try{
+  workspace.dispatch(JSON.stringify({command:'load',source:'program {}'}));
+  const saved=workspace.dispatch(JSON.stringify({command:'state'}));
+  let state=dispatch({command:'load',source:sample,config:tourConfig}).state;
+  for(const index of [0,1,2,3,4,5,6,7,0,4,7])state=await visitTourStep(c=>Promise.resolve(dispatch(c)),state,index);
+  assert.equal(state.events.length,2);assert.equal(state.status,'NormalForm');
+  assert.deepEqual(workspace.dispatch(JSON.stringify({command:'state'})),saved);
+ }finally{workspace.free();tour.free();}
+});
 test('all source ranges and related locations agree across native and WASM without changing history',()=>{
  const sources=['program {\r\n atom a = Constructor("λ 🐈");\r atom a = Constructor("duplicate");\n}', 'program { atom x = Nat(missing); atom y = Nat(other); }', 'program { atom x = Constructor("猫");'];
  const replies=compare([{command:'load',source:'program {}'},...sources.flatMap(source=>[{command:'validate',source},{command:'load',source},{command:'state'}])]);

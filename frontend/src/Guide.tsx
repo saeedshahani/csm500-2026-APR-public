@@ -10,5 +10,5 @@ export function Guide(){
   else if(line.startsWith('## '))blocks.push(<h2 key={i}>{line.slice(3)}</h2>);
   else blocks.push(<p key={i}>{inline(line)}</p>);
  }
- return <article className="reader-guide"><button onClick={()=>window.print()}>Print guide</button>{blocks}</article>;
+ return <article className="reader-guide"><div className="guide-actions"><a href="#walkthrough">Start walkthrough</a><button onClick={()=>window.print()}>Print guide</button></div>{blocks}</article>;
 }
