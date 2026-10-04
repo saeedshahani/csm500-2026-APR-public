@@ -10,6 +10,62 @@ import {createHash} from 'node:crypto';
 import {sourceFiles} from './research-source-files.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('both manuscripts are standalone academic accounts of the adopted platform', () => {
+  for (const path of ['docs/dissertation.md', 'docs/archive/dissertation-full.md']) {
+    const body = readFileSync(path, 'utf8').split('# Bibliography')[0];
+    assert.deepEqual([...body.matchAll(/^# (\d+)\. /gm)].map(m => Number(m[1])), [1,2,3,4,5,6,7,8,9]);
+    assert.doesNotMatch(body, /\bdocs\/|\b[\w-]+\.md\b|\bADR-\d+|\bLoop [A-N]\b|\bS[1-7]-\d{3}\b/);
+    for (const concept of ['Firestore', 'Cloud Tasks', 'Cloud Run', 'walkthrough', 'ephemeral', 'intrinsic', 'weak-head']) {
+      assert.ok(body.includes(concept), `${path}: missing integrated scope ${concept}`);
+    }
+    assert.doesNotMatch(body, /I, M and O are distinct record kinds/);
+  }
+});
+
+test('literature reconciliation preserves provenance and the admission boundary', () => {
+  const full = readFileSync('docs/archive/dissertation-full.md', 'utf8');
+  assert.match(full, /Tomita, Kurokawa and Murata \(2002, §2\)/);
+  assert.match(full, /detailed metanode execution and modification rules are left for future work/);
+  assert.ok(full.includes('Barendregt and Barendsen, 2000, Definitions 2.4–2.6'));
+  assert.doesNotMatch(full, /The substitution is capture-avoiding \(Barendregt, 1984\)/);
+  for (const path of ['docs/dissertation.md', 'docs/archive/dissertation-full.md']) {
+    const text = readFileSync(path, 'utf8');
+    assert.ok(text.includes('Ehrig, Prange and Ehrig, 2006'));
+    assert.ok(text.includes('Plotkin, 2004'));
+    assert.ok(text.includes('G —e→ G′'));
+  }
+  const formalism = readFileSync('docs/formalism.md', 'utf8');
+  assert.ok(formalism.includes('### 5.4 Labelled transition judgment'));
+  for (const premise of ['Ground(G,p,σ,Lσ,Kσ,Rσ)', 'Visible(G,p,Lσ)', 'Lifecycle(G,p,σ,G′)', 'EventOf(G,p,σ,G′)=e']) {
+    assert.ok(formalism.includes(premise), premise);
+  }
+  const literature = readFileSync('docs/archive/literature.md', 'utf8');
+  assert.ok(literature.includes('Closest reflective precedents: claim-to-source comparison'));
+  assert.equal((literature.match(/^Plump, D\. \(2010\)/gm) ?? []).length, 1);
+  assert.ok(readFileSync('docs/project-proposal.md', 'utf8').includes('Bibliographic correction (4 October 2026)'));
+});
+
+test('planning preserves sprint dates, task identities and explicit final-candidate gates', () => {
+  const expected = ['13 Jul – 26 Jul', '27 Jul – 9 Aug', '10 Aug – 23 Aug', '24 Aug – 6 Sep', '7 Sep – 20 Sep', '21 Sep – 1 Oct', '2 Oct – 13 Oct'];
+  for (const path of ['docs/sprint-plan.md', 'docs/task-list.md']) {
+    const text = readFileSync(path, 'utf8');
+    assert.deepEqual([...text.matchAll(/^## Sprint (\d+): (.+) 2026$/gm)].map(m => [Number(m[1]), m[2]]), expected.map((date, i) => [i+1, date]));
+  }
+  const tasks = readFileSync('docs/task-list.md', 'utf8');
+  const ids = [...tasks.matchAll(/^- \[[ x]\] (S\d+-\d+) —/gm)].map(m => m[1]);
+  assert.equal(ids.length, new Set(ids).size, 'Task identifiers must remain unique');
+  for (const id of ['S6-047', 'S6-048', 'S6-078', 'S6-084', 'S6-093', 'S6-127']) {
+    assert.ok(ids.includes(id), `Final-candidate obligation ${id} must remain traceable`);
+  }
+  const architecture = readFileSync('docs/architecture.md', 'utf8');
+  assert.ok(architecture.includes('### 2.1 Interface and persistence boundaries'));
+  assert.ok(architecture.includes('### 21.4 Recovery analysis and external repair'));
+  assert.doesNotMatch(architecture, /optional caches await profiling/);
+  const formalism = readFileSync('docs/formalism.md', 'utf8');
+  assert.ok(formalism.includes('## 15. Task-relative interpretation and policy compilation'));
+  assert.ok(formalism.includes('Selected abstract mutation'));
+});
+
 test('reproduction claims separate cross-environment semantics from byte identity and theorem scope',()=>{
   const r=JSON.parse(readFileSync('benchmarks/results/reproduction-m/report.json'));
   assert.equal(r.counts.native_builds,12);assert.equal(r.counts.measurements,90);assert.equal(r.counts.warmups,18);
