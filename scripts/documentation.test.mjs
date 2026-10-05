@@ -10,6 +10,25 @@ import {createHash} from 'node:crypto';
 import {sourceFiles} from './research-source-files.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('the historical proposal is immutable while the dissertations remain maintained research', () => {
+  // Initial commit 04cfd35, including its original typo, links and missing final newline.
+  // A fixed byte hash works in shallow checkouts and must not track editorial changes.
+  const proposal = readFileSync('docs/project-proposal.md');
+  assert.equal(sha(proposal), '89b87e354c4e623c27ef34aad3ff48ab2f0eca28f7ebf989b5d48c8b4a1d8eeb');
+  // The papers may extend or refine research questions; only the proposal is frozen.
+  assert.match(readFileSync('docs/archive/README.md', 'utf8'), /may expand or refine the research questions/);
+});
+
+test('research applications use the existing Rust workspace rather than exploratory packages', () => {
+  const manifest = readFileSync('Cargo.toml', 'utf8');
+  assert.match(manifest, /members = \["crates\/graph-core", "crates\/engine", "crates\/parser", "crates\/cli", "crates\/wasm-bridge"\]/);
+  for (const file of sourceFiles(['crates']).filter(p => /\.(?:rs|toml)$/.test(p))) {
+    assert.doesNotMatch(readFileSync(file, 'utf8'), /research\/stretch|T[1-6]-20\d{6}/, file);
+  }
+  assert.match(readFileSync('crates/engine/src/lib.rs', 'utf8'), /pub mod organization;/);
+  assert.match(readFileSync('crates/engine/src/lib.rs', 'utf8'), /pub mod learned_model;/);
+});
+
 test('both manuscripts are standalone academic accounts of the adopted platform', () => {
   for (const path of ['docs/dissertation.md', 'docs/archive/dissertation-full.md']) {
     const body = readFileSync(path, 'utf8').split('# Bibliography')[0];
@@ -42,7 +61,7 @@ test('literature reconciliation preserves provenance and the admission boundary'
   const literature = readFileSync('docs/archive/literature.md', 'utf8');
   assert.ok(literature.includes('Closest reflective precedents: claim-to-source comparison'));
   assert.equal((literature.match(/^Plump, D\. \(2010\)/gm) ?? []).length, 1);
-  assert.ok(readFileSync('docs/project-proposal.md', 'utf8').includes('Bibliographic correction (4 October 2026)'));
+  // Bibliographic corrections belong in the maintained papers, never the proposal.
 });
 
 test('planning preserves sprint dates, task identities and explicit final-candidate gates', () => {
@@ -194,7 +213,9 @@ test('S6 loop plans have one task ledger and valid planning anchors', () => {
 });
 
 test('live repository Markdown links resolve after consolidation', () => {
-  const paths = [...new Set(execFileSync('git', ['ls-files','-co','--exclude-standard'], {encoding:'utf8'}).trim().split('\n'))]
+  // Adopted documentation must survive exclusion of exploratory work. Frozen
+  // collections verify their own manifests and are not live documentation.
+  const paths = [...new Set(execFileSync('git', ['ls-files','-co','--exclude-standard','--','*.md',':(exclude)docs/research/stretch/**'], {encoding:'utf8',maxBuffer:16*1024*1024}).trim().split('\n'))]
     .filter(p => p.endsWith('.md') && !p.startsWith('benchmarks/results/') && existsSync(p));
   const missing = [];
   for (const file of paths) {
@@ -242,5 +263,32 @@ for (const [name,collection,verifier,oldPath,newPath] of [
     assert.notEqual(spawnSync(process.execPath,[`scripts/${verifier}`,temporary]).status,0);
   } finally {
     rmSync(temporary,{recursive:true,force:true});
+  }
+});
+
+
+test('acquired organization is adopted with corrected evidence and standalone project routes', () => {
+  const results=JSON.parse(readFileSync('benchmarks/results/organization-02/analysis.json'));
+  assert.equal(results.stored_conditions,191);
+  assert.equal(results.groups['acquisition-learned'].met_criteria,4);
+  assert.equal(results.groups['inheritance-both64'].met_criteria,2);
+  assert.equal(results.groups['inheritance-both32'].met_criteria,0);
+  for (const file of ['docs/dissertation.md','docs/archive/dissertation-full.md','docs/architecture.md','crates/engine/src/organization/mod.rs','crates/engine/src/learned_model.rs']) {
+    const text=readFileSync(file,'utf8');
+    assert.doesNotMatch(text,/T1 Research Record|T1 extension|research\/stretch\/T1-/);
+  }
+  assert.ok(readFileSync('crates/cli/src/commands.rs','utf8').includes('engine::learned_model::execute'));
+  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('tests/organization'));
+  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('organization-rust-study.py'));
+  assert.ok(readFileSync('crates/cli/src/commands.rs','utf8').includes('engine::organization::execute'));
+  for(const file of ['crates/engine/src/organization/mod.rs','crates/engine/src/organization/state.rs','crates/engine/src/organization/observe.rs']) {
+    assert.doesNotMatch(readFileSync(file,'utf8'), /std::process|Command::new|tests\/oracles/);
+  }
+  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('scripts/numerical_components'));
+  const short = readFileSync('docs/dissertation.md','utf8');
+  assert.ok(short.indexOf('## 8.3 Acquired representations and renewal') < short.indexOf('# 9. Discussion'));
+  assert.doesNotMatch(short, /findings strengthen RQ3 and RQ5/);
+  for (const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    assert.match(readFileSync(file,'utf8'), /[Aa]blations/);
   }
 });

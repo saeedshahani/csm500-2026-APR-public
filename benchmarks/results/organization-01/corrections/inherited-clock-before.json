@@ -1,0 +1,43 @@
+{
+  "parent_epoch": 1600,
+  "start": "e7",
+  "probe_trace": [
+    {
+      "epoch": 0,
+      "timestamps_before": [
+        1570,
+        1544
+      ],
+      "action": 1,
+      "checks_agree": true
+    },
+    {
+      "epoch": 4,
+      "timestamps_before": [
+        1570,
+        0
+      ],
+      "action": 1,
+      "checks_agree": true
+    },
+    {
+      "epoch": 8,
+      "timestamps_before": [
+        1570,
+        4
+      ],
+      "action": 1,
+      "checks_agree": true
+    },
+    {
+      "epoch": 12,
+      "timestamps_before": [
+        1570,
+        8
+      ],
+      "action": 1,
+      "checks_agree": true
+    }
+  ],
+  "scope": "Controlled repeated visits, no population transitions; demonstrates inherited metadata mixed with a reset child clock."
+}

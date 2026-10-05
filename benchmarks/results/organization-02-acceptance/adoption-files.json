@@ -1,0 +1,15 @@
+{
+  ".github/workflows/ci.yml": "af3db12e5dd45b54fd8dff89d0971049573b1e4972aba47c583e6d000e9dbb6d",
+  "README.md": "e718ec35b7fb9a1244fc859bef0ae05cfcb12b5c8fdcb69fdec808372e890851",
+  "docs/architecture.md": "84b1f9cc945b3418cb186022fe48a0769badf293ac9a91b39c68dbaf3464cddd",
+  "docs/archive/dissertation-full.md": "4ea8102a51b588e8f3f3d6b50f2f273a81f66bfb49a8e0ea90ae19afb2a3945c",
+  "docs/dissertation.md": "a53f677d3e46d31e812cb5a83fe5dc27718af15beeb2eec3f0ea8776ad319214",
+  "docs/formalism.md": "da6574eb754d2565ae59a85423458ee696beae5442d26dca49d61abd517358ed",
+  "docs/research-plan.md": "21eb28ce588182dc1f9b55b2ed2394a397c8d21f703182e5bc752e436761fb22",
+  "docs/research/assurance.md": "87cb4f25a897f959f9bc040d89eac9da566997a8f6a23a116eb0ea34da90528a",
+  "docs/research/claim-audit.md": "b3b216fad05cdabf9477a1e9ba9d97175ba2a8b31af53633dae7bd4b0af736a2",
+  "docs/research/learning.md": "114a33b74bf17e59b5ac7adf1d43bbded8c2e6f45cf3c449b05a021fd796c1c1",
+  "docs/sprint-plan.md": "d0a17eaa0a1b600281615bc42c64897221a5a03f166cfeff24fbfaa9e65c4e94",
+  "docs/task-list.md": "f15860137103588f9af6ba47dce6c4d4dd08fb169868d3425dd7bd210a3bf984",
+  "scripts/documentation.test.mjs": "ceb780b9a233d01d582e914aeeb7056cdf72905f427fde9d07b800a41c119a85"
+}

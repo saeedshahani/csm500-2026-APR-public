@@ -1,0 +1,2427 @@
+{
+  "child": {
+    "final": {
+      "action_distributions": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "actions": 600,
+      "active_fraction": 0.78125,
+      "blocked_energy": 0,
+      "blocked_symbols": 7591,
+      "checked": 600,
+      "checker_disagreements": 0,
+      "checker_repairs": 0,
+      "code": [
+        1,
+        0
+      ],
+      "core_fractions": [
+        0.4140625,
+        0.390625
+      ],
+      "decoder_deterministic": true,
+      "detected_errors": 0,
+      "energy": 32115,
+      "epoch": 600,
+      "fidelity": 0.9770216526734423,
+      "harvests": 188,
+      "model_accuracy": 1.0,
+      "model_coverage": 1.0,
+      "model_records": 16,
+      "model_updates": 0,
+      "original_instances": {
+        "sequence": 0,
+        "template": 0
+      },
+      "program_creations": 9351,
+      "program_removals": 9251,
+      "program_roles": {
+        "0": 29,
+        "1": 71
+      },
+      "recent_correct": 100,
+      "recent_harvests": 12,
+      "recent_predictions": 100,
+      "recognition_updates": 0,
+      "source": 0
+    },
+    "founder_programs": 54,
+    "functional": true,
+    "new_checker_repairs": 0,
+    "new_recognition_updates": 0,
+    "remaining_founder_programs": 0,
+    "timeline": [
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 50,
+        "active_fraction": 0.765625,
+        "blocked_energy": 0,
+        "blocked_symbols": 522,
+        "checked": 50,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4140625,
+          0.390625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 15907,
+        "epoch": 50,
+        "fidelity": 0.9779411764705883,
+        "harvests": 20,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 903,
+        "program_removals": 805,
+        "program_roles": {
+          "0": 32,
+          "1": 66
+        },
+        "recent_correct": 50,
+        "recent_harvests": 20,
+        "recent_predictions": 50,
+        "recognition_updates": 0,
+        "source": 85824
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 100,
+        "active_fraction": 0.7890625,
+        "blocked_energy": 0,
+        "blocked_symbols": 1216,
+        "checked": 100,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.3984375,
+          0.4140625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 16741,
+        "epoch": 100,
+        "fidelity": 0.9766666666666667,
+        "harvests": 34,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 1722,
+        "program_removals": 1621,
+        "program_roles": {
+          "0": 28,
+          "1": 73
+        },
+        "recent_correct": 100,
+        "recent_harvests": 34,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 78656
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 150,
+        "active_fraction": 0.78125,
+        "blocked_energy": 0,
+        "blocked_symbols": 1872,
+        "checked": 150,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.3828125,
+          0.4375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 20142,
+        "epoch": 150,
+        "fidelity": 0.9796875,
+        "harvests": 53,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 2452,
+        "program_removals": 2352,
+        "program_roles": {
+          "0": 38,
+          "1": 62
+        },
+        "recent_correct": 100,
+        "recent_harvests": 33,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 68928
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 200,
+        "active_fraction": 0.8046875,
+        "blocked_energy": 0,
+        "blocked_symbols": 2463,
+        "checked": 200,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4296875,
+          0.3671875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 23036,
+        "epoch": 200,
+        "fidelity": 0.9800373134328357,
+        "harvests": 71,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 3243,
+        "program_removals": 3140,
+        "program_roles": {
+          "0": 38,
+          "1": 65
+        },
+        "recent_correct": 100,
+        "recent_harvests": 37,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 59712
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 250,
+        "active_fraction": 0.75,
+        "blocked_energy": 0,
+        "blocked_symbols": 3038,
+        "checked": 250,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.375,
+          0.4453125
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 29016,
+        "epoch": 250,
+        "fidelity": 0.9793303017775941,
+        "harvests": 95,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 3993,
+        "program_removals": 3897,
+        "program_roles": {
+          "0": 39,
+          "1": 57
+        },
+        "recent_correct": 100,
+        "recent_harvests": 42,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 47424
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 300,
+        "active_fraction": 0.8046875,
+        "blocked_energy": 0,
+        "blocked_symbols": 3635,
+        "checked": 300,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.3203125,
+          0.53125
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 30374,
+        "epoch": 300,
+        "fidelity": 0.9777083333333334,
+        "harvests": 110,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 4766,
+        "program_removals": 4663,
+        "program_roles": {
+          "0": 30,
+          "1": 73
+        },
+        "recent_correct": 100,
+        "recent_harvests": 39,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 39744
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 350,
+        "active_fraction": 0.8046875,
+        "blocked_energy": 0,
+        "blocked_symbols": 4386,
+        "checked": 350,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4609375,
+          0.3203125
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 31211,
+        "epoch": 350,
+        "fidelity": 0.9780917280917281,
+        "harvests": 124,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 5499,
+        "program_removals": 5396,
+        "program_roles": {
+          "0": 31,
+          "1": 72
+        },
+        "recent_correct": 100,
+        "recent_harvests": 29,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 32576
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 400,
+        "active_fraction": 0.8203125,
+        "blocked_energy": 0,
+        "blocked_symbols": 5049,
+        "checked": 400,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.3359375,
+          0.5078125
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 34091,
+        "epoch": 400,
+        "fidelity": 0.9782695374800638,
+        "harvests": 142,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 6198,
+        "program_removals": 6093,
+        "program_roles": {
+          "0": 31,
+          "1": 74
+        },
+        "recent_correct": 100,
+        "recent_harvests": 32,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 23360
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 450,
+        "active_fraction": 0.78125,
+        "blocked_energy": 0,
+        "blocked_symbols": 5747,
+        "checked": 450,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4453125,
+          0.34375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 39011,
+        "epoch": 450,
+        "fidelity": 0.9792663476874004,
+        "harvests": 164,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 6942,
+        "program_removals": 6842,
+        "program_roles": {
+          "0": 36,
+          "1": 64
+        },
+        "recent_correct": 100,
+        "recent_harvests": 40,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 12096
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 500,
+        "active_fraction": 0.7890625,
+        "blocked_energy": 0,
+        "blocked_symbols": 6310,
+        "checked": 500,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.3828125,
+          0.4375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 38841,
+        "epoch": 500,
+        "fidelity": 0.9799923780487805,
+        "harvests": 176,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 7728,
+        "program_removals": 7627,
+        "program_roles": {
+          "0": 39,
+          "1": 62
+        },
+        "recent_correct": 100,
+        "recent_harvests": 34,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 5952
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 550,
+        "active_fraction": 0.8046875,
+        "blocked_energy": 0,
+        "blocked_symbols": 6946,
+        "checked": 550,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.390625,
+          0.4140625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 38455,
+        "epoch": 550,
+        "fidelity": 0.9780917280917281,
+        "harvests": 188,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 8581,
+        "program_removals": 8478,
+        "program_roles": {
+          "0": 31,
+          "1": 72
+        },
+        "recent_correct": 100,
+        "recent_harvests": 24,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 0
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 600,
+        "active_fraction": 0.78125,
+        "blocked_energy": 0,
+        "blocked_symbols": 7591,
+        "checked": 600,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4140625,
+          0.390625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 0,
+        "energy": 32115,
+        "epoch": 600,
+        "fidelity": 0.9770216526734423,
+        "harvests": 188,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 0,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 9351,
+        "program_removals": 9251,
+        "program_roles": {
+          "0": 29,
+          "1": 71
+        },
+        "recent_correct": 100,
+        "recent_harvests": 12,
+        "recent_predictions": 100,
+        "recognition_updates": 0,
+        "source": 0
+      }
+    ]
+  },
+  "child_heldout": {
+    "deterministic": true,
+    "expected_passed": 512.0,
+    "passed": 512,
+    "scope": "exact prefix-agreement probability at frozen checkpoint; not continued noisy dynamics",
+    "total": 512
+  },
+  "environmental_agreement": true,
+  "native_steps": 8,
+  "native_trace_verified": true,
+  "parent": {
+    "final": {
+      "action_distributions": [
+        [
+          0.0,
+          1.0
+        ],
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "actions": 1600,
+      "active_fraction": 0.8359375,
+      "blocked_energy": 0,
+      "blocked_symbols": 0,
+      "checked": 1599,
+      "checker_disagreements": 1,
+      "checker_repairs": 1,
+      "code": [
+        1,
+        0
+      ],
+      "core_fractions": [
+        0.40625,
+        0.546875
+      ],
+      "decoder_deterministic": true,
+      "detected_errors": 219,
+      "energy": 41484,
+      "epoch": 1600,
+      "fidelity": 0.9816468253968254,
+      "harvests": 406,
+      "model_accuracy": 1.0,
+      "model_coverage": 1.0,
+      "model_records": 16,
+      "model_updates": 235,
+      "original_instances": {
+        "sequence": 0,
+        "template": 0
+      },
+      "program_creations": 21847,
+      "program_removals": 21740,
+      "program_roles": {
+        "0": 46,
+        "1": 61
+      },
+      "recent_correct": 100,
+      "recent_harvests": 36,
+      "recent_predictions": 100,
+      "recognition_updates": 81,
+      "source": 192128
+    },
+    "founder_programs": 0,
+    "functional": true,
+    "new_checker_repairs": 1,
+    "new_recognition_updates": 81,
+    "remaining_founder_programs": 0,
+    "timeline": [
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 50,
+        "active_fraction": 0.2265625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 50,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.0703125,
+          0.078125
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 4,
+        "energy": 33261,
+        "epoch": 50,
+        "fidelity": 0.7619047619047619,
+        "harvests": 7,
+        "model_accuracy": 0.8125,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 20,
+        "original_instances": {
+          "sequence": 0,
+          "template": 15
+        },
+        "program_creations": 266,
+        "program_removals": 237,
+        "program_roles": {
+          "0": 19,
+          "1": 10
+        },
+        "recent_correct": 30,
+        "recent_harvests": 7,
+        "recent_predictions": 34,
+        "recognition_updates": 22,
+        "source": 396416
+      },
+      {
+        "action_distributions": [
+          [
+            0.5,
+            0.5
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 100,
+        "active_fraction": 0.15625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 100,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          null,
+          0
+        ],
+        "core_fractions": [
+          0.046875,
+          0.0390625
+        ],
+        "decoder_deterministic": false,
+        "detected_errors": 13,
+        "energy": 32557,
+        "epoch": 100,
+        "fidelity": 0.5833333333333333,
+        "harvests": 18,
+        "model_accuracy": 0.5625,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 29,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 491,
+        "program_removals": 471,
+        "program_roles": {
+          "0": 10,
+          "1": 10
+        },
+        "recent_correct": 71,
+        "recent_harvests": 18,
+        "recent_predictions": 84,
+        "recognition_updates": 28,
+        "source": 390784
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 150,
+        "active_fraction": 0.21875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 150,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          1
+        ],
+        "core_fractions": [
+          0.140625,
+          0.0546875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 27,
+        "energy": 31358,
+        "epoch": 150,
+        "fidelity": 0.6234817813765182,
+        "harvests": 28,
+        "model_accuracy": 0.625,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 43,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 740,
+        "program_removals": 712,
+        "program_roles": {
+          "0": 17,
+          "1": 11
+        },
+        "recent_correct": 77,
+        "recent_harvests": 21,
+        "recent_predictions": 100,
+        "recognition_updates": 32,
+        "source": 385664
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 200,
+        "active_fraction": 0.2421875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 200,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          1
+        ],
+        "core_fractions": [
+          0.0625,
+          0.046875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 34,
+        "energy": 30664,
+        "epoch": 200,
+        "fidelity": 0.5702614379084967,
+        "harvests": 39,
+        "model_accuracy": 0.8125,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 50,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 948,
+        "program_removals": 917,
+        "program_roles": {
+          "0": 16,
+          "1": 15
+        },
+        "recent_correct": 79,
+        "recent_harvests": 21,
+        "recent_predictions": 100,
+        "recognition_updates": 36,
+        "source": 380032
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.5,
+            0.5
+          ]
+        ],
+        "actions": 250,
+        "active_fraction": 0.234375,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 250,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          null
+        ],
+        "core_fractions": [
+          0.03125,
+          0.03125
+        ],
+        "decoder_deterministic": false,
+        "detected_errors": 49,
+        "energy": 31514,
+        "epoch": 250,
+        "fidelity": 0.5277777777777778,
+        "harvests": 53,
+        "model_accuracy": 0.6875,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 65,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 1186,
+        "program_removals": 1156,
+        "program_roles": {
+          "0": 16,
+          "1": 14
+        },
+        "recent_correct": 78,
+        "recent_harvests": 25,
+        "recent_predictions": 100,
+        "recognition_updates": 42,
+        "source": 372864
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 300,
+        "active_fraction": 0.25,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 300,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          1
+        ],
+        "core_fractions": [
+          0.0390625,
+          0.0390625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 69,
+        "energy": 29283,
+        "epoch": 300,
+        "fidelity": 0.7428571428571429,
+        "harvests": 61,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 85,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 1423,
+        "program_removals": 1391,
+        "program_roles": {
+          "0": 13,
+          "1": 19
+        },
+        "recent_correct": 65,
+        "recent_harvests": 22,
+        "recent_predictions": 100,
+        "recognition_updates": 42,
+        "source": 368768
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 350,
+        "active_fraction": 0.171875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 350,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          1
+        ],
+        "core_fractions": [
+          0.0390625,
+          0.1640625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 75,
+        "energy": 28588,
+        "epoch": 350,
+        "fidelity": 0.6078431372549019,
+        "harvests": 72,
+        "model_accuracy": 0.625,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 91,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 1634,
+        "program_removals": 1612,
+        "program_roles": {
+          "0": 15,
+          "1": 7
+        },
+        "recent_correct": 74,
+        "recent_harvests": 19,
+        "recent_predictions": 100,
+        "recognition_updates": 48,
+        "source": 363136
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 400,
+        "active_fraction": 0.296875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 400,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          1
+        ],
+        "core_fractions": [
+          0.2734375,
+          0.1484375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 90,
+        "energy": 26871,
+        "epoch": 400,
+        "fidelity": 0.6899313501144164,
+        "harvests": 81,
+        "model_accuracy": 0.6875,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 106,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 1918,
+        "program_removals": 1880,
+        "program_roles": {
+          "0": 21,
+          "1": 17
+        },
+        "recent_correct": 79,
+        "recent_harvests": 20,
+        "recent_predictions": 100,
+        "recognition_updates": 54,
+        "source": 358528
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 450,
+        "active_fraction": 0.28125,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 450,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          0
+        ],
+        "core_fractions": [
+          0.1796875,
+          0.0390625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 98,
+        "energy": 24128,
+        "epoch": 450,
+        "fidelity": 0.662907268170426,
+        "harvests": 88,
+        "model_accuracy": 0.6875,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 114,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 2259,
+        "program_removals": 2223,
+        "program_roles": {
+          "0": 19,
+          "1": 17
+        },
+        "recent_correct": 77,
+        "recent_harvests": 16,
+        "recent_predictions": 100,
+        "recognition_updates": 58,
+        "source": 354944
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.5,
+            0.5
+          ]
+        ],
+        "actions": 500,
+        "active_fraction": 0.2109375,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 500,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          null
+        ],
+        "core_fractions": [
+          0.09375,
+          0.1328125
+        ],
+        "decoder_deterministic": false,
+        "detected_errors": 103,
+        "energy": 22945,
+        "epoch": 500,
+        "fidelity": 0.6166666666666667,
+        "harvests": 98,
+        "model_accuracy": 0.75,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 119,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 2443,
+        "program_removals": 2416,
+        "program_roles": {
+          "0": 13,
+          "1": 14
+        },
+        "recent_correct": 87,
+        "recent_harvests": 17,
+        "recent_predictions": 100,
+        "recognition_updates": 62,
+        "source": 349824
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 550,
+        "active_fraction": 0.203125,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 550,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          1
+        ],
+        "core_fractions": [
+          0.0390625,
+          0.25
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 119,
+        "energy": 21752,
+        "epoch": 550,
+        "fidelity": 0.6666666666666667,
+        "harvests": 108,
+        "model_accuracy": 0.625,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 135,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 2655,
+        "program_removals": 2629,
+        "program_roles": {
+          "0": 13,
+          "1": 13
+        },
+        "recent_correct": 79,
+        "recent_harvests": 20,
+        "recent_predictions": 100,
+        "recognition_updates": 64,
+        "source": 344704
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 600,
+        "active_fraction": 0.234375,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 600,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.015625,
+          0.5390625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 125,
+        "energy": 22085,
+        "epoch": 600,
+        "fidelity": 0.7985347985347986,
+        "harvests": 121,
+        "model_accuracy": 0.875,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 141,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 2906,
+        "program_removals": 2876,
+        "program_roles": {
+          "0": 11,
+          "1": 19
+        },
+        "recent_correct": 78,
+        "recent_harvests": 23,
+        "recent_predictions": 100,
+        "recognition_updates": 66,
+        "source": 338048
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 650,
+        "active_fraction": 0.28125,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 650,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          1
+        ],
+        "core_fractions": [
+          0.015625,
+          0.1953125
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 138,
+        "energy": 20381,
+        "epoch": 650,
+        "fidelity": 0.6278772378516624,
+        "harvests": 130,
+        "model_accuracy": 0.6875,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 154,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 3122,
+        "program_removals": 3086,
+        "program_roles": {
+          "0": 21,
+          "1": 15
+        },
+        "recent_correct": 81,
+        "recent_harvests": 22,
+        "recent_predictions": 100,
+        "recognition_updates": 70,
+        "source": 333440
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 700,
+        "active_fraction": 0.2890625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 700,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          1
+        ],
+        "core_fractions": [
+          0.015625,
+          0.46875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 164,
+        "energy": 17114,
+        "epoch": 700,
+        "fidelity": 0.7128205128205127,
+        "harvests": 136,
+        "model_accuracy": 0.6875,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 180,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 3390,
+        "program_removals": 3353,
+        "program_roles": {
+          "0": 13,
+          "1": 24
+        },
+        "recent_correct": 61,
+        "recent_harvests": 15,
+        "recent_predictions": 100,
+        "recognition_updates": 70,
+        "source": 330368
+      },
+      {
+        "action_distributions": [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 750,
+        "active_fraction": 0.2734375,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 750,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          0,
+          0
+        ],
+        "core_fractions": [
+          0.0625,
+          0.109375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 183,
+        "energy": 13866,
+        "epoch": 750,
+        "fidelity": 0.5384615384615385,
+        "harvests": 142,
+        "model_accuracy": 0.5,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 199,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 3660,
+        "program_removals": 3625,
+        "program_roles": {
+          "0": 24,
+          "1": 11
+        },
+        "recent_correct": 55,
+        "recent_harvests": 12,
+        "recent_predictions": 100,
+        "recognition_updates": 74,
+        "source": 327296
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0
+          ]
+        ],
+        "actions": 800,
+        "active_fraction": 0.21875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 800,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          1
+        ],
+        "core_fractions": [
+          0.109375,
+          0.015625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 204,
+        "energy": 11115,
+        "epoch": 800,
+        "fidelity": 0.6833333333333333,
+        "harvests": 149,
+        "model_accuracy": 0.6875,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 220,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 3888,
+        "program_removals": 3860,
+        "program_roles": {
+          "0": 18,
+          "1": 10
+        },
+        "recent_correct": 60,
+        "recent_harvests": 13,
+        "recent_predictions": 100,
+        "recognition_updates": 76,
+        "source": 323712
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 850,
+        "active_fraction": 0.7890625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 850,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4453125,
+          0.4765625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 206,
+        "energy": 7868,
+        "epoch": 850,
+        "fidelity": 0.9807410124724871,
+        "harvests": 155,
+        "model_accuracy": 0.8125,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 222,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 4431,
+        "program_removals": 4330,
+        "program_roles": {
+          "0": 45,
+          "1": 56
+        },
+        "recent_correct": 77,
+        "recent_harvests": 13,
+        "recent_predictions": 100,
+        "recognition_updates": 77,
+        "source": 320640
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 900,
+        "active_fraction": 0.90625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 900,
+        "checker_disagreements": 0,
+        "checker_repairs": 0,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.5,
+          0.46875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 206,
+        "energy": 6656,
+        "epoch": 900,
+        "fidelity": 0.9832589285714286,
+        "harvests": 165,
+        "model_accuracy": 0.8125,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 222,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 5625,
+        "program_removals": 5509,
+        "program_roles": {
+          "0": 62,
+          "1": 54
+        },
+        "recent_correct": 98,
+        "recent_harvests": 16,
+        "recent_predictions": 100,
+        "recognition_updates": 77,
+        "source": 315520
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 950,
+        "active_fraction": 0.90625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 949,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.5234375,
+          0.46875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 218,
+        "energy": 7518,
+        "epoch": 950,
+        "fidelity": 0.9829497016197783,
+        "harvests": 179,
+        "model_accuracy": 0.9375,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 234,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 6778,
+        "program_removals": 6662,
+        "program_roles": {
+          "0": 67,
+          "1": 49
+        },
+        "recent_correct": 87,
+        "recent_harvests": 24,
+        "recent_predictions": 100,
+        "recognition_updates": 77,
+        "source": 308352
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1000,
+        "active_fraction": 0.921875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 999,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.515625,
+          0.4609375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 9395,
+        "epoch": 1000,
+        "fidelity": 0.9829466032988537,
+        "harvests": 195,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 7953,
+        "program_removals": 7835,
+        "program_roles": {
+          "0": 71,
+          "1": 47
+        },
+        "recent_correct": 86,
+        "recent_harvests": 30,
+        "recent_predictions": 100,
+        "recognition_updates": 77,
+        "source": 300160
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1050,
+        "active_fraction": 0.9609375,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1049,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.5234375,
+          0.46875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 11273,
+        "epoch": 1050,
+        "fidelity": 0.9842431761786601,
+        "harvests": 211,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 9117,
+        "program_removals": 8994,
+        "program_roles": {
+          "0": 63,
+          "1": 60
+        },
+        "recent_correct": 99,
+        "recent_harvests": 32,
+        "recent_predictions": 100,
+        "recognition_updates": 77,
+        "source": 291968
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1100,
+        "active_fraction": 0.8984375,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1099,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.3828125,
+          0.5859375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 15168,
+        "epoch": 1100,
+        "fidelity": 0.9831635540464063,
+        "harvests": 231,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 10276,
+        "program_removals": 10161,
+        "program_roles": {
+          "0": 55,
+          "1": 60
+        },
+        "recent_correct": 100,
+        "recent_harvests": 36,
+        "recent_predictions": 100,
+        "recognition_updates": 77,
+        "source": 281728
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1150,
+        "active_fraction": 0.9296875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1149,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.453125,
+          0.515625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 17030,
+        "epoch": 1150,
+        "fidelity": 0.9832516339869282,
+        "harvests": 247,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 11382,
+        "program_removals": 11263,
+        "program_roles": {
+          "0": 70,
+          "1": 49
+        },
+        "recent_correct": 100,
+        "recent_harvests": 36,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 273536
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1200,
+        "active_fraction": 0.921875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1199,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4765625,
+          0.4765625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 18893,
+        "epoch": 1200,
+        "fidelity": 0.9830555555555556,
+        "harvests": 263,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 12530,
+        "program_removals": 12412,
+        "program_roles": {
+          "0": 48,
+          "1": 70
+        },
+        "recent_correct": 100,
+        "recent_harvests": 32,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 265344
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1250,
+        "active_fraction": 0.90625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1249,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.6875,
+          0.296875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 21779,
+        "epoch": 1250,
+        "fidelity": 0.9832589285714286,
+        "harvests": 281,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 13671,
+        "program_removals": 13555,
+        "program_roles": {
+          "0": 62,
+          "1": 54
+        },
+        "recent_correct": 100,
+        "recent_harvests": 34,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 256128
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1300,
+        "active_fraction": 0.921875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1299,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.3984375,
+          0.5859375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 23628,
+        "epoch": 1300,
+        "fidelity": 0.9834464043419266,
+        "harvests": 297,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 14851,
+        "program_removals": 14733,
+        "program_roles": {
+          "0": 53,
+          "1": 65
+        },
+        "recent_correct": 100,
+        "recent_harvests": 34,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 247936
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1350,
+        "active_fraction": 0.9140625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1349,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.65625,
+          0.3125
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 28036,
+        "epoch": 1350,
+        "fidelity": 0.9826049453709028,
+        "harvests": 318,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 16032,
+        "program_removals": 15915,
+        "program_roles": {
+          "0": 72,
+          "1": 45
+        },
+        "recent_correct": 100,
+        "recent_harvests": 37,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 237184
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1400,
+        "active_fraction": 0.8984375,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1399,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.6640625,
+          0.2890625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 31964,
+        "epoch": 1400,
+        "fidelity": 0.9819696969696969,
+        "harvests": 338,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 17234,
+        "program_removals": 17119,
+        "program_roles": {
+          "0": 73,
+          "1": 42
+        },
+        "recent_correct": 100,
+        "recent_harvests": 41,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 226944
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1450,
+        "active_fraction": 0.9296875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1449,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.46875,
+          0.4765625
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 33338,
+        "epoch": 1450,
+        "fidelity": 0.9837129237288136,
+        "harvests": 353,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 18357,
+        "program_removals": 18238,
+        "program_roles": {
+          "0": 57,
+          "1": 62
+        },
+        "recent_correct": 100,
+        "recent_harvests": 35,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 219264
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1500,
+        "active_fraction": 0.921875,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1499,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4921875,
+          0.46875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 35710,
+        "epoch": 1500,
+        "fidelity": 0.9834464043419266,
+        "harvests": 370,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 19533,
+        "program_removals": 19415,
+        "program_roles": {
+          "0": 65,
+          "1": 53
+        },
+        "recent_correct": 100,
+        "recent_harvests": 32,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 210560
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1550,
+        "active_fraction": 0.9140625,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1549,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.4375,
+          0.5234375
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 36545,
+        "epoch": 1550,
+        "fidelity": 0.9834609075997813,
+        "harvests": 384,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 20707,
+        "program_removals": 20590,
+        "program_roles": {
+          "0": 57,
+          "1": 60
+        },
+        "recent_correct": 100,
+        "recent_harvests": 31,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 203392
+      },
+      {
+        "action_distributions": [
+          [
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0
+          ]
+        ],
+        "actions": 1600,
+        "active_fraction": 0.8359375,
+        "blocked_energy": 0,
+        "blocked_symbols": 0,
+        "checked": 1599,
+        "checker_disagreements": 1,
+        "checker_repairs": 1,
+        "code": [
+          1,
+          0
+        ],
+        "core_fractions": [
+          0.40625,
+          0.546875
+        ],
+        "decoder_deterministic": true,
+        "detected_errors": 219,
+        "energy": 41484,
+        "epoch": 1600,
+        "fidelity": 0.9816468253968254,
+        "harvests": 406,
+        "model_accuracy": 1.0,
+        "model_coverage": 1.0,
+        "model_records": 16,
+        "model_updates": 235,
+        "original_instances": {
+          "sequence": 0,
+          "template": 0
+        },
+        "program_creations": 21847,
+        "program_removals": 21740,
+        "program_roles": {
+          "0": 46,
+          "1": 61
+        },
+        "recent_correct": 100,
+        "recent_harvests": 36,
+        "recent_predictions": 100,
+        "recognition_updates": 81,
+        "source": 192128
+      }
+    ]
+  },
+  "same_code": true,
+  "schema": "organization-flow-v2",
+  "scope": "Host acquisition and inheritance; admitted finite-word native execution.",
+  "seed": 920003,
+  "separate_process_trace_verified": true
+}

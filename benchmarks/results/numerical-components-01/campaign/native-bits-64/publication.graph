@@ -1,0 +1,14 @@
+program {
+rule publish {
+atom publish_zero = Nat(); rank publish_rank = publish_zero;
+mode publish_mode = ModeObject; revision publish_version; active publish_enabled;
+atom publish_p = Constructor("T2Component");
+atom publish_v = PatternVariable[Constructor] Free;
+atom publish_pending = Record[ObjectLink]("pending",publish_p,publish_v);
+atom publish_done = Record[ObjectLink]("certified",publish_p,publish_v);
+lhs { publish_lhs0: publish_p; publish_lhs1: publish_v; publish_lhs2: publish_pending; } rhs { publish_rhs0: publish_p; publish_rhs1: publish_v; publish_rhs2: publish_done; }
+}
+atom component = Constructor("T2Component");
+atom value = Constructor("{\"assumptions\":[\"complete sampled input stream\",\"protected task and host checker\",\"serialized host calls\",\"logical clock\",\"checked native CLI\"],\"checked_at\":0,\"current\":{\"active\":true,\"boundary\":\"9223372036854775807/9223372036854775808\",\"epoch\":0,\"fault\":null,\"revision\":0,\"task_digest\":\"78263a604bd9a456fd47f6b456ae2237ff1997840b9d2a3846baecfd1ad8eb25\"},\"max_age\":32,\"observed_sequence\":0,\"observed_variation\":\"0\",\"radius_now\":\"1/18446744073709551616\",\"receipt\":{\"bits\":64,\"boundary\":\"9223372036854775807/9223372036854775808\",\"epoch\":0,\"identity\":\"precision-64\",\"mode\":\"direct\",\"q\":\"3/4\",\"radius\":\"1/18446744073709551616\",\"residual\":\"1/73786976294838206464\",\"revision\":0,\"schema\":\"t2-receipt-v1\",\"sequence\":0,\"steps\":128,\"task\":[[{\"boundary\":\"1/8\",\"reward\":\"1/8\",\"weights\":[\"1/2\",\"1/4\"]},{\"boundary\":\"1/4\",\"reward\":\"1/8\",\"weights\":[\"1/4\",\"1/4\"]}],[{\"boundary\":\"1/8\",\"reward\":\"1/4\",\"weights\":[\"1/4\",\"1/4\"]},{\"boundary\":\"1/2\",\"reward\":\"1/8\",\"weights\":[\"1/8\",\"1/4\"]}]],\"task_digest\":\"78263a604bd9a456fd47f6b456ae2237ff1997840b9d2a3846baecfd1ad8eb25\",\"tick\":0,\"values\":[\"9223372036854775807/9223372036854775808\",\"9223372036854775807/9223372036854775808\"],\"variation\":\"0\"},\"receipt_digest\":\"cbd7e3c161a535a8e65c8780d7e6c421e11b165607b07b1f5e45bc2074ea8890\",\"schema\":\"t2-publication-v1\",\"status\":\"certified\",\"tolerance\":\"1/9223372036854775808\"}");
+atom pending = Record[ObjectLink]("pending",component,value);
+}

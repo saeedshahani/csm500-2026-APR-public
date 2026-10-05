@@ -1,0 +1,946 @@
+{
+  "complete_lineages": {
+    "32": {
+      "of_all_parents": 8,
+      "of_functional_parents": 4,
+      "seeds": []
+    },
+    "64": {
+      "of_all_parents": 8,
+      "of_functional_parents": 4,
+      "seeds": [
+        920003,
+        920081
+      ]
+    }
+  },
+  "experimental_unit": "seed lineage; paired conditions, reused length4 runs, timepoints and children are not independent",
+  "groups": {
+    "ablation-common_fault": {
+      "actions_delta": [
+        179,
+        48,
+        317,
+        685,
+        110,
+        139,
+        604,
+        235
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 8,
+      "harvest_delta": [
+        29,
+        8,
+        10,
+        19,
+        10,
+        8,
+        18,
+        11
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-complete": {
+      "actions_delta": [
+        750,
+        48,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        251,
+        8,
+        235,
+        187,
+        195,
+        252,
+        199,
+        222
+      ],
+      "met_criteria": 4,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-no_checker_renewal": {
+      "actions_delta": [
+        114,
+        36,
+        515,
+        750,
+        195,
+        163,
+        714,
+        255
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 7,
+      "harvest_delta": [
+        13,
+        5,
+        59,
+        82,
+        31,
+        14,
+        45,
+        16
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-no_copying": {
+      "actions_delta": [
+        275,
+        65,
+        624,
+        750,
+        215,
+        389,
+        750,
+        440
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 6,
+      "harvest_delta": [
+        48,
+        11,
+        75,
+        86,
+        32,
+        63,
+        91,
+        54
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 8,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-no_feedback": {
+      "actions_delta": [
+        106,
+        32,
+        361,
+        750,
+        86,
+        219,
+        750,
+        263
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 6,
+      "harvest_delta": [
+        11,
+        4,
+        21,
+        47,
+        4,
+        28,
+        76,
+        18
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-no_learning": {
+      "actions_delta": [
+        114,
+        48,
+        313,
+        685,
+        110,
+        139,
+        604,
+        235
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 8,
+      "harvest_delta": [
+        13,
+        8,
+        9,
+        19,
+        10,
+        8,
+        18,
+        11
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-no_planning": {
+      "actions_delta": [
+        114,
+        16,
+        478,
+        750,
+        106,
+        118,
+        750,
+        304
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 6,
+      "harvest_delta": [
+        13,
+        0,
+        50,
+        61,
+        9,
+        3,
+        69,
+        28
+      ],
+      "met_criteria": 1,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-no_recognition_revision": {
+      "actions_delta": [
+        649,
+        32,
+        750,
+        750,
+        750,
+        750,
+        750,
+        750
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 2,
+      "harvest_delta": [
+        145,
+        4,
+        149,
+        191,
+        172,
+        179,
+        170,
+        199
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-no_resources": {
+      "actions_delta": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 8,
+      "harvest_delta": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 0
+    },
+    "ablation-single_checker": {
+      "actions_delta": [
+        179,
+        48,
+        317,
+        685,
+        110,
+        139,
+        604,
+        235
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 8,
+      "harvest_delta": [
+        29,
+        8,
+        10,
+        19,
+        10,
+        8,
+        18,
+        11
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 0
+    },
+    "acquisition-fixed": {
+      "actions_delta": [
+        1600,
+        1600,
+        713,
+        1600,
+        1600,
+        1600,
+        1600,
+        1600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        411,
+        385,
+        106,
+        393,
+        393,
+        460,
+        342,
+        390
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "acquisition-fixed_unscrambled": {
+      "actions_delta": [
+        1600,
+        1600,
+        713,
+        1600,
+        1600,
+        1600,
+        1600,
+        1600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        426,
+        402,
+        106,
+        409,
+        414,
+        473,
+        355,
+        407
+      ],
+      "met_criteria": 3,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "acquisition-generic": {
+      "actions_delta": [
+        1272,
+        1442,
+        1600,
+        1138,
+        1040,
+        1600,
+        1404,
+        1571
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 6,
+      "harvest_delta": [
+        244,
+        286,
+        329,
+        211,
+        187,
+        345,
+        277,
+        318
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 8,
+      "symbol_blocked_cases": 0
+    },
+    "acquisition-learned": {
+      "actions_delta": [
+        1600,
+        898,
+        1600,
+        1600,
+        1600,
+        1600,
+        1600,
+        1600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        406,
+        152,
+        443,
+        477,
+        352,
+        418,
+        470,
+        409
+      ],
+      "met_criteria": 4,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "acquisition-random": {
+      "actions_delta": [
+        1600,
+        1600,
+        1600,
+        1332,
+        1004,
+        1600,
+        1600,
+        895
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 3,
+      "harvest_delta": [
+        345,
+        348,
+        332,
+        259,
+        178,
+        331,
+        344,
+        151
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 7,
+      "symbol_blocked_cases": 0
+    },
+    "inheritance-altered_code": {
+      "actions_delta": [
+        600,
+        0,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        151,
+        0,
+        170,
+        132,
+        151,
+        182,
+        152,
+        158
+      ],
+      "met_criteria": 1,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 7
+    },
+    "inheritance-both32": {
+      "actions_delta": [
+        600,
+        0,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        188,
+        0,
+        170,
+        141,
+        170,
+        182,
+        153,
+        187
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 7
+    },
+    "inheritance-both64": {
+      "actions_delta": [
+        600,
+        0,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        188,
+        0,
+        170,
+        153,
+        157,
+        182,
+        156,
+        187
+      ],
+      "met_criteria": 2,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 7
+    },
+    "inheritance-model_only": {
+      "actions_delta": [
+        135,
+        0,
+        123,
+        119,
+        115,
+        127,
+        114,
+        106
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 8,
+      "harvest_delta": [
+        10,
+        0,
+        7,
+        6,
+        5,
+        8,
+        5,
+        3
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 0
+    },
+    "inheritance-no_model": {
+      "actions_delta": [
+        600,
+        0,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        188,
+        0,
+        170,
+        153,
+        204,
+        182,
+        156,
+        187
+      ],
+      "met_criteria": 3,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 7
+    },
+    "inheritance-sequence": {
+      "actions_delta": [
+        600,
+        0,
+        600,
+        600,
+        362,
+        572,
+        600,
+        600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 3,
+      "harvest_delta": [
+        149,
+        0,
+        166,
+        134,
+        66,
+        118,
+        138,
+        138
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 0
+    },
+    "inheritance-template": {
+      "actions_delta": [
+        600,
+        0,
+        600,
+        600,
+        600,
+        600,
+        600,
+        600
+      ],
+      "cases": 8,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        141,
+        0,
+        170,
+        153,
+        160,
+        182,
+        148,
+        187
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 7
+    },
+    "length-4": {
+      "actions_delta": [
+        1600,
+        898,
+        1600
+      ],
+      "cases": 3,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        406,
+        152,
+        443
+      ],
+      "met_criteria": 2,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0
+      ],
+      "repairs": 2,
+      "symbol_blocked_cases": 0
+    },
+    "length-6": {
+      "actions_delta": [
+        992,
+        1600,
+        814
+      ],
+      "cases": 3,
+      "energy_blocked_cases": 2,
+      "harvest_delta": [
+        175,
+        454,
+        131
+      ],
+      "met_criteria": 1,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0
+      ],
+      "repairs": 2,
+      "symbol_blocked_cases": 0
+    },
+    "length-8": {
+      "actions_delta": [
+        563,
+        656,
+        765
+      ],
+      "cases": 3,
+      "energy_blocked_cases": 3,
+      "harvest_delta": [
+        69,
+        92,
+        119
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0
+      ],
+      "repairs": 0,
+      "symbol_blocked_cases": 0
+    },
+    "scarcity-0.05": {
+      "actions_delta": [
+        882,
+        843,
+        1259
+      ],
+      "cases": 3,
+      "energy_blocked_cases": 3,
+      "harvest_delta": [
+        148,
+        138,
+        241
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0
+      ],
+      "repairs": 1,
+      "symbol_blocked_cases": 3
+    },
+    "scarcity-0.15": {
+      "actions_delta": [
+        1450,
+        1600,
+        1600
+      ],
+      "cases": 3,
+      "energy_blocked_cases": 1,
+      "harvest_delta": [
+        288,
+        345,
+        341
+      ],
+      "met_criteria": 0,
+      "remaining_founder_programs": [
+        0,
+        0,
+        0
+      ],
+      "repairs": 3,
+      "symbol_blocked_cases": 3
+    }
+  },
+  "population_attempts_executed": 24115200,
+  "stored_conditions": 191
+}

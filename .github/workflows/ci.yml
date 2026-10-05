@@ -12,6 +12,19 @@ jobs:
       - run: cargo fmt --all -- --check
       - run: cargo clippy --workspace --all-targets --locked -- -D warnings
       - run: cargo test --workspace --locked
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Acquired organization and native model correspondence
+        run: |
+          cargo build --locked -p cli
+          ORGANIZATION_NATIVE=target/debug/cli python3 -m unittest discover -s tests/organization -v
+          python3 scripts/organization-study.py verify benchmarks/results/organization-02
+          python3 scripts/organization-rust-study.py --cli target/debug/cli --output /tmp/organization-rust-correspondence.json
+      - name: Checked numerical component regression and frozen evidence
+        run: |
+          python3 -B -m unittest discover -s scripts/numerical_components -p 'test_*.py' -v
+          python3 benchmarks/results/numerical-components-01/source/review-response/reproduce.py --verify benchmarks/results/numerical-components-01
       - uses: actions/setup-node@v4
         with:
           node-version: '24.21.0'
@@ -88,6 +101,7 @@ jobs:
           curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst --output "$proof_tools/lean.tar.zst"
           tar --zstd -xf "$proof_tools/lean.tar.zst" -C "$proof_tools"
           LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" node scripts/admission-study.mjs verify benchmarks/results/admission-01 --proof
+          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/organization/Composition.lean
       - name: Check production WebAssembly dependencies
         run: |
           rustup target add wasm32-unknown-unknown --toolchain 1.85.0

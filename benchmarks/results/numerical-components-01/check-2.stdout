@@ -1,0 +1,25 @@
+{
+  "numerical_cases": 144,
+  "exact_bound_checks": 720,
+  "interval_enclosure_checks": 720,
+  "native_cases": 26,
+  "sampling_counterexample": {
+    "observed_samples": [
+      "1/4",
+      "1/4"
+    ],
+    "possible_unobserved_path": [
+      "1/4",
+      "1",
+      "1/4"
+    ],
+    "observed_variation": "0",
+    "actual_path_variation": "3/2",
+    "conclusion": "monitor covers submitted samples, not unsensed changes"
+  },
+  "status_counts": {
+    "certified": 6,
+    "uncertified": 15,
+    "stale": 5
+  }
+}

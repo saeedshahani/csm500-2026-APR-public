@@ -1,0 +1,14 @@
+program {
+rule publish {
+atom publish_zero = Nat(); rank publish_rank = publish_zero;
+mode publish_mode = ModeObject; revision publish_version; active publish_enabled;
+atom publish_p = Constructor("T2Component");
+atom publish_v = PatternVariable[Constructor] Free;
+atom publish_pending = Record[ObjectLink]("pending",publish_p,publish_v);
+atom publish_done = Record[ObjectLink]("uncertified",publish_p,publish_v);
+lhs { publish_lhs0: publish_p; publish_lhs1: publish_v; publish_lhs2: publish_pending; } rhs { publish_rhs0: publish_p; publish_rhs1: publish_v; publish_rhs2: publish_done; }
+}
+atom component = Constructor("T2Component");
+atom value = Constructor("{\"assumptions\":[\"complete sampled input stream\",\"protected task and host checker\",\"serialized host calls\",\"logical clock\",\"checked native CLI\"],\"checked_at\":1,\"current\":{\"active\":true,\"boundary\":\"7/16\",\"epoch\":0,\"fault\":null,\"revision\":0,\"task_digest\":\"f15e1f56f19ffeab0e55d176ac1c854a038f39fd6ab93e00884ed413063b2861\"},\"max_age\":32,\"observed_sequence\":1,\"observed_variation\":\"1/8\",\"radius_now\":\"1/32\",\"receipt\":{\"bits\":24,\"boundary\":\"9/16\",\"epoch\":0,\"identity\":\"workflow-1-0\",\"mode\":\"compiled\",\"q\":\"3/4\",\"radius\":\"0\",\"residual\":\"0\",\"revision\":0,\"schema\":\"t2-receipt-v1\",\"sequence\":0,\"steps\":64,\"task\":[[{\"boundary\":\"0\",\"reward\":\"3/16\",\"weights\":[\"3/4\"]},{\"boundary\":\"1/8\",\"reward\":\"5/16\",\"weights\":[\"1/2\"]}]],\"task_digest\":\"f15e1f56f19ffeab0e55d176ac1c854a038f39fd6ab93e00884ed413063b2861\",\"tick\":0,\"values\":[\"49/64\"],\"variation\":\"0\"},\"receipt_digest\":\"d36f5e2ef04e04add13eec63ac508ed56d3467865dc853a6fc7ef2cd13686d72\",\"schema\":\"t2-publication-v1\",\"status\":\"uncertified\",\"tolerance\":\"1/1000\"}");
+atom pending = Record[ObjectLink]("pending",component,value);
+}

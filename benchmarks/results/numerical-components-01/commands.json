@@ -1,0 +1,53 @@
+[
+  {
+    "argv": [
+      "/private/tmp/t2-review-response-fresh-20261005/bin/python",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/docs/research/stretch/T2-20261003T230629Z-91440d19/review-response/evidence-08/source/numerical_components",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "/private/tmp/reflective-f5-lean.OiwPdI/lean-4.19.0-darwin_aarch64/bin/lake",
+      "--dir",
+      "/private/tmp/t2-quantitative-mathlib-20261005",
+      "env",
+      "lean",
+      "/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/docs/research/stretch/T2-20261003T230629Z-91440d19/review-response/evidence-08/source/review-response/LocalCycles.lean"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "/private/tmp/t2-review-response-fresh-20261005/bin/python",
+      "-B",
+      "/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/docs/research/stretch/T2-20261003T230629Z-91440d19/review-response/evidence-08/source/review-response/experiment.py",
+      "--out",
+      "/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/docs/research/stretch/T2-20261003T230629Z-91440d19/review-response/evidence-08/campaign",
+      "--cli",
+      "/private/tmp/t2-review-native-current-build/debug/cli"
+    ],
+    "exit": 0
+  },
+  {
+    "argv": [
+      "/private/tmp/t2-review-response-fresh-20261005/bin/python",
+      "-B",
+      "/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/docs/research/stretch/T2-20261003T230629Z-91440d19/review-response/evidence-08/source/numerical_components/adapter.py",
+      "/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/docs/research/stretch/T2-20261003T230629Z-91440d19/review-response/evidence-08/source/numerical_components/workflow-request.json",
+      "--cli",
+      "/private/tmp/t2-review-native-current-build/debug/cli",
+      "--out",
+      "/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/docs/research/stretch/T2-20261003T230629Z-91440d19/review-response/evidence-08/cli-example"
+    ],
+    "exit": 0
+  }
+]

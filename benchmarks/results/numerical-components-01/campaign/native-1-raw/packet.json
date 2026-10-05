@@ -1,0 +1,64 @@
+{
+  "schema": "t2-publication-v1",
+  "receipt": {
+    "bits": 24,
+    "boundary": "9/16",
+    "epoch": 0,
+    "identity": "workflow-1-0",
+    "mode": "raw",
+    "q": "3/4",
+    "radius": "1/8388608",
+    "residual": "1/33554432",
+    "revision": 0,
+    "schema": "t2-receipt-v1",
+    "sequence": 0,
+    "steps": 64,
+    "task": [
+      [
+        {
+          "boundary": "0",
+          "reward": "3/16",
+          "weights": [
+            "3/4"
+          ]
+        },
+        {
+          "boundary": "1/8",
+          "reward": "5/16",
+          "weights": [
+            "1/2"
+          ]
+        }
+      ]
+    ],
+    "task_digest": "f15e1f56f19ffeab0e55d176ac1c854a038f39fd6ab93e00884ed413063b2861",
+    "tick": 0,
+    "values": [
+      "12845055/16777216"
+    ],
+    "variation": "0"
+  },
+  "receipt_digest": "7c29f267f668d7fedbcb991bb5a6df0cd7e84c034eba79aced4668aa18fe8c0b",
+  "status": "uncertified",
+  "radius_now": "262145/8388608",
+  "tolerance": "1/1000",
+  "checked_at": 1,
+  "max_age": 32,
+  "observed_sequence": 1,
+  "observed_variation": "1/8",
+  "current": {
+    "epoch": 0,
+    "revision": 0,
+    "task_digest": "f15e1f56f19ffeab0e55d176ac1c854a038f39fd6ab93e00884ed413063b2861",
+    "boundary": "7/16",
+    "active": true,
+    "fault": null
+  },
+  "assumptions": [
+    "complete sampled input stream",
+    "protected task and host checker",
+    "serialized host calls",
+    "logical clock",
+    "checked native CLI"
+  ]
+}

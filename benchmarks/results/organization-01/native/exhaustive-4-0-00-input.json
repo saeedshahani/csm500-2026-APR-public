@@ -1,0 +1,1 @@
+{"start": "0", "states": ["0", "1"], "transitions": [{"action": 0, "from": "0", "target": "0"}, {"action": 1, "from": "0", "target": "0"}, {"action": 0, "from": "1", "target": "1"}, {"action": 1, "from": "1", "target": "0"}], "word": [0, 0]}

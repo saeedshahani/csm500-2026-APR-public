@@ -1,0 +1,201 @@
+{
+  "states": [
+    "e0",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7"
+  ],
+  "start": "e7",
+  "transitions": [
+    {
+      "from": "e1",
+      "action": 0,
+      "target": "e5",
+      "witness_epoch": 914,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 534,
+      "revision": 14
+    },
+    {
+      "from": "e2",
+      "action": 1,
+      "target": "e6",
+      "witness_epoch": 917,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 525,
+      "revision": 15
+    },
+    {
+      "from": "e6",
+      "action": 0,
+      "target": "e2",
+      "witness_epoch": 912,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 532,
+      "revision": 12
+    },
+    {
+      "from": "e4",
+      "action": 0,
+      "target": "e6",
+      "witness_epoch": 909,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 531,
+      "revision": 12
+    },
+    {
+      "from": "e0",
+      "action": 0,
+      "target": "e4",
+      "witness_epoch": 902,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 530,
+      "revision": 16
+    },
+    {
+      "from": "e3",
+      "action": 0,
+      "target": "e0",
+      "witness_epoch": 901,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 529,
+      "revision": 14
+    },
+    {
+      "from": "e7",
+      "action": 0,
+      "target": "e3",
+      "witness_epoch": 906,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 594,
+      "revision": 16
+    },
+    {
+      "from": "e5",
+      "action": 0,
+      "target": "e7",
+      "witness_epoch": 929,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 599,
+      "revision": 14
+    },
+    {
+      "from": "e1",
+      "action": 1,
+      "target": "e2",
+      "witness_epoch": 916,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 524,
+      "revision": 16
+    },
+    {
+      "from": "e5",
+      "action": 1,
+      "target": "e1",
+      "witness_epoch": 771,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 507,
+      "revision": 20
+    },
+    {
+      "from": "e7",
+      "action": 1,
+      "target": "e5",
+      "witness_epoch": 964,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 598,
+      "revision": 18
+    },
+    {
+      "from": "e3",
+      "action": 1,
+      "target": "e7",
+      "witness_epoch": 753,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 595,
+      "revision": 12
+    },
+    {
+      "from": "e0",
+      "action": 1,
+      "target": "e3",
+      "witness_epoch": 904,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 528,
+      "revision": 18
+    },
+    {
+      "from": "e4",
+      "action": 1,
+      "target": "e0",
+      "witness_epoch": 799,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 527,
+      "revision": 12
+    },
+    {
+      "from": "e6",
+      "action": 1,
+      "target": "e4",
+      "witness_epoch": 910,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 526,
+      "revision": 16
+    },
+    {
+      "from": "e2",
+      "action": 0,
+      "target": "e1",
+      "witness_epoch": 913,
+      "witness_clock": [
+        920003
+      ],
+      "last_checked": 533,
+      "revision": 10
+    }
+  ],
+  "word": [
+    0,
+    1,
+    1,
+    0,
+    0,
+    1,
+    0,
+    1
+  ]
+}

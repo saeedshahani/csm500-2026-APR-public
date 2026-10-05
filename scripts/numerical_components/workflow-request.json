@@ -1,0 +1,46 @@
+{
+  "identity": "workflow-success",
+  "task": [
+    [
+      {
+        "weights": [
+          "1/2",
+          "1/4"
+        ],
+        "reward": "1/8",
+        "boundary": "1/8"
+      },
+      {
+        "weights": [
+          "1/4",
+          "1/4"
+        ],
+        "reward": "1/8",
+        "boundary": "1/4"
+      }
+    ],
+    [
+      {
+        "weights": [
+          "1/4",
+          "1/4"
+        ],
+        "reward": "1/4",
+        "boundary": "1/8"
+      },
+      {
+        "weights": [
+          "1/8",
+          "1/4"
+        ],
+        "reward": "1/8",
+        "boundary": "1/2"
+      }
+    ]
+  ],
+  "boundary": "3/8",
+  "mode": "compiled",
+  "steps": 128,
+  "bits": 24,
+  "tolerance": "1/1000"
+}

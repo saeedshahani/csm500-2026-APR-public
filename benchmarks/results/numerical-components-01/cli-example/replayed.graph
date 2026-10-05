@@ -1,0 +1,22 @@
+// verified trace state: 1; historical inspection only
+program {
+  atom a0 = RuleHead;
+  atom a1 = Nat();
+  atom a2 = Record[Rank](a0, a1);
+  atom a3 = Record[ModeObject](a0);
+  atom a4 = Record[Revision](a0);
+  atom a5 = Record[Active](a0);
+  atom a6 = Constructor("T2Component");
+  atom a7 = PatternVariable[Constructor] Free;
+  atom a8 = Record[ObjectLink]("pending", a6, a7);
+  atom a9 = Record[ObjectLink]("certified", a6, a7);
+  atom a10 = Record[Lhs](a0, a6);
+  atom a11 = Record[Lhs](a0, a7);
+  atom a12 = Record[Lhs](a0, a8);
+  atom a13 = Record[Rhs](a0, a6);
+  atom a14 = Record[Rhs](a0, a7);
+  atom a15 = Record[Rhs](a0, a9);
+  atom a16 = Constructor("T2Component");
+  atom a17 = Constructor("{\"assumptions\":[\"complete sampled input stream\",\"protected task and host checker\",\"serialized host calls\",\"logical clock\",\"checked native CLI\"],\"checked_at\":0,\"current\":{\"active\":true,\"boundary\":\"3/8\",\"epoch\":0,\"fault\":null,\"revision\":0,\"task_digest\":\"78263a604bd9a456fd47f6b456ae2237ff1997840b9d2a3846baecfd1ad8eb25\"},\"max_age\":32,\"observed_sequence\":0,\"observed_variation\":\"0\",\"radius_now\":\"1/8388608\",\"receipt\":{\"bits\":24,\"boundary\":\"3/8\",\"epoch\":0,\"identity\":\"workflow-success\",\"mode\":\"compiled\",\"q\":\"3/4\",\"radius\":\"1/8388608\",\"residual\":\"1/33554432\",\"revision\":0,\"schema\":\"t2-receipt-v1\",\"sequence\":0,\"steps\":128,\"task\":[[{\"boundary\":\"1/8\",\"reward\":\"1/8\",\"weights\":[\"1/2\",\"1/4\"]},{\"boundary\":\"1/4\",\"reward\":\"1/8\",\"weights\":[\"1/4\",\"1/4\"]}],[{\"boundary\":\"1/8\",\"reward\":\"1/4\",\"weights\":[\"1/4\",\"1/4\"]},{\"boundary\":\"1/2\",\"reward\":\"1/8\",\"weights\":[\"1/8\",\"1/4\"]}]],\"task_digest\":\"78263a604bd9a456fd47f6b456ae2237ff1997840b9d2a3846baecfd1ad8eb25\",\"tick\":0,\"values\":[\"5452595/8388608\",\"2569011/4194304\"],\"variation\":\"0\"},\"receipt_digest\":\"348b33525d811853b5260c54f029721f20de8f234fd5dc17993a7ae06ae639e3\",\"schema\":\"t2-publication-v1\",\"status\":\"certified\",\"tolerance\":\"1/1000\"}");
+  atom a18 = Record[ObjectLink]("certified", a16, a17);
+}

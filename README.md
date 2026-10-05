@@ -10,13 +10,17 @@ The optional [local calendar learner](platform/README.md#local-learned-calendar-
 
 Optional [adaptive workflow contracts](platform/README.md#adaptive-workflows-with-stability-contracts) check a restricted class of graph-resident routing rules and run persistent tasks across body revisions, including bounded task branching. The native CLI/API and browser Projects panel report completion separately from normal form, resource limits and unsupported inputs. The workflow panel is available in hosted Projects and through the local API; its results are ephemeral rather than saved jobs.
 
+The Rust [organization application](docs/research/learning.md#acquired-representations-and-renewable-organization) combines acquired predictions, renewable checking, recognition revision and inheritance. Run `cargo run --locked -p cli -- organization-run examples/organization/renewal.json --output /tmp/organization-report.json` with a new output path. The checked request runs a parent and child, then executes the child's action table through admitted graph rewrites. The report contains complete states, measurements and a portable native trace. No Python runtime or research directory is required. Population transitions remain a distinct application law; they are not relabelled as graph-admission events.
+
 For the browser's concepts and practical views, read [Understanding the graph workbench](docs/guides/workbench.md). It explains data, rules, execution history, stopping conditions and large-dataset limits without requiring source-code knowledge.
 
 The [example catalogue and capability audit](examples/README.md) indexes eighteen complete programs across all seven required research categories and the practical work-item profiles. It records exact run settings, expected results, independent evidence and limitations. The browser uses the same manifest: choose an example, apply its settings, then load and run it.
 
+The optional [checked numerical adapter](scripts/numerical_components/README.md) computes workflow success probabilities with checked error bounds and replayable native publication. It distinguishes certified, uncertified and stale answers while tasks and inputs change. Numerical arithmetic remains in a bounded local Python host; this is not a browser or hosted service.
+
 New to the project? Start with [`docs/explainers/simple.md`](docs/explainers/simple.md) — a plain-language explanation of what the work is and where it stands, written for a general reader rather than a marker.
 
-- [`docs/project-proposal.md`](docs/project-proposal.md) — approved research baseline and fixed six-sprint timeline.
+- [`docs/project-proposal.md`](docs/project-proposal.md) — immutable historical research baseline, restored byte-for-byte from initial commit `04cfd35`. Do not edit its text, references, links or formatting; subsequent findings and corrections belong in maintained documentation.
 - [`docs/dissertation.md`](docs/dissertation.md) — condensed, standalone submission paper covering the formalism, software and research evidence.
 - [`docs/formalism.md`](docs/formalism.md) — normative mathematical definitions and open proof obligations.
 - [`docs/architecture.md`](docs/architecture.md) — technical architecture implementing the formalism.
@@ -30,7 +34,7 @@ Supporting material is grouped by purpose:
 
 - **Research:** [evaluation and scalability](docs/research/evaluation.md), [reflective-recovery methods and experiments](docs/research/reflective-recovery.md), and [claim/evidence audit](docs/research/claim-audit.md).
 - **Reference:** [worked examples](docs/reference/worked-examples.md), [lambda encoding](docs/reference/lambda-encoding.md), [trace format](docs/reference/trace-format.md), [workbench command contract](docs/reference/workbench.md), and [figure descriptions](docs/reference/figures.md).
-- **Guides:** [using and understanding the workbench](docs/guides/workbench.md); the local `docs/explainers/` folder retains the simple explanation, terminology and reading notes.
+- **Guides:** [using and understanding the workbench](docs/guides/workbench.md) and the maintained [plain-language explanation](docs/explainers/simple.md). Other material under `docs/explainers/`, including personal reading notes and terminology, remains local.
 - **Archive:** the maintained [full-length dissertation](docs/archive/dissertation-full.md), its [maintenance policy](docs/archive/README.md), and the [annotated literature map](docs/archive/literature.md).
 
 Keep the eight core documents at `docs/` level. Extend the relevant research collection for subsequent cycles instead of adding a separate study document each time. Contracts belong under `reference/`, user instructions under `guides/`, and operational progress in the research/sprint/task plans. Frozen experiment protocols and source bundles remain with their original results; consolidation does not rewrite historical evidence.

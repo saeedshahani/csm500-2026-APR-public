@@ -1,0 +1,23 @@
+{
+  "config": {
+    "seed": 920003,
+    "n": 128,
+    "energy": 36000,
+    "source": 400000,
+    "packet": 512,
+    "background_until": 800
+  },
+  "events": [
+    {"at": 899, "operation": "checker_fault"},
+    {"at": 900, "operation": "environment_swap"},
+    {"at": 1100, "operation": "recognition_scramble"}
+  ],
+  "stages": [{"epochs": 1600}],
+  "inheritance": {
+    "seed": 1020003,
+    "bottleneck": 64,
+    "energy": 12000,
+    "stages": [{"epochs": 600}]
+  },
+  "word": [0, 1, 1, 0, 0, 1, 0, 1]
+}

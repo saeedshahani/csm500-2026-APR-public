@@ -1,0 +1,22 @@
+{
+  "python": "3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "executable": "/private/tmp/t2-review-response-fresh-20261005/bin/python",
+  "platform": "darwin",
+  "cli_sha256": "777d9df814f3bdc9e0d1fbdacd647da82c5427be9d132936c64dace9ff096753",
+  "lean_sha256": "5c1fe58db7d10b1cd0ddff1a1cbc49db2396fff9c6c983cc3b49f1c5c1ae241b",
+  "mathlib_manifest_sha256": "5c6421b650bc87a2427a892a39e5522dc44543ca4ac1bd6e9f08d536c044a752",
+  "source_unchanged_during_run": true,
+  "sources": {
+    "source/review-response/experiment.py": "f4e79e6f2379781dd2c49df9b5ae5468ec3f868af738e3cc19a9b9691cb62b49",
+    "source/review-response/reproduce.py": "b4b69141959287db029ef87aeb707b553bd0fc950163df014f33eb7e35bb45d6",
+    "source/review-response/LocalCycles.lean": "8894e4c5bb73bb5592b813a160e0fe7041dc677b0b07db2f13caa60291e7f466",
+    "source/review-response/protocol.md": "742ae9047df2b5efe8f3420433a577853cb9da9abbd42db8ac84a05149d4c0a4",
+    "source/numerical_components/adapter.py": "cd472bae72a745ca6fda4b78124a535183840d77ef05cf7145904518e5ae0fc9",
+    "source/numerical_components/test_adapter.py": "c60a31891329d27280e03e40c811271ea1cc453dd4901636d6f5cd97eb596590",
+    "source/numerical_components/domain.py": "9cc1836895acdb31476b4b951c49c6e17ef26d9415b20c0a8bb88da661d37c80",
+    "source/numerical_components/graph.py": "02b9f423c0063df75b576beb7bd21ba81c4f374a6e81eb4a36d9dc745c7f2d00",
+    "source/numerical_components/oracle.py": "4f62502b9460341124589d1b6d68408390867a967623b4c15364abcf65763ae4",
+    "source/numerical_components/workflow-request.json": "7703343644752b9b768a189c4c496ae72e0abdbafe3db4cfa38daf7697e7a9b1",
+    "source/numerical_components/README.md": "e0e9dde6131b0688474a70cb50a0a00fb79764ecd39fedb0fa4fd608793660f0"
+  }
+}

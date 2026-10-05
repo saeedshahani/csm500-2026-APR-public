@@ -1,0 +1,64 @@
+{
+  "corrections": [
+    "Inherited last_checked rebased by subtracting parent epoch; original witness clock retained.",
+    "Tied decoder action probabilities are uniform across maxima; accuracy and frozen-word prefix agreement are expectations.",
+    "Explicit production_order makes checkpoint serialization order semantically irrelevant."
+  ],
+  "declared_utc": "2026-10-05T19:48:29.120892+00:00",
+  "design": "models.organization.campaign; 191 conditions; 1600 parent epochs, matched ablations from epoch850, 600 child epochs; 128 attempts per epoch.",
+  "events": [
+    {
+      "at": 899,
+      "operation": "checker_fault"
+    },
+    {
+      "at": 900,
+      "operation": "environment_swap"
+    },
+    {
+      "at": 1100,
+      "operation": "recognition_scramble"
+    }
+  ],
+  "parameters": {
+    "background_until": 800,
+    "capacity": 128,
+    "energy": 36000,
+    "length": 4,
+    "packet": 512,
+    "rooms": 8,
+    "source": 400000
+  },
+  "python": "3.14.2 (main, Dec  5 2025, 16:49:16) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "schema": "organization-campaign-v2",
+  "scope": "Post-review corrected rerun on previously used diagnostic seeds, not a new independent confirmatory sample. No tuning based on corrected outcomes.",
+  "seeds": [
+    920003,
+    920009,
+    920021,
+    920033,
+    920041,
+    920057,
+    920063,
+    920081
+  ],
+  "sources": {
+    "models/organization/__init__.py": "b2e96563446cb7fb5fd7b9dfb401cd4522885bf570f9a4af1fca3ce36842c35d",
+    "models/organization/analyse.py": "0b90d099eaf06e0784bc01c490f00a9fd8d932d8369a2b8d7105679707f81833",
+    "models/organization/campaign.py": "46c39516c0f488c662b4c11dd589e57c77c1a7b259d4cb5b7fd62f5b9b0c286b",
+    "models/organization/native_check.py": "ab94ca536b633fcb13f4961c6b0cbf9bb0239e56175f6439c20e686959e2f07d",
+    "models/organization/observe.py": "7b410b86d70caa4e028beddc318ac0b09d6b469622dc5aa1e1537820ca6e91b5",
+    "models/organization/system.py": "d9609740f3d2f15dd0a65f21c6e75e1ac6cec249e68b0861a84cfbba96aa05cc",
+    "models/organization/theory.py": "737426116914aea3b9c6f5643db205e2f76c887b8aa73c638d19fd565cc0baaa"
+  },
+  "thresholds": {
+    "active_fraction": 0.35,
+    "both_checker_roles": true,
+    "each_core_fraction": 0.1,
+    "expected_model_accuracy": 0.95,
+    "fidelity": 0.9,
+    "harvests_in_last_100_actions": 10,
+    "model_coverage": 0.75
+  },
+  "unit": "Eight algorithmic seed lineages; paired conditions, descendants and timepoints are not independent samples."
+}

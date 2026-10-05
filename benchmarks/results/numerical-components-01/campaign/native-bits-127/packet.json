@@ -1,0 +1,85 @@
+{
+  "schema": "t2-publication-v1",
+  "receipt": {
+    "bits": 64,
+    "boundary": "85070591730234615865843651857942052863/85070591730234615865843651857942052864",
+    "epoch": 0,
+    "identity": "precision-127",
+    "mode": "direct",
+    "q": "3/4",
+    "radius": "5764607523034234879/42535295865117307932921825928971026432",
+    "residual": "5764607523034234879/170141183460469231731687303715884105728",
+    "revision": 0,
+    "schema": "t2-receipt-v1",
+    "sequence": 0,
+    "steps": 128,
+    "task": [
+      [
+        {
+          "boundary": "1/8",
+          "reward": "1/8",
+          "weights": [
+            "1/2",
+            "1/4"
+          ]
+        },
+        {
+          "boundary": "1/4",
+          "reward": "1/8",
+          "weights": [
+            "1/4",
+            "1/4"
+          ]
+        }
+      ],
+      [
+        {
+          "boundary": "1/8",
+          "reward": "1/4",
+          "weights": [
+            "1/4",
+            "1/4"
+          ]
+        },
+        {
+          "boundary": "1/2",
+          "reward": "1/8",
+          "weights": [
+            "1/8",
+            "1/4"
+          ]
+        }
+      ]
+    ],
+    "task_digest": "78263a604bd9a456fd47f6b456ae2237ff1997840b9d2a3846baecfd1ad8eb25",
+    "tick": 0,
+    "values": [
+      "18446744073709551615/18446744073709551616",
+      "18446744073709551615/18446744073709551616"
+    ],
+    "variation": "0"
+  },
+  "receipt_digest": "feaa6f66386f60d2e898851637dbb88324add2509c9146058a2bdcbca2b99d07",
+  "status": "uncertified",
+  "radius_now": "5764607523034234879/42535295865117307932921825928971026432",
+  "tolerance": "1/85070591730234615865843651857942052864",
+  "checked_at": 0,
+  "max_age": 32,
+  "observed_sequence": 0,
+  "observed_variation": "0",
+  "current": {
+    "epoch": 0,
+    "revision": 0,
+    "task_digest": "78263a604bd9a456fd47f6b456ae2237ff1997840b9d2a3846baecfd1ad8eb25",
+    "boundary": "85070591730234615865843651857942052863/85070591730234615865843651857942052864",
+    "active": true,
+    "fault": null
+  },
+  "assumptions": [
+    "complete sampled input stream",
+    "protected task and host checker",
+    "serialized host calls",
+    "logical clock",
+    "checked native CLI"
+  ]
+}

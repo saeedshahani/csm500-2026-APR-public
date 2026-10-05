@@ -1,0 +1,85 @@
+{
+  "schema": "t2-publication-v1",
+  "receipt": {
+    "bits": 64,
+    "boundary": "127/128",
+    "epoch": 0,
+    "identity": "precision-8",
+    "mode": "direct",
+    "q": "3/4",
+    "radius": "1/18446744073709551616",
+    "residual": "1/73786976294838206464",
+    "revision": 0,
+    "schema": "t2-receipt-v1",
+    "sequence": 0,
+    "steps": 128,
+    "task": [
+      [
+        {
+          "boundary": "1/8",
+          "reward": "1/8",
+          "weights": [
+            "1/2",
+            "1/4"
+          ]
+        },
+        {
+          "boundary": "1/4",
+          "reward": "1/8",
+          "weights": [
+            "1/4",
+            "1/4"
+          ]
+        }
+      ],
+      [
+        {
+          "boundary": "1/8",
+          "reward": "1/4",
+          "weights": [
+            "1/4",
+            "1/4"
+          ]
+        },
+        {
+          "boundary": "1/2",
+          "reward": "1/8",
+          "weights": [
+            "1/8",
+            "1/4"
+          ]
+        }
+      ]
+    ],
+    "task_digest": "78263a604bd9a456fd47f6b456ae2237ff1997840b9d2a3846baecfd1ad8eb25",
+    "tick": 0,
+    "values": [
+      "9177517204285185303/9223372036854775808",
+      "18335382337469117533/18446744073709551616"
+    ],
+    "variation": "0"
+  },
+  "receipt_digest": "725483f579ec70748fbaad42a6bb613a60ed7d1a5559a9df4884b22e8041efba",
+  "status": "certified",
+  "radius_now": "1/18446744073709551616",
+  "tolerance": "1/128",
+  "checked_at": 0,
+  "max_age": 32,
+  "observed_sequence": 0,
+  "observed_variation": "0",
+  "current": {
+    "epoch": 0,
+    "revision": 0,
+    "task_digest": "78263a604bd9a456fd47f6b456ae2237ff1997840b9d2a3846baecfd1ad8eb25",
+    "boundary": "127/128",
+    "active": true,
+    "fault": null
+  },
+  "assumptions": [
+    "complete sampled input stream",
+    "protected task and host checker",
+    "serialized host calls",
+    "logical clock",
+    "checked native CLI"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "status": "certified",
+  "source_bytes": 2073,
+  "trace_bytes": 19114,
+  "atoms": 19,
+  "events": 1,
+  "trace_checked": true,
+  "replayed": true,
+  "seconds": 0.02225720905698836,
+  "cli_sha256": "777d9df814f3bdc9e0d1fbdacd647da82c5427be9d132936c64dace9ff096753"
+}

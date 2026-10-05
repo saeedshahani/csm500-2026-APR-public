@@ -1,0 +1,3 @@
+'T2Review.forced_contraction' depends on axioms: [propext, Classical.choice, Quot.sound]
+'T2Review.local_cycle_convergence' depends on axioms: [propext, Classical.choice, Quot.sound]
+'T2Review.block_composition' depends on axioms: [propext, Classical.choice, Quot.sound]

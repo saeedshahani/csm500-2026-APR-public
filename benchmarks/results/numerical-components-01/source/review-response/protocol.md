@@ -1,0 +1,18 @@
+# T2 independent-review response protocol
+
+The user has requested comprehensive corrections and preparation for overall-project use after independent review. This authorizes selected documentation integration beyond the earlier isolated campaign. Preserve all historical source/evidence and current unrelated user edits. No production engine changes, commits, deployments or external services are needed.
+
+Predeclared acceptance, 5 October 2026:
+
+1. Replace the ambiguous local-cycle premise with uniform phase-error control including additive forcing. Retain the alternating constant-map counterexample. Mechanise forced scalar convergence and phase/time lifting; connect well-founded block composition to that statement, not just count more lemmas.
+2. Supply a complete bounded hybrid workflow-success adapter: declared task, finite arithmetic, raw/checked-compiled/direct alternatives, independently recomputed residual radius, immutable task/revision/incarnation/value binding, current/uncertified/stale status, native atomic publication and checked portable replay. Native code transports a host-checked receipt; it does not authenticate a hostile host or execute Bellman arithmetic.
+3. Compute observed environmental variation internally; reject missing/out-of-order observation sequence, decreasing logical clock and understated supplied movement. Charge observed movement to held receipts. State the unresolved sensing-completeness assumption. Fence departure/rejoin and task revisions; no arbitrary graph-repair claim.
+4. Test hostile swapped/tampered/stale receipts, revision and incarnation changes, clock/ledger violations, precision floors and bounded-work refusal. Use independent interval iteration for solution enclosures and compare all three methods. Exercise binary rational sizes without unary graph growth and default portable trace budgets. Preserve the review's failed unary cases.
+5. Compare closest primary literature, including Kawan 2025's weak-star results and specialist matrix-regularity/index-set work. Do not assert priority for the restricted complexity classification.
+6. Integrate a coherent numerical extension into both dissertations and formalism, an implemented architecture boundary and a simple explanation. Maintain the original exact graph observation definition. Record every review issue, resolution, evidence and residual limit in a single response document.
+
+Evidence runs freeze sources and tool identities, retain failures, run unit/integration checks, check Lean, and repeat in a fresh Python environment. Timing is descriptive same-host evidence. Independent review has already reproduced all five historical phases; repeat only checks affected by changes.
+
+## Integration acceptance amendment
+
+The manuscript's existing review note explicitly requires adopted software to belong to main project code. The numerical component is therefore installed in `scripts/numerical_components/`, with no runtime import from research folders. Evidence-05/06 freezes this project code and reproduces 27 native traces. During final validation, concurrent unrelated work added a learned-model CLI branch and module. Preserve those changes and build the current CLI separately; evidence-07/08 repeats this component's complete acceptance path against that source identity. This is compatibility evidence, not a claim to test the other feature. The old numerical/native evidence and binaries remain retained. Documentation verification also restricts Git discovery to Markdown and treats immutable relocated research snapshots as historical evidence rather than live documentation; current thesis/README links remain checked.

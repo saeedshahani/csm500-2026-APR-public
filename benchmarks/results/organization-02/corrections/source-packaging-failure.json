@@ -1,0 +1,7 @@
+{
+  "previous_collection": "organization-01",
+  "status": "scientific outputs verified; clean CLI build failed",
+  "cause": "source archive omitted examples/fixtures/b2.atoms embedded by cli demo",
+  "correction": "include the ordinary examples tree in the runnable source export",
+  "reproduction_scope": "repeat with corrected source archive; original collection retained"
+}

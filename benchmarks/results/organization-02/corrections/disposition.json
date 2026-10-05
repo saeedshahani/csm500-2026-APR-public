@@ -1,0 +1,21 @@
+{
+  "clock": "Regression preserves validation age and services both actions; B32 changes 3/8 to 0/8.",
+  "ties": {
+    "weights": [
+      [
+        1,
+        1
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "model": "predict physical successor 0 for both logical actions",
+    "old_accuracy": 1,
+    "correct_expected_accuracy": 0.5,
+    "six_action_prefix_agreement_probability": 0.015625
+  },
+  "domain": "Zero template removal makes the old lower equilibrium zero; positive-equilibrium analysis rejects it.",
+  "scope": "Historical counterexamples; corrected regressions and campaign are the accepted evidence."
+}

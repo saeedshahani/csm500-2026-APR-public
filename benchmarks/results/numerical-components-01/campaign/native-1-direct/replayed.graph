@@ -1,0 +1,22 @@
+// verified trace state: 1; historical inspection only
+program {
+  atom a0 = RuleHead;
+  atom a1 = Nat();
+  atom a2 = Record[Rank](a0, a1);
+  atom a3 = Record[ModeObject](a0);
+  atom a4 = Record[Revision](a0);
+  atom a5 = Record[Active](a0);
+  atom a6 = Constructor("T2Component");
+  atom a7 = PatternVariable[Constructor] Free;
+  atom a8 = Record[ObjectLink]("pending", a6, a7);
+  atom a9 = Record[ObjectLink]("uncertified", a6, a7);
+  atom a10 = Record[Lhs](a0, a6);
+  atom a11 = Record[Lhs](a0, a7);
+  atom a12 = Record[Lhs](a0, a8);
+  atom a13 = Record[Rhs](a0, a6);
+  atom a14 = Record[Rhs](a0, a7);
+  atom a15 = Record[Rhs](a0, a9);
+  atom a16 = Constructor("T2Component");
+  atom a17 = Constructor("{\"assumptions\":[\"complete sampled input stream\",\"protected task and host checker\",\"serialized host calls\",\"logical clock\",\"checked native CLI\"],\"checked_at\":1,\"current\":{\"active\":true,\"boundary\":\"7/16\",\"epoch\":0,\"fault\":null,\"revision\":0,\"task_digest\":\"f15e1f56f19ffeab0e55d176ac1c854a038f39fd6ab93e00884ed413063b2861\"},\"max_age\":32,\"observed_sequence\":1,\"observed_variation\":\"1/8\",\"radius_now\":\"1/32\",\"receipt\":{\"bits\":24,\"boundary\":\"9/16\",\"epoch\":0,\"identity\":\"workflow-1-0\",\"mode\":\"direct\",\"q\":\"3/4\",\"radius\":\"0\",\"residual\":\"0\",\"revision\":0,\"schema\":\"t2-receipt-v1\",\"sequence\":0,\"steps\":64,\"task\":[[{\"boundary\":\"0\",\"reward\":\"3/16\",\"weights\":[\"3/4\"]},{\"boundary\":\"1/8\",\"reward\":\"5/16\",\"weights\":[\"1/2\"]}]],\"task_digest\":\"f15e1f56f19ffeab0e55d176ac1c854a038f39fd6ab93e00884ed413063b2861\",\"tick\":0,\"values\":[\"49/64\"],\"variation\":\"0\"},\"receipt_digest\":\"c7dc7472a10b0e295cc917bbb8b97fd484e014a796ce7aacafed95363324bfc7\",\"schema\":\"t2-publication-v1\",\"status\":\"uncertified\",\"tolerance\":\"1/1000\"}");
+  atom a18 = Record[ObjectLink]("uncertified", a16, a17);
+}

@@ -1,0 +1,9 @@
+{
+  "argv": [
+    "/private/tmp/t2-review-native-current-build/debug/cli",
+    "replay",
+    "-"
+  ],
+  "exit": 0,
+  "stderr": ""
+}

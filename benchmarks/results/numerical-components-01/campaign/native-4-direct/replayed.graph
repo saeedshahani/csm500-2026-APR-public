@@ -1,0 +1,22 @@
+// verified trace state: 1; historical inspection only
+program {
+  atom a0 = RuleHead;
+  atom a1 = Nat();
+  atom a2 = Record[Rank](a0, a1);
+  atom a3 = Record[ModeObject](a0);
+  atom a4 = Record[Revision](a0);
+  atom a5 = Record[Active](a0);
+  atom a6 = Constructor("T2Component");
+  atom a7 = PatternVariable[Constructor] Free;
+  atom a8 = Record[ObjectLink]("pending", a6, a7);
+  atom a9 = Record[ObjectLink]("uncertified", a6, a7);
+  atom a10 = Record[Lhs](a0, a6);
+  atom a11 = Record[Lhs](a0, a7);
+  atom a12 = Record[Lhs](a0, a8);
+  atom a13 = Record[Rhs](a0, a6);
+  atom a14 = Record[Rhs](a0, a7);
+  atom a15 = Record[Rhs](a0, a9);
+  atom a16 = Constructor("T2Component");
+  atom a17 = Constructor("{\"assumptions\":[\"complete sampled input stream\",\"protected task and host checker\",\"serialized host calls\",\"logical clock\",\"checked native CLI\"],\"checked_at\":1,\"current\":{\"active\":true,\"boundary\":\"5/16\",\"epoch\":0,\"fault\":null,\"revision\":0,\"task_digest\":\"5c08e4fa6b5e5f2beec3128369c5488237cc8389660574f9c1269cc1b542c332\"},\"max_age\":32,\"observed_sequence\":1,\"observed_variation\":\"3/8\",\"radius_now\":\"5898243/20971520\",\"receipt\":{\"bits\":24,\"boundary\":\"11/16\",\"epoch\":0,\"identity\":\"workflow-4-0\",\"mode\":\"direct\",\"q\":\"3/4\",\"radius\":\"3/20971520\",\"residual\":\"3/83886080\",\"revision\":0,\"schema\":\"t2-receipt-v1\",\"sequence\":0,\"steps\":64,\"task\":[[{\"boundary\":\"1/8\",\"reward\":\"1/32\",\"weights\":[\"3/52\",\"9/26\",\"3/52\",\"15/52\"]},{\"boundary\":\"3/8\",\"reward\":\"1/8\",\"weights\":[\"1/30\",\"1/5\",\"1/5\",\"1/15\"]}],[{\"boundary\":\"0\",\"reward\":\"3/16\",\"weights\":[\"3/16\",\"3/32\",\"9/64\",\"21/64\"]},{\"boundary\":\"0\",\"reward\":\"1/2\",\"weights\":[\"5/34\",\"1/17\",\"5/34\",\"5/34\"]}],[{\"boundary\":\"0\",\"reward\":\"3/4\",\"weights\":[\"1/12\",\"5/72\",\"1/36\",\"5/72\"]},{\"boundary\":\"1/16\",\"reward\":\"5/32\",\"weights\":[\"9/44\",\"15/88\",\"15/88\",\"9/44\"]}],[{\"boundary\":\"1/16\",\"reward\":\"0\",\"weights\":[\"1/12\",\"1/4\",\"1/12\",\"1/12\"]},{\"boundary\":\"0\",\"reward\":\"1/4\",\"weights\":[\"1/6\",\"1/15\",\"7/30\",\"1/30\"]}]],\"task_digest\":\"5c08e4fa6b5e5f2beec3128369c5488237cc8389660574f9c1269cc1b542c332\",\"tick\":0,\"values\":[\"3492553/4194304\",\"7717435/8388608\",\"16077565/16777216\",\"5846429/8388608\"],\"variation\":\"0\"},\"receipt_digest\":\"2751399c9ed53409f050b449ff4c44c28c34caf7a37b652ab1bf682c51353465\",\"schema\":\"t2-publication-v1\",\"status\":\"uncertified\",\"tolerance\":\"1/1000\"}");
+  atom a18 = Record[ObjectLink]("uncertified", a16, a17);
+}

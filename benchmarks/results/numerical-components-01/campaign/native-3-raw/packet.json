@@ -1,0 +1,110 @@
+{
+  "schema": "t2-publication-v1",
+  "receipt": {
+    "bits": 24,
+    "boundary": "3/16",
+    "epoch": 0,
+    "identity": "workflow-3-0",
+    "mode": "raw",
+    "q": "3/4",
+    "radius": "51/218103808",
+    "residual": "51/872415232",
+    "revision": 0,
+    "schema": "t2-receipt-v1",
+    "sequence": 0,
+    "steps": 64,
+    "task": [
+      [
+        {
+          "boundary": "1/16",
+          "reward": "0",
+          "weights": [
+            "7/30",
+            "1/5",
+            "1/15"
+          ]
+        },
+        {
+          "boundary": "0",
+          "reward": "3/16",
+          "weights": [
+            "3/11",
+            "9/22",
+            "3/44"
+          ]
+        }
+      ],
+      [
+        {
+          "boundary": "0",
+          "reward": "1/4",
+          "weights": [
+            "9/26",
+            "3/52",
+            "9/26"
+          ]
+        },
+        {
+          "boundary": "0",
+          "reward": "7/32",
+          "weights": [
+            "21/68",
+            "15/68",
+            "15/68"
+          ]
+        }
+      ],
+      [
+        {
+          "boundary": "1/16",
+          "reward": "1/8",
+          "weights": [
+            "1/5",
+            "1/5",
+            "1/10"
+          ]
+        },
+        {
+          "boundary": "0",
+          "reward": "3/32",
+          "weights": [
+            "1/7",
+            "1/14",
+            "1/28"
+          ]
+        }
+      ]
+    ],
+    "task_digest": "e0b1d102ce6e73d600fd8e3373fb3160b958c1a550222f52082f77419e2db8de",
+    "tick": 0,
+    "values": [
+      "11507883/16777216",
+      "11492275/16777216",
+      "957471/2097152"
+    ],
+    "variation": "0"
+  },
+  "receipt_digest": "8d663e906b6f9b265db92030c9a5da32fb911e162e44136c6e9df7e76add6a79",
+  "status": "uncertified",
+  "radius_now": "17039411/218103808",
+  "tolerance": "1/1000",
+  "checked_at": 1,
+  "max_age": 32,
+  "observed_sequence": 1,
+  "observed_variation": "5/8",
+  "current": {
+    "epoch": 0,
+    "revision": 0,
+    "task_digest": "e0b1d102ce6e73d600fd8e3373fb3160b958c1a550222f52082f77419e2db8de",
+    "boundary": "13/16",
+    "active": true,
+    "fault": null
+  },
+  "assumptions": [
+    "complete sampled input stream",
+    "protected task and host checker",
+    "serialized host calls",
+    "logical clock",
+    "checked native CLI"
+  ]
+}

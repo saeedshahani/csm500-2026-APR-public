@@ -1,0 +1,9 @@
+{
+  "schema": "organization-reproduction-v2",
+  "source_export_excludes_exploratory_work": true,
+  "compared_artifacts": 530,
+  "byte_identical": true,
+  "lean_checked": true,
+  "source_files": 235,
+  "scope": "Fresh source reconstruction on this host, not independent cross-platform replication."
+}

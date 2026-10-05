@@ -10,8 +10,12 @@ docs/archive/*
 !docs/archive/self-modification-theory/
 docs/worked-examples.md
 docs/simple.md
+docs/archive/research/
+docs/archive/self-modification-theory/
 docs/decisions.md
-docs/explainers/
+docs/explainers/*
+!docs/explainers/simple.md
+docs/research/stretch/
 docs/dissertation.md
 /target/
 **/.DS_Store
@@ -28,3 +32,7 @@ firestore-debug.log*
 /frontend/test-results/
 /output/
 /.playwright-cli/
+
+# Local Python model caches are not scientific source or evidence.
+__pycache__/
+*.py[cod]

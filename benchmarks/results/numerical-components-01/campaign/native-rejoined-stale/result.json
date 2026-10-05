@@ -1,0 +1,11 @@
+{
+  "status": "stale",
+  "source_bytes": 2055,
+  "trace_bytes": 19052,
+  "atoms": 19,
+  "events": 1,
+  "trace_checked": true,
+  "replayed": true,
+  "seconds": 0.022917208960279822,
+  "cli_sha256": "777d9df814f3bdc9e0d1fbdacd647da82c5427be9d132936c64dace9ff096753"
+}

@@ -1,0 +1,23 @@
+test_bounded_input_work_and_retention (test_adapter.AdapterTests.test_bounded_input_work_and_retention) ... ok
+test_constant_map_cycle_counterexample (test_adapter.AdapterTests.test_constant_map_cycle_counterexample) ... ok
+test_corrected_pair_and_persistent_forcing (test_adapter.AdapterTests.test_corrected_pair_and_persistent_forcing) ... ok
+test_depart_rejoin_fences_old_incarnation (test_adapter.AdapterTests.test_depart_rejoin_fences_old_incarnation) ... ok
+test_expiry_and_clock_regression (test_adapter.AdapterTests.test_expiry_and_clock_regression) ... ok
+test_export_rejects_invalid_boundary_and_tolerance (test_adapter.AdapterTests.test_export_rejects_invalid_boundary_and_tolerance) ... ok
+test_exported_certificate_recomputation_and_context (test_adapter.AdapterTests.test_exported_certificate_recomputation_and_context) ... ok
+test_fixed_precision_floor (test_adapter.AdapterTests.test_fixed_precision_floor) ... ok
+test_invalid_revision_transactional (test_adapter.AdapterTests.test_invalid_revision_transactional) ... ok
+test_observed_movement_transports_existing_receipt (test_adapter.AdapterTests.test_observed_movement_transports_existing_receipt) ... ok
+test_receipt_every_field_tamper_and_rehash (test_adapter.AdapterTests.test_receipt_every_field_tamper_and_rehash) ... ok
+test_residual_exact_target_and_arbitrary_candidate (test_adapter.AdapterTests.test_residual_exact_target_and_arbitrary_candidate) ... ok
+test_sequence_gap_replay_and_backward_clock (test_adapter.AdapterTests.test_sequence_gap_replay_and_backward_clock) ... ok
+test_swapped_component_receipt (test_adapter.AdapterTests.test_swapped_component_receipt) ... ok
+test_task_content_change_and_new_session (test_adapter.AdapterTests.test_task_content_change_and_new_session) ... ok
+test_three_modes_and_uncertified (test_adapter.AdapterTests.test_three_modes_and_uncertified) ... ok
+test_understated_variation_latches (test_adapter.AdapterTests.test_understated_variation_latches) ... ok
+test_version_change_is_stale_then_recovers (test_adapter.AdapterTests.test_version_change_is_stale_then_recovers) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.018s
+
+OK

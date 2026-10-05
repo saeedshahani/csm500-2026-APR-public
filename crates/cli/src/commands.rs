@@ -101,6 +101,8 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["trace-conditions", "--help"]
         || args == ["trace-explain", "--help"]
         || args == ["dataset-compile", "--help"]
+        || args == ["model-run", "--help"]
+        || args == ["organization-run", "--help"]
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
         || args == ["stability-check", "--help"]
@@ -118,7 +120,7 @@ pub(crate) fn main_command() -> Result<u8> {
         io::stdout().lock().write_all(b"Recovery analysis: cli stability-check INPUT CONTRACT [--max-states N] [--max-edges N] [--max-comparison-work N] [--max-retained-units N] [--max-work N] [--max-candidates N]\nComplete reachable-carrier analysis, not a bounded trace test. JSON report: exit 0 certified, 7 refuted, 3 inconclusive resource bound, 2 malformed input. Contracts: recovery-contract-v1 or v2; v2 can require declared-output agreement and allow absent/duplicate statuses outside legitimacy. No external fault transition or scheduler fairness is inferred.\nExternal maintenance: cli repair-statuses INPUT CONTRACT RETRY_LABEL\nRequires core-valid input and an allowed non-legitimate retry label. Returns a recomputation-verified receipt and new baseline, not a rewrite-history continuation or proof of completed work.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Execution profiles: --execution-profile reference-v1 (default) | indexed-v2 | framed-v3 | joined-v4\nOperator envelope: GRAPH_EXECUTION_ENVELOPE=large-local-v1 enables the documented larger local source/trace limits; unset retains defaults.\nExplicit legacy migration: cli trace-migrate TRACE [--output NEW_PATH]\nMigration rechecks the full history under reference-v1; it never overwrites its input.\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Continuation: cli export INPUT --max-steps N --batch-steps N [export options]\n              cli resume TRACE --batch-steps N [--output PATH]\nA yielded checkpoint exits 0 without claiming completion. Resume preserves the original run limits and only accepts a verified yielded endpoint.\n").map_err(|e| Failure::new(1, e.to_string()))?;
-        io::stdout().lock().write_all(b"Dataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
+        io::stdout().lock().write_all(b"Organization: cli organization-run REQUEST_JSON (file or -) [--output NEW_PATH]. Rust acquisition, renewal and optional inheritance; optional word executes through admitted graph rewrites. At most 8192 epochs/64 stages; no Python runtime.\nLearned model: cli model-run MODEL_JSON (file or -); 1..32 states, at most 64 binary transitions and 16 actions. Emits a verified native trace and projected states; acquisition remains outside carrier rewriting.\nDataset adapter: cli dataset-compile JSON (work-items-v1; file or -)\nCondition report: cli trace-conditions TRACE (monotone constructor unquotation only)\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout().lock().write_all(b"Lambda adapters: cli lambda-compile SOURCE [--profile closed-cbn-v1|open-cbn-v1] [--free x,y] | cli lambda-readback GRAPH\nBoth accept a file or -; compilation emits ordinary graph source. Closed call-by-name is the default.\nUse cli replay TRACE --at N | cli lambda-readback - for recorded terms.\n\n").map_err(|e| Failure::new(1, e.to_string()))?;
         io::stdout()
             .lock()
@@ -209,6 +211,57 @@ pub(crate) fn main_command() -> Result<u8> {
         "replay" | "trace-check" | "trace-conditions" | "trace-explain" | "trace-migrate"
     ) {
         return trace_command(&args);
+    }
+    if args[0] == "organization-run" {
+        if args.len() != 2 && !(args.len() == 4 && args[2] == "--output") {
+            return Err(Failure::new(
+                2,
+                "usage: cli organization-run REQUEST_JSON (file or -) [--output NEW_PATH]",
+            ));
+        }
+        let text = read_source(&args[1], 1024 * 1024)?;
+        let request: engine::organization::Request =
+            serde_json::from_str(&text).map_err(|e| Failure::new(2, e.to_string()))?;
+        let report = engine::organization::execute(&request).map_err(|e| match e {
+            engine::learned_model::Error::Input(s) => Failure::new(2, s),
+            engine::learned_model::Error::Native(d) => engine_failure(d),
+        })?;
+        let bytes = serde_json::to_vec(&report).map_err(|e| Failure::new(1, e.to_string()))?;
+        if bytes.len() > 16 * 1024 * 1024 {
+            return Err(Failure::new(
+                3,
+                "organization report exceeds 16 MiB output budget",
+            ));
+        }
+        if let Some(path) = args.get(3) {
+            publish_new(Path::new(path), &bytes)?;
+        } else {
+            io::stdout()
+                .lock()
+                .write_all(&bytes)
+                .map_err(|e| Failure::new(1, e.to_string()))?;
+        }
+        return Ok(0);
+    }
+    if args[0] == "model-run" {
+        if args.len() != 2 {
+            return Err(Failure::new(
+                2,
+                "usage: cli model-run MODEL_JSON (file or -)",
+            ));
+        }
+        let text = read_source(&args[1], 1024 * 1024)?;
+        let input: serde_json::Value =
+            serde_json::from_str(&text).map_err(|e| Failure::new(2, e.to_string()))?;
+        let result = engine::learned_model::execute(&input).map_err(|e| match e {
+            engine::learned_model::Error::Input(s) => Failure::new(2, s),
+            engine::learned_model::Error::Native(d) => engine_failure(d),
+        })?;
+        io::stdout()
+            .lock()
+            .write_all(format!("{result}\n").as_bytes())
+            .map_err(|e| Failure::new(1, e.to_string()))?;
+        return Ok(0);
     }
     if args[0] == "dataset-compile" {
         if args.len() != 2 {

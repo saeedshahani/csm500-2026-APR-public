@@ -1,0 +1,731 @@
+{
+  "schema": "reflective-trace-v1",
+  "profile": "checked-binding-positive-resources-v1",
+  "implementation": "engine-0.1.0-source-sha256=04b7d3e7cc3d73262826de8296d27d1512ea001629c79534e9a221d4b436c0bc",
+  "source_sha256": "2d9cf0d0d56dbbac27bc3ce5d4ce4afde82c2e75383727bffb8cf45046691609",
+  "initial_sha256": "b0be654b08c4d1453bd176378c1acd4d944d64ce9dda2f42fd0230d448321aef",
+  "initial": {
+    "next_identity": "19",
+    "atoms": {
+      "0": {
+        "kind": "RuleHead",
+        "fields": []
+      },
+      "1": {
+        "kind": "Nat",
+        "fields": []
+      },
+      "2": {
+        "kind": {
+          "Record": {
+            "role": "Rank",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "1"
+        ]
+      },
+      "3": {
+        "kind": {
+          "Record": {
+            "role": "ModeObject",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "4": {
+        "kind": {
+          "Record": {
+            "role": "Revision",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "5": {
+        "kind": {
+          "Record": {
+            "role": "Active",
+            "label": null
+          }
+        },
+        "fields": [
+          "0"
+        ]
+      },
+      "6": {
+        "kind": {
+          "Constructor": "T2Component"
+        },
+        "fields": []
+      },
+      "7": {
+        "kind": {
+          "PatternVariable": {
+            "admits": [
+              "Constructor"
+            ],
+            "binding": "Free"
+          }
+        },
+        "fields": []
+      },
+      "8": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "6",
+          "7"
+        ]
+      },
+      "9": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "uncertified"
+          }
+        },
+        "fields": [
+          "6",
+          "7"
+        ]
+      },
+      "10": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "6"
+        ]
+      },
+      "11": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "7"
+        ]
+      },
+      "12": {
+        "kind": {
+          "Record": {
+            "role": "Lhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "8"
+        ]
+      },
+      "13": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "6"
+        ]
+      },
+      "14": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "7"
+        ]
+      },
+      "15": {
+        "kind": {
+          "Record": {
+            "role": "Rhs",
+            "label": null
+          }
+        },
+        "fields": [
+          "0",
+          "9"
+        ]
+      },
+      "16": {
+        "kind": {
+          "Constructor": "T2Component"
+        },
+        "fields": []
+      },
+      "17": {
+        "kind": {
+          "Constructor": "{\"assumptions\":[\"complete sampled input stream\",\"protected task and host checker\",\"serialized host calls\",\"logical clock\",\"checked native CLI\"],\"checked_at\":1,\"current\":{\"active\":true,\"boundary\":\"13/16\",\"epoch\":0,\"fault\":null,\"revision\":0,\"task_digest\":\"e0b1d102ce6e73d600fd8e3373fb3160b958c1a550222f52082f77419e2db8de\"},\"max_age\":32,\"observed_sequence\":1,\"observed_variation\":\"5/8\",\"radius_now\":\"3276803/41943040\",\"receipt\":{\"bits\":24,\"boundary\":\"3/16\",\"epoch\":0,\"identity\":\"workflow-3-0\",\"mode\":\"direct\",\"q\":\"3/4\",\"radius\":\"3/41943040\",\"residual\":\"3/167772160\",\"revision\":0,\"schema\":\"t2-receipt-v1\",\"sequence\":0,\"steps\":64,\"task\":[[{\"boundary\":\"1/16\",\"reward\":\"0\",\"weights\":[\"7/30\",\"1/5\",\"1/15\"]},{\"boundary\":\"0\",\"reward\":\"3/16\",\"weights\":[\"3/11\",\"9/22\",\"3/44\"]}],[{\"boundary\":\"0\",\"reward\":\"1/4\",\"weights\":[\"9/26\",\"3/52\",\"9/26\"]},{\"boundary\":\"0\",\"reward\":\"7/32\",\"weights\":[\"21/68\",\"15/68\",\"15/68\"]}],[{\"boundary\":\"1/16\",\"reward\":\"1/8\",\"weights\":[\"1/5\",\"1/5\",\"1/10\"]},{\"boundary\":\"0\",\"reward\":\"3/32\",\"weights\":[\"1/7\",\"1/14\",\"1/28\"]}]],\"task_digest\":\"e0b1d102ce6e73d600fd8e3373fb3160b958c1a550222f52082f77419e2db8de\",\"tick\":0,\"values\":[\"11507885/16777216\",\"11492277/16777216\",\"7659769/16777216\"],\"variation\":\"0\"},\"receipt_digest\":\"294b9f5fa0ba402b7c4d62bda4ef7aa721843fa313956edb25038fc3b1ecdf11\",\"schema\":\"t2-publication-v1\",\"status\":\"uncertified\",\"tolerance\":\"1/1000\"}"
+        },
+        "fields": []
+      },
+      "18": {
+        "kind": {
+          "Record": {
+            "role": "ObjectLink",
+            "label": "pending"
+          }
+        },
+        "fields": [
+          "16",
+          "17"
+        ]
+      }
+    }
+  },
+  "relation": "positive_resource_order",
+  "limitation": "Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.",
+  "settings": {
+    "execution_profile": "reference-v1",
+    "graph": {
+      "max_input_bytes": "4194304",
+      "max_atoms": "10000",
+      "max_fields": "20000",
+      "max_label_bytes": "1048576",
+      "max_package_depth": "32",
+      "max_validation_work": "10000000"
+    },
+    "search": {
+      "max_candidates": "1000",
+      "max_work": "1000000"
+    },
+    "recording": {
+      "max_events": "10000",
+      "max_units": "2000000",
+      "max_work": "2000000"
+    },
+    "analysis": {
+      "max_work": "2000000",
+      "max_units": "2000000"
+    },
+    "observer": {
+      "declaration": "observer-v1\nall\n",
+      "inputs": {},
+      "nontriviality_threshold": "2"
+    },
+    "plan": {
+      "max_steps": "2",
+      "detect_cycles": false,
+      "observation": {
+        "max_work": "1000000",
+        "max_comparison_work": "1000000",
+        "max_history_units": "1000000"
+      },
+      "requested": null,
+      "seed": null
+    }
+  },
+  "status": "finished",
+  "report": {
+    "outcome": "NormalForm",
+    "payload": null,
+    "recurrence": null,
+    "scheduler": "deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0"
+  },
+  "events": [
+    {
+      "id": "0",
+      "redex": {
+        "state": "0",
+        "source": "0",
+        "revision": "4",
+        "binding": [
+          [
+            "6",
+            "16"
+          ],
+          [
+            "7",
+            "17"
+          ],
+          [
+            "8",
+            "18"
+          ]
+        ]
+      },
+      "post_state": "1",
+      "footprint": {
+        "consumed": [
+          "18"
+        ],
+        "preserved": [
+          "16",
+          "17"
+        ],
+        "produced": [
+          "19"
+        ],
+        "read": [
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "13",
+          "14",
+          "15",
+          "16",
+          "17",
+          "18"
+        ],
+        "entered": [],
+        "exited": [],
+        "altered": []
+      },
+      "fresh": {
+        "19": {
+          "kind": {
+            "Record": {
+              "role": "ObjectLink",
+              "label": "uncertified"
+            }
+          },
+          "fields": [
+            "16",
+            "17"
+          ]
+        }
+      }
+    }
+  ],
+  "dependencies": [],
+  "conflicts": [],
+  "checkpoint_interval": "32",
+  "checkpoints": [
+    {
+      "state": "0",
+      "graph": {
+        "next_identity": "19",
+        "atoms": {
+          "0": {
+            "kind": "RuleHead",
+            "fields": []
+          },
+          "1": {
+            "kind": "Nat",
+            "fields": []
+          },
+          "2": {
+            "kind": {
+              "Record": {
+                "role": "Rank",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "1"
+            ]
+          },
+          "3": {
+            "kind": {
+              "Record": {
+                "role": "ModeObject",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "4": {
+            "kind": {
+              "Record": {
+                "role": "Revision",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "5": {
+            "kind": {
+              "Record": {
+                "role": "Active",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "6": {
+            "kind": {
+              "Constructor": "T2Component"
+            },
+            "fields": []
+          },
+          "7": {
+            "kind": {
+              "PatternVariable": {
+                "admits": [
+                  "Constructor"
+                ],
+                "binding": "Free"
+              }
+            },
+            "fields": []
+          },
+          "8": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "6",
+              "7"
+            ]
+          },
+          "9": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "uncertified"
+              }
+            },
+            "fields": [
+              "6",
+              "7"
+            ]
+          },
+          "10": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "11": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "7"
+            ]
+          },
+          "12": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "8"
+            ]
+          },
+          "13": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "14": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "7"
+            ]
+          },
+          "15": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "9"
+            ]
+          },
+          "16": {
+            "kind": {
+              "Constructor": "T2Component"
+            },
+            "fields": []
+          },
+          "17": {
+            "kind": {
+              "Constructor": "{\"assumptions\":[\"complete sampled input stream\",\"protected task and host checker\",\"serialized host calls\",\"logical clock\",\"checked native CLI\"],\"checked_at\":1,\"current\":{\"active\":true,\"boundary\":\"13/16\",\"epoch\":0,\"fault\":null,\"revision\":0,\"task_digest\":\"e0b1d102ce6e73d600fd8e3373fb3160b958c1a550222f52082f77419e2db8de\"},\"max_age\":32,\"observed_sequence\":1,\"observed_variation\":\"5/8\",\"radius_now\":\"3276803/41943040\",\"receipt\":{\"bits\":24,\"boundary\":\"3/16\",\"epoch\":0,\"identity\":\"workflow-3-0\",\"mode\":\"direct\",\"q\":\"3/4\",\"radius\":\"3/41943040\",\"residual\":\"3/167772160\",\"revision\":0,\"schema\":\"t2-receipt-v1\",\"sequence\":0,\"steps\":64,\"task\":[[{\"boundary\":\"1/16\",\"reward\":\"0\",\"weights\":[\"7/30\",\"1/5\",\"1/15\"]},{\"boundary\":\"0\",\"reward\":\"3/16\",\"weights\":[\"3/11\",\"9/22\",\"3/44\"]}],[{\"boundary\":\"0\",\"reward\":\"1/4\",\"weights\":[\"9/26\",\"3/52\",\"9/26\"]},{\"boundary\":\"0\",\"reward\":\"7/32\",\"weights\":[\"21/68\",\"15/68\",\"15/68\"]}],[{\"boundary\":\"1/16\",\"reward\":\"1/8\",\"weights\":[\"1/5\",\"1/5\",\"1/10\"]},{\"boundary\":\"0\",\"reward\":\"3/32\",\"weights\":[\"1/7\",\"1/14\",\"1/28\"]}]],\"task_digest\":\"e0b1d102ce6e73d600fd8e3373fb3160b958c1a550222f52082f77419e2db8de\",\"tick\":0,\"values\":[\"11507885/16777216\",\"11492277/16777216\",\"7659769/16777216\"],\"variation\":\"0\"},\"receipt_digest\":\"294b9f5fa0ba402b7c4d62bda4ef7aa721843fa313956edb25038fc3b1ecdf11\",\"schema\":\"t2-publication-v1\",\"status\":\"uncertified\",\"tolerance\":\"1/1000\"}"
+            },
+            "fields": []
+          },
+          "18": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "16",
+              "17"
+            ]
+          }
+        }
+      },
+      "scheduler": "deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0",
+      "continuation_sha256": "0282cdd2e03195191223d38bdddf06db92fbb792fc25dd25891bef1fa9f8bbac"
+    },
+    {
+      "state": "1",
+      "graph": {
+        "next_identity": "20",
+        "atoms": {
+          "0": {
+            "kind": "RuleHead",
+            "fields": []
+          },
+          "1": {
+            "kind": "Nat",
+            "fields": []
+          },
+          "2": {
+            "kind": {
+              "Record": {
+                "role": "Rank",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "1"
+            ]
+          },
+          "3": {
+            "kind": {
+              "Record": {
+                "role": "ModeObject",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "4": {
+            "kind": {
+              "Record": {
+                "role": "Revision",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "5": {
+            "kind": {
+              "Record": {
+                "role": "Active",
+                "label": null
+              }
+            },
+            "fields": [
+              "0"
+            ]
+          },
+          "6": {
+            "kind": {
+              "Constructor": "T2Component"
+            },
+            "fields": []
+          },
+          "7": {
+            "kind": {
+              "PatternVariable": {
+                "admits": [
+                  "Constructor"
+                ],
+                "binding": "Free"
+              }
+            },
+            "fields": []
+          },
+          "8": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "pending"
+              }
+            },
+            "fields": [
+              "6",
+              "7"
+            ]
+          },
+          "9": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "uncertified"
+              }
+            },
+            "fields": [
+              "6",
+              "7"
+            ]
+          },
+          "10": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "11": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "7"
+            ]
+          },
+          "12": {
+            "kind": {
+              "Record": {
+                "role": "Lhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "8"
+            ]
+          },
+          "13": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "6"
+            ]
+          },
+          "14": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "7"
+            ]
+          },
+          "15": {
+            "kind": {
+              "Record": {
+                "role": "Rhs",
+                "label": null
+              }
+            },
+            "fields": [
+              "0",
+              "9"
+            ]
+          },
+          "16": {
+            "kind": {
+              "Constructor": "T2Component"
+            },
+            "fields": []
+          },
+          "17": {
+            "kind": {
+              "Constructor": "{\"assumptions\":[\"complete sampled input stream\",\"protected task and host checker\",\"serialized host calls\",\"logical clock\",\"checked native CLI\"],\"checked_at\":1,\"current\":{\"active\":true,\"boundary\":\"13/16\",\"epoch\":0,\"fault\":null,\"revision\":0,\"task_digest\":\"e0b1d102ce6e73d600fd8e3373fb3160b958c1a550222f52082f77419e2db8de\"},\"max_age\":32,\"observed_sequence\":1,\"observed_variation\":\"5/8\",\"radius_now\":\"3276803/41943040\",\"receipt\":{\"bits\":24,\"boundary\":\"3/16\",\"epoch\":0,\"identity\":\"workflow-3-0\",\"mode\":\"direct\",\"q\":\"3/4\",\"radius\":\"3/41943040\",\"residual\":\"3/167772160\",\"revision\":0,\"schema\":\"t2-receipt-v1\",\"sequence\":0,\"steps\":64,\"task\":[[{\"boundary\":\"1/16\",\"reward\":\"0\",\"weights\":[\"7/30\",\"1/5\",\"1/15\"]},{\"boundary\":\"0\",\"reward\":\"3/16\",\"weights\":[\"3/11\",\"9/22\",\"3/44\"]}],[{\"boundary\":\"0\",\"reward\":\"1/4\",\"weights\":[\"9/26\",\"3/52\",\"9/26\"]},{\"boundary\":\"0\",\"reward\":\"7/32\",\"weights\":[\"21/68\",\"15/68\",\"15/68\"]}],[{\"boundary\":\"1/16\",\"reward\":\"1/8\",\"weights\":[\"1/5\",\"1/5\",\"1/10\"]},{\"boundary\":\"0\",\"reward\":\"3/32\",\"weights\":[\"1/7\",\"1/14\",\"1/28\"]}]],\"task_digest\":\"e0b1d102ce6e73d600fd8e3373fb3160b958c1a550222f52082f77419e2db8de\",\"tick\":0,\"values\":[\"11507885/16777216\",\"11492277/16777216\",\"7659769/16777216\"],\"variation\":\"0\"},\"receipt_digest\":\"294b9f5fa0ba402b7c4d62bda4ef7aa721843fa313956edb25038fc3b1ecdf11\",\"schema\":\"t2-publication-v1\",\"status\":\"uncertified\",\"tolerance\":\"1/1000\"}"
+            },
+            "fields": []
+          },
+          "19": {
+            "kind": {
+              "Record": {
+                "role": "ObjectLink",
+                "label": "uncertified"
+              }
+            },
+            "fields": [
+              "16",
+              "17"
+            ]
+          }
+        }
+      },
+      "scheduler": "deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0",
+      "continuation_sha256": "690c8d27657110cf6f0c30cd05f0c9d767603bff3a24aacb0c7e3f613e020d9e"
+    }
+  ]
+}

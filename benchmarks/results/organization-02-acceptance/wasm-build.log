@@ -1,0 +1,10 @@
+    Checking bitmaps v2.1.0
+   Compiling im v15.1.0
+    Checking rand_xoshiro v0.6.0
+   Compiling engine v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/engine)
+    Checking sized-chunks v0.6.5
+    Checking graph-core v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/graph-core)
+    Checking parser v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/parser)
+    Checking cli v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/cli)
+    Checking wasm-bridge v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/wasm-bridge)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.95s
