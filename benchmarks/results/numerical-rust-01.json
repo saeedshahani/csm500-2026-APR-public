@@ -1,0 +1,3984 @@
+{
+  "schema": "numerical-rust-correspondence-v1",
+  "tasks": 80,
+  "solver_runs": 240,
+  "verified_publications": 1200,
+  "coordinate_bound_checks": 3000,
+  "seed": 1005202602,
+  "cli_sha256": "b87f23a6fd086960a70205c184f5c858852b0fa67948629bb8debfc2c8ec6df4",
+  "sources": {
+    "Cargo.lock": "080be05dbe4c848694f60c2288e62d6ba9543a7eb73fa3a9ba7e5d4973753e9c",
+    "crates/cli/src/commands.rs": "3ae6ca61260b99b39f119a650c7a6d0185b5ec0c6999dd6858007548be1cc4fa",
+    "crates/cli/tests/numerical.rs": "27e402a3dc50c0ef7ab0253e9f4a722db20089345f0dc67269f668110df13b5c",
+    "crates/engine/Cargo.toml": "ee179407720e581a2ae48a0ba4cc3c3c49f64a6588137f9ef3de5ed6a154ec5f",
+    "crates/engine/src/numerical/domain.rs": "be5afe93ad4d3e25245c0721b245fe018a48e8af3ed98ebf88502e7f74c11367",
+    "crates/engine/src/numerical/mod.rs": "db50603e8a2731a2a3b9fe287caf173b470a7179f211e0188f9676b82bb9fe5b",
+    "crates/engine/src/numerical/publication.rs": "b20afd0fabb4e4f2136cb09afd905cd5390cc34ad2eccca559791c6044ce1f25",
+    "crates/engine/tests/numerical.rs": "634a24de713c99834b06b9d47a45f6ad0690739d6f252190ee0a842e217b4c7a",
+    "proofs/numerical/LocalCycles.lean": "645394f3d8041d989ee593a486d7c45fa6243ca306873258fa5890eb13f204e3",
+    "scripts/numerical-rust-study.py": "e4345615852009b1c83f64437ca0d70d170b3f4edf985942f3085bfb2b5fcdac"
+  },
+  "runs": [
+    {
+      "case": 0,
+      "mode": "raw",
+      "values": [
+        "0"
+      ],
+      "radius": "15/16",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 0,
+      "mode": "compiled",
+      "values": [
+        "15/16"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "certified",
+        "certified",
+        "certified",
+        "certified"
+      ]
+    },
+    {
+      "case": 0,
+      "mode": "direct",
+      "values": [
+        "15/16"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "certified",
+        "certified",
+        "certified",
+        "certified"
+      ]
+    },
+    {
+      "case": 1,
+      "mode": "raw",
+      "values": [
+        "169/512",
+        "9/32"
+      ],
+      "radius": "99/128",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 1,
+      "mode": "compiled",
+      "values": [
+        "229/256",
+        "29/32"
+      ],
+      "radius": "1/320",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 1,
+      "mode": "direct",
+      "values": [
+        "229/256",
+        "29/32"
+      ],
+      "radius": "1/320",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 2,
+      "mode": "raw",
+      "values": [
+        "323/512",
+        "23/64",
+        "145/256"
+      ],
+      "radius": "385/1536",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 2,
+      "mode": "compiled",
+      "values": [
+        "169/256",
+        "527/1024",
+        "371/512"
+      ],
+      "radius": "61/52224",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 2,
+      "mode": "direct",
+      "values": [
+        "169/256",
+        "527/1024",
+        "371/512"
+      ],
+      "radius": "61/52224",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 3,
+      "mode": "raw",
+      "values": [
+        "1011/1024",
+        "1463/2048",
+        "953/1024",
+        "1757/2048"
+      ],
+      "radius": "1239/16384",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 3,
+      "mode": "compiled",
+      "values": [
+        "2035/2048",
+        "1577/2048",
+        "1929/2048",
+        "1817/2048"
+      ],
+      "radius": "73/106496",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 3,
+      "mode": "direct",
+      "values": [
+        "2035/2048",
+        "1577/2048",
+        "1929/2048",
+        "1817/2048"
+      ],
+      "radius": "73/106496",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 4,
+      "mode": "raw",
+      "values": [
+        "2799/4096"
+      ],
+      "radius": "7/8192",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 4,
+      "mode": "compiled",
+      "values": [
+        "175/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 4,
+      "mode": "direct",
+      "values": [
+        "175/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 5,
+      "mode": "raw",
+      "values": [
+        "6849/8192",
+        "233/256"
+      ],
+      "radius": "2319/40960",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 5,
+      "mode": "compiled",
+      "values": [
+        "885/1024",
+        "3843/4096"
+      ],
+      "radius": "1/4096",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 5,
+      "mode": "direct",
+      "values": [
+        "885/1024",
+        "3843/4096"
+      ],
+      "radius": "1/4096",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 6,
+      "mode": "raw",
+      "values": [
+        "13425/16384",
+        "15041/16384",
+        "12805/16384"
+      ],
+      "radius": "443/409600",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 6,
+      "mode": "compiled",
+      "values": [
+        "13433/16384",
+        "15057/16384",
+        "12811/16384"
+      ],
+      "radius": "3/90112",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 6,
+      "mode": "direct",
+      "values": [
+        "13433/16384",
+        "15057/16384",
+        "12811/16384"
+      ],
+      "radius": "3/90112",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 7,
+      "mode": "raw",
+      "values": [
+        "25245/32768",
+        "14095/16384",
+        "14551/16384",
+        "15029/16384"
+      ],
+      "radius": "289/229376",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 7,
+      "mode": "compiled",
+      "values": [
+        "12625/16384",
+        "14099/16384",
+        "29125/32768",
+        "30075/32768"
+      ],
+      "radius": "17/540672",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 7,
+      "mode": "direct",
+      "values": [
+        "12625/16384",
+        "14099/16384",
+        "29125/32768",
+        "30075/32768"
+      ],
+      "radius": "17/540672",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 8,
+      "mode": "raw",
+      "values": [
+        "46995/65536"
+      ],
+      "radius": "5229/65536",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 8,
+      "mode": "compiled",
+      "values": [
+        "51/64"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 8,
+      "mode": "direct",
+      "values": [
+        "51/64"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 9,
+      "mode": "raw",
+      "values": [
+        "84209/131072",
+        "100259/131072"
+      ],
+      "radius": "1117/262144",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 9,
+      "mode": "compiled",
+      "values": [
+        "42335/65536",
+        "50243/65536"
+      ],
+      "radius": "1/196608",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 9,
+      "mode": "direct",
+      "values": [
+        "42335/65536",
+        "50243/65536"
+      ],
+      "radius": "1/196608",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 10,
+      "mode": "raw",
+      "values": [
+        "93593/131072",
+        "126385/262144",
+        "90627/131072"
+      ],
+      "radius": "12483/2883584",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 10,
+      "mode": "compiled",
+      "values": [
+        "46955/65536",
+        "63383/131072",
+        "45393/65536"
+      ],
+      "radius": "1/131072",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 10,
+      "mode": "direct",
+      "values": [
+        "46955/65536",
+        "63383/131072",
+        "45393/65536"
+      ],
+      "radius": "1/131072",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 11,
+      "mode": "raw",
+      "values": [
+        "362843/524288",
+        "382279/524288",
+        "49141/65536",
+        "210445/524288"
+      ],
+      "radius": "73/12582912",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 11,
+      "mode": "compiled",
+      "values": [
+        "362843/524288",
+        "47785/65536",
+        "393129/524288",
+        "105223/262144"
+      ],
+      "radius": "23/6684672",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 11,
+      "mode": "direct",
+      "values": [
+        "362843/524288",
+        "47785/65536",
+        "393129/524288",
+        "105223/262144"
+      ],
+      "radius": "23/6684672",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 12,
+      "mode": "raw",
+      "values": [
+        "518143/1048576"
+      ],
+      "radius": "7/4194304",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 12,
+      "mode": "compiled",
+      "values": [
+        "253/512"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 12,
+      "mode": "direct",
+      "values": [
+        "253/512"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 13,
+      "mode": "raw",
+      "values": [
+        "1728729/2097152",
+        "1843195/2097152"
+      ],
+      "radius": "225/2097152",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 13,
+      "mode": "compiled",
+      "values": [
+        "1728827/2097152",
+        "225/256"
+      ],
+      "radius": "1/11534336",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 13,
+      "mode": "direct",
+      "values": [
+        "1728827/2097152",
+        "225/256"
+      ],
+      "radius": "1/11534336",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 14,
+      "mode": "raw",
+      "values": [
+        "982203/2097152",
+        "3529431/4194304",
+        "3018831/4194304"
+      ],
+      "radius": "15/8388608",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 14,
+      "mode": "compiled",
+      "values": [
+        "982205/2097152",
+        "1764717/2097152",
+        "3018835/4194304"
+      ],
+      "radius": "65/201326592",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 14,
+      "mode": "direct",
+      "values": [
+        "982205/2097152",
+        "1764717/2097152",
+        "3018835/4194304"
+      ],
+      "radius": "65/201326592",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 15,
+      "mode": "raw",
+      "values": [
+        "3692511/4194304",
+        "5805305/8388608",
+        "290793/524288",
+        "5129063/8388608"
+      ],
+      "radius": "27319/79691776",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 15,
+      "mode": "compiled",
+      "values": [
+        "7385803/8388608",
+        "5806575/8388608",
+        "4653905/8388608",
+        "2565395/4194304"
+      ],
+      "radius": "77/268435456",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 15,
+      "mode": "direct",
+      "values": [
+        "7385803/8388608",
+        "5806575/8388608",
+        "4653905/8388608",
+        "2565395/4194304"
+      ],
+      "radius": "77/268435456",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 16,
+      "mode": "raw",
+      "values": [
+        "10551295/16777216"
+      ],
+      "radius": "1/16777216",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 16,
+      "mode": "compiled",
+      "values": [
+        "161/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 16,
+      "mode": "direct",
+      "values": [
+        "161/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 17,
+      "mode": "raw",
+      "values": [
+        "15/64",
+        "57/256"
+      ],
+      "radius": "3/512",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 17,
+      "mode": "compiled",
+      "values": [
+        "61/256",
+        "29/128"
+      ],
+      "radius": "1/512",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 17,
+      "mode": "direct",
+      "values": [
+        "61/256",
+        "29/128"
+      ],
+      "radius": "1/512",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 18,
+      "mode": "raw",
+      "values": [
+        "371/512",
+        "383/512",
+        "243/512"
+      ],
+      "radius": "101/19968",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 18,
+      "mode": "compiled",
+      "values": [
+        "93/128",
+        "383/512",
+        "243/512"
+      ],
+      "radius": "1/256",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 18,
+      "mode": "direct",
+      "values": [
+        "93/128",
+        "383/512",
+        "243/512"
+      ],
+      "radius": "1/256",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 19,
+      "mode": "raw",
+      "values": [
+        "279/512",
+        "585/1024",
+        "465/1024",
+        "321/512"
+      ],
+      "radius": "103/65536",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 19,
+      "mode": "compiled",
+      "values": [
+        "559/1024",
+        "585/1024",
+        "465/1024",
+        "321/512"
+      ],
+      "radius": "1/640",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 19,
+      "mode": "direct",
+      "values": [
+        "559/1024",
+        "585/1024",
+        "465/1024",
+        "321/512"
+      ],
+      "radius": "1/640",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 20,
+      "mode": "raw",
+      "values": [
+        "293/2048"
+      ],
+      "radius": "3/2048",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 20,
+      "mode": "compiled",
+      "values": [
+        "37/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 20,
+      "mode": "direct",
+      "values": [
+        "37/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 21,
+      "mode": "raw",
+      "values": [
+        "1767/4096",
+        "2193/4096"
+      ],
+      "radius": "7/4096",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 21,
+      "mode": "compiled",
+      "values": [
+        "443/1024",
+        "275/512"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 21,
+      "mode": "direct",
+      "values": [
+        "443/1024",
+        "275/512"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 22,
+      "mode": "raw",
+      "values": [
+        "6199/8192",
+        "929/1024",
+        "719/1024"
+      ],
+      "radius": "5/28672",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 22,
+      "mode": "compiled",
+      "values": [
+        "775/1024",
+        "929/1024",
+        "5753/8192"
+      ],
+      "radius": "11/81920",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 22,
+      "mode": "direct",
+      "values": [
+        "775/1024",
+        "929/1024",
+        "5753/8192"
+      ],
+      "radius": "11/81920",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 23,
+      "mode": "raw",
+      "values": [
+        "15225/16384",
+        "14639/16384",
+        "15321/16384",
+        "15229/16384"
+      ],
+      "radius": "27/139264",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 23,
+      "mode": "compiled",
+      "values": [
+        "7613/8192",
+        "915/1024",
+        "15321/16384",
+        "7615/8192"
+      ],
+      "radius": "3/16384",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 23,
+      "mode": "direct",
+      "values": [
+        "7613/8192",
+        "915/1024",
+        "15321/16384",
+        "7615/8192"
+      ],
+      "radius": "3/16384",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 24,
+      "mode": "raw",
+      "values": [
+        "21119/32768"
+      ],
+      "radius": "1/32768",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 24,
+      "mode": "compiled",
+      "values": [
+        "165/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 24,
+      "mode": "direct",
+      "values": [
+        "165/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 25,
+      "mode": "raw",
+      "values": [
+        "65535/65536",
+        "44403/65536"
+      ],
+      "radius": "1/32768",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 25,
+      "mode": "compiled",
+      "values": [
+        "1",
+        "11101/16384"
+      ],
+      "radius": "1/98304",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 25,
+      "mode": "direct",
+      "values": [
+        "1",
+        "11101/16384"
+      ],
+      "radius": "1/98304",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 26,
+      "mode": "raw",
+      "values": [
+        "117077/131072",
+        "99713/131072",
+        "113485/131072"
+      ],
+      "radius": "7/262144",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 26,
+      "mode": "compiled",
+      "values": [
+        "117077/131072",
+        "99713/131072",
+        "56743/65536"
+      ],
+      "radius": "5/262144",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 26,
+      "mode": "direct",
+      "values": [
+        "117077/131072",
+        "99713/131072",
+        "56743/65536"
+      ],
+      "radius": "5/262144",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 27,
+      "mode": "raw",
+      "values": [
+        "125119/262144",
+        "90249/262144",
+        "92821/262144",
+        "190289/262144"
+      ],
+      "radius": "13/3670016",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 27,
+      "mode": "compiled",
+      "values": [
+        "125119/262144",
+        "90249/262144",
+        "92821/262144",
+        "190289/262144"
+      ],
+      "radius": "13/3670016",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 27,
+      "mode": "direct",
+      "values": [
+        "125119/262144",
+        "90249/262144",
+        "92821/262144",
+        "190289/262144"
+      ],
+      "radius": "13/3670016",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 28,
+      "mode": "raw",
+      "values": [
+        "196607/262144"
+      ],
+      "radius": "3/524288",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 28,
+      "mode": "compiled",
+      "values": [
+        "3/4"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 28,
+      "mode": "direct",
+      "values": [
+        "3/4"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 29,
+      "mode": "raw",
+      "values": [
+        "673471/1048576",
+        "739883/1048576"
+      ],
+      "radius": "7/5242880",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 29,
+      "mode": "compiled",
+      "values": [
+        "10523/16384",
+        "184971/262144"
+      ],
+      "radius": "1/2621440",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 29,
+      "mode": "direct",
+      "values": [
+        "10523/16384",
+        "184971/262144"
+      ],
+      "radius": "1/2621440",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 30,
+      "mode": "raw",
+      "values": [
+        "1475211/2097152",
+        "73101/131072",
+        "138979/1048576"
+      ],
+      "radius": "23/29360128",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 30,
+      "mode": "compiled",
+      "values": [
+        "1475211/2097152",
+        "73101/131072",
+        "138979/1048576"
+      ],
+      "radius": "23/29360128",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 30,
+      "mode": "direct",
+      "values": [
+        "1475211/2097152",
+        "73101/131072",
+        "138979/1048576"
+      ],
+      "radius": "23/29360128",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 31,
+      "mode": "raw",
+      "values": [
+        "3187737/4194304",
+        "222847/262144",
+        "3058339/4194304",
+        "437237/1048576"
+      ],
+      "radius": "65/79691776",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 31,
+      "mode": "compiled",
+      "values": [
+        "1593869/2097152",
+        "222847/262144",
+        "3058339/4194304",
+        "437237/1048576"
+      ],
+      "radius": "17/19922944",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 31,
+      "mode": "direct",
+      "values": [
+        "1593869/2097152",
+        "222847/262144",
+        "3058339/4194304",
+        "437237/1048576"
+      ],
+      "radius": "17/19922944",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 32,
+      "mode": "raw",
+      "values": [
+        "5767167/8388608"
+      ],
+      "radius": "1/8388608",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 32,
+      "mode": "compiled",
+      "values": [
+        "11/16"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 32,
+      "mode": "direct",
+      "values": [
+        "11/16"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 33,
+      "mode": "raw",
+      "values": [
+        "3990129/4194304",
+        "16172253/16777216"
+      ],
+      "radius": "109/67108864",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 33,
+      "mode": "compiled",
+      "values": [
+        "1995067/2097152",
+        "4043067/4194304"
+      ],
+      "radius": "1/16777216",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 33,
+      "mode": "direct",
+      "values": [
+        "1995067/2097152",
+        "4043067/4194304"
+      ],
+      "radius": "1/16777216",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 34,
+      "mode": "raw",
+      "values": [
+        "99/128",
+        "199/256",
+        "225/256"
+      ],
+      "radius": "5/528",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 34,
+      "mode": "compiled",
+      "values": [
+        "199/256",
+        "25/32",
+        "225/256"
+      ],
+      "radius": "5/1408",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 34,
+      "mode": "direct",
+      "values": [
+        "199/256",
+        "25/32",
+        "225/256"
+      ],
+      "radius": "5/1408",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 35,
+      "mode": "raw",
+      "values": [
+        "23/32",
+        "407/512",
+        "441/512",
+        "351/512"
+      ],
+      "radius": "15/3584",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 35,
+      "mode": "compiled",
+      "values": [
+        "23/32",
+        "407/512",
+        "441/512",
+        "351/512"
+      ],
+      "radius": "15/3584",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 35,
+      "mode": "direct",
+      "values": [
+        "23/32",
+        "407/512",
+        "441/512",
+        "351/512"
+      ],
+      "radius": "15/3584",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 36,
+      "mode": "raw",
+      "values": [
+        "667/1024"
+      ],
+      "radius": "1/1024",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 36,
+      "mode": "compiled",
+      "values": [
+        "167/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 36,
+      "mode": "direct",
+      "values": [
+        "167/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 37,
+      "mode": "raw",
+      "values": [
+        "949/1024",
+        "1957/2048"
+      ],
+      "radius": "5/4608",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 37,
+      "mode": "compiled",
+      "values": [
+        "1899/2048",
+        "979/1024"
+      ],
+      "radius": "11/18432",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 37,
+      "mode": "direct",
+      "values": [
+        "1899/2048",
+        "979/1024"
+      ],
+      "radius": "11/18432",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 38,
+      "mode": "raw",
+      "values": [
+        "611/4096",
+        "127/256",
+        "861/2048"
+      ],
+      "radius": "7/8192",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 38,
+      "mode": "compiled",
+      "values": [
+        "611/4096",
+        "127/256",
+        "1723/4096"
+      ],
+      "radius": "29/36864",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 38,
+      "mode": "direct",
+      "values": [
+        "611/4096",
+        "127/256",
+        "1723/4096"
+      ],
+      "radius": "29/36864",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 39,
+      "mode": "raw",
+      "values": [
+        "6701/8192",
+        "2429/4096",
+        "1609/2048",
+        "1911/2048"
+      ],
+      "radius": "47/98304",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 39,
+      "mode": "compiled",
+      "values": [
+        "3351/4096",
+        "4859/8192",
+        "3219/4096",
+        "1911/2048"
+      ],
+      "radius": "65/180224",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 39,
+      "mode": "direct",
+      "values": [
+        "3351/4096",
+        "4859/8192",
+        "3219/4096",
+        "1911/2048"
+      ],
+      "radius": "65/180224",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 40,
+      "mode": "raw",
+      "values": [
+        "12285/16384"
+      ],
+      "radius": "3/16384",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 40,
+      "mode": "compiled",
+      "values": [
+        "3/4"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 40,
+      "mode": "direct",
+      "values": [
+        "3/4"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 41,
+      "mode": "raw",
+      "values": [
+        "13311/32768",
+        "31425/32768"
+      ],
+      "radius": "11/147456",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 41,
+      "mode": "compiled",
+      "values": [
+        "13/32",
+        "15713/16384"
+      ],
+      "radius": "1/73728",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 41,
+      "mode": "direct",
+      "values": [
+        "13/32",
+        "15713/16384"
+      ],
+      "radius": "1/73728",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 42,
+      "mode": "raw",
+      "values": [
+        "25301/65536",
+        "34303/65536",
+        "28543/65536"
+      ],
+      "radius": "1/32768",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 42,
+      "mode": "compiled",
+      "values": [
+        "25301/65536",
+        "67/128",
+        "223/512"
+      ],
+      "radius": "3/229376",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 42,
+      "mode": "direct",
+      "values": [
+        "25301/65536",
+        "67/128",
+        "223/512"
+      ],
+      "radius": "3/229376",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 43,
+      "mode": "raw",
+      "values": [
+        "112025/131072",
+        "82229/131072",
+        "779/1024",
+        "59443/131072"
+      ],
+      "radius": "103/5505024",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 43,
+      "mode": "compiled",
+      "values": [
+        "112025/131072",
+        "41115/65536",
+        "779/1024",
+        "59443/131072"
+      ],
+      "radius": "13/786432",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 43,
+      "mode": "direct",
+      "values": [
+        "112025/131072",
+        "41115/65536",
+        "779/1024",
+        "59443/131072"
+      ],
+      "radius": "13/786432",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 44,
+      "mode": "raw",
+      "values": [
+        "91391/131072"
+      ],
+      "radius": "1/131072",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 44,
+      "mode": "compiled",
+      "values": [
+        "357/512"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 44,
+      "mode": "direct",
+      "values": [
+        "357/512"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 45,
+      "mode": "raw",
+      "values": [
+        "366405/524288",
+        "192139/262144"
+      ],
+      "radius": "3/1048576",
+      "statuses": [
+        "certified",
+        "certified",
+        "certified",
+        "certified",
+        "certified"
+      ]
+    },
+    {
+      "case": 45,
+      "mode": "compiled",
+      "values": [
+        "366405/524288",
+        "384279/524288"
+      ],
+      "radius": "3/1048576",
+      "statuses": [
+        "certified",
+        "certified",
+        "certified",
+        "certified",
+        "certified"
+      ]
+    },
+    {
+      "case": 45,
+      "mode": "direct",
+      "values": [
+        "366405/524288",
+        "384279/524288"
+      ],
+      "radius": "3/1048576",
+      "statuses": [
+        "certified",
+        "certified",
+        "certified",
+        "certified",
+        "certified"
+      ]
+    },
+    {
+      "case": 46,
+      "mode": "raw",
+      "values": [
+        "512479/524288",
+        "483883/524288",
+        "225387/262144"
+      ],
+      "radius": "5/1703936",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 46,
+      "mode": "compiled",
+      "values": [
+        "1024959/1048576",
+        "967767/1048576",
+        "901549/1048576"
+      ],
+      "radius": "1/1048576",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 46,
+      "mode": "direct",
+      "values": [
+        "1024959/1048576",
+        "967767/1048576",
+        "901549/1048576"
+      ],
+      "radius": "1/1048576",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 47,
+      "mode": "raw",
+      "values": [
+        "88163/131072",
+        "450041/524288",
+        "1441147/2097152",
+        "842977/1048576"
+      ],
+      "radius": "53/31457280",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 47,
+      "mode": "compiled",
+      "values": [
+        "1410609/2097152",
+        "450041/524288",
+        "360287/524288",
+        "1685955/2097152"
+      ],
+      "radius": "47/29360128",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 47,
+      "mode": "direct",
+      "values": [
+        "1410609/2097152",
+        "450041/524288",
+        "360287/524288",
+        "1685955/2097152"
+      ],
+      "radius": "47/29360128",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 48,
+      "mode": "raw",
+      "values": [
+        "2031615/4194304"
+      ],
+      "radius": "3/4194304",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 48,
+      "mode": "compiled",
+      "values": [
+        "31/64"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 48,
+      "mode": "direct",
+      "values": [
+        "31/64"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 49,
+      "mode": "raw",
+      "values": [
+        "2190773/4194304",
+        "4859023/8388608"
+      ],
+      "radius": "1/2097152",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 49,
+      "mode": "compiled",
+      "values": [
+        "4381549/8388608",
+        "2429513/4194304"
+      ],
+      "radius": "1/8388608",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 49,
+      "mode": "direct",
+      "values": [
+        "4381549/8388608",
+        "2429513/4194304"
+      ],
+      "radius": "1/8388608",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 50,
+      "mode": "raw",
+      "values": [
+        "11295483/16777216",
+        "7860313/8388608",
+        "1936063/2097152"
+      ],
+      "radius": "23/293601280",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 50,
+      "mode": "compiled",
+      "values": [
+        "2823871/4194304",
+        "7860313/8388608",
+        "1936063/2097152"
+      ],
+      "radius": "41/671088640",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 50,
+      "mode": "direct",
+      "values": [
+        "2823871/4194304",
+        "7860313/8388608",
+        "1936063/2097152"
+      ],
+      "radius": "41/671088640",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 51,
+      "mode": "raw",
+      "values": [
+        "51/64",
+        "195/256",
+        "41/64",
+        "69/128"
+      ],
+      "radius": "3/208",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 51,
+      "mode": "compiled",
+      "values": [
+        "51/64",
+        "49/64",
+        "41/64",
+        "139/256"
+      ],
+      "radius": "13/1792",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 51,
+      "mode": "direct",
+      "values": [
+        "51/64",
+        "49/64",
+        "41/64",
+        "139/256"
+      ],
+      "radius": "13/1792",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 52,
+      "mode": "raw",
+      "values": [
+        "511/512"
+      ],
+      "radius": "3/512",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 52,
+      "mode": "compiled",
+      "values": [
+        "1"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "certified",
+        "certified",
+        "certified",
+        "certified"
+      ]
+    },
+    {
+      "case": 52,
+      "mode": "direct",
+      "values": [
+        "1"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "certified",
+        "certified",
+        "certified",
+        "certified"
+      ]
+    },
+    {
+      "case": 53,
+      "mode": "raw",
+      "values": [
+        "307/1024",
+        "237/1024"
+      ],
+      "radius": "35/33792",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 53,
+      "mode": "compiled",
+      "values": [
+        "307/1024",
+        "237/1024"
+      ],
+      "radius": "35/33792",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 53,
+      "mode": "direct",
+      "values": [
+        "307/1024",
+        "237/1024"
+      ],
+      "radius": "35/33792",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 54,
+      "mode": "raw",
+      "values": [
+        "413/512",
+        "1741/2048",
+        "1659/2048"
+      ],
+      "radius": "47/39936",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 54,
+      "mode": "compiled",
+      "values": [
+        "1653/2048",
+        "871/1024",
+        "415/512"
+      ],
+      "radius": "55/79872",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 54,
+      "mode": "direct",
+      "values": [
+        "1653/2048",
+        "871/1024",
+        "415/512"
+      ],
+      "radius": "55/79872",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 55,
+      "mode": "raw",
+      "values": [
+        "1213/4096",
+        "2843/4096",
+        "2681/4096",
+        "1633/2048"
+      ],
+      "radius": "73/122880",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 55,
+      "mode": "compiled",
+      "values": [
+        "1213/4096",
+        "711/1024",
+        "2681/4096",
+        "3267/4096"
+      ],
+      "radius": "25/55296",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 55,
+      "mode": "direct",
+      "values": [
+        "1213/4096",
+        "711/1024",
+        "2681/4096",
+        "3267/4096"
+      ],
+      "radius": "25/55296",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 56,
+      "mode": "raw",
+      "values": [
+        "7133/8192"
+      ],
+      "radius": "3/8192",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 56,
+      "mode": "compiled",
+      "values": [
+        "223/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 56,
+      "mode": "direct",
+      "values": [
+        "223/256"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 57,
+      "mode": "raw",
+      "values": [
+        "13641/16384",
+        "7199/8192"
+      ],
+      "radius": "39/163840",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 57,
+      "mode": "compiled",
+      "values": [
+        "13641/16384",
+        "14399/16384"
+      ],
+      "radius": "17/98304",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 57,
+      "mode": "direct",
+      "values": [
+        "13641/16384",
+        "14399/16384"
+      ],
+      "radius": "17/98304",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 58,
+      "mode": "raw",
+      "values": [
+        "19199/32768",
+        "10797/16384",
+        "5369/8192"
+      ],
+      "radius": "31/327680",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 58,
+      "mode": "compiled",
+      "values": [
+        "75/128",
+        "21595/32768",
+        "21477/32768"
+      ],
+      "radius": "21/327680",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 58,
+      "mode": "direct",
+      "values": [
+        "75/128",
+        "21595/32768",
+        "21477/32768"
+      ],
+      "radius": "21/327680",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 59,
+      "mode": "raw",
+      "values": [
+        "4697/16384",
+        "33657/65536",
+        "34665/65536",
+        "31399/32768"
+      ],
+      "radius": "7/184320",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 59,
+      "mode": "compiled",
+      "values": [
+        "4697/16384",
+        "16829/32768",
+        "34665/65536",
+        "62799/65536"
+      ],
+      "radius": "5/147456",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 59,
+      "mode": "direct",
+      "values": [
+        "4697/16384",
+        "16829/32768",
+        "34665/65536",
+        "62799/65536"
+      ],
+      "radius": "5/147456",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 60,
+      "mode": "raw",
+      "values": [
+        "128255/131072"
+      ],
+      "radius": "5/393216",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 60,
+      "mode": "compiled",
+      "values": [
+        "501/512"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 60,
+      "mode": "direct",
+      "values": [
+        "501/512"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 61,
+      "mode": "raw",
+      "values": [
+        "124479/262144",
+        "177471/262144"
+      ],
+      "radius": "1/131072",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 61,
+      "mode": "compiled",
+      "values": [
+        "1945/4096",
+        "2773/4096"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 61,
+      "mode": "direct",
+      "values": [
+        "1945/4096",
+        "2773/4096"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 62,
+      "mode": "raw",
+      "values": [
+        "458483/524288",
+        "127635/131072",
+        "215109/262144"
+      ],
+      "radius": "5/786432",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 62,
+      "mode": "compiled",
+      "values": [
+        "114621/131072",
+        "127635/131072",
+        "215109/262144"
+      ],
+      "radius": "9/2621440",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 62,
+      "mode": "direct",
+      "values": [
+        "114621/131072",
+        "127635/131072",
+        "215109/262144"
+      ],
+      "radius": "9/2621440",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 63,
+      "mode": "raw",
+      "values": [
+        "315051/1048576",
+        "426517/1048576",
+        "313301/524288",
+        "289263/524288"
+      ],
+      "radius": "15/4194304",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 63,
+      "mode": "compiled",
+      "values": [
+        "315051/1048576",
+        "213259/524288",
+        "626603/1048576",
+        "578527/1048576"
+      ],
+      "radius": "31/11534336",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 63,
+      "mode": "direct",
+      "values": [
+        "315051/1048576",
+        "213259/524288",
+        "626603/1048576",
+        "578527/1048576"
+      ],
+      "radius": "31/11534336",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 64,
+      "mode": "raw",
+      "values": [
+        "286719/1048576"
+      ],
+      "radius": "1/1048576",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 64,
+      "mode": "compiled",
+      "values": [
+        "35/128"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 64,
+      "mode": "direct",
+      "values": [
+        "35/128"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 65,
+      "mode": "raw",
+      "values": [
+        "0",
+        "0"
+      ],
+      "radius": "1",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 65,
+      "mode": "compiled",
+      "values": [
+        "1775069/2097152",
+        "1527785/4194304"
+      ],
+      "radius": "11/104857600",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 65,
+      "mode": "direct",
+      "values": [
+        "1775069/2097152",
+        "1527785/4194304"
+      ],
+      "radius": "11/104857600",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 66,
+      "mode": "raw",
+      "values": [
+        "1197/4096",
+        "7/32",
+        "15/64"
+      ],
+      "radius": "5703/7168",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 66,
+      "mode": "compiled",
+      "values": [
+        "7332333/8388608",
+        "7383859/8388608",
+        "1877157/2097152"
+      ],
+      "radius": "1/7340032",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 66,
+      "mode": "direct",
+      "values": [
+        "7332333/8388608",
+        "7383859/8388608",
+        "1877157/2097152"
+      ],
+      "radius": "1/7340032",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 67,
+      "mode": "raw",
+      "values": [
+        "1632119/8388608",
+        "164247/262144",
+        "11893/32768",
+        "547343/2097152"
+      ],
+      "radius": "2752333/8388608",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 67,
+      "mode": "compiled",
+      "values": [
+        "4177867/16777216",
+        "11765061/16777216",
+        "2327489/4194304",
+        "7177567/16777216"
+      ],
+      "radius": "7/50331648",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 67,
+      "mode": "direct",
+      "values": [
+        "4177867/16777216",
+        "11765061/16777216",
+        "2327489/4194304",
+        "7177567/16777216"
+      ],
+      "radius": "7/50331648",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 68,
+      "mode": "raw",
+      "values": [
+        "3/16"
+      ],
+      "radius": "33/512",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 68,
+      "mode": "compiled",
+      "values": [
+        "1/4"
+      ],
+      "radius": "1/512",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 68,
+      "mode": "direct",
+      "values": [
+        "1/4"
+      ],
+      "radius": "1/512",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 69,
+      "mode": "raw",
+      "values": [
+        "471/512",
+        "387/512"
+      ],
+      "radius": "7/2048",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 69,
+      "mode": "compiled",
+      "values": [
+        "471/512",
+        "387/512"
+      ],
+      "radius": "7/2048",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 69,
+      "mode": "direct",
+      "values": [
+        "471/512",
+        "387/512"
+      ],
+      "radius": "7/2048",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 70,
+      "mode": "raw",
+      "values": [
+        "505/1024",
+        "833/1024",
+        "717/1024"
+      ],
+      "radius": "69/2048",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 70,
+      "mode": "compiled",
+      "values": [
+        "127/256",
+        "423/512",
+        "731/1024"
+      ],
+      "radius": "9/4096",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 70,
+      "mode": "direct",
+      "values": [
+        "127/256",
+        "423/512",
+        "731/1024"
+      ],
+      "radius": "9/4096",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 71,
+      "mode": "raw",
+      "values": [
+        "749/1024",
+        "605/1024",
+        "1167/2048",
+        "1453/2048"
+      ],
+      "radius": "259/24576",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 71,
+      "mode": "compiled",
+      "values": [
+        "755/1024",
+        "153/256",
+        "1181/2048",
+        "91/128"
+      ],
+      "radius": "3/2560",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 71,
+      "mode": "direct",
+      "values": [
+        "755/1024",
+        "153/256",
+        "1181/2048",
+        "91/128"
+      ],
+      "radius": "3/2560",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 72,
+      "mode": "raw",
+      "values": [
+        "2279/4096"
+      ],
+      "radius": "89/4096",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 72,
+      "mode": "compiled",
+      "values": [
+        "37/64"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 72,
+      "mode": "direct",
+      "values": [
+        "37/64"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 73,
+      "mode": "raw",
+      "values": [
+        "5785/8192",
+        "755/2048"
+      ],
+      "radius": "11/92160",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 73,
+      "mode": "compiled",
+      "values": [
+        "5785/8192",
+        "755/2048"
+      ],
+      "radius": "11/92160",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 73,
+      "mode": "direct",
+      "values": [
+        "5785/8192",
+        "755/2048"
+      ],
+      "radius": "11/92160",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 74,
+      "mode": "raw",
+      "values": [
+        "4523/8192",
+        "10657/16384",
+        "3969/16384"
+      ],
+      "radius": "15/90112",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 74,
+      "mode": "compiled",
+      "values": [
+        "9047/16384",
+        "10659/16384",
+        "1985/8192"
+      ],
+      "radius": "3/180224",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 74,
+      "mode": "direct",
+      "values": [
+        "9047/16384",
+        "10659/16384",
+        "1985/8192"
+      ],
+      "radius": "3/180224",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 75,
+      "mode": "raw",
+      "values": [
+        "2275/4096",
+        "7881/16384",
+        "293/512",
+        "22431/32768"
+      ],
+      "radius": "781/557056",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 75,
+      "mode": "compiled",
+      "values": [
+        "4553/8192",
+        "7883/16384",
+        "18771/32768",
+        "11227/16384"
+      ],
+      "radius": "7/65536",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 75,
+      "mode": "direct",
+      "values": [
+        "4553/8192",
+        "7883/16384",
+        "18771/32768",
+        "11227/16384"
+      ],
+      "radius": "7/65536",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 76,
+      "mode": "raw",
+      "values": [
+        "1103/16384"
+      ],
+      "radius": "49/16384",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 76,
+      "mode": "compiled",
+      "values": [
+        "9/128"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 76,
+      "mode": "direct",
+      "values": [
+        "9/128"
+      ],
+      "radius": "0",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 77,
+      "mode": "raw",
+      "values": [
+        "29915/65536",
+        "69567/131072"
+      ],
+      "radius": "331/196608",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 77,
+      "mode": "compiled",
+      "values": [
+        "3753/8192",
+        "34893/65536"
+      ],
+      "radius": "1/131072",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 77,
+      "mode": "direct",
+      "values": [
+        "3753/8192",
+        "34893/65536"
+      ],
+      "radius": "1/131072",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 78,
+      "mode": "raw",
+      "values": [
+        "234299/262144",
+        "244121/262144",
+        "61099/65536"
+      ],
+      "radius": "17237/2097152",
+      "statuses": [
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 78,
+      "mode": "compiled",
+      "values": [
+        "29311/32768",
+        "122879/131072",
+        "245757/262144"
+      ],
+      "radius": "53/4980736",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 78,
+      "mode": "direct",
+      "values": [
+        "29311/32768",
+        "122879/131072",
+        "245757/262144"
+      ],
+      "radius": "53/4980736",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 79,
+      "mode": "raw",
+      "values": [
+        "119239/131072",
+        "76175/131072",
+        "406529/524288",
+        "78829/131072"
+      ],
+      "radius": "23/6291456",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 79,
+      "mode": "compiled",
+      "values": [
+        "119239/131072",
+        "76175/131072",
+        "406529/524288",
+        "78829/131072"
+      ],
+      "radius": "23/6291456",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    },
+    {
+      "case": 79,
+      "mode": "direct",
+      "values": [
+        "119239/131072",
+        "76175/131072",
+        "406529/524288",
+        "78829/131072"
+      ],
+      "radius": "23/6291456",
+      "statuses": [
+        "certified",
+        "uncertified",
+        "uncertified",
+        "uncertified",
+        "uncertified"
+      ]
+    }
+  ],
+  "scope": "Same-host finite correspondence and interval checks; not performance or whole-program proof."
+}

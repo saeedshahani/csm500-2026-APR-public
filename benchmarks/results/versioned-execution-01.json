@@ -1,0 +1,90 @@
+{
+  "schema": "versioned-execution-evidence-v1",
+  "date": "2026-10-06",
+  "status": "PASS",
+  "scope": "Same-host native integration and finite conformance; not a performance study or universal Rust refinement proof.",
+  "environment": {
+    "platform": "Darwin arm64",
+    "rust": "1.85.0",
+    "lean": "4.19.0",
+    "node": "24.21.0"
+  },
+  "sources_sha256": {
+    "crates/engine/src/versioned.rs": "bef9f4944daf288b34363c2969c69b38398a43d09102c63b38d3690af563aadf",
+    "crates/engine/tests/versioned.rs": "5382e06ee4de1676555a63fb3b95a772442182574e1cce8a9b823499c51a7047",
+    "crates/cli/src/commands.rs": "161fbb7cb30608313d8d8194253ee7165abac30282983dcca3435835b339c426",
+    "crates/cli/tests/versioned.rs": "4686467fc9bcefdd2366d02fc6d880452ed5e2c430e767ae915beef05de8217b",
+    "proofs/versioned/Publication.lean": "faa4147920e6c8bd766de0708506fdd1ca57a4e61f07ae87b874f93152e01c93",
+    "examples/reflection/versioned.graph": "094d634b40abbac34c13146cf552fc5ef3846c4588aae05f884d5121ef32390a",
+    "examples/reflection/versioned.json": "87c14352c4ad936d69892ff9ed1dc6d7119f0a937c15c7b668ea79cebb04d718",
+    "examples/manifest.json": "da1bc1996626b823f41268549d1b862422a9dc67e33c2746e32817c8f695dd8b",
+    "frontend/src/App.tsx": "dcd24cac4cd80e1e4022760245dfd476d1fc56ed83e34c7bae7359d9a400f534",
+    "scripts/verify-examples.mjs": "86327e99f1dfd89417090f69468f4c786b4cacf80b8986a4ea84d139374e140f"
+  },
+  "native": {
+    "fixture_generator": "2 previous bodies x 2 replacement bodies x 2 budgets x 4 opaque payloads",
+    "fixtures": 32,
+    "terminal_paths": 880,
+    "transition_tree_edges": 2684,
+    "max_commits": 6,
+    "engine_test_methods": 5,
+    "cli_test_methods": 2,
+    "checks": [
+      "All enabled schedules in the closed compiler image",
+      "Actual installed body, version identity and evaluation cost",
+      "Independent guest-state transition comparison",
+      "Reference admission and exact event/snapshot comparison",
+      "Preserved atoms, argument identities and captured versions",
+      "Stale candidate and resource-exhaustion atomicity",
+      "Unsupported-body and equivalent-over-budget mutations",
+      "Paused portable trace verification and resumed history",
+      "Authored JSON to stored ordinary-source equality",
+      "Malformed input rejected without output"
+    ]
+  },
+  "abstract_proof": {
+    "file": "proofs/versioned/Publication.lean",
+    "checked": true,
+    "admitted_propositions": false,
+    "printed_axioms": {
+      "accepted_installation": [],
+      "installed_result": [],
+      "evaluation_preserves_capture": ["propext"],
+      "return_finishes": ["propext"],
+      "delay_finishes": ["propext"]
+    },
+    "boundary": "Abstract installation/capture/evaluation model; Rust decoder, compiler and storage refinement are not mechanised."
+  },
+  "integration": {
+    "workspace_tests": "PASS",
+    "strict_clippy": "PASS",
+    "format_check": "PASS",
+    "warning_free_rustdoc": "PASS",
+    "frontend_unit_tests": 48,
+    "frontend_parity_tests": 25,
+    "catalogue_programs": 19,
+    "catalogue_execution_profiles": 23,
+    "production_build": "PASS; existing large-bundle warning remains",
+    "frontend_lint": "PASS",
+    "browser_manual_acceptance": {
+      "example": "reflection/versioned",
+      "seed": 0,
+      "outcome": "NormalForm",
+      "events": 5,
+      "initial_atoms": 252,
+      "final_atoms": 248,
+      "live_rules": 7,
+      "checks": ["Catalogue selection", "Load", "Run", "First/Latest history", "Internal graph", "Rules view", "Guide"]
+    },
+    "corrected_integration_fault": "The initial browser loader excluded the new example folder; a general one-directory graph glob and a catalogue regression now cover it.",
+    "remote_ci_or_deployment_performed": false
+  },
+  "reproduce": [
+    "cargo test --locked -p engine --test versioned -- --nocapture",
+    "cargo test --locked -p cli --test versioned",
+    "lean proofs/versioned/Publication.lean",
+    "node scripts/verify-examples.mjs",
+    "npm run test:parity --prefix frontend",
+    "npm run build --prefix frontend"
+  ]
+}

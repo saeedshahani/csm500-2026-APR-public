@@ -16,7 +16,7 @@ const native=commands=>invoke('target/debug/examples/protocol',[],commands.map(c
 function canonical(v){if(Array.isArray(v))return v.map(canonical);if(v&&typeof v==='object')return Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])]));return v;}
 const digest=v=>createHash('sha256').update(JSON.stringify(canonical(v))).digest('hex');
 export function verifyExamples(compare=native,regenerate=false){
- assert.equal(catalogue.length,18);assert.equal(new Set(catalogue.map(e=>e.file)).size,18);
+ assert.equal(catalogue.length,19);assert.equal(new Set(catalogue.map(e=>e.file)).size,19);
  assert.deepEqual([...new Set(catalogue.map(e=>e.category))].sort(),['arithmetic','collapse','independence','lambda','oscillation','practical','reflection','stability']);
  const profiles=catalogue.map(e=>({...e,key:e.file}));
  for(const e of catalogue.filter(e=>['stability','collapse','oscillation'].includes(e.category))){
@@ -30,6 +30,7 @@ export function verifyExamples(compare=native,regenerate=false){
   const source=read('examples/'+e.file),{observer,...settings}=e.profile;
   const config={...settings,observer:read('examples/'+observer)};
   if(e.authored.endsWith('.lambda'))assert.equal(cli(['lambda-compile','-'],read('examples/'+e.authored)).trim(),source.trim());
+  if(e.file==='reflection/versioned.graph')assert.equal(cli(['version-compile','-'],read('examples/'+e.authored)).trim(),source.trim());
   const replies=compare([{command:'load',source,config},{command:'advance',batch:String(Number(settings.max_steps)+1)}]);
   assert.ok(replies.every(r=>r.ok),`${e.key}: ${JSON.stringify(replies.map(r=>r.error))}`);
   const final=replies.at(-1);assert.equal(final.state.status,e.result.outcome,e.key);assert.equal(final.state.events.length,e.result.events,e.key);

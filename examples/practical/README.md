@@ -2,7 +2,7 @@
 
 ## Bounded reflective administration
 
-`credit-spawn.graph` contains a meta-rule that spends one visible credit to construct an inactive rank-zero empty rule package. Two credits permit two editing transactions. `delete-rule.graph` retires one inactive package, demonstrating that deletion also counts as an edit. Run either with `cargo run --release --locked -p cli -- meta-check PATH finite-edits none`; the exact initial bounds are two and one respectively. These are standalone analysis examples, not additions to the eighteen-program browser catalogue. A credit guard is only safe while other rules cannot remove it, replenish credits or expose quoted credit patterns. See [the meta-activity study](../../docs/research/reflective-recovery.md#meta-activity-contracts-loop-f) for the proof, adversarial examples and distinct productive-modulation contract.
+`credit-spawn.graph` contains a meta-rule that spends one visible credit to construct an inactive rank-zero empty rule package. Two credits permit two editing transactions. `delete-rule.graph` retires one inactive package, demonstrating that deletion also counts as an edit. Run either with `cargo run --release --locked -p cli -- meta-check PATH finite-edits none`; the exact initial bounds are two and one respectively. These are standalone analysis examples outside the browser catalogue. A credit guard is only safe while other rules cannot remove it, replenish credits or expose quoted credit patterns. See [the meta-activity study](../../docs/research/reflective-recovery.md#meta-activity-contracts-loop-f) for the proof, adversarial examples and distinct productive-modulation contract.
 
 ## Vocabulary-join example
 

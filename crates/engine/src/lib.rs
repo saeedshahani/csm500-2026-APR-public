@@ -9,6 +9,7 @@ pub mod indexed;
 pub mod learned_model;
 mod matching;
 pub mod meta_activity;
+pub mod numerical;
 pub mod observation;
 mod one_shot;
 pub mod organization;
@@ -18,6 +19,7 @@ pub mod scheduling;
 mod screened;
 pub mod stability;
 pub mod trace;
+pub mod versioned;
 pub mod workflow;
 pub use checked::{
     CandidateSearch, Execution, ExecutionLimits, GroundMatch, GroundRule, OperationalBinding,

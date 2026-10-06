@@ -1,6 +1,19 @@
 {
   "normalisation": "Canonical JSON key ordering; only implementation fingerprint omitted after full live trace verification. Identities, settings, source hash, reports and event evidence retained.",
   "profiles": {
+    "reflection/versioned.graph": {
+      "outcome": "NormalForm",
+      "events": 5,
+      "trace_sha256": "d7098dcc22317584377a981c214aa11f202c150456b651ee1f6543577fae62f1",
+      "state_sha256": [
+        "815a06328d8b6b79e99eacbe441eb4c710bb190e826d4208cd2f1e899dd54746",
+        "dd0c5faa1b49f3deb596fe29d376755719ef2041166a7e698efd8f16b7fe02ca",
+        "e839b27e733fa2e0af466f8ebe0c4aa6839800affc36eff7f7ca0f54162dfa4e",
+        "a2a5b446224e771e90dc541ac269877d743c03e057c27576a2996d06f19cbabd",
+        "fff2f303cdccdb512bc18e0b5ac3b74e28d97a1e53d0a22beb695db7675b3595",
+        "82a4a799de7780aff7e757fdb630a6ec150c40f1585cd6c9cd73ec51a3151de5"
+      ]
+    },
     "practical/work-items.graph": {
       "outcome": "NormalForm",
       "events": 10,

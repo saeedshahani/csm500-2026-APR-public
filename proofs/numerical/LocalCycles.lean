@@ -2,7 +2,7 @@ import Mathlib.Analysis.SpecificLimits.Basic
 import Mathlib.Tactic
 
 open Filter Topology
-namespace T2Review
+namespace NumericalConvergence
 
 /-- Convergence of an actually forced recurrence, with no pre-assumed endpoint limit. -/
 theorem forced_contraction (e u : ℕ → ℝ) (q : ℝ)
@@ -82,4 +82,4 @@ theorem block_composition {Block Phase : Type*} (r : Block → Block → Prop)
 #print axioms forced_contraction
 #print axioms local_cycle_convergence
 #print axioms block_composition
-end T2Review
+end NumericalConvergence

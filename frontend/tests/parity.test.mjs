@@ -60,7 +60,7 @@ test('open symbolic lambda profiles retain capture avoidance and replay parity',
 execFileSync('cargo',['build','-p','wasm-bridge','--example','protocol','--locked'],{cwd:root,stdio:'inherit'});
 execFileSync('cargo',['build','-p','cli','--locked'],{cwd:root,stdio:'inherit'});
 test('complete catalogue has exact CLI/native/WASM execution, trace and historical parity',()=>{
- assert.equal(verifyExamples(compare),22);
+ assert.equal(verifyExamples(compare),23);
 });
 function compare(commands){const native=execFileSync(fileURLToPath(new URL('target/debug/examples/protocol',root)),[],{input:commands.map(c=>JSON.stringify(c)).join('\n')+'\n',encoding:'utf8',maxBuffer:64*1024*1024}).trim().split('\n').map(JSON.parse);const handle=new WorkbenchHandle();try{const wasm=commands.map(c=>handle.dispatch(JSON.stringify(c)));assert.deepEqual(wasm,native);return wasm;}finally{handle.free();}}
 for(const execution_profile of ['indexed-v2','framed-v3','joined-v4'])test(`${execution_profile} has exact CLI/native/WASM replay, resume and reset parity`,()=>{

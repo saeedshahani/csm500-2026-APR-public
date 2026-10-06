@@ -27,6 +27,13 @@ test('research applications use the existing Rust workspace rather than explorat
   }
   assert.match(readFileSync('crates/engine/src/lib.rs', 'utf8'), /pub mod organization;/);
   assert.match(readFileSync('crates/engine/src/lib.rs', 'utf8'), /pub mod learned_model;/);
+  assert.match(readFileSync('crates/engine/src/lib.rs', 'utf8'), /pub mod numerical;/);
+  for (const file of sourceFiles(['crates/engine/src/numerical'])) {
+    assert.doesNotMatch(readFileSync(file, 'utf8'), /std::process|Command::new|T2Component|t2-receipt/);
+  }
+  assert.ok(!existsSync('scripts/numerical_components/adapter.py'));
+  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('check-numerical-proof.sh'));
+  assert.match(readFileSync('docs/archive/dissertation-full.md','utf8'), /0≤C_B<∞/);
 });
 
 test('both manuscripts are standalone academic accounts of the adopted platform', () => {
@@ -38,6 +45,28 @@ test('both manuscripts are standalone academic accounts of the adopted platform'
       assert.ok(body.includes(concept), `${path}: missing integrated scope ${concept}`);
     }
     assert.doesNotMatch(body, /I, M and O are distinct record kinds/);
+  }
+});
+
+test('versioned interpretation is native and its assurance includes installed bodies', () => {
+  assert.match(readFileSync('crates/engine/src/lib.rs','utf8'), /pub mod versioned;/);
+  const source=readFileSync('crates/engine/src/versioned.rs','utf8');
+  assert.doesNotMatch(source,/std::process|Command::new|research\/stretch/);
+  assert.ok(source.includes('unsupported installed implementation'));
+  const proof=readFileSync('proofs/versioned/Publication.lean','utf8');
+  assert.ok(proof.includes('cost t.installed.body ≤ p.budget'));
+  assert.doesNotMatch(proof,/\bsorry\b|\baxiom\b/);
+  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('proofs/versioned/Publication.lean'));
+  const request=JSON.parse(readFileSync('examples/reflection/versioned.json','utf8'));
+  assert.equal(request.budget,1);assert.equal(request.replacement,'return');
+  const app=readFileSync('frontend/src/App.tsx','utf8');
+  assert.ok(app.includes("import.meta.glob('../../examples/*/*.graph'"), 'Catalogue source loading must not omit new example directories');
+  for(const entry of JSON.parse(readFileSync('examples/manifest.json','utf8'))) {
+    assert.match(entry.file,/^[^/]+\/[^/]+\.graph$/,'Each catalogue entry must match the browser source glob');
+  }
+  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    const body=readFileSync(path,'utf8').split('# Bibliography')[0];
+    for(const term of ['Version-aware','captured','installed','DelayReturn','880','2,684'])assert.ok(body.includes(term),`${path}: ${term}`);
   }
 });
 
@@ -91,7 +120,9 @@ test('reproduction claims separate cross-environment semantics from byte identit
   assert.equal(r.primary.semantic_equal,true);assert.equal(r.primary.wasm_bytes_equal,false);assert.equal(r.linux_bytes_equal,true);
   for(const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
     const body=readFileSync(file,'utf8').split('# Bibliography')[0];
-    for(const text of ['Lamb and Zacchiroli','macOS','Linux','768','144','theorem domains'])assert.ok(body.includes(text),`${file}: ${text}`);
+    const required = ['Lamb and Zacchiroli','macOS','Linux'];
+    if(file.includes('/archive/')) required.push('768','144','theorem domains');
+    for(const text of required)assert.ok(body.includes(text),`${file}: ${text}`);
     assert.doesNotMatch(body,/\]\((?:\.\.\/)*docs\//);
   }
   assert.ok(readFileSync('docs/task-list.md','utf8').includes('- [x] S6-233 —'));
@@ -125,7 +156,11 @@ test('meaning claims distinguish normality, useful interpretation and intrinsic 
   for(const [method,correct]of [['adaptive',1296],['fixed',1296],['blind',468],['shuffled',36],['rule-free',0]])assert.equal(r.summary[method].correct,correct);
   for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
     const body=readFileSync(path,'utf8').split('# Bibliography')[0];
-    for(const required of ['1,296','444','3,600','120','1,092','Harnad','context','unresolved'])assert.ok(body.includes(required),`${path}: ${required}`);
+    // Both papers preserve the interpretation boundary; detailed sample counts
+    // belong in the full account, not in every condensed result paragraph.
+    const required = ['Harnad','context','unresolved'];
+    if(path.includes('/archive/')) required.push('1,296','444','3,600','120','1,092');
+    for(const item of required)assert.ok(body.includes(item),`${path}: ${item}`);
     assert.doesNotMatch(body,/\]\((?:\.\.\/)*docs\//);
   }
   const tasks=readFileSync('docs/task-list.md','utf8');for(const id of ['S6-183','S6-232'])assert.ok(tasks.includes(`- [x] ${id} —`));
@@ -137,7 +172,10 @@ test('learning claims retain strong baselines, native scope and both standalone 
   assert.equal(r.summary.random.positive_correct,504);assert.equal(r.summary.memory.positive_correct,0);
   for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
     const body=readFileSync(path,'utf8').split('# Bibliography')[0];
-    for(const required of ['2,304','2,412','201','64','Gulwani','external'])assert.ok(body.includes(required),`${path}: ${required}`);
+    const required = ['Gulwani','external'];
+    if(path.includes('/archive/')) required.push('2,304','2,412','201','64');
+    else assert.match(body, /ties a correct fixed baseline/);
+    for(const item of required)assert.ok(body.includes(item),`${path}: ${item}`);
     assert.doesNotMatch(body,/\]\((?:\.\.\/)*docs\//);
   }
 });
@@ -148,7 +186,9 @@ test('admission assurance retains exact scope, results and both standalone accou
   assert.equal(report.proof.negative.length,6);
   for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
     const text=readFileSync(path,'utf8').split('# Bibliography')[0];
-    for(const required of ['4,930','11,739','3,738','7,153','4,586','fresh','refinement','Söldner'])assert.ok(text.includes(required),`${path}: ${required}`);
+    const required = ['fresh','refinement','Söldner'];
+    if(path.includes('/archive/')) required.push('4,930','11,739','3,738','7,153','4,586');
+    for(const item of required)assert.ok(text.includes(item),`${path}: ${item}`);
     assert.doesNotMatch(text,/\]\((?:\.\.\/)*docs\//);
   }
   execFileSync(process.execPath,['scripts/admission-study.mjs','verify','benchmarks/results/admission-01']);
@@ -284,9 +324,10 @@ test('acquired organization is adopted with corrected evidence and standalone pr
   for(const file of ['crates/engine/src/organization/mod.rs','crates/engine/src/organization/state.rs','crates/engine/src/organization/observe.rs']) {
     assert.doesNotMatch(readFileSync(file,'utf8'), /std::process|Command::new|tests\/oracles/);
   }
-  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('scripts/numerical_components'));
+  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('numerical-rust-study.py'));
   const short = readFileSync('docs/dissertation.md','utf8');
-  assert.ok(short.indexOf('## 8.3 Acquired representations and renewal') < short.indexOf('# 9. Discussion'));
+  const organizationSection = short.indexOf('## 8.3 Can acquired representations support renewal?');
+  assert.ok(organizationSection >= 0 && organizationSection < short.indexOf('# 9. Discussion'));
   assert.doesNotMatch(short, /findings strengthen RQ3 and RQ5/);
   for (const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
     assert.match(readFileSync(file,'utf8'), /[Aa]blations/);

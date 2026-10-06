@@ -1,5 +1,26 @@
 [
   {
+    "file": "reflection/versioned.graph",
+    "purpose": "Publish a replacement implementation while retaining captured calls.",
+    "expected": "Two completed calls preserve their argument; later capture uses the published version.",
+    "observer": "complete carrier",
+    "limit": "8 steps; seeded scheduler 0; recurrence off",
+    "evidence": "exhaustive native schedule/readback tests, installed-body mutations, portable replay and CLI/WASM parity",
+    "category": "reflection",
+    "authored": "reflection/versioned.json",
+    "rqs": ["RQ1", "RQ3", "RQ5"],
+    "profile": {
+      "max_steps": "8",
+      "seed": "0",
+      "detect_cycles": false,
+      "observer": "observers/all.observer",
+      "max_work": "1000000",
+      "max_candidates": "1000"
+    },
+    "result": {"outcome": "NormalForm", "events": 5},
+    "documentation": "reflection/README.md"
+  },
+  {
     "file": "practical/work-items.graph",
     "purpose": "Process ten named work items.",
     "expected": "Ten status rewrites, then NormalForm if budgets suffice.",

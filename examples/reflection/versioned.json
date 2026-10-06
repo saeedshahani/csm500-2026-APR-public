@@ -1,0 +1,6 @@
+{
+  "previous": "delay_return",
+  "replacement": "return",
+  "budget": 1,
+  "payload": "sample-item"
+}

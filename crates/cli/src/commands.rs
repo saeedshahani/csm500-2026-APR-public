@@ -102,7 +102,11 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["trace-explain", "--help"]
         || args == ["dataset-compile", "--help"]
         || args == ["model-run", "--help"]
+        || args == ["version-compile", "--help"]
+        || args == ["version-readback", "--help"]
         || args == ["organization-run", "--help"]
+        || args == ["numerical-run", "--help"]
+        || args == ["numerical-check", "--help"]
         || args == ["lambda-compile", "--help"]
         || args == ["lambda-readback", "--help"]
         || args == ["stability-check", "--help"]
@@ -113,6 +117,8 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["workflow-run", "--help"]
         || args == ["workflow-example", "--help"]
     {
+        io::stdout().lock().write_all(b"Versioned execution: cli version-compile REQUEST_JSON | version-readback GRAPH (file or -). Return/delay_return guest implementations; budget 1 or 2 evaluation rewrites. Compilation emits ordinary graph source for run/export and the browser. Readback decodes installed bodies and captured versions; it does not authenticate an edited graph.\n").map_err(|e| Failure::new(1,e.to_string()))?;
+        io::stdout().lock().write_all(b"Numerical components: cli numerical-run REQUEST_JSON | numerical-check PACKET_JSON (file or -) [--output NEW_PATH]. Exact Rust arithmetic; 1..4 states, at most 16 policies, raw/compiled/direct methods. Strict string rationals; native publication and replay. Packet checking establishes consistency, not origin authentication.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Counterfactual explanation: cli trace-explain TRACE --event N [--query exact|source-revision] [--max-prefix N]\nOrder-preserving deletion interventions; default prefix 8, hard maximum 12. Full native admission, not general causality or independence. Whole report fails on resource exhaustion; old trace-conditions remains unchanged.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Workflow contracts: cli workflow-example routing|branching COUNT emits a request; cli workflow-check REQUEST and cli workflow-run REQUEST accept a file or -. JSON fields: source, contract, max_steps (0..1000), meta_burst (0..32). No reachable-state enumeration. Persistent revisions require the opt-in FIFO work scheduler; ordinary run is unchanged. Runs return Completed or StepLimit plus a portable trace without a scheduler-verification claim. Unsupported is not refuted; resource exhaustion is inconclusive.\n").map_err(|e|Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Inert abstraction: cli meta-abstract INPUT MODE CONTRACT_OR_none LABEL [bounded options]\nPrivately erase only isolated constructors of LABEL after checking every reachable state's active patterns. Unsupported abstraction exits 2, not a safety refutation. Reports use meta-activity-analysis-v2; complete refers to the reduced quotient. Runtime graphs, trace semantics and scheduling are unchanged. No fairness or bounded-memory claim.\n").map_err(|e|Failure::new(1,e.to_string()))?;
@@ -212,6 +218,44 @@ pub(crate) fn main_command() -> Result<u8> {
     ) {
         return trace_command(&args);
     }
+    if args[0] == "numerical-run" || args[0] == "numerical-check" {
+        if args.len() != 2 && !(args.len() == 4 && args[2] == "--output") {
+            return Err(Failure::new(2, "usage: cli numerical-run REQUEST_JSON | numerical-check PACKET_JSON (file or -) [--output NEW_PATH]"));
+        }
+        let text = read_source(
+            &args[1],
+            if args[0] == "numerical-check" {
+                8192
+            } else {
+                32768
+            },
+        )?;
+        let report = if args[0] == "numerical-run" {
+            let request: engine::numerical::Request = serde_json::from_str(&text).map_err(|e| Failure::new(2,e.to_string()))?;
+            engine::numerical::execute(&request)
+        } else {
+            engine::numerical::check_packet_json(text.as_bytes()).map(|p| serde_json::json!({"consistent":true,"status":p.status(),"authenticated":false}))
+        }.map_err(|e| match e {
+            engine::learned_model::Error::Input(s) => Failure::new(2,s),
+            engine::learned_model::Error::Native(d) => engine_failure(d),
+        })?;
+        let bytes = serde_json::to_vec(&report).map_err(|e| Failure::new(1, e.to_string()))?;
+        if bytes.len() > 16 * 1024 * 1024 {
+            return Err(Failure::new(
+                3,
+                "numerical report exceeds 16 MiB output budget",
+            ));
+        }
+        if let Some(path) = args.get(3) {
+            publish_new(Path::new(path), &bytes)?;
+        } else {
+            io::stdout()
+                .lock()
+                .write_all(&bytes)
+                .map_err(|e| Failure::new(1, e.to_string()))?;
+        }
+        return Ok(0);
+    }
     if args[0] == "organization-run" {
         if args.len() != 2 && !(args.len() == 4 && args[2] == "--output") {
             return Err(Failure::new(
@@ -241,6 +285,44 @@ pub(crate) fn main_command() -> Result<u8> {
                 .write_all(&bytes)
                 .map_err(|e| Failure::new(1, e.to_string()))?;
         }
+        return Ok(0);
+    }
+    if matches!(args[0].as_str(), "version-compile" | "version-readback") {
+        if args.len() != 2 {
+            return Err(Failure::new(
+                2,
+                "usage: cli version-compile REQUEST_JSON | version-readback GRAPH (file or -)",
+            ));
+        }
+        let text = read_source(&args[1], ParseLimits::default().graph.max_input_bytes)?;
+        let failure = |e| match e {
+            engine::versioned::Error::Input(s) => Failure::new(2, s),
+            engine::versioned::Error::Native(d) => engine_failure(d),
+        };
+        let output = if args[0] == "version-compile" {
+            let request: engine::versioned::Request =
+                serde_json::from_str(&text).map_err(|e| Failure::new(2, e.to_string()))?;
+            let graph = engine::versioned::compile(&request).map_err(failure)?;
+            parser::print(&graph).map_err(engine_failure)?
+        } else {
+            let loaded = parser::load(&text).map_err(|errors| {
+                let code = if errors
+                    .iter()
+                    .any(|e| e.diagnostic.kind() == ErrorKind::ResourceExhaustion)
+                {
+                    3
+                } else {
+                    2
+                };
+                Failure::new(code, format!("{errors:?}"))
+            })?;
+            let view = engine::versioned::inspect(loaded.graph()).map_err(failure)?;
+            serde_json::to_string_pretty(&view).map_err(|e| Failure::new(1, e.to_string()))?
+        };
+        io::stdout()
+            .lock()
+            .write_all(format!("{output}\n").as_bytes())
+            .map_err(|e| Failure::new(1, e.to_string()))?;
         return Ok(0);
     }
     if args[0] == "model-run" {

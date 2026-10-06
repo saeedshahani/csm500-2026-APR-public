@@ -23,7 +23,7 @@ jobs:
           python3 scripts/organization-rust-study.py --cli target/debug/cli --output /tmp/organization-rust-correspondence.json
       - name: Checked numerical component regression and frozen evidence
         run: |
-          python3 -B -m unittest discover -s scripts/numerical_components -p 'test_*.py' -v
+          python3 -B scripts/numerical-rust-study.py --cli target/debug/cli --output /tmp/numerical-rust-correspondence.json
           python3 benchmarks/results/numerical-components-01/source/review-response/reproduce.py --verify benchmarks/results/numerical-components-01
       - uses: actions/setup-node@v4
         with:
@@ -102,6 +102,12 @@ jobs:
           tar --zstd -xf "$proof_tools/lean.tar.zst" -C "$proof_tools"
           LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" node scripts/admission-study.mjs verify benchmarks/results/admission-01 --proof
           "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/organization/Composition.lean
+          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/versioned/Publication.lean
+          git clone --filter=blob:none --no-checkout https://github.com/leanprover-community/mathlib4.git "$proof_tools/mathlib"
+          git -C "$proof_tools/mathlib" checkout --detach c44e0c8ee63ca166450922a373c7409c5d26b00b
+          export PATH="$proof_tools/lean-4.19.0-linux/bin:$PATH"
+          lake --dir "$proof_tools/mathlib" exe cache get
+          NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" bash scripts/check-numerical-proof.sh
       - name: Check production WebAssembly dependencies
         run: |
           rustup target add wasm32-unknown-unknown --toolchain 1.85.0

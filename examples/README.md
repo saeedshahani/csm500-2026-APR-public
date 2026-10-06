@@ -2,7 +2,7 @@
 
 The optional native analysis fixture [inert-log.graph](practical/inert-log.graph) combines a two-credit rule factory with an indefinitely allocating logger. `meta-abstract` can establish its two-edit bound by checking that isolated `Log` atoms remain unreadable; ordinary `meta-check` cannot complete its infinite full-carrier quotient. This is an analysis witness, not an additional browser catalogue entry or a runtime garbage collector. See the [meta-activity study](../docs/research/reflective-recovery.md#meta-activity-contracts-loop-f) for reader, connected-growth and starvation counterexamples.
 
-The catalogue contains eighteen complete programs covering the seven required research categories: arithmetic, reflective modification, stability, oscillation, collapse, independent rewrites and lambda reduction. Two work-item profiles provide an additional practical interpretation; guarded processing also belongs to the reflective category. Every executable `.graph` includes its rules and initial data. No external rule store or built-in arithmetic operation is required.
+The catalogue contains nineteen complete programs covering the seven required research categories: arithmetic, reflective modification, stability, oscillation, collapse, independent rewrites and lambda reduction. Two work-item profiles provide an additional practical interpretation; guarded processing also belongs to the reflective category. Version-aware interpretation demonstrates continuity across a checked implementation change. Every executable `.graph` includes its rules and initial data. No external rule store or built-in arithmetic operation is required.
 
 [manifest.json](manifest.json) is the common CLI-test and browser-gallery index. Each entry records the authored input, executable graph, research questions, purpose, expected bounded outcome, observer, scheduler seed, limits and explanation. Lambda graphs are generated from the adjacent named source terms by the shared adapter. Expected carriers and fixture ledgers are supporting evidence, not additional selectable programs. The other `syntax/` and `fixtures/` inputs exercise language and admission boundaries rather than the seven-category demonstration library.
 
@@ -24,6 +24,7 @@ For a debugger walkthrough, open Rule breakpoints after loading practical/policy
 
 | Executable input | Step bound | Reference outcome | Interpretation and supporting evidence |
 |---|---:|---|---|
+| reflection/versioned.graph | 8 | NormalForm, 5 events | Seed 0 publishes a one-step implementation while an old call retains its two-step version. Other schedules can take six steps. [Version-aware execution](reflection/README.md). |
 | programs/arithmetic.graph | 6 | NormalForm, 1 event | Graph-defined AddZero removes five atoms and creates one link; not a general calculator. [Authored cases](programs/README.md). |
 | programs/self-modify.graph | 6 | StepLimit, 6 events | Seeded reflective prefix. The separately selected self/supervisor/self path changes later output from A to B; arbitrary selection need not follow it. [Authored cases](programs/README.md). |
 | programs/mutual-regress.graph | 6 | NormalForm, 0 events | Raw rank exchange is rejected by GC; no admitted successor. [Rejected comparison](programs/README.md). |
@@ -64,7 +65,7 @@ cargo test --locked -p cli --test programs --test behaviour --test trace --test 
 # From frontend/: npm run test:parity
 ```
 
-The catalogue verifier checks twenty-two execution profiles. It compares CLI export with the native workbench protocol, validates each trace against the public `reflective-trace-v1` decoder and checked replay, reconstructs every historical state, and exercises CLI source replay at initial, middle and final positions. The same verifier is invoked with exact native/WASM comparison by the parity suite. Source replay is loadable text, not an identity-preserving checkpoint.
+The catalogue verifier checks twenty-three execution profiles. It compares CLI export with the native workbench protocol, validates each trace against the public `reflective-trace-v1` decoder and checked replay, reconstructs every historical state, and exercises CLI source replay at initial, middle and final positions. The same verifier is invoked with exact native/WASM comparison by the parity suite. Source replay is loadable text, not an identity-preserving checkpoint.
 
 [catalogue-golden.json](catalogue-golden.json) stores complete-trace and per-state SHA-256 regressions. Object keys are sorted, array order and identities are retained, and only the build implementation fingerprint is omitted from the golden digest. The original, unmodified live trace is first verified with its actual implementation identity; hashes are never used to bypass import checks. Changes to source bytes, allocation, settings, reports, revisions, footprints, checkpoints or dependencies therefore change the regression. Explicit regeneration uses `node scripts/verify-examples.mjs --regenerate` only after reviewing the semantic change. The verifier still checks declared outcomes before regeneration.
 

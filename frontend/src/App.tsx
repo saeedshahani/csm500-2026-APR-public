@@ -18,7 +18,7 @@ import {settingsReducer,effectiveSettings,exampleSettings,engineConfig,importedS
 import manifest from '../../examples/manifest.json';
 import './workspace.css';
 import './application.css';
-const examples=import.meta.glob('../../examples/{programs,behaviour,independent,practical,lambda}/*.graph',{query:'?raw',import:'default',eager:true}) as Record<string,string>;
+const examples=import.meta.glob('../../examples/*/*.graph',{query:'?raw',import:'default',eager:true}) as Record<string,string>;
 const choices=manifest.map(m=>{const key='../../examples/'+m.file;if(!(key in examples))throw new Error(`Missing gallery source: ${m.file}`);return key;}).sort();
 const initial=choices.find(k=>k.endsWith('/independent/shared-read.graph'))!;
 const observers=import.meta.glob('../../examples/observers/*.observer',{query:'?raw',import:'default',eager:true}) as Record<string,string>;
