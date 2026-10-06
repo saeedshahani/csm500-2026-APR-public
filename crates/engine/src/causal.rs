@@ -1,4 +1,5 @@
 //! Bounded positive-resource order, not complete enabling causality or an unfolding.
+pub mod provenance;
 use crate::recording::{AtomId, EventId, RecordedEvent};
 use graph_core::{Diagnostic, ErrorKind, LimitKind, Result};
 use std::collections::{BTreeMap, BTreeSet};

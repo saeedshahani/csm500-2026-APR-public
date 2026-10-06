@@ -10,6 +10,26 @@ import {createHash} from 'node:crypto';
 import {sourceFiles} from './research-source-files.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('selected provenance has native authority, independent evidence and scoped paper claims', () => {
+  const report=JSON.parse(readFileSync('benchmarks/results/selected-provenance-01.json','utf8'));
+  assert.deepEqual(report.counts,{histories:24,events:90,selection_reports:120,event_projection_agreements:450});
+  assert.equal(report.rows.length,24);
+  assert.equal(report.rows.reduce((n,r)=>n+r.events,0),90);
+  assert.equal(new Set(report.rows.map(r=>`${r.name}/${r.seed}`)).size,24);
+  const source=readFileSync('crates/engine/src/causal/provenance.rs','utf8');
+  assert.match(source,/trace: &VerifiedTrace/);
+  assert.match(source,/global_necessity: "unknown"/);
+  assert.doesNotMatch(source,/std::process|Command::new|research\/stretch/);
+  const proof=readFileSync('crates/engine/proofs/SelectedProvenance.lean','utf8');
+  assert.equal([...proof.matchAll(/^theorem /gm)].length,7);
+  assert.doesNotMatch(proof,/\bsorry\b|^axiom /m);
+  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    const body=readFileSync(path,'utf8').split('# Bibliography')[0];
+    for(const term of ['Grädel and Tannen, 2017','Baldan and Raffaetà, 2019','450','nonempty']) assert.ok(body.includes(term),`${path}: ${term}`);
+    assert.doesNotMatch(body,/T6|selected-provenance-study|trace-provenance/);
+  }
+  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('crates/engine/proofs/SelectedProvenance.lean'));
+});
 test('representation costs use native verified states and preserve theoretical limits', () => {
   const report=JSON.parse(readFileSync('benchmarks/results/snapshot-cost-01.json','utf8'));
   assert.deepEqual(report.counts,{cases:47,byte_oracle_agreements:47});

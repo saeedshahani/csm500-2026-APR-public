@@ -119,6 +119,8 @@ A trace saves the starting graph and what each rewrite did. Loading it checks th
 ```sh
 cargo run -p cli -- trace-cost stable.trace.json --at 0
 cargo run -p cli -- trace-cost stable.trace.json --output snapshot-cost.json
+cargo run -p cli -- trace-provenance stable.trace.json
+cargo run -p cli -- trace-provenance stable.trace.json --select 0
 ```
 
 This verifies the trace and measures the complete identity-bearing snapshot, including labels, ordered fields, allocator state and its format envelope. The default is the endpoint; `--max-snapshot-bytes` sets a measurement allowance. Existing output files are not overwritten. Counts exclude the decoder, evaluator and history, so they are a storage baseline, not a minimum-system claim. See the [cost contract and native study](docs/research/minimality.md#information-contracts-and-native-storage-costs).

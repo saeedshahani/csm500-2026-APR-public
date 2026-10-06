@@ -95,6 +95,8 @@ jobs:
           cargo build --release --locked -p engine --example measure
           node scripts/benchmark.mjs /tmp/reflective-benchmark-smoke --smoke
           node scripts/verify-benchmark.mjs
+          cargo build --release --locked -p cli
+          node scripts/selected-provenance-study.mjs "$RUNNER_TEMP/selected-provenance.json"
       - name: Pinned kernel proofs and independent admission campaigns
         shell: bash
         run: |
@@ -107,6 +109,7 @@ jobs:
           "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/action_learning/Safety.lean
           "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/observation/Certificates.lean
           "$proof_tools/lean-4.19.0-linux/bin/lean" crates/engine/proofs/RepresentationCosts.lean
+          "$proof_tools/lean-4.19.0-linux/bin/lean" crates/engine/proofs/SelectedProvenance.lean
           git clone --filter=blob:none --no-checkout https://github.com/leanprover-community/mathlib4.git "$proof_tools/mathlib"
           git -C "$proof_tools/mathlib" checkout --detach c44e0c8ee63ca166450922a373c7409c5d26b00b
           export PATH="$proof_tools/lean-4.19.0-linux/bin:$PATH"

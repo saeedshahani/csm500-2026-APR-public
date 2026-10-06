@@ -125,6 +125,18 @@ fn exhaustive_two_side_oracle_and_both_removal_orders() {
             }
             let positive = DependencyOrder::extract(log.events(), Default::default()).unwrap();
             assert!(!positive.edges().keys().any(|(_, to)| *to == consumer));
+            let selected = engine::causal::provenance::analyse(
+                &trace,
+                &engine::causal::provenance::Selection::AllOccurrences,
+                AnalysisLimits::default(),
+            )
+            .unwrap();
+            // Absence establishment remains visible to the separate condition
+            // analyser even though no produced input links it to this reader.
+            assert!(selected.observations[consumer.0 as usize]
+                .selected_birth_read_ancestry
+                .is_empty());
+            assert_eq!(selected.global_necessity, "unknown");
             assert_eq!(
                 conditions::extract(
                     &trace,

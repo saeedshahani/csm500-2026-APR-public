@@ -98,6 +98,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["replay", "--help"]
         || args == ["trace-check", "--help"]
         || args == ["trace-cost", "--help"]
+        || args == ["trace-provenance", "--help"]
         || args == ["trace-migrate", "--help"]
         || args == ["trace-conditions", "--help"]
         || args == ["trace-explain", "--help"]
@@ -121,6 +122,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["workflow-example", "--help"]
     {
         io::stdout().lock().write_all(b"Snapshot storage: cli trace-cost TRACE [--at N] [--max-snapshot-bytes N] [--output NEW_PATH]. Verifies the trace, then counts compact identity-bearing snapshot JSON including its format envelope. Defaults to the endpoint and the active trace byte limit. Excludes decoder/evaluator, history and work; no minimum or compression claim.\n").map_err(|e| Failure::new(1,e.to_string()))?;
+        io::stdout().lock().write_all(b"Selected provenance: cli trace-provenance TRACE [--select 0,2 | --classes 0=update,2=update] [--max-work N] [--max-units N] [--output NEW_PATH]. Default: all occurrences. Empty selection is allowed. Reports selected birth/read ancestry, direct creators and earlier selected history from verified replay; no alternative-execution necessity.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Action learning: cli action-learn REQUEST_JSON | action-compile REQUEST_JSON (file or -). Typed complete observations; conservative Rust fitting with evidence epochs. Compilation emits ordinary guarded action rules, not host-computed successors. No resident fitting or hosted training endpoint.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Versioned execution: cli version-compile REQUEST_JSON | version-readback GRAPH (file or -). Return/delay_return guest implementations; budget 1 or 2 evaluation rewrites. Compilation emits ordinary graph source for run/export and the browser. Readback decodes installed bodies and captured versions; it does not authenticate an edited graph.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Numerical components: cli numerical-run REQUEST_JSON | numerical-check PACKET_JSON (file or -) [--output NEW_PATH]. Exact Rust arithmetic; 1..4 states, at most 16 policies, raw/compiled/direct methods. Strict string rationals; native publication and replay. Packet checking establishes consistency, not origin authentication.\n").map_err(|e| Failure::new(1,e.to_string()))?;
@@ -222,6 +224,7 @@ pub(crate) fn main_command() -> Result<u8> {
         "replay"
             | "trace-check"
             | "trace-cost"
+            | "trace-provenance"
             | "trace-conditions"
             | "trace-explain"
             | "trace-migrate"
@@ -1014,6 +1017,50 @@ fn resume_command(args: &[String]) -> Result<u8> {
     Ok(code)
 }
 
+fn provenance_selection_option(
+    flag: &str,
+    value: &str,
+) -> Result<engine::causal::provenance::Selection> {
+    use engine::causal::provenance::Selection;
+    use engine::recording::EventId;
+    use std::collections::BTreeMap;
+    // Bound argument processing before allocating a map or cloning labels.
+    if value.len() > 65_536 {
+        return Err(Failure::new(2, "provenance selection exceeds 65536 bytes"));
+    }
+    if flag == "--select" {
+        let mut events = BTreeSet::new();
+        if !value.is_empty() {
+            for item in value.split(',') {
+                if !events.insert(EventId(number::<u64>(item, "--select")?)) {
+                    return Err(Failure::new(2, "duplicate selected event"));
+                }
+            }
+        }
+        Ok(Selection::Occurrences(events))
+    } else {
+        let mut events: BTreeMap<EventId, BTreeSet<String>> = BTreeMap::new();
+        if !value.is_empty() {
+            for item in value.split(',') {
+                let (id, label) = item
+                    .split_once('=')
+                    .ok_or_else(|| Failure::new(2, "classes use EVENT=LABEL pairs"))?;
+                if label.is_empty() || label.len() > 256 || label.chars().any(char::is_control) {
+                    return Err(Failure::new(2, "invalid provenance class label"));
+                }
+                if !events
+                    .entry(EventId(number::<u64>(id, "--classes")?))
+                    .or_default()
+                    .insert(label.into())
+                {
+                    return Err(Failure::new(2, "duplicate event/class assignment"));
+                }
+            }
+        }
+        Ok(Selection::Classes(events))
+    }
+}
+
 fn trace_command(args: &[String]) -> Result<u8> {
     if args.len() < 2 {
         return Err(Failure::new(
@@ -1023,15 +1070,32 @@ fn trace_command(args: &[String]) -> Result<u8> {
     }
     let mut index = None;
     let mut snapshot_bytes = trace_limits().max_bytes;
+    let mut provenance_selection = engine::causal::provenance::Selection::AllOccurrences;
+    let mut provenance_limits = engine::causal::AnalysisLimits::default();
     let mut explain_limits = engine::counterfactual::Limits::default();
     let mut explain_query = engine::counterfactual::Query::ExactOccurrence;
     let mut output = None;
     let mut seen = BTreeSet::new();
     for pair in args[2..].chunks(2) {
-        if pair.len() != 2 || !seen.insert(&pair[0]) {
+        if pair.len() != 2 || !seen.insert(pair[0].as_str()) {
             return Err(Failure::new(2, "missing or duplicate replay option"));
         }
         match pair[0].as_str() {
+            "--select" | "--classes" if args[0] == "trace-provenance" => {
+                if seen.contains("--select") && seen.contains("--classes") {
+                    return Err(Failure::new(
+                        2,
+                        "choose occurrence selection or class assignment",
+                    ));
+                }
+                provenance_selection = provenance_selection_option(&pair[0], &pair[1])?;
+            }
+            "--max-work" if args[0] == "trace-provenance" => {
+                provenance_limits.max_work = number::<usize>(&pair[1], "--max-work")?;
+            }
+            "--max-units" if args[0] == "trace-provenance" => {
+                provenance_limits.max_units = number::<usize>(&pair[1], "--max-units")?;
+            }
             "--at" if args[0] == "replay" || args[0] == "trace-cost" => {
                 index = Some(number::<usize>(&pair[1], "--at")?)
             }
@@ -1052,7 +1116,10 @@ fn trace_command(args: &[String]) -> Result<u8> {
                 }
             }
             "--output"
-                if args[0] == "replay" || args[0] == "trace-migrate" || args[0] == "trace-cost" =>
+                if args[0] == "replay"
+                    || args[0] == "trace-migrate"
+                    || args[0] == "trace-cost"
+                    || args[0] == "trace-provenance" =>
             {
                 output = Some(PathBuf::from(&pair[1]))
             }
@@ -1090,6 +1157,15 @@ fn trace_command(args: &[String]) -> Result<u8> {
                 .map_err(engine_failure)?,
         )
         .map_err(|e| Failure::new(1, e.to_string()))?
+    } else if args[0] == "trace-provenance" {
+        let report =
+            engine::causal::provenance::analyse(&trace, &provenance_selection, provenance_limits)
+                .map_err(engine_failure)?;
+        let value = serde_json::json!({"source_trace_sha256": engine::trace::sha256(text.as_bytes()), "analysis": report});
+        format!(
+            "{}\n",
+            serde_json::to_string_pretty(&value).map_err(|e| Failure::new(1, e.to_string()))?
+        )
     } else if args[0] == "trace-cost" {
         let state = index.unwrap_or(trace.document().events.len());
         if state > trace.document().events.len() {
