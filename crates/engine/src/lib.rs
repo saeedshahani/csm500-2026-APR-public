@@ -1,5 +1,6 @@
 //! Bounded complete matching, applicability and checked atomic graph transactions.
 //! Reproducible scheduling and bounded observation are layered above admission.
+pub mod action_learning;
 pub mod causal;
 mod checked;
 pub mod conditions;

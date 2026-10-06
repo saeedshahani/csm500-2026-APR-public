@@ -102,6 +102,8 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["trace-explain", "--help"]
         || args == ["dataset-compile", "--help"]
         || args == ["model-run", "--help"]
+        || args == ["action-learn", "--help"]
+        || args == ["action-compile", "--help"]
         || args == ["version-compile", "--help"]
         || args == ["version-readback", "--help"]
         || args == ["organization-run", "--help"]
@@ -117,6 +119,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["workflow-run", "--help"]
         || args == ["workflow-example", "--help"]
     {
+        io::stdout().lock().write_all(b"Action learning: cli action-learn REQUEST_JSON | action-compile REQUEST_JSON (file or -). Typed complete observations; conservative Rust fitting with evidence epochs. Compilation emits ordinary guarded action rules, not host-computed successors. No resident fitting or hosted training endpoint.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Versioned execution: cli version-compile REQUEST_JSON | version-readback GRAPH (file or -). Return/delay_return guest implementations; budget 1 or 2 evaluation rewrites. Compilation emits ordinary graph source for run/export and the browser. Readback decodes installed bodies and captured versions; it does not authenticate an edited graph.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Numerical components: cli numerical-run REQUEST_JSON | numerical-check PACKET_JSON (file or -) [--output NEW_PATH]. Exact Rust arithmetic; 1..4 states, at most 16 policies, raw/compiled/direct methods. Strict string rationals; native publication and replay. Packet checking establishes consistency, not origin authentication.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Counterfactual explanation: cli trace-explain TRACE --event N [--query exact|source-revision] [--max-prefix N]\nOrder-preserving deletion interventions; default prefix 8, hard maximum 12. Full native admission, not general causality or independence. Whole report fails on resource exhaustion; old trace-conditions remains unchanged.\n").map_err(|e| Failure::new(1,e.to_string()))?;
@@ -254,6 +257,41 @@ pub(crate) fn main_command() -> Result<u8> {
                 .write_all(&bytes)
                 .map_err(|e| Failure::new(1, e.to_string()))?;
         }
+        return Ok(0);
+    }
+    if matches!(args[0].as_str(), "action-learn" | "action-compile") {
+        if args.len() != 2 {
+            return Err(Failure::new(
+                2,
+                "usage: cli action-learn REQUEST_JSON | action-compile REQUEST_JSON (file or -)",
+            ));
+        }
+        let text = read_source(&args[1], 16 * 1024 * 1024)?;
+        let request: engine::action_learning::Request =
+            serde_json::from_str(&text).map_err(|e| Failure::new(2, e.to_string()))?;
+        let failure = |e| match e {
+            engine::learned_model::Error::Input(s) => Failure::new(2, s),
+            engine::learned_model::Error::Native(d) => engine_failure(d),
+        };
+        let output = if args[0] == "action-compile" {
+            let (learner, _) = engine::action_learning::fit(&request).map_err(failure)?;
+            let run = request
+                .run
+                .as_ref()
+                .ok_or_else(|| Failure::new(2, "action-compile requires run"))?;
+            let compiled = engine::action_learning::compile(&learner, run).map_err(failure)?;
+            parser::print(&compiled.graph).map_err(engine_failure)?
+        } else {
+            let report = engine::action_learning::execute(&request).map_err(failure)?;
+            serde_json::to_string(&report).map_err(|e| Failure::new(1, e.to_string()))?
+        };
+        if output.len() > 16 * 1024 * 1024 {
+            return Err(Failure::new(3, "action output exceeds 16 MiB"));
+        }
+        io::stdout()
+            .lock()
+            .write_all(format!("{output}\n").as_bytes())
+            .map_err(|e| Failure::new(1, e.to_string()))?;
         return Ok(0);
     }
     if args[0] == "organization-run" {

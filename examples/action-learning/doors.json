@@ -1,0 +1,43 @@
+{
+  "schema": {
+    "id": "doors-v1", "types": ["door"],
+    "predicates": {"open": ["door"], "powered": []},
+    "actions": {"open": ["door"]}
+  },
+  "environment": "building-v1", "repair": "local",
+  "observations": [
+    {
+      "schema": "doors-v1", "environment": "building-v1", "expected_version": 0, "epoch": 0, "sequence": 1,
+      "action": {"name": "open", "arguments": ["training"]},
+      "before": {"objects": {"training": "door"}, "facts": [
+        {"atom": {"predicate": "open", "arguments": ["training"]}, "value": false},
+        {"atom": {"predicate": "powered", "arguments": []}, "value": true}
+      ]},
+      "after": {"objects": {"training": "door"}, "facts": [
+        {"atom": {"predicate": "open", "arguments": ["training"]}, "value": true},
+        {"atom": {"predicate": "powered", "arguments": []}, "value": true}
+      ]}
+    },
+    {
+      "schema": "doors-v1", "environment": "building-v1", "expected_version": 1, "epoch": 0, "sequence": 2,
+      "action": {"name": "open", "arguments": ["training"]},
+      "before": {"objects": {"training": "door"}, "facts": [
+        {"atom": {"predicate": "open", "arguments": ["training"]}, "value": true},
+        {"atom": {"predicate": "powered", "arguments": []}, "value": true}
+      ]},
+      "after": {"objects": {"training": "door"}, "facts": [
+        {"atom": {"predicate": "open", "arguments": ["training"]}, "value": true},
+        {"atom": {"predicate": "powered", "arguments": []}, "value": true}
+      ]}
+    }
+  ],
+  "run": {
+    "expected_version": 2,
+    "initial": {"objects": {"front": "door", "rear": "door"}, "facts": [
+      {"atom": {"predicate": "open", "arguments": ["front"]}, "value": false},
+      {"atom": {"predicate": "open", "arguments": ["rear"]}, "value": false},
+      {"atom": {"predicate": "powered", "arguments": []}, "value": true}
+    ]},
+    "actions": [{"name": "open", "arguments": ["front"]}, {"name": "open", "arguments": ["rear"]}]
+  }
+}
