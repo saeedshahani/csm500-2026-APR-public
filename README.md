@@ -6,6 +6,8 @@ Open the [hosted application](https://reflective-graph-f1cd4.web.app/#projects),
 
 ## Documentation
 
+The [action-learning example](examples/action-learning/README.md) acquires conservative action conditions from complete observations and executes them as ordinary graph rules. `cli action-learn examples/action-learning/doors.json` returns a fitted model and verified native history; `action-compile` emits source for the existing workbench. Acquisition is Rust application code, with no separate research runtime or hosted training service.
+
 For version-aware execution, select `reflection/versioned` in the browser or use `cli version-compile examples/reflection/versioned.json`. The graph publishes a replacement while existing calls retain their captured versions. `cli version-readback` reports actual installed descriptions and returned items. [The example contract](examples/reflection/README.md) explains its two supported implementations, local step budget, scheduling and replay.
 
 The optional [local calendar learner](platform/README.md#local-learned-calendar-proposals) learns a bounded cleaning policy from examples, exposes it for review and executes explicitly promoted graph rules with checked traces. The [context interpreter](platform/README.md#contextual-interpretation) additionally distinguishes calendar, fiscal and not-applicable meanings using tables inside the graph. Neither uses a model provider. The [evaluation](docs/research/learning.md) separates operational interpretation from intrinsic meaning and records the lack of advantage over correct fixed policies.
@@ -111,6 +113,15 @@ cargo run -p cli -- replay stable.trace.json --at 1
 ```
 
 A trace saves the starting graph and what each rewrite did. Loading it checks the steps again instead of trusting the file. Checkpoints let the engine revisit earlier states while keeping the right identity numbers. A paused run can continue with the same random choices and memory of earlier states; simply looking at an old state does not change the original run. Existing output files are never overwritten. A saved run may have stopped at a limit, so successful file validation does not mean the program finished its work. See the [full contract](docs/reference/trace-format.md) and [annotated example](examples/traces/README.md).
+
+### Measure a recorded graph's storage
+
+```sh
+cargo run -p cli -- trace-cost stable.trace.json --at 0
+cargo run -p cli -- trace-cost stable.trace.json --output snapshot-cost.json
+```
+
+This verifies the trace and measures the complete identity-bearing snapshot, including labels, ordered fields, allocator state and its format envelope. The default is the endpoint; `--max-snapshot-bytes` sets a measurement allowance. Existing output files are not overwritten. Counts exclude the decoder, evaluator and history, so they are a storage baseline, not a minimum-system claim. See the [cost contract and native study](docs/research/minimality.md#information-contracts-and-native-storage-costs).
 
 ### Explain a short recorded history
 

@@ -10,6 +10,51 @@ import {createHash} from 'node:crypto';
 import {sourceFiles} from './research-source-files.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+test('representation costs use native verified states and preserve theoretical limits', () => {
+  const report=JSON.parse(readFileSync('benchmarks/results/snapshot-cost-01.json','utf8'));
+  assert.deepEqual(report.counts,{cases:47,byte_oracle_agreements:47});
+  assert.equal(report.counterexample.extra_bytes,'129024');
+  assert.equal(new Set(report.rows.map(r=>r.name)).size,47);
+  assert.equal(report.proof.checked,true);
+  assert.equal(report.proof.theorems.length,14);
+  for(const row of report.rows) {
+    const r=row.analysis;
+    assert.equal(BigInt(r.total_bits),8n*BigInt(r.total_bytes));
+    assert.equal(BigInt(r.total_bytes),BigInt(r.payload_bytes)+BigInt(r.envelope_bytes));
+    assert.equal(r.snapshot_format,'identity-snapshot-json-v1');
+  }
+  for(const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    const body=readFileSync(file,'utf8').split('# Bibliography')[0];
+    for(const term of ['Allender, 2001','Shen, 2015','277,327','406,351','47']) assert.ok(body.includes(term),`${file}: ${term}`);
+    assert.doesNotMatch(body,/T5|continuation-05|snapshot_cost|trace-cost/);
+  }
+  const source=readFileSync('crates/engine/src/trace/storage.rs','utf8');
+  assert.ok(source.includes('self.state_at(index)?'));
+  assert.doesNotMatch(source,/std::process|Command::new|research\/stretch/);
+  const proof=readFileSync('crates/engine/proofs/RepresentationCosts.lean','utf8');
+  assert.equal([...proof.matchAll(/^theorem /gm)].length,14);
+  assert.doesNotMatch(proof,/\bsorry\b|^axiom /m);
+  assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('crates/engine/proofs/RepresentationCosts.lean'));
+});
+test('action acquisition has native execution and evidence-qualified standalone claims', () => {
+  for (const file of ['docs/dissertation.md','docs/archive/dissertation-full.md','docs/formalism.md','docs/architecture.md','docs/explainers/simple.md']) {
+    const text=readFileSync(file,'utf8');
+    assert.doesNotMatch(text,/research\/stretch\/T4-|T4 integration|phase-six learner/);
+    assert.match(text,/quarantine/i);
+  }
+  for(const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+    const text=readFileSync(file,'utf8').split('# Bibliography')[0];
+    for(const count of ['7,776','31,104','9,000','324','144']) assert.ok(text.includes(count),`${file}: ${count}`);
+    assert.match(text,/Juba, Le and Stern \(2021\)/);
+    assert.match(text,/Fitting (remains|is)/);
+  }
+  for(const file of ['crates/engine/src/action_learning.rs','crates/engine/src/action_learning/carrier.rs']) {
+    assert.doesNotMatch(readFileSync(file,'utf8'),/std::process|Command::new|research\/stretch|tests\/oracles/);
+  }
+  const ci=readFileSync('.github/workflows/ci.yml','utf8');
+  assert.ok(ci.includes('proofs/action_learning/Safety.lean'));
+  assert.ok(ci.includes('proofs/observation/Certificates.lean'));
+});
 test('the historical proposal is immutable while the dissertations remain maintained research', () => {
   // Initial commit 04cfd35, including its original typo, links and missing final newline.
   // A fixed byte hash works in shallow checkouts and must not track editorial changes.

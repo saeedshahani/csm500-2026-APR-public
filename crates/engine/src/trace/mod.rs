@@ -1,5 +1,6 @@
 //! Portable, bounded, checked histories. Imported snapshots are never trusted.
 pub(crate) mod decimal;
+mod storage;
 mod strict;
 mod wire;
 use crate::causal::{AnalysisLimits, DependencyOrder, LIMITATION, RELATION};
@@ -13,6 +14,7 @@ use serde::de::IntoDeserializer;
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::io::Write;
+pub use storage::SnapshotCost;
 pub use wire::*;
 type Result<T> = graph_core::Result<T>;
 pub const SCHEMA: &str = "reflective-trace-v1";

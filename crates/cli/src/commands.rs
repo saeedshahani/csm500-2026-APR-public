@@ -97,6 +97,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["resume", "--help"]
         || args == ["replay", "--help"]
         || args == ["trace-check", "--help"]
+        || args == ["trace-cost", "--help"]
         || args == ["trace-migrate", "--help"]
         || args == ["trace-conditions", "--help"]
         || args == ["trace-explain", "--help"]
@@ -119,6 +120,7 @@ pub(crate) fn main_command() -> Result<u8> {
         || args == ["workflow-run", "--help"]
         || args == ["workflow-example", "--help"]
     {
+        io::stdout().lock().write_all(b"Snapshot storage: cli trace-cost TRACE [--at N] [--max-snapshot-bytes N] [--output NEW_PATH]. Verifies the trace, then counts compact identity-bearing snapshot JSON including its format envelope. Defaults to the endpoint and the active trace byte limit. Excludes decoder/evaluator, history and work; no minimum or compression claim.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Action learning: cli action-learn REQUEST_JSON | action-compile REQUEST_JSON (file or -). Typed complete observations; conservative Rust fitting with evidence epochs. Compilation emits ordinary guarded action rules, not host-computed successors. No resident fitting or hosted training endpoint.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Versioned execution: cli version-compile REQUEST_JSON | version-readback GRAPH (file or -). Return/delay_return guest implementations; budget 1 or 2 evaluation rewrites. Compilation emits ordinary graph source for run/export and the browser. Readback decodes installed bodies and captured versions; it does not authenticate an edited graph.\n").map_err(|e| Failure::new(1,e.to_string()))?;
         io::stdout().lock().write_all(b"Numerical components: cli numerical-run REQUEST_JSON | numerical-check PACKET_JSON (file or -) [--output NEW_PATH]. Exact Rust arithmetic; 1..4 states, at most 16 policies, raw/compiled/direct methods. Strict string rationals; native publication and replay. Packet checking establishes consistency, not origin authentication.\n").map_err(|e| Failure::new(1,e.to_string()))?;
@@ -217,7 +219,12 @@ pub(crate) fn main_command() -> Result<u8> {
     }
     if matches!(
         args[0].as_str(),
-        "replay" | "trace-check" | "trace-conditions" | "trace-explain" | "trace-migrate"
+        "replay"
+            | "trace-check"
+            | "trace-cost"
+            | "trace-conditions"
+            | "trace-explain"
+            | "trace-migrate"
     ) {
         return trace_command(&args);
     }
@@ -1015,6 +1022,7 @@ fn trace_command(args: &[String]) -> Result<u8> {
         ));
     }
     let mut index = None;
+    let mut snapshot_bytes = trace_limits().max_bytes;
     let mut explain_limits = engine::counterfactual::Limits::default();
     let mut explain_query = engine::counterfactual::Query::ExactOccurrence;
     let mut output = None;
@@ -1024,7 +1032,12 @@ fn trace_command(args: &[String]) -> Result<u8> {
             return Err(Failure::new(2, "missing or duplicate replay option"));
         }
         match pair[0].as_str() {
-            "--at" if args[0] == "replay" => index = Some(number::<usize>(&pair[1], "--at")?),
+            "--at" if args[0] == "replay" || args[0] == "trace-cost" => {
+                index = Some(number::<usize>(&pair[1], "--at")?)
+            }
+            "--max-snapshot-bytes" if args[0] == "trace-cost" => {
+                snapshot_bytes = number::<usize>(&pair[1], "--max-snapshot-bytes")?
+            }
             "--event" if args[0] == "trace-explain" => {
                 index = Some(number::<usize>(&pair[1], "--event")?)
             }
@@ -1038,7 +1051,9 @@ fn trace_command(args: &[String]) -> Result<u8> {
                     _ => return Err(Failure::new(2, "--query must be exact or source-revision")),
                 }
             }
-            "--output" if args[0] == "replay" || args[0] == "trace-migrate" => {
+            "--output"
+                if args[0] == "replay" || args[0] == "trace-migrate" || args[0] == "trace-cost" =>
+            {
                 output = Some(PathBuf::from(&pair[1]))
             }
             _ => return Err(Failure::new(2, "unsupported replay option")),
@@ -1075,6 +1090,19 @@ fn trace_command(args: &[String]) -> Result<u8> {
                 .map_err(engine_failure)?,
         )
         .map_err(|e| Failure::new(1, e.to_string()))?
+    } else if args[0] == "trace-cost" {
+        let state = index.unwrap_or(trace.document().events.len());
+        if state > trace.document().events.len() {
+            return Err(Failure::new(2, "snapshot state out of range"));
+        }
+        let report = trace
+            .snapshot_cost(state, snapshot_bytes)
+            .map_err(engine_failure)?;
+        let value = serde_json::json!({"source_trace_sha256": engine::trace::sha256(text.as_bytes()), "analysis": report});
+        format!(
+            "{}\n",
+            serde_json::to_string_pretty(&value).map_err(|e| Failure::new(1, e.to_string()))?
+        )
     } else if args[0] == "trace-explain" {
         if index.unwrap() >= trace.document().events.len() {
             return Err(Failure::new(2, "target event out of range"));
