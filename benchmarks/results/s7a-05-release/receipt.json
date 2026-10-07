@@ -1,0 +1,74 @@
+{
+  "schema": "reflective-release-acceptance-v1",
+  "source_commit": "eaa12f79827690c7ffc3626e94b1160666b547c7",
+  "source_inventory_sha256": "89227fafa4b13aaff80a35f4029f199439b0b619cfe773f6928fbfa96e524de6",
+  "source_archive_sha256": "f9f09ea0727f1e8ecc6ec574ad7b8f98d5ad9e73b0b235f0c36ee944fe1a81fa",
+  "project": "reflective-graph-f1cd4",
+  "region": "europe-west2",
+  "url": "https://reflective-graph-f1cd4.web.app",
+  "cloud_build": {
+    "id": "f9757639-6158-4352-9c64-b67acb410048",
+    "status": "SUCCESS",
+    "image": "europe-west2-docker.pkg.dev/reflective-graph-f1cd4/graph/api@sha256:e36b85fac07c9e2e35546ea02d88025f9106c27584e3491ac557a27d5d339df7",
+    "revision": "graph-api-00006-4wt"
+  },
+  "hosted_acceptance": {
+    "checked_at": "2026-10-07T21:30:10.879Z",
+    "run": "78dd9a65-1d33-485c-a10f-3fb44ea68208",
+    "engine_binary_sha256": "3b1baf15f7c2648e991023419436116e728d07df198a7297fc412614d4318f26",
+    "trace_sha256": "94ba06754f2bbfc202841d7c83612029f20bc68fba51bd9e235042cfc1ed5edf",
+    "command": "node platform/hosted-acceptance.mjs --project reflective-graph-f1cd4",
+    "exit_code": 0,
+    "passed": [
+      "unauthenticated API and internal dispatch denied",
+      "real password identity, verified-email gate and private response caching",
+      "hosted routing: contract, bounded prefix, completion, rejection and native replay",
+      "hosted branching: contract, bounded prefix, completion, rejection and native replay",
+      "project isolation, rejected invalid source and immutable dataset compilation",
+      "Cloud Tasks execution, duplicate submission, paginated report and independent native replay",
+      "viewer read-only access and immediate membership revocation",
+      "queued pause/resume, multi-request continuation and one verified logical history",
+      "hosted cancellation remains distinct from convergence",
+      "disabled identity rejected by production verifier"
+    ],
+    "queue_after": "RUNNING",
+    "scheduler_after": "ENABLED",
+    "disposable_identities_removed": true
+  },
+  "frontend_assets": {
+    "checked_at": "2026-10-07T21:32:47.593Z",
+    "files_compared": 10,
+    "all_sha256_equal_to_local_build": true,
+    "index_sha256": "e5f1e8d6eb91afdb9c5231a77c16cbb569d4c3abf296244591962de1f068eef3",
+    "wasm_sha256": "ff51f62e11eeb4227263cdecfa9295cb920353b1c0c384d446cb7617e71b7296",
+    "notices_sha256": "c322eb83ede76783d179f80cd1f365f9f4805f44bf582f46855b28a7b32233ec"
+  },
+  "fresh_browser": {
+    "date": "2026-10-07",
+    "passed": [
+      "eight-stage order walkthrough: two rewrites, NormalForm, dependency 0 to 1",
+      "reflection/versioned: five rewrites, NormalForm",
+      "lambda/erasure: six rewrites, NormalForm, identity-function readback",
+      "lambda timeline: initial state inspection and return to latest",
+      "Guide navigation and Projects email-account entry form"
+    ]
+  },
+  "github_actions": {
+    "rust": {
+      "run_id": 37688582825,
+      "conclusion": "failure",
+      "failed_step": "Pinned kernel proofs and independent admission campaigns",
+      "diagnosis": "Mathlib cache downloader reads lean-toolchain relative to the process working directory. lake --dir selects the package without changing that working directory, so invocation from the Rust repository fails before numerical proof checking.",
+      "correction_status": "approval requested"
+    },
+    "workbench": {"run_id": 37688582773, "conclusion": "success"},
+    "container": {"run_id": 37688582743, "conclusion": "success"}
+  },
+  "limitations": [
+    "Synthetic accounts were administrator-verified; real inbox delivery remains a manual acceptance check.",
+    "Immutable synthetic project and job histories are retained; only disposable identities are removed.",
+    "Fresh-browser checks cover the public workspace and account entry screen; signed production API workflows are exercised separately by hosted acceptance.",
+    "The runtime audit is a selected configuration check, not a general security or availability assessment.",
+    "This deployment is not the substantive manuscript freeze or a release tag."
+  ]
+}

@@ -41,6 +41,14 @@ The corrected source archive has SHA-256 `a56a9c5861fe49aaf5f7d7e833178b686b1e13
 
 A local Projects rehearsal creates an immutable version, completes its two-event job at NormalForm, downloads a trace independently accepted by the native verifier, imports it into the WASM workspace, inspects state zero and returns to the persisted project. Disposable data stay outside the distributed evidence. This confirms the local fallback, not the real hosted candidate.
 
+## Committed deployment acceptance
+
+The reviewed source was committed and pushed as `eaa12f79827690c7ffc3626e94b1160666b547c7`. Its exact Git archive, SHA-256 `f9f09ea0727f1e8ecc6ec574ad7b8f98d5ad9e73b0b235f0c36ee944fe1a81fa`, passed Cloud Build's bounded container tests and was deployed only to `reflective-graph-f1cd4` in London. [The release receipt](../s7a-05-release/receipt.json) records the immutable image, runtime revision, hosted binary, trace and verification identities. The later commit retaining this receipt is an evidence annotation, not a different deployed executable.
+
+All ten live acceptance groups pass: authenticated workflows, access rejection and isolation, immutable versions, dataset compilation, duplicate submission, queued execution, role revocation, continuation, cancellation and independent replay. Synthetic identities were removed; immutable test histories remain. The queue is running after the tests and reconciliation remains enabled. All ten frontend files retrieved from Hosting match the locally built bytes, including WebAssembly and dependency notices. A fresh browser completes the eight-stage walkthrough, version-aware execution and lambda erasure, revisits history and accesses the Guide and Projects entry screen. Production sign-in and job tests use real signed tokens for administrator-verified synthetic accounts. Delivery and use of an actual verification email remain a separate manual check; this receipt does not claim that check, a full security assessment or substantive manuscript freeze.
+
+GitHub's container and workbench workflows pass on the recorded code commit, including 33 browser tests. Rust workflow `37688582825` passes its engine, adopted-module, service, research and benchmark checks, then fails in Mathlib cache setup because its process runs outside the Mathlib checkout and cannot read the relative `lean-toolchain` file. This is an outstanding CI invocation defect, not a successful proof-stage result. The separately retained local proof receipt does not close that CI obligation.
+
 ## Controlled measurements
 
 Measurements ran serially after builds and functional campaigns had finished. Hardware and resource profiles are retained in each collection. Existing user applications were not terminated; system-level conditions are not claimed to be identical to the historical experiments.
