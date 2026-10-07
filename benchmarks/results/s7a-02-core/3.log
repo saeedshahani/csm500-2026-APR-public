@@ -1,0 +1,8 @@
+
+[stderr]
+   Compiling engine v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/engine)
+ Documenting engine v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/engine)
+ Documenting wasm-bridge v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/wasm-bridge)
+ Documenting cli v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.22s
+   Generated /Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/target/doc/cli/index.html and 4 other files

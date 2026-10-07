@@ -12,7 +12,7 @@ const bundle=readFileSync(resolve(dir,'sources.json.gz'));assert.equal(hash(bund
 const sources=JSON.parse(gunzipSync(bundle));assert.equal(sources.schema,'source-bundle-v1');
 assert.equal(hash(readFileSync(resolve(dir,'protocol.md'))),environment.protocol_sha256);
 const protocolPath=environment.protocol_source_path??'docs/scalability-study.md';
-assert.ok(['docs/scalability-study.md','docs/research/evaluation.md'].includes(protocolPath));
+assert.ok(['docs/scalability-study.md','docs/research/evaluation.md','benchmarks/PROTOCOL.md'].includes(protocolPath));
 assert.equal(hash(Buffer.from(sources.files[protocolPath],'base64')),environment.protocol_sha256);
 assert.equal(raw.length,matrix.length*6);assert.equal(summary.length,matrix.length);
 const key=a=>JSON.stringify(a);

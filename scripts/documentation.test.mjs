@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync, spawnSync} from 'node:child_process';
-import {readFileSync, writeFileSync, existsSync, mkdtempSync, mkdirSync, cpSync, rmSync, symlinkSync} from 'node:fs';
+import {readFileSync, writeFileSync, existsSync, mkdtempSync, mkdirSync, cpSync, rmSync, symlinkSync, readdirSync} from 'node:fs';
 import {resolve, dirname, relative, join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {gzipSync, gunzipSync} from 'node:zlib';
@@ -10,6 +10,71 @@ import {createHash} from 'node:crypto';
 import {sourceFiles} from './research-source-files.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
+// The submission is mandatory; personal supplements have local-only checks.
+const localFiles = files => files.filter(file => existsSync(file));
+const manuscripts = ['docs/dissertation.md', ...localFiles(['docs/archive/dissertation-full.md'])];
+// Source archives have no Git metadata. Walk the distributed documentation there;
+// omit generated products and immutable historical bundles in either mode.
+function markdownPaths(directory='') {
+  const omitted=new Set(['.git','node_modules','target','output','.firebase','.playwright-cli',
+    'docs/archive','benchmarks/results','frontend/dist','frontend/pkg','frontend/pkg-node',
+    'frontend/test-results','frontend/playwright-report']);
+  const paths=[];
+  for(const entry of readdirSync(directory||'.',{withFileTypes:true})) {
+    const path=directory ? `${directory}/${entry.name}` : entry.name;
+    if(omitted.has(path)||entry.name==='node_modules')continue;
+    if(entry.isDirectory())paths.push(...markdownPaths(path));
+    else if(entry.isFile()&&path.endsWith('.md'))paths.push(path);
+  }
+  return paths.sort();
+}
+test('the complete academic archive has one ignore rule without exceptions', () => {
+  const rules=readFileSync('.gitignore','utf8').split('\n');
+  assert.deepEqual(rules.filter(line=>line.includes('docs/archive')),['/docs/archive/']);
+  const temporary=mkdtempSync(join(tmpdir(),'reflective-ignore-check-'));
+  try {
+    execFileSync('git',['init','--quiet',temporary]);
+    cpSync('.gitignore',join(temporary,'.gitignore'));
+    for(const path of ['README.md','dissertation-full.md','reference/trace-format.md','papers/example.pdf','explainers/simple.md','research/stretch/example.md']) {
+      const result=spawnSync('git',['check-ignore','--no-index','--quiet',`docs/archive/${path}`],{cwd:temporary});
+      assert.equal(result.status,0,path);
+    }
+  } finally {
+    rmSync(temporary,{recursive:true,force:true});
+  }
+  if(existsSync('.git'))assert.equal(execFileSync('git',['ls-files','--','docs/archive'],{encoding:'utf8'}).trim(),'');
+  else assert.equal(existsSync('docs/archive'),false,'personal archive must not be distributed');
+});
+test('current experiment collectors include the public protocol without private inputs', () => {
+  assert.ok(existsSync('benchmarks/PROTOCOL.md'));
+  for(const name of ['benchmark','scale-study','recovery-study','reproducibility','learning-study','meaning-study','minimality-study','intervention-study','workflow-study','collect-loop-d','collect-loop-e','collect-loop-f','collect-loop-f2']) {
+    const source=readFileSync(`scripts/${name}.mjs`,'utf8');
+    assert.ok(source.includes('benchmarks/PROTOCOL.md'),name);
+    assert.doesNotMatch(source,/['"]docs\/(?:archive|research)\//,name);
+  }
+});
+test('Sprint 7 separates substantive freeze from retained final delivery', () => {
+  const tasks=readFileSync('docs/task-list.md','utf8');
+  const plan=readFileSync('docs/sprint-plan.md','utf8');
+  const stageA='### S7A — Consolidation, cleanup and substantive freeze';
+  const stageB='### S7B — Final document production, verification and handoff';
+  for(const text of [tasks,plan]) {
+    assert.match(text,/## Sprint 7: 2 Oct – 13 Oct 2026/);
+    assert.ok(text.indexOf(stageA)>=0 && text.indexOf(stageB)>text.indexOf(stageA));
+    for(let i=1;i<=5;i++)assert.ok(text.includes(`S7B.${i}`));
+  }
+  const newIds=[...tasks.matchAll(/^- \[[ x]\] (S7-\d+) —/gm)].map(m=>m[1]);
+  assert.equal(newIds.length,new Set(newIds).size);
+  const consolidation=tasks.slice(tasks.indexOf(stageA),tasks.indexOf(stageB));
+  const stageIds=new Set([...consolidation.matchAll(/^- \[[ x]\] (S7-\d+) —/gm)].map(m=>m[1]));
+  for(let i=1;i<=44;i++)assert.ok(stageIds.has(`S7-${String(i).padStart(3,'0')}`));
+  const finalisation=tasks.slice(tasks.indexOf(stageB),tasks.indexOf('## Ongoing controls'));
+  const retained=[...finalisation.matchAll(/^- \[[ x]\] S6-(\d+) —/gm)].map(m=>Number(m[1]));
+  assert.deepEqual(retained,Array.from({length:84},(_,i)=>i+49).filter(i=>i<128||i>131));
+  if(/^- \[x\] S7-043 —/m.test(tasks)) {
+    assert.doesNotMatch(tasks,/^#### Temporary commissioning notes/m);
+  }
+});
 test('selected provenance has native authority, independent evidence and scoped paper claims', () => {
   const report=JSON.parse(readFileSync('benchmarks/results/selected-provenance-01.json','utf8'));
   assert.deepEqual(report.counts,{histories:24,events:90,selection_reports:120,event_projection_agreements:450});
@@ -23,7 +88,7 @@ test('selected provenance has native authority, independent evidence and scoped 
   const proof=readFileSync('crates/engine/proofs/SelectedProvenance.lean','utf8');
   assert.equal([...proof.matchAll(/^theorem /gm)].length,7);
   assert.doesNotMatch(proof,/\bsorry\b|^axiom /m);
-  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const path of manuscripts) {
     const body=readFileSync(path,'utf8').split('# Bibliography')[0];
     for(const term of ['Grädel and Tannen, 2017','Baldan and Raffaetà, 2019','450','nonempty']) assert.ok(body.includes(term),`${path}: ${term}`);
     assert.doesNotMatch(body,/T6|selected-provenance-study|trace-provenance/);
@@ -43,7 +108,7 @@ test('representation costs use native verified states and preserve theoretical l
     assert.equal(BigInt(r.total_bytes),BigInt(r.payload_bytes)+BigInt(r.envelope_bytes));
     assert.equal(r.snapshot_format,'identity-snapshot-json-v1');
   }
-  for(const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const file of manuscripts) {
     const body=readFileSync(file,'utf8').split('# Bibliography')[0];
     for(const term of ['Allender, 2001','Shen, 2015','277,327','406,351','47']) assert.ok(body.includes(term),`${file}: ${term}`);
     assert.doesNotMatch(body,/T5|continuation-05|snapshot_cost|trace-cost/);
@@ -57,12 +122,12 @@ test('representation costs use native verified states and preserve theoretical l
   assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('crates/engine/proofs/RepresentationCosts.lean'));
 });
 test('action acquisition has native execution and evidence-qualified standalone claims', () => {
-  for (const file of ['docs/dissertation.md','docs/archive/dissertation-full.md','docs/formalism.md','docs/architecture.md','docs/explainers/simple.md']) {
+  for (const file of [...manuscripts,'docs/formalism.md','docs/architecture.md',...localFiles(['docs/archive/explainers/simple.md'])]) {
     const text=readFileSync(file,'utf8');
     assert.doesNotMatch(text,/research\/stretch\/T4-|T4 integration|phase-six learner/);
     assert.match(text,/quarantine/i);
   }
-  for(const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const file of manuscripts) {
     const text=readFileSync(file,'utf8').split('# Bibliography')[0];
     for(const count of ['7,776','31,104','9,000','324','144']) assert.ok(text.includes(count),`${file}: ${count}`);
     assert.match(text,/Juba, Le and Stern \(2021\)/);
@@ -81,7 +146,8 @@ test('the historical proposal is immutable while the dissertations remain mainta
   const proposal = readFileSync('docs/project-proposal.md');
   assert.equal(sha(proposal), '89b87e354c4e623c27ef34aad3ff48ab2f0eca28f7ebf989b5d48c8b4a1d8eeb');
   // The papers may extend or refine research questions; only the proposal is frozen.
-  assert.match(readFileSync('docs/archive/README.md', 'utf8'), /may expand or refine the research questions/);
+  if(existsSync('docs/archive/README.md'))
+    assert.match(readFileSync('docs/archive/README.md', 'utf8'), /may expand or refine the research questions/);
 });
 
 test('research applications use the existing Rust workspace rather than exploratory packages', () => {
@@ -98,11 +164,12 @@ test('research applications use the existing Rust workspace rather than explorat
   }
   assert.ok(!existsSync('scripts/numerical_components/adapter.py'));
   assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('check-numerical-proof.sh'));
-  assert.match(readFileSync('docs/archive/dissertation-full.md','utf8'), /0≤C_B<∞/);
+  if(existsSync('docs/archive/dissertation-full.md'))
+    assert.match(readFileSync('docs/archive/dissertation-full.md','utf8'), /0≤C_B<∞/);
 });
 
-test('both manuscripts are standalone academic accounts of the adopted platform', () => {
-  for (const path of ['docs/dissertation.md', 'docs/archive/dissertation-full.md']) {
+test('the submission and any local full manuscript are standalone academic accounts', () => {
+  for (const path of manuscripts) {
     const body = readFileSync(path, 'utf8').split('# Bibliography')[0];
     assert.deepEqual([...body.matchAll(/^# (\d+)\. /gm)].map(m => Number(m[1])), [1,2,3,4,5,6,7,8,9]);
     assert.doesNotMatch(body, /\bdocs\/|\b[\w-]+\.md\b|\bADR-\d+|\bLoop [A-N]\b|\bS[1-7]-\d{3}\b/);
@@ -129,19 +196,21 @@ test('versioned interpretation is native and its assurance includes installed bo
   for(const entry of JSON.parse(readFileSync('examples/manifest.json','utf8'))) {
     assert.match(entry.file,/^[^/]+\/[^/]+\.graph$/,'Each catalogue entry must match the browser source glob');
   }
-  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const path of manuscripts) {
     const body=readFileSync(path,'utf8').split('# Bibliography')[0];
     for(const term of ['Version-aware','captured','installed','DelayReturn','880','2,684'])assert.ok(body.includes(term),`${path}: ${term}`);
   }
 });
 
 test('literature reconciliation preserves provenance and the admission boundary', () => {
+  if(existsSync('docs/archive/dissertation-full.md')) {
   const full = readFileSync('docs/archive/dissertation-full.md', 'utf8');
   assert.match(full, /Tomita, Kurokawa and Murata \(2002, §2\)/);
   assert.match(full, /detailed metanode execution and modification rules are left for future work/);
   assert.ok(full.includes('Barendregt and Barendsen, 2000, Definitions 2.4–2.6'));
   assert.doesNotMatch(full, /The substitution is capture-avoiding \(Barendregt, 1984\)/);
-  for (const path of ['docs/dissertation.md', 'docs/archive/dissertation-full.md']) {
+  }
+  for (const path of manuscripts) {
     const text = readFileSync(path, 'utf8');
     assert.ok(text.includes('Ehrig, Prange and Ehrig, 2006'));
     assert.ok(text.includes('Plotkin, 2004'));
@@ -152,9 +221,11 @@ test('literature reconciliation preserves provenance and the admission boundary'
   for (const premise of ['Ground(G,p,σ,Lσ,Kσ,Rσ)', 'Visible(G,p,Lσ)', 'Lifecycle(G,p,σ,G′)', 'EventOf(G,p,σ,G′)=e']) {
     assert.ok(formalism.includes(premise), premise);
   }
+  if(existsSync('docs/archive/literature.md')) {
   const literature = readFileSync('docs/archive/literature.md', 'utf8');
   assert.ok(literature.includes('Closest reflective precedents: claim-to-source comparison'));
   assert.equal((literature.match(/^Plump, D\. \(2010\)/gm) ?? []).length, 1);
+  }
   // Bibliographic corrections belong in the maintained papers, never the proposal.
 });
 
@@ -183,7 +254,7 @@ test('reproduction claims separate cross-environment semantics from byte identit
   const r=JSON.parse(readFileSync('benchmarks/results/reproduction-m/report.json'));
   assert.equal(r.counts.native_builds,12);assert.equal(r.counts.measurements,90);assert.equal(r.counts.warmups,18);
   assert.equal(r.primary.semantic_equal,true);assert.equal(r.primary.wasm_bytes_equal,false);assert.equal(r.linux_bytes_equal,true);
-  for(const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const file of manuscripts) {
     const body=readFileSync(file,'utf8').split('# Bibliography')[0];
     const required = ['Lamb and Zacchiroli','macOS','Linux'];
     if(file.includes('/archive/')) required.push('768','144','theorem domains');
@@ -219,7 +290,7 @@ test('meaning claims distinguish normality, useful interpretation and intrinsic 
   const r=JSON.parse(readFileSync('benchmarks/results/meaning-01/report.json'));
   assert.equal(r.native_runs,444);assert.equal(r.main_commits,3600);assert.equal(r.intervention_runs,120);assert.equal(r.intervention_commits,1092);
   for(const [method,correct]of [['adaptive',1296],['fixed',1296],['blind',468],['shuffled',36],['rule-free',0]])assert.equal(r.summary[method].correct,correct);
-  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const path of manuscripts) {
     const body=readFileSync(path,'utf8').split('# Bibliography')[0];
     // Both papers preserve the interpretation boundary; detailed sample counts
     // belong in the full account, not in every condensed result paragraph.
@@ -235,7 +306,7 @@ test('learning claims retain strong baselines, native scope and both standalone 
   assert.equal(r.native_cases,201);assert.equal(r.native_commits,2412);
   for(const method of ['learned','consensus','human','search'])assert.equal(r.summary[method].positive_correct,2304);
   assert.equal(r.summary.random.positive_correct,504);assert.equal(r.summary.memory.positive_correct,0);
-  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const path of manuscripts) {
     const body=readFileSync(path,'utf8').split('# Bibliography')[0];
     const required = ['Gulwani','external'];
     if(path.includes('/archive/')) required.push('2,304','2,412','201','64');
@@ -249,7 +320,7 @@ test('admission assurance retains exact scope, results and both standalone accou
   assert.deepEqual(report.counts,{abstract_cases:4930,closure_accepted:2080,countermodels:6,native_queries:3738,candidates:11739,admitted:7153,rejected:4586,boundary_queries:4});
   assert.equal(Object.keys(report.proof.axioms).length,7);
   assert.equal(report.proof.negative.length,6);
-  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const path of manuscripts) {
     const text=readFileSync(path,'utf8').split('# Bibliography')[0];
     const required = ['fresh','refinement','Söldner'];
     if(path.includes('/archive/')) required.push('4,930','11,739','3,738','7,153','4,586');
@@ -265,7 +336,7 @@ test('open lambda extension retains scoped evidence, compatibility and standalon
   assert.equal(evidence.cases.filter(r=>!/[xy]/.test(r.source)).length,62);
   assert.equal(evidence.cases.reduce((n,r)=>n+r.transitions.length,0),704);
   for(const row of evidence.cases)assert.equal(row.readbacks.length,row.transitions.length+1);
-  for(const path of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for(const path of manuscripts) {
     const text=readFileSync(path,'utf8').split('# Bibliography')[0];
     for(const required of ['450','704','capture','neutral','Γ'])assert.ok(text.includes(required),`${path}: ${required}`);
   }
@@ -273,9 +344,10 @@ test('open lambda extension retains scoped evidence, compatibility and standalon
 });
 test('minimality papers retain the verified comparison and condensed word budget', () => {
   const short=readFileSync('docs/dissertation.md','utf8').split('# Bibliography')[0];
-  const full=readFileSync('docs/archive/dissertation-full.md','utf8').split('# Bibliography')[0];
-  assert.ok(short.trim().split(/\s+/).length<=8000,'condensed body exceeds its working budget');
-  for(const text of [short,full]) {
+  // Conservative check includes the title, abstract, headings, tables and captions.
+  // Only the bibliography is excluded; the user confirmed a 7,000-word ceiling.
+  assert.ok(short.trim().split(/\s+/).length<=7000,'condensed paper exceeds the confirmed 7,000-word ceiling');
+  for(const text of manuscripts.map(file=>readFileSync(file,'utf8').split('# Bibliography')[0])) {
     for(const required of ['U_M','U_T','U_P','238,480','1,431'])assert.ok(text.includes(required),required);
     assert.match(text,/variable-heavy|128 additional unowned/);
   }
@@ -283,11 +355,20 @@ test('minimality papers retain the verified comparison and condensed word budget
   assert.equal(report.native_cases,477);assert.equal(report.translated_queries,1431);
   assert.equal(report.gadgets.reduce((sum,row)=>sum+row.total,0),238480);
 });
-test('S6 loop plans have one task ledger and valid planning anchors', () => {
-  const loops = readFileSync('docs/research/loop-plans.md', 'utf8');
+test('manuscript section numbers are unique and local references resolve',()=>{
+  for(const file of manuscripts) {
+    const body=readFileSync(file,'utf8').split('# Bibliography')[0];
+    const sections=[...body.matchAll(/^#{1,6} (\d+(?:\.\d+)*)(?:\.)? /gm)].map(m=>m[1]);
+    assert.equal(new Set(sections).size,sections.length,`${file}: duplicate numbered heading`);
+    const known=new Set(sections);
+    for(const [,ref] of body.matchAll(/§(\d+(?:\.\d+)+)/g))assert.ok(known.has(ref),`${file}: missing §${ref}`);
+  }
+});
+test('local archived loop plans retain their ledger and anchors', {skip: !existsSync('docs/archive/research/loop-plans.md')}, () => {
+  const loops = readFileSync('docs/archive/research/loop-plans.md', 'utf8');
   const tasks = readFileSync('docs/task-list.md', 'utf8');
   const sprint = readFileSync('docs/sprint-plan.md', 'utf8');
-  const research = readFileSync('docs/research-plan.md', 'utf8');
+  const research = readFileSync('docs/archive/research/research-plan.md', 'utf8');
   const ids = [...tasks.matchAll(/^- \[[ x]\] (S6-\d+) —/gm)].map(m => m[1]);
   assert.equal(ids.length, new Set(ids).size, 'S6 task completion entries must be unique');
   assert.doesNotMatch(loops, /^- \[[ x]\]/m, 'The loop plan must not duplicate the completion ledger');
@@ -304,7 +385,7 @@ test('S6 loop plans have one task ledger and valid planning anchors', () => {
   }
   // GitHub-style anchors for the simple, non-duplicate headings used in these plans.
   const slug = heading => heading.toLowerCase().replace(/[^\p{L}\p{N}\s_-]/gu, '').replace(/\s/g, '-');
-  for (const [source, text] of [['docs/research/loop-plans.md',loops], ['docs/task-list.md',tasks], ['docs/sprint-plan.md',sprint], ['docs/research-plan.md',research]]) {
+  for (const [source, text] of [['docs/archive/research/loop-plans.md',loops], ['docs/task-list.md',tasks], ['docs/sprint-plan.md',sprint], ['docs/archive/research/research-plan.md',research]]) {
     for (const [, pathname, anchor] of text.matchAll(/\]\(([^)#]+\.md)#([^)]*)\)/g)) {
       const target = resolve(dirname(source),pathname);
       if (!['loop-plans.md','task-list.md','sprint-plan.md'].some(name => target.endsWith('/'+name))) continue;
@@ -314,13 +395,13 @@ test('S6 loop plans have one task ledger and valid planning anchors', () => {
     }
   }
   assert.ok(sprint.includes('research/loop-plans.md'));
-  assert.ok(research.includes('research/loop-plans.md'));
+  assert.ok(research.includes('loop-plans.md'));
 });
 
 test('live repository Markdown links resolve after consolidation', () => {
   // Adopted documentation must survive exclusion of exploratory work. Frozen
   // collections verify their own manifests and are not live documentation.
-  const paths = [...new Set(execFileSync('git', ['ls-files','-co','--exclude-standard','--','*.md',':(exclude)docs/research/stretch/**'], {encoding:'utf8',maxBuffer:16*1024*1024}).trim().split('\n'))]
+  const paths = (existsSync('.git') ? [...new Set(execFileSync('git', ['ls-files','-co','--exclude-standard','--','*.md',':(exclude)docs/archive/**'], {encoding:'utf8',maxBuffer:16*1024*1024}).trim().split('\n'))] : markdownPaths())
     .filter(p => p.endsWith('.md') && !p.startsWith('benchmarks/results/') && existsSync(p));
   const missing = [];
   for (const file of paths) {
@@ -328,24 +409,43 @@ test('live repository Markdown links resolve after consolidation', () => {
       .replace(/(`+)[^\n]*?\1/g,'');
     for (const [,ref] of text.matchAll(/\[[^\]\n]*\]\(([^\n)]+)\)/g)) {
       const pathname = ref.split('#')[0];
-      if (!pathname || /^(?:[a-z]+:|\/\/)/i.test(pathname)) continue;
-      const target = resolve(dirname(file),decodeURIComponent(pathname));
-      // Explainers are intentionally local/ignored; not a checkout dependency.
-      if (relative(process.cwd(),target).startsWith('docs/explainers/')) continue;
+      if (/^(?:[a-z]+:|\/\/)/i.test(pathname)) continue;
+      const target = pathname ? resolve(dirname(file),decodeURIComponent(pathname)) : resolve(file);
+      assert.ok(!relative(process.cwd(),target).startsWith('docs/archive/'),`${file}: public link requires private archive: ${ref}`);
       if (!existsSync(target)) missing.push(`${file}: ${ref}`);
+      const fragment = ref.split('#')[1];
+      // The proposal is immutable historical material. Check maintained Markdown
+      // anchors as well as files; an existing file can still contain a dead link.
+      if (fragment && target.endsWith('.md') && existsSync(target) && file !== 'docs/project-proposal.md') {
+        const content = readFileSync(target,'utf8');
+        const slug = title => title.replace(/<[^>]+>/g,'').replace(/[`*_]/g,'').toLowerCase()
+          .replace(/[^\p{L}\p{N}_\-\s]/gu,'').replace(/ /g,'-');
+        const seen = new Map(), anchors = new Set();
+        for (const [,title] of content.matchAll(/^#{1,6} (.+)$/gm)) {
+          const base = slug(title), duplicate = seen.get(base) ?? 0;
+          anchors.add(duplicate ? `${base}-${duplicate}` : base);
+          seen.set(base,duplicate+1);
+        }
+        for (const [,anchor] of content.matchAll(/\bid=["']([^"']+)["']/g)) anchors.add(anchor);
+        if (!anchors.has(decodeURIComponent(fragment))) missing.push(`${file}: ${ref}`);
+      }
     }
   }
   assert.deepEqual(missing,[]);
   assert.match(readFileSync('frontend/src/Guide.tsx','utf8'),/docs\/guides\/workbench\.md\?raw/);
-  for (const [path,anchors] of [
-    ['docs/research/evaluation.md',['performance','scalability']],
-    ['docs/research/reflective-recovery.md',['methods','recovery']],
-  ]) for (const anchor of anchors) assert.ok(readFileSync(path,'utf8').includes(`<a id="${anchor}"></a>`));
+});
+test('personal research reference anchors remain usable locally', {skip: !existsSync('docs/archive/research/evaluation.md')}, () => {
+  for(const [path,anchors] of [
+    ['docs/archive/research/evaluation.md',['performance','scalability']],
+    ['docs/archive/research/reflective-recovery.md',['methods','recovery']],
+  ]) for(const anchor of anchors)assert.ok(readFileSync(path,'utf8').includes(`<a id="${anchor}"></a>`));
 });
 
 for (const [name,collection,verifier,oldPath,newPath] of [
   ['scale','s6-cycle02','verify-scale-study.mjs','docs/scalability-study.md','docs/research/evaluation.md'],
   ['recovery','recovery-c01-rss','verify-recovery-study.mjs','docs/recovery-study.md','docs/research/reflective-recovery.md'],
+  ['scale public','s6-cycle02','verify-scale-study.mjs','docs/scalability-study.md','benchmarks/PROTOCOL.md'],
+  ['recovery public','recovery-c01-rss','verify-recovery-study.mjs','docs/recovery-study.md','benchmarks/PROTOCOL.md'],
 ]) test(`${name} verifier accepts historical and explicit relocated protocol paths`, () => {
   const source = resolve('benchmarks/results',collection);
   // First verify the actual immutable evidence, without rewriting it.
@@ -378,7 +478,7 @@ test('acquired organization is adopted with corrected evidence and standalone pr
   assert.equal(results.groups['acquisition-learned'].met_criteria,4);
   assert.equal(results.groups['inheritance-both64'].met_criteria,2);
   assert.equal(results.groups['inheritance-both32'].met_criteria,0);
-  for (const file of ['docs/dissertation.md','docs/archive/dissertation-full.md','docs/architecture.md','crates/engine/src/organization/mod.rs','crates/engine/src/learned_model.rs']) {
+  for (const file of [...manuscripts,'docs/architecture.md','crates/engine/src/organization/mod.rs','crates/engine/src/learned_model.rs']) {
     const text=readFileSync(file,'utf8');
     assert.doesNotMatch(text,/T1 Research Record|T1 extension|research\/stretch\/T1-/);
   }
@@ -394,7 +494,7 @@ test('acquired organization is adopted with corrected evidence and standalone pr
   const organizationSection = short.indexOf('## 8.3 Can acquired representations support renewal?');
   assert.ok(organizationSection >= 0 && organizationSection < short.indexOf('# 9. Discussion'));
   assert.doesNotMatch(short, /findings strengthen RQ3 and RQ5/);
-  for (const file of ['docs/dissertation.md','docs/archive/dissertation-full.md']) {
+  for (const file of manuscripts) {
     assert.match(readFileSync(file,'utf8'), /[Aa]blations/);
   }
 });

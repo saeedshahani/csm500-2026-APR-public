@@ -52,7 +52,7 @@ if (mode === 'collect') {
   assert.equal(os.platform(), 'darwin', 'RSS protocol uses macOS time -l bytes');
   assert.ok(!existsSync(directory), 'evidence directory already exists');
   mkdirSync(directory, {recursive:true});
-  const paths = [...new Set(execFileSync('git', ['ls-files','-co','--exclude-standard'], {encoding:'utf8'}).trim().split('\n'))].filter(p => existsSync(p) && (/^(Cargo\.(toml|lock)|rust-toolchain.toml)$/.test(p) || /^crates\/.*\.(rs|toml)$/.test(p) || p === 'scripts/intervention-study.mjs' || p === 'scripts/intervention-model.test.mjs' || p === 'docs/research/intervention-protocol.md')).sort();
+  const paths = [...new Set(execFileSync('git', ['ls-files','-co','--exclude-standard'], {encoding:'utf8'}).trim().split('\n'))].filter(p => existsSync(p) && (/^(Cargo\.(toml|lock)|rust-toolchain.toml)$/.test(p) || /^crates\/.*\.(rs|toml)$/.test(p) || p === 'scripts/intervention-study.mjs' || p === 'scripts/intervention-model.test.mjs' || p === 'benchmarks/PROTOCOL.md')).sort();
   const source = gzipSync(JSON.stringify({files:Object.fromEntries(paths.map(p => [p, readFileSync(p).toString('base64')]))}));
   writeFileSync(resolve(directory,'sources.json.gz'),source);
   const manifest = {schema:'intervention-study-v1',complete:false,created:new Date().toISOString(),parent:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),source_sha256:sha(source),binary_sha256:sha(readFileSync(binary)),cli_sha256:sha(readFileSync(cli)),environment:{platform:os.platform(),arch:os.arch(),cpu:os.cpus()[0].model,memory_bytes:os.totalmem(),node:process.version,rust:execFileSync('rustc',['--version'],{encoding:'utf8'}).trim()},rows:[],failure:null};

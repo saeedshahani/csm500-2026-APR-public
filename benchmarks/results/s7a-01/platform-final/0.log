@@ -1,0 +1,60 @@
+✔ pilot project and outstanding allowances are per owner, including paused work (0.761125ms)
+✔ cancelled and failed submissions retain their full daily reservation (0.153584ms)
+✔ global daily and monthly reservations cannot be bypassed with extra accounts (0.40325ms)
+✔ admission bounds tiny-job counts and fails closed on invalid reservation records (0.14925ms)
+✔ clock rollback does not release future-dated reservations (0.069125ms)
+✔ OpenAPI routes, operation identities and local schema references are complete (1.939042ms)
+✔ deployment preflight refuses defaults and every non-authorised project (1.023709ms)
+✔ container context includes the calendar importer without exposing other scripts or local data (0.812125ms)
+✔ authentication audit never serializes credential or hash configuration (1.083958ms)
+✔ budget audit does not infer enforcement or disclose billing identifiers (0.162791ms)
+✔ audit refuses wrong targets before any request and stops on project-number mismatch (1.292541ms)
+✔ audit scopes budgets and preserves permission denials without raw response leaks (0.355542ms)
+✔ task identity is deduplicated by job, checked batch and reconciliation minute (0.958625ms)
+✔ persistent request limits and kill switch reject mutation without preventing reads (3.408709ms)
+✔ backup validates hashes and restores only into an empty identity-matched store (111.187209ms)
+✔ identity configuration is explicit, demo-only and loopback-only (0.94575ms)
+✔ role matrix separates visibility, writing and membership administration (0.113459ms)
+✔ production identity pins its project and refuses emulator or conflicting environment (0.668959ms)
+✔ production authentication requires revoked-token checking and verified password accounts (1.44575ms)
+✔ production stores require explicit ownership and cannot be opened as emulator stores (63.499542ms)
+✔ identity namespaces cannot reinterpret local projects or another emulator project (164.874084ms)
+✔ large allowances require operator selection and storage remains bounded (54.837542ms)
+✔ calendar join preserves payload, changes endpoints, and distinguishes graph normal form from useful output (25.706083ms)
+✔ authenticated larger route imports, pages, exports, rejects partial results and survives restart (348.309542ms)
+✔ explicit reference profile preserves legacy canonical settings and idempotency (0.818375ms)
+✔ named datasets compile to immutable native inputs, retain parents and survive restart (380.5485ms)
+✔ verified checkpoint pause, restart and continuation preserve the full native history (270.303625ms)
+✔ interrupted checkpoint recovery is distinct from cancellation and exhausted budgets (195.708333ms)
+Worker stopped: Publication fence rejected
+✔ superseded attempt cannot publish a result and stops dispatch (85.011292ms)
+✔ deferred batch dispatch cannot bypass the active validation slot (98.114625ms)
+✔ browser access is opt-in, exact-origin and still requires the bearer token (16.660625ms)
+✔ fork and retry provenance is project-scoped, immutable, durable and included in idempotency (175.913625ms)
+✔ real native job exports a verified trace with pinned identities and recovers after restart (117.602ms)
+✔ idempotent submission is durable; altered request and cross-project version are rejected (116.947958ms)
+✔ invalid source, settings, unknown fields, unauthorised and cross-origin requests are rejected (60.1755ms)
+✔ engine limits and recurrence remain semantic outcomes, not platform failures (172.626125ms)
+✔ indexed-v2 jobs retain explicit profile and reproduce direct native traces (95.216625ms)
+✔ framed-v3 jobs retain explicit profile and reproduce direct native traces (91.866458ms)
+✔ joined-v4 jobs retain explicit profile and reproduce direct native traces (93.313709ms)
+✔ reflective programs and seeded execution use the exact native trace path (100.781375ms)
+✔ client example produces independently checkable evidence without overwriting output (393.371166ms)
+✔ deadline and cancellation do not publish a partial trace or normal-form claim (144.497417ms)
+✔ only one store owner can run; corrupted artefacts fail closed (46.246791ms)
+✔ restart marks abandoned execution interrupted and never fabricates a result (147.894625ms)
+✔ subprocess output limit and timeout are separate from engine outcomes (36.378959ms)
+✔ process limits reject incomplete configuration and enforce Linux CPU bounds (0.169375ms)
+✔ real server crash requires explicit dead-owner recovery; queued jobs survive (213.057042ms)
+✔ invalid metadata does not get silently reset (4.129167ms)
+✔ authenticated workflows certify, complete, return replayable traces and keep limits distinct (142.88525ms)
+ℹ tests 49
+ℹ suites 0
+ℹ pass 49
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3120.717333
+
+[stderr]

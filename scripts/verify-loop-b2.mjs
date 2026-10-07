@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 import {gunzipSync} from 'node:zlib';
+import {compareRustPaths} from './research-source-files.mjs';
 const directory = resolve(process.argv[2] ?? 'benchmarks/results/s6-loop-b2');
 const read = p => readFileSync(resolve(directory, p));
 const sha = b => createHash('sha256').update(b).digest('hex');
@@ -21,7 +22,7 @@ for (const path of Object.keys(files)) {
 }
 for (const [local, path] of [['build.rs','crates/engine/build.rs'],['Cargo.toml','crates/engine/Cargo.toml'],['../graph-core/Cargo.toml','crates/graph-core/Cargo.toml'],['../../Cargo.toml','Cargo.toml'],['../../Cargo.lock','Cargo.lock'],['../../rust-toolchain.toml','rust-toolchain.toml']]) inputs.push([local,path]);
 const h = createHash('sha256');
-for (const [name, path] of inputs.sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0)) {
+for (const [name, path] of inputs.sort(([a], [b]) => compareRustPaths(a,b))) {
   assert.ok(files[path], path); h.update(name); h.update('\0'); h.update(Buffer.from(files[path], 'base64')); h.update('\0');
 }
 const implementation = 'engine-0.1.0-source-sha256=' + h.digest('hex');

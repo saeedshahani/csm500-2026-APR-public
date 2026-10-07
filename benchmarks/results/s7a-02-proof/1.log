@@ -1,0 +1,99 @@
+'Admission.mem_patch' depends on axioms: [propext, Quot.sound]
+'Admission.live_patch' depends on axioms: [propext, Quot.sound]
+'Admission.preservation' depends on axioms: [propext, Quot.sound]
+'Admission.exact_admission' depends on axioms: [propext, Quot.sound]
+'Admission.closedCheck_exact' depends on axioms: [propext, Quot.sound]
+'Admission.freshCheck_exact' depends on axioms: [propext, Quot.sound]
+'Admission.checker_predicates' depends on axioms: [propext, Quot.sound]
+'Admission.checker_exact' depends on axioms: [propext, Quot.sound]
+'Admission.retained_immutable' depends on axioms: [propext, Quot.sound]
+'Admission.unique_preserved' depends on axioms: [propext, Quot.sound]
+'Admission.assignments_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Admission.search_exact' depends on axioms: [propext, Classical.choice, Quot.sound]
+'MinimalityBounds.capacity' depends on axioms: [propext, Quot.sound]
+'MinimalityBounds.unary_boundary' depends on axioms: [propext, Quot.sound]
+'MinimalityBounds.binary_boundary' depends on axioms: [propext, Quot.sound]
+'MinimalityBounds.minimum_three_arcs' depends on axioms: [propext, Quot.sound]
+'MinimalityBounds.one_root_symmetry' depends on axioms: [propext]
+'WorkflowContracts.processing_decreases' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.administration_decreases' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.initial_bound' depends on axioms: [propext]
+'WorkflowContracts.sum_append' depends on axioms: [propext]
+'WorkflowContracts.branching_decreases' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.record_nonincrease' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.no_infinite_descent' depends on axioms: [propext, Quot.sound]
+'WorkflowContracts.fair_recovery' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Organization.update_witness' depends on axioms: [propext]
+'Organization.update_preserves_other' depends on axioms: [propext]
+'Organization.truthful_update' depends on axioms: [propext]
+'Organization.coverage_correct' does not depend on any axioms
+'Organization.word_correspondence' does not depend on any axioms
+'Organization.checked_agreement' does not depend on any axioms
+'Organization.renewal_preserves_checker' does not depend on any axioms
+'Organization.inheritance_correct' does not depend on any axioms
+'Organization.finite_budget' depends on axioms: [propext, Quot.sound]
+'Organization.transfer_conservation' depends on axioms: [propext, Quot.sound]
+'Organization.self_certification_counterexample' does not depend on any axioms
+'Versioned.accepted_installation' does not depend on any axioms
+'Versioned.installed_result' does not depend on any axioms
+'Versioned.old_jobs_preserved' does not depend on any axioms
+'Versioned.new_job_captures' does not depend on any axioms
+'Versioned.evaluation_preserves_capture' depends on axioms: [propext]
+'Versioned.return_finishes' depends on axioms: [propext]
+'Versioned.delay_finishes' depends on axioms: [propext]
+'SafeLearning.pre_sound' does not depend on any axioms
+'SafeLearning.effect_sound' does not depend on any axioms
+'SafeLearning.missing_effect_is_precondition' does not depend on any axioms
+'SafeLearning.conservative_step' depends on axioms: [propext, Quot.sound]
+'SafeLearning.plan_transfer' does not depend on any axioms
+'SafeLearning.boundary_failure' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ObservationFrontier.sufficient' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ObservationFrontier.positive_necessary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ObservationFrontier.negative_necessary' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ObservationFrontier.characterization' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ObservationFrontier.compatible_removal' does not depend on any axioms
+'ObservationFrontier.added_witness' does not depend on any axioms
+'ObservationFrontier.protected_answer' does not depend on any axioms
+'ObservationFrontier.regularize_answers' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ObservationFrontier.regularize_disagreement' does not depend on any axioms
+'RepresentationCosts.size_chain' depends on axioms: [propext, Quot.sound]
+'RepresentationCosts.bounded_probe_collision' depends on axioms: [propext]
+'RepresentationCosts.bounded_probe_distinct' depends on axioms: [propext, Quot.sound]
+'RepresentationCosts.recovery_injective' does not depend on any axioms
+'RepresentationCosts.bounded_probe_no_recovery' depends on axioms: [propext, Quot.sound]
+'RepresentationCosts.size_no_recovery' does not depend on any axioms
+'RepresentationCosts.all_paths_separate' depends on axioms: [propext]
+'RepresentationCosts.equality_queries_separate' does not depend on any axioms
+'RepresentationCosts.transfer_bound' depends on axioms: [propext, Quot.sound]
+'RepresentationCosts.global_from_sublevel' depends on axioms: [propext, Quot.sound]
+'RepresentationCosts.dominance_pruning' depends on axioms: [propext, Quot.sound]
+'RepresentationCosts.scaled_transfer_bound' depends on axioms: [propext, Quot.sound]
+'RepresentationCosts.batch_dominance' depends on axioms: [propext, Quot.sound]
+'RepresentationCosts.amortization_break_even' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SelectedProvenance.image_read_union' depends on axioms: [propext, Quot.sound]
+'SelectedProvenance.image_birth' depends on axioms: [propext, Quot.sound]
+'SelectedProvenance.project_path' does not depend on any axioms
+'SelectedProvenance.lift_path' does not depend on any axioms
+'SelectedProvenance.family_necessity' does not depend on any axioms
+'SelectedProvenance.family_minimality' does not depend on any axioms
+'SelectedProvenance.recoverable_bits_injective' depends on axioms: [Quot.sound]
+
+[stderr]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: set pinned Mathlib and Lean paths; numerical proof is mandatory
+    at file:///Users/saeedshahani/MEGA/Programming/UoL/10.%20Project/Human%20Ontology/final-project-codebase/scripts/check-proofs.mjs:34:12
+    at ModuleJob.run (node:internal/modules/esm/module_job:430:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: undefined,
+  expected: true,
+  operator: '==',
+  diff: 'simple'
+}
+
+Node.js v25.4.0

@@ -49,9 +49,13 @@ jobs:
           node --test scripts/minimality.test.mjs
           cargo test --locked -p engine --example minimality
           cargo build --release --locked -p engine --example minimality
+          node --test scripts/minimality-corpus.test.mjs
           node scripts/minimality-study.mjs verify benchmarks/results/minimality-01
           node scripts/minimality-study.mjs verify benchmarks/results/minimality-02
           node scripts/minimality-study.mjs verify benchmarks/results/minimality-03 --live
+          node scripts/minimality-study.mjs collect "$RUNNER_TEMP/minimality-current"
+          node scripts/minimality-study.mjs verify "$RUNNER_TEMP/minimality-current" --live
+          node scripts/action-learning-study.mjs --output "$RUNNER_TEMP/action-learning.json"
           node scripts/snapshot-cost-study.mjs --cli target/release/cli --output /tmp/snapshot-cost-study.json
           node --test scripts/documentation.test.mjs
           node --test scripts/integrated-review.test.mjs
@@ -73,6 +77,8 @@ jobs:
           node scripts/verify-scale-study.mjs
           node scripts/verify-loop-b.mjs
           node scripts/verify-loop-b2.mjs
+          node benchmarks/results/s7a-01/verify-measurements.mjs
+          node scripts/verify-loop-b2.mjs benchmarks/results/s7a-02-scale
           node scripts/verify-loop-c.mjs
           node scripts/verify-loop-d.mjs
           node scripts/verify-loop-e.mjs
@@ -115,10 +121,17 @@ jobs:
           export PATH="$proof_tools/lean-4.19.0-linux/bin:$PATH"
           lake --dir "$proof_tools/mathlib" exe cache get
           NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" bash scripts/check-numerical-proof.sh
+          LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" node scripts/check-proofs.mjs
       - name: Check production WebAssembly dependencies
         run: |
           rustup target add wasm32-unknown-unknown --toolchain 1.85.0
           cargo check --workspace --target wasm32-unknown-unknown --locked
+      - name: Complete script inventory and current catalogue
+        run: |
+          cargo build --locked -p cli -p wasm-bridge --examples
+          cargo build --locked -p cli
+          node --test scripts/*.test.mjs
+          node scripts/verify-examples.mjs
       - name: Retain property regressions
         if: always()
         uses: actions/upload-artifact@v4

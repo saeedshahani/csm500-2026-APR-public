@@ -1,0 +1,254 @@
+   Compiling cli v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.74s
+     Running tests/cross_feature.rs (target/debug/deps/cross_feature-f38ffc03a3c953b9)
+
+running 1 test
+test adopted_applications_share_replay_storage_and_provenance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.83s
+
+1/191 acquisition-learned-920003
+2/191 acquisition-fixed-920003
+3/191 acquisition-random-920003
+4/191 acquisition-generic-920003
+5/191 acquisition-fixed_unscrambled-920003
+6/191 ablation-complete-920003
+7/191 ablation-no_learning-920003
+8/191 ablation-no_planning-920003
+9/191 ablation-no_checker_renewal-920003
+10/191 ablation-single_checker-920003
+11/191 ablation-common_fault-920003
+12/191 ablation-no_recognition_revision-920003
+13/191 ablation-no_feedback-920003
+14/191 ablation-no_copying-920003
+15/191 ablation-no_resources-920003
+16/191 inheritance-both64-920003
+17/191 inheritance-both32-920003
+18/191 inheritance-no_model-920003
+19/191 inheritance-template-920003
+20/191 inheritance-sequence-920003
+21/191 inheritance-model_only-920003
+22/191 inheritance-altered_code-920003
+23/191 acquisition-learned-920009
+24/191 acquisition-fixed-920009
+25/191 acquisition-random-920009
+26/191 acquisition-generic-920009
+27/191 acquisition-fixed_unscrambled-920009
+28/191 ablation-complete-920009
+29/191 ablation-no_learning-920009
+30/191 ablation-no_planning-920009
+31/191 ablation-no_checker_renewal-920009
+32/191 ablation-single_checker-920009
+33/191 ablation-common_fault-920009
+34/191 ablation-no_recognition_revision-920009
+35/191 ablation-no_feedback-920009
+36/191 ablation-no_copying-920009
+37/191 ablation-no_resources-920009
+38/191 inheritance-both64-920009
+39/191 inheritance-both32-920009
+40/191 inheritance-no_model-920009
+41/191 inheritance-template-920009
+42/191 inheritance-sequence-920009
+43/191 inheritance-model_only-920009
+44/191 inheritance-altered_code-920009
+45/191 acquisition-learned-920021
+46/191 acquisition-fixed-920021
+47/191 acquisition-random-920021
+48/191 acquisition-generic-920021
+49/191 acquisition-fixed_unscrambled-920021
+50/191 ablation-complete-920021
+51/191 ablation-no_learning-920021
+52/191 ablation-no_planning-920021
+53/191 ablation-no_checker_renewal-920021
+54/191 ablation-single_checker-920021
+55/191 ablation-common_fault-920021
+56/191 ablation-no_recognition_revision-920021
+57/191 ablation-no_feedback-920021
+58/191 ablation-no_copying-920021
+59/191 ablation-no_resources-920021
+60/191 inheritance-both64-920021
+61/191 inheritance-both32-920021
+62/191 inheritance-no_model-920021
+63/191 inheritance-template-920021
+64/191 inheritance-sequence-920021
+65/191 inheritance-model_only-920021
+66/191 inheritance-altered_code-920021
+67/191 acquisition-learned-920033
+68/191 acquisition-fixed-920033
+69/191 acquisition-random-920033
+70/191 acquisition-generic-920033
+71/191 acquisition-fixed_unscrambled-920033
+72/191 ablation-complete-920033
+73/191 ablation-no_learning-920033
+74/191 ablation-no_planning-920033
+75/191 ablation-no_checker_renewal-920033
+76/191 ablation-single_checker-920033
+77/191 ablation-common_fault-920033
+78/191 ablation-no_recognition_revision-920033
+79/191 ablation-no_feedback-920033
+80/191 ablation-no_copying-920033
+81/191 ablation-no_resources-920033
+82/191 inheritance-both64-920033
+83/191 inheritance-both32-920033
+84/191 inheritance-no_model-920033
+85/191 inheritance-template-920033
+86/191 inheritance-sequence-920033
+87/191 inheritance-model_only-920033
+88/191 inheritance-altered_code-920033
+89/191 acquisition-learned-920041
+90/191 acquisition-fixed-920041
+91/191 acquisition-random-920041
+92/191 acquisition-generic-920041
+93/191 acquisition-fixed_unscrambled-920041
+94/191 ablation-complete-920041
+95/191 ablation-no_learning-920041
+96/191 ablation-no_planning-920041
+97/191 ablation-no_checker_renewal-920041
+98/191 ablation-single_checker-920041
+99/191 ablation-common_fault-920041
+100/191 ablation-no_recognition_revision-920041
+101/191 ablation-no_feedback-920041
+102/191 ablation-no_copying-920041
+103/191 ablation-no_resources-920041
+104/191 inheritance-both64-920041
+105/191 inheritance-both32-920041
+106/191 inheritance-no_model-920041
+107/191 inheritance-template-920041
+108/191 inheritance-sequence-920041
+109/191 inheritance-model_only-920041
+110/191 inheritance-altered_code-920041
+111/191 acquisition-learned-920057
+112/191 acquisition-fixed-920057
+113/191 acquisition-random-920057
+114/191 acquisition-generic-920057
+115/191 acquisition-fixed_unscrambled-920057
+116/191 ablation-complete-920057
+117/191 ablation-no_learning-920057
+118/191 ablation-no_planning-920057
+119/191 ablation-no_checker_renewal-920057
+120/191 ablation-single_checker-920057
+121/191 ablation-common_fault-920057
+122/191 ablation-no_recognition_revision-920057
+123/191 ablation-no_feedback-920057
+124/191 ablation-no_copying-920057
+125/191 ablation-no_resources-920057
+126/191 inheritance-both64-920057
+127/191 inheritance-both32-920057
+128/191 inheritance-no_model-920057
+129/191 inheritance-template-920057
+130/191 inheritance-sequence-920057
+131/191 inheritance-model_only-920057
+132/191 inheritance-altered_code-920057
+133/191 acquisition-learned-920063
+134/191 acquisition-fixed-920063
+135/191 acquisition-random-920063
+136/191 acquisition-generic-920063
+137/191 acquisition-fixed_unscrambled-920063
+138/191 ablation-complete-920063
+139/191 ablation-no_learning-920063
+140/191 ablation-no_planning-920063
+141/191 ablation-no_checker_renewal-920063
+142/191 ablation-single_checker-920063
+143/191 ablation-common_fault-920063
+144/191 ablation-no_recognition_revision-920063
+145/191 ablation-no_feedback-920063
+146/191 ablation-no_copying-920063
+147/191 ablation-no_resources-920063
+148/191 inheritance-both64-920063
+149/191 inheritance-both32-920063
+150/191 inheritance-no_model-920063
+151/191 inheritance-template-920063
+152/191 inheritance-sequence-920063
+153/191 inheritance-model_only-920063
+154/191 inheritance-altered_code-920063
+155/191 acquisition-learned-920081
+156/191 acquisition-fixed-920081
+157/191 acquisition-random-920081
+158/191 acquisition-generic-920081
+159/191 acquisition-fixed_unscrambled-920081
+160/191 ablation-complete-920081
+161/191 ablation-no_learning-920081
+162/191 ablation-no_planning-920081
+163/191 ablation-no_checker_renewal-920081
+164/191 ablation-single_checker-920081
+165/191 ablation-common_fault-920081
+166/191 ablation-no_recognition_revision-920081
+167/191 ablation-no_feedback-920081
+168/191 ablation-no_copying-920081
+169/191 ablation-no_resources-920081
+170/191 inheritance-both64-920081
+171/191 inheritance-both32-920081
+172/191 inheritance-no_model-920081
+173/191 inheritance-template-920081
+174/191 inheritance-sequence-920081
+175/191 inheritance-model_only-920081
+176/191 inheritance-altered_code-920081
+177/191 length-4-920003
+178/191 length-4-920009
+179/191 length-4-920021
+180/191 length-6-920003
+181/191 length-6-920009
+182/191 length-6-920021
+183/191 length-8-920003
+184/191 length-8-920009
+185/191 length-8-920021
+186/191 scarcity-0.05-920003
+187/191 scarcity-0.05-920009
+188/191 scarcity-0.05-920021
+189/191 scarcity-0.15-920003
+190/191 scarcity-0.15-920009
+191/191 scarcity-0.15-920021
+{"tasks": 80, "solver_runs": 240, "verified_publications": 1200, "coordinate_bound_checks": 3000}
+   Compiling libc v0.2.189
+   Compiling zerocopy v0.8.57
+   Compiling serde v1.0.228
+   Compiling anstyle v1.0.14
+   Compiling either v1.18.0
+   Compiling ciborium-io v0.2.2
+   Compiling clap_lex v1.1.1
+   Compiling regex-automata v0.4.18
+   Compiling zerocopy-derive v0.8.57
+   Compiling equivalent v1.0.2
+   Compiling same-file v1.0.6
+   Compiling hashbrown v0.15.5
+   Compiling cast v0.3.0
+   Compiling once_cell v1.21.4
+   Compiling fixedbitset v0.4.2
+   Compiling walkdir v2.5.0
+   Compiling oorandom v11.1.5
+   Compiling itertools v0.10.5
+   Compiling clap_builder v4.6.7
+   Compiling anes v0.1.6
+   Compiling indexmap v2.7.1
+   Compiling cpufeatures v0.2.17
+   Compiling sha2 v0.10.8
+   Compiling petgraph v0.6.5
+   Compiling engine v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/engine)
+   Compiling criterion-plot v0.5.0
+   Compiling tinytemplate v1.2.1
+   Compiling regex v1.13.1
+   Compiling clap v4.6.7
+   Compiling getrandom v0.2.17
+   Compiling is-terminal v0.4.17
+   Compiling rand_core v0.6.4
+   Compiling rand_xoshiro v0.6.0
+   Compiling rand_xorshift v0.3.0
+   Compiling im v15.1.0
+   Compiling graph-core v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/graph-core)
+   Compiling parser v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/parser)
+   Compiling ppv-lite86 v0.2.21
+   Compiling half v2.7.1
+   Compiling rand_chacha v0.3.1
+   Compiling ciborium-ll v0.2.2
+   Compiling rand v0.8.5
+   Compiling ciborium v0.2.2
+   Compiling proptest v1.6.0
+   Compiling criterion v0.5.1
+   Compiling cli v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/cli)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 7.74s
+     Running tests/action_learning.rs (target/debug/deps/action_learning-3087197b332f6473)
+     Running tests/action_learning.rs (target/debug/deps/action_learning-7c9d03de39bca29b)
+     Running tests/observation_certificates.rs (target/debug/deps/observation_certificates-f422499d927c3fb0)
+Wrote /private/tmp/s7a-clean-final-actions.json
+{"counts":{"cases":47,"byte_oracle_agreements":47},"counterexample":{"atoms":"4096","fields":"4096","short_bytes":"277327","long_bytes":"406351","extra_bytes":"129024"}}
+{"histories":24,"events":90,"selection_reports":120,"event_projection_agreements":450}

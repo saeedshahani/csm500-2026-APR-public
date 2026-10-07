@@ -1,4 +1,5 @@
 //! Portable, bounded, checked histories. Imported snapshots are never trusted.
+mod canonical;
 pub(crate) mod decimal;
 mod storage;
 mod strict;
@@ -10,7 +11,6 @@ use crate::runner::{RunProgress, Runner};
 use crate::scheduling::{Scheduler, SchedulingStrategy};
 use crate::{Execution, ExecutionLimits, OperationalBinding};
 use graph_core::{Diagnostic, ErrorKind, Graph, LimitKind};
-use serde::de::IntoDeserializer;
 use serde::Serialize;
 use sha2::{Digest, Sha256};
 use std::io::Write;
@@ -90,6 +90,7 @@ impl Default for TraceLimits {
         }
     }
 }
+#[cfg(test)]
 fn structural_limits(value: &serde_json::Value, limits: TraceLimits) -> Result<()> {
     fn visit(v: &serde_json::Value, left: &mut [usize; 5]) -> Result<()> {
         match v {
@@ -283,31 +284,25 @@ impl TraceDocument {
     }
 }
 impl VerifiedTrace {
-    pub fn import(bytes: &[u8], limits: TraceLimits) -> Result<Self> {
+    fn parse_document(bytes: &[u8], limits: TraceLimits) -> Result<TraceDocument> {
         if bytes.len() > limits.max_bytes {
             return Err(exhausted("trace byte limit"));
         }
-        let value = strict::parse(bytes, limits.max_nodes, limits.max_depth)?;
-        structural_limits(&value, limits)?;
-        for (field, max) in [
-            ("events", limits.max_events),
-            ("checkpoints", limits.max_checkpoints),
-        ] {
-            if value
-                .get(field)
-                .and_then(|v| v.as_array())
-                .is_some_and(|v| v.len() > max)
-            {
-                return Err(exhausted(field));
-            }
-        }
+        strict::validate(bytes, limits)?;
+        let mut deserializer = serde_json::Deserializer::from_slice(bytes);
         let doc: TraceDocument =
-            serde_path_to_error::deserialize(value.clone().into_deserializer())
-                .map_err(|e| bad(&e.to_string()))?;
-        if serde_json::to_value(&doc).map_err(|e| bad(&e.to_string()))? != value {
+            serde_path_to_error::deserialize(&mut deserializer).map_err(|e| bad(&e.to_string()))?;
+        if doc.events.len() > limits.max_events || doc.checkpoints.len() > limits.max_checkpoints {
+            return Err(exhausted("events/checkpoints"));
+        }
+        let canonical = serde_json::to_vec(&doc).map_err(|e| bad(&e.to_string()))?;
+        if !canonical::equal(bytes, &canonical).map_err(|e| bad(&e.to_string()))? {
             return Err(bad("noncanonical or duplicate set members"));
         }
-        Self::verify(doc, limits)
+        Ok(doc)
+    }
+    pub fn import(bytes: &[u8], limits: TraceLimits) -> Result<Self> {
+        Self::verify(Self::parse_document(bytes, limits)?, limits)
     }
     pub fn replace_from_json(&mut self, bytes: &[u8]) -> Result<()> {
         let next = Self::import(bytes, self.limits)?;
@@ -319,17 +314,7 @@ impl VerifiedTrace {
     /// selection, terminal report and checkpoint must reproduce under reference-v1.
     /// Original input bytes and build provenance are never rewritten in place.
     pub fn migrate_reference(bytes: &[u8], limits: TraceLimits) -> Result<Self> {
-        if bytes.len() > limits.max_bytes {
-            return Err(exhausted("trace byte limit"));
-        }
-        let value = strict::parse(bytes, limits.max_nodes, limits.max_depth)?;
-        structural_limits(&value, limits)?;
-        let mut doc: TraceDocument =
-            serde_path_to_error::deserialize(value.clone().into_deserializer())
-                .map_err(|e| bad(&e.to_string()))?;
-        if serde_json::to_value(&doc).map_err(|e| bad(&e.to_string()))? != value {
-            return Err(bad("noncanonical or duplicate set members"));
-        }
+        let mut doc = Self::parse_document(bytes, limits)?;
         if doc.settings.execution_profile.is_some() || doc.settings.plan.is_none() {
             return Err(bad(
                 "migration requires a legacy scheduler trace without an explicit execution profile",
@@ -343,11 +328,7 @@ impl VerifiedTrace {
     }
     pub fn verify(mut doc: TraceDocument, limits: TraceLimits) -> Result<Self> {
         // The same structural budget applies to callers constructing DTOs directly.
-        let bytes = doc.to_json(limits.max_bytes)?;
-        structural_limits(
-            &strict::parse(&bytes, limits.max_nodes, limits.max_depth)?,
-            limits,
-        )?;
+        strict::validate(&doc.to_json(limits.max_bytes)?, limits)?;
         if doc.schema != SCHEMA
             || doc.profile != PROFILE
             || doc.relation != RELATION
@@ -496,7 +477,15 @@ impl VerifiedTrace {
                 checkpoints.push(Checkpoint {
                     state,
                     execution: execution.fork(),
-                    runner: runner.as_ref().map(Runner::fork),
+                    // Only a yielded endpoint is a continuation authority.
+                    // Historical/finished checkpoints need an execution graph,
+                    // not another complete recorder and recurrence history.
+                    // Keep the existing conservative budget charges above.
+                    runner: if doc.status == "yielded" && state == doc.events.len() {
+                        runner.as_ref().map(Runner::fork)
+                    } else {
+                        None
+                    },
                 });
             }
             if let Some(claim) = doc.conflicts.iter_mut().find(|c| c.state.0 == state as u64) {
@@ -536,6 +525,11 @@ impl VerifiedTrace {
                 _ => return Err(bad("terminal report is not reproduced")),
             }
         }
+        // Their claims have all been checked. Release transient replay owners
+        // before deriving and validating the final portable document.
+        drop(checked_recording);
+        drop(runner);
+        drop(execution);
         let edges = DependencyOrder::extract(&doc.events, doc.settings.analysis.native()?)?
             .edges()
             .iter()
@@ -550,11 +544,7 @@ impl VerifiedTrace {
         }
         doc.dependencies = Some(edges);
         // Derived data can be larger than the input that requested it.
-        let bytes = doc.to_json(limits.max_bytes)?;
-        structural_limits(
-            &strict::parse(&bytes, limits.max_nodes, limits.max_depth)?,
-            limits,
-        )?;
+        strict::validate(&doc.to_json(limits.max_bytes)?, limits)?;
         Ok(Self {
             document: doc,
             checkpoints,

@@ -1,0 +1,62 @@
+
+> reflective-graph-workbench@0.1.0 test:unit
+> node --experimental-strip-types --test tests/controller.test.ts tests/presentation.test.ts tests/graph-layout.test.ts tests/walkthrough.test.ts tests/run-settings.test.ts tests/projects.test.ts tests/diagnostics.test.ts tests/platform-client.test.ts
+
+✔ failed debugger recovery retains the original acknowledged settings for retry (1.008292ms)
+✔ recovery restores breakpoints and rediscovers the same paused occurrence even after its checkbox is cleared (0.214584ms)
+✔ synchronous worker send failure releases the request and permits recovery (0.120375ms)
+✔ recovery restores a historical inspection cursor, not just the endpoint (0.093792ms)
+✔ worker failure rejects later requests until recovery (0.099416ms)
+✔ late replies, repeated replacement and disposal cannot publish old sessions (0.824042ms)
+✔ out-of-order identities and concurrent commands are rejected (0.226375ms)
+✔ a failed load does not replace the recovery prefix (0.227333ms)
+✔ UTF-8 spans become exact UTF-16 ranges across Unicode, tabs and mixed newlines (0.804583ms)
+✔ all primary and related locations retain their own ranges, including EOF and multiline spans (0.127083ms)
+✔ invalid or non-character boundaries are not presented as precise source locations (0.118208ms)
+✔ dense 250-node layout grows beyond the old rectangle without overlapping nodes (545.658084ms)
+✔ disconnected rule representations are packed separately without losing identities (39.965792ms)
+✔ fit frames actual bounds in both wide and narrow viewports (0.129833ms)
+✔ cursor-anchored zoom preserves its world point and obeys zoom limits (0.077375ms)
+✔ pinning preserves existing positions and places new atoms outside them (0.577084ms)
+✔ parallel, reverse and loop fields keep distinct paths and identities (0.239ms)
+✔ focus prioritises a late identity beyond the overview limit and expands by hops (0.654084ms)
+✔ empty, singleton and practical layouts remain finite and input-preserving (0.305459ms)
+✔ workflow transport preserves reports without converting unsupported into refutation (14.325334ms)
+✔ hosted panel requests are serialised and queued work stops on disconnect (2.7275ms)
+✔ hosted transport pins Firebase origins and requires refreshable identity (0.346292ms)
+✔ client refuses external, credential-bearing and path-bearing API addresses (0.118292ms)
+✔ pause and resume are explicit authenticated requests without changed settings (0.401083ms)
+✔ submission reuses its key after an uncertain response but deliberate new jobs receive new keys (0.608708ms)
+✔ artefact content and advertised digest both have to match the saved identity (2.119542ms)
+✔ byte limits cover advertised and chunked responses (0.294ms)
+✔ disconnect aborts requests and rejects late responses (0.192792ms)
+✔ structured API errors are preserved without automatic retries (0.176084ms)
+✔ refreshable identities are obtained per request and never sent after disconnect (0.247916ms)
+✔ projection preserves loops and parallel identities, hides quotation and retains unprojectable data (0.798917ms)
+✔ observer does not change projection and deleted identity uses prior payload (0.163833ms)
+✔ rapid scrubbing runs only active and latest pending query and suppresses stale publication (0.126083ms)
+✔ replacement invalidates in-flight and queued inspections including late errors (0.076917ms)
+✔ project format preserves Unicode and keeps presentation separate (2.77825ms)
+✔ execution profile is optional for old projects and explicit for indexed projects (0.284459ms)
+✔ presentation preferences are strings, not coercible arrays or objects (0.090292ms)
+✔ file input preserves Unicode and rejects invalid UTF-8 (0.284625ms)
+✔ project validation rejects unknown, malformed and over-budget parts (15.762041ms)
+✔ every gallery entry supplies a complete profile automatically, including lambda fixtures (0.747708ms)
+✔ individual explicit overrides survive profile changes, including false, blank and equal values (0.089625ms)
+✔ an untouched observer or recurrence flag follows each newly selected profile (0.059041ms)
+✔ imported settings remain explicit and round-trip arbitrary observer declarations (0.221375ms)
+✔ dataset bounds cover processing, activation and the terminal query while respecting overrides (0.065167ms)
+✔ all eight annotations target real data, relationships or rules (0.497791ms)
+✔ every stage connects its observed result to a scoped research explanation (0.232333ms)
+✔ forward executes two rewrites and one terminal check; revisiting never duplicates events (0.318209ms)
+✔ unsupported steps, engine failures and unexpected outcomes cannot advance the lesson (0.85025ms)
+ℹ tests 48
+ℹ suites 0
+ℹ pass 48
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 676.828417
+
+[stderr]

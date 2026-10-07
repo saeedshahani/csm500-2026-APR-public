@@ -16,7 +16,7 @@ for(let n=1;n<=4;n++)cells.push(['guard',n,128]);
 for(const mode of ['object-loop','meta-noop','self','finite-then-object-loop','delete-head','restoration','gated','ungated','interleaved'])cells.push([mode,1,128]);
 cells.push(['unfunded-spawn',0,8],['spawn',2,1]);
 const protocol={schema:'loop-f-diagnostic-v1',cells,timeout_ms:30000,output_bytes:4*1024**2,samples:1,performance_claim:false};
-const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>/^(Cargo\.(toml|lock)|rust-toolchain\.toml)$/.test(p)||/^crates\/.*\.(rs|toml|graph|atoms|lambda|txt)$/.test(p)||p.startsWith('examples/')||p==='scripts/collect-loop-f.mjs'||p==='scripts/verify-loop-f.mjs'||p==='docs/research/reflective-recovery.md').sort();
+const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>/^(Cargo\.(toml|lock)|rust-toolchain\.toml)$/.test(p)||/^crates\/.*\.(rs|toml|graph|atoms|lambda|txt)$/.test(p)||p.startsWith('examples/')||p==='scripts/collect-loop-f.mjs'||p==='scripts/verify-loop-f.mjs'||p==='benchmarks/PROTOCOL.md').sort();
 const bundle=gzipSync(JSON.stringify({schema:'source-bundle-v1',encoding:'base64',files:Object.fromEntries(paths.map(p=>[p,readFileSync(p).toString('base64')]))}));
 writeFileSync(resolve(dir,'sources.json.gz'),bundle,{flag:'wx'});
 const record={protocol,source_bundle_sha256:sha(bundle),binary_sha256:sha(readFileSync(binary)),collected_at:new Date().toISOString(),environment:{platform:process.platform,arch:os.arch(),release:os.release(),cpu:os.cpus()[0]?.model},rows:[]};

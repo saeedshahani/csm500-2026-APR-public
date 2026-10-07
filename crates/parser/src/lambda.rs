@@ -1,7 +1,7 @@
 //! Closed lambda terms, encoded as a graph-resident call-by-name environment machine.
 //!
 //! This adapter constructs syntax and rules; it never executes beta reduction.
-//! The source arena uses zero-based de Bruijn indices. See `docs/reference/lambda-encoding.md`
+//! The source arena uses zero-based de Bruijn indices. See `docs/formalism.md`
 //! for the invariant, alias cases, readback and correspondence argument.
 //!
 //! ```

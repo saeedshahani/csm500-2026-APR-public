@@ -4,6 +4,7 @@ import {readFileSync} from 'node:fs';
 import {gunzipSync} from 'node:zlib';
 import {createHash} from 'node:crypto';
 import {resolve} from 'node:path';
+import {compareRustPaths} from './research-source-files.mjs';
 const directory=resolve(process.argv[2]??'benchmarks/results/s6-loop-b');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const read=p=>readFileSync(resolve(directory,p));
@@ -20,7 +21,7 @@ for(const path of Object.keys(files)){
  if(path.startsWith('crates/graph-core/src/')&&path.endsWith('.rs'))inputs.push(['../graph-core/'+path.slice('crates/graph-core/'.length),path]);
 }
 for(const [local,path] of [['build.rs','crates/engine/build.rs'],['Cargo.toml','crates/engine/Cargo.toml'],['../graph-core/Cargo.toml','crates/graph-core/Cargo.toml'],['../../Cargo.toml','Cargo.toml'],['../../Cargo.lock','Cargo.lock'],['../../rust-toolchain.toml','rust-toolchain.toml']])inputs.push([local,path]);
-const fingerprint=createHash('sha256');for(const [name,path] of inputs.sort(([a],[b])=>a<b?-1:a>b?1:0)){assert.ok(files[path],path);fingerprint.update(name);fingerprint.update('\0');fingerprint.update(Buffer.from(files[path],'base64'));fingerprint.update('\0');}
+const fingerprint=createHash('sha256');for(const [name,path] of inputs.sort(([a],[b])=>compareRustPaths(a,b))){assert.ok(files[path],path);fingerprint.update(name);fingerprint.update('\0');fingerprint.update(Buffer.from(files[path],'base64'));fingerprint.update('\0');}
 const implementation='engine-0.1.0-source-sha256='+fingerprint.digest('hex');
 const cells=new Map();
 for(const row of c.rows){

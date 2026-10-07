@@ -18,7 +18,7 @@ for (const p of ['Cargo.toml','Cargo.lock','crates/engine/examples/recovery_prob
   'crates/engine/examples/support/recovery.rs','crates/engine/tests/recovery.rs',
   'scripts/recovery-study.mjs','scripts/verify-recovery-study.mjs']) assert.ok(bundle.files[p],p);
 const protocolPath = env.protocol_source_path ?? 'docs/recovery-study.md';
-assert.ok(['docs/recovery-study.md','docs/research/reflective-recovery.md'].includes(protocolPath));
+assert.ok(['docs/recovery-study.md','docs/research/reflective-recovery.md','benchmarks/PROTOCOL.md'].includes(protocolPath));
 assert.equal(sha(Buffer.from(bundle.files[protocolPath],'base64')),env.protocol_sha256);
 const rows = JSON.parse(read('raw.json'));
 assert.deepEqual(rows.map(r=>r.args),[0,1,3,10,100,1000].flatMap(n=>['finite','modulating'].map(m=>[m,n,2*n+4])));

@@ -39,7 +39,7 @@ function verifyCell(cell,native=false){
 }
 if(mode==='collect'){
   assert.ok(!existsSync(directory),'collection already exists');mkdirSync(directory,{recursive:true});
-  const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>existsSync(p)&&(/^(Cargo\.(toml|lock)|rust-toolchain.toml)$/.test(p)||/^crates\/.*\.(rs|toml|lean)$/.test(p)||p==='scripts/workflow-study.mjs'||p==='docs/research/workflow-protocol.md')).sort();
+  const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>existsSync(p)&&(/^(Cargo\.(toml|lock)|rust-toolchain.toml)$/.test(p)||/^crates\/.*\.(rs|toml|lean)$/.test(p)||p==='scripts/workflow-study.mjs'||p==='benchmarks/PROTOCOL.md')).sort();
   const sources=gzipSync(JSON.stringify({files:Object.fromEntries(paths.map(p=>[p,readFileSync(p).toString('base64')]))}));writeFileSync(resolve(directory,'sources.json.gz'),sources);
   const manifest={schema:'workflow-study-v1',complete:false,date:new Date().toISOString(),source_bundle_sha256:sha(sources),binary_sha256:sha(readFileSync(binary)),commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),node:process.version,platform:process.platform,rows:[],failure:null};
   try{

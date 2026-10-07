@@ -15,7 +15,7 @@ for(const name of ['spawn','credit-restoration'])for(let n=0;n<=4;n++)cases.push
 for(const name of ['logger','connected','unfunded-spawn','output','gated-output','gated','ungated','literal-reader','wildcard-reader','new-reader'])cases.push([name,1]);
 const cells=cases.flatMap(([name,n])=>['full','inert'].map(mode=>[name,n,16,mode]));
 const protocol={schema:'loop-f2-diagnostic-v1',cells,timeout_ms:30000,output_bytes:4*1024**2,samples:1,performance_claim:false};
-const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>/^(Cargo\.(toml|lock)|rust-toolchain\.toml)$/.test(p)||/^crates\/.*\.(rs|toml|graph|atoms|lambda|txt)$/.test(p)||p.startsWith('examples/')||p==='scripts/collect-loop-f2.mjs'||p==='scripts/verify-loop-f2.mjs'||p==='docs/research/reflective-recovery.md').sort();
+const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>/^(Cargo\.(toml|lock)|rust-toolchain\.toml)$/.test(p)||/^crates\/.*\.(rs|toml|graph|atoms|lambda|txt)$/.test(p)||p.startsWith('examples/')||p==='scripts/collect-loop-f2.mjs'||p==='scripts/verify-loop-f2.mjs'||p==='benchmarks/PROTOCOL.md').sort();
 const bundle=gzipSync(JSON.stringify({schema:'source-bundle-v1',encoding:'base64',files:Object.fromEntries(paths.map(p=>[p,readFileSync(p).toString('base64')]))}));
 writeFileSync(resolve(dir,'sources.json.gz'),bundle,{flag:'wx'});
 const record={protocol,source_bundle_sha256:sha(bundle),binary_sha256:sha(readFileSync(binary)),collected_at:new Date().toISOString(),environment:{platform:process.platform,arch:os.arch(),release:os.release(),cpu:os.cpus()[0]?.model},rows:[]};

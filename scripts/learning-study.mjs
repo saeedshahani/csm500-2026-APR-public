@@ -8,6 +8,7 @@ import os from 'node:os';
 import {fit,proposal,predict,gate,score,compile,execute,inspect,promote,digest,native} from '../platform/learning.mjs';
 import {corpus} from './learning-corpus.mjs';
 import {sourceFiles} from './research-source-files.mjs';
+import {assertSameExecution} from './trace-comparison.mjs';
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const binary=resolve('target/release/cli');
 export function methods(task,pilotLinear=false) {
@@ -55,8 +56,9 @@ function checkNative(row,cell,live=false) {
   const view=inspect(row.result.trace,cell.task.test.map(r=>r.input));assert.deepEqual(view,row.result.observation);
   assert.equal(view.outcome,'NormalForm');assert.deepEqual(view.results.map(r=>r.output),cell.task.test.map(r=>r.expected));
   assert.equal(view.commits,row.result.compiled.processors+3);
-  if(live){for(const trace of [row.disabled,row.result.validation_trace,row.result.trace])assert.equal(native(binary,['trace-check','-'],JSON.stringify(trace)).code,0);assert.deepEqual(nativeCase(cell,row.model),row);}
+  if(live)assertSameExecution(nativeCase(cell,row.model),row,[['disabled'],['result','validation_trace'],['result','trace']],verifyTrace);
 }
+function verifyTrace(trace){assert.equal(native(binary,['trace-check','-'],JSON.stringify(trace)).code,0);}
 export function counterfactuals() {
   const clean=fit([{input:'jan',expected:'01'},{input:'feb',expected:'02'}]);
   const shuffled=fit([{input:'jan',expected:'02'},{input:'feb',expected:'01'}]);
@@ -88,7 +90,11 @@ function checkChallenges(c,live) {
     const inputs=name==='shifted'?[' APR ']:name==='ambiguous'?['may']:['jan'];
     assert.deepEqual(inspect(row.trace,inputs),row.observation);
   }
-  if(live)assert.deepEqual(nativeChallenges(),c);
+  if(live){
+    const actual=nativeChallenges();
+    const paths=Object.entries(c).flatMap(([name,row])=>[[name,'trace'],...(row.validation_trace?[[name,'validation_trace']]:[])]);
+    assertSameExecution(actual,c,paths,verifyTrace);
+  }
 }
 const [mode,dir,...flags]=process.argv.slice(2);
 if(['collect','verify'].includes(mode)) {
@@ -103,7 +109,7 @@ if(['collect','verify'].includes(mode)) {
       for(const model of accepted.values())rows.push(nativeCase(cell,model));
     }
     const outcomes={cells,counterfactuals:counterfactuals(),native:rows,challenges:nativeChallenges()};
-    const paths=['Cargo.lock','Cargo.toml','rust-toolchain.toml','platform/learning.mjs','scripts/learn-calendar.mjs','scripts/learning-corpus.mjs','scripts/learning-study.mjs','scripts/learning.test.mjs','scripts/research-source-files.mjs','docs/research/learning.md',...sourceFiles(['crates/cli/src','crates/engine/src','crates/parser/src','crates/graph-core/src'])];
+    const paths=['Cargo.lock','Cargo.toml','rust-toolchain.toml','platform/learning.mjs','scripts/learn-calendar.mjs','scripts/learning-corpus.mjs','scripts/learning-study.mjs','scripts/learning.test.mjs','scripts/research-source-files.mjs','scripts/trace-comparison.mjs','benchmarks/PROTOCOL.md',...sourceFiles(['crates/cli/src','crates/engine/src','crates/parser/src','crates/graph-core/src'])];
     const sources=Buffer.from(JSON.stringify(Object.fromEntries(paths.sort().map(p=>[p,readFileSync(p,'utf8')]))));
     const bytes=Buffer.from(JSON.stringify(outcomes));
     const report={schema:'learning-study-v1',date:new Date().toISOString(),revision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),source_sha256:hash(sources),data_sha256:hash(bytes),binary_sha256:hash(readFileSync(binary)),model:'calendar-subsets-v1',provider:null,prompts:null,inference_cost:0,node:process.version,hardware:{platform:os.platform(),arch:os.arch(),cpu:os.cpus()[0].model},summary:summarise(cells),native_cases:rows.length,native_commits:rows.reduce((n,r)=>n+r.result.trace.events.length+r.result.validation_trace.events.length,0),native_wall_ms:performance.now()-started};

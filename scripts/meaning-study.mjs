@@ -9,6 +9,7 @@ import {SCHEMA,policy,fitContexts,review,compileContext,runContext,observeContex
 import {digest,native} from '../platform/learning.mjs';
 import {meaningTasks,contexts} from './meaning-corpus.mjs';
 import {sourceFiles} from './research-source-files.mjs';
+import {assertSameExecution} from './trace-comparison.mjs';
 const sha=x=>createHash('sha256').update(x).digest('hex');
 const binary=resolve('target/release/cli');
 export const unlabel=rows=>rows.map(({token,context})=>({token,context}));
@@ -29,7 +30,7 @@ function run(compiled,maxSteps=512){return {compiled,...runContext(binary,compil
 function checkRun(record,live=false) {
   assert.equal(record.code,record.observation.outcome==='NormalForm'?0:3);
   assert.deepEqual(observeContext(record.trace,record.compiled),record.observation);
-  if(live){assert.equal(native(binary,['trace-check','-'],JSON.stringify(record.trace)).code,0);assert.deepEqual(run(record.compiled,record.code===3?0:512),record);}
+  if(live)assertSameExecution(run(record.compiled,record.code===3?0:512),record,[['trace']],trace=>assert.equal(native(binary,['trace-check','-'],JSON.stringify(trace)).code,0));
 }
 export function interventions(task) {
   const model=methods(task).fitted.model,input=unlabel(task.test);
@@ -93,7 +94,7 @@ function main() {
       writeFileSync(`${dir}/failure.json`,JSON.stringify({error:error.message,completed_tasks:data.tasks.length,date:new Date().toISOString()},null,2)+'\n');
       throw error;
     }
-    const paths=['Cargo.toml','Cargo.lock','rust-toolchain.toml','platform/meaning.mjs','platform/learning.mjs','scripts/meaning-corpus.mjs','scripts/meaning-study.mjs','scripts/meaning.test.mjs','scripts/interpret-context.mjs','scripts/research-source-files.mjs','docs/research/learning.md',...['cli','engine','parser','graph-core'].flatMap(c=>[`crates/${c}/Cargo.toml`,...sourceFiles([`crates/${c}/src`])])];
+    const paths=['Cargo.toml','Cargo.lock','rust-toolchain.toml','platform/meaning.mjs','platform/learning.mjs','scripts/meaning-corpus.mjs','scripts/meaning-study.mjs','scripts/meaning.test.mjs','scripts/interpret-context.mjs','scripts/research-source-files.mjs','scripts/trace-comparison.mjs','benchmarks/PROTOCOL.md',...['cli','engine','parser','graph-core'].flatMap(c=>[`crates/${c}/Cargo.toml`,...sourceFiles([`crates/${c}/src`])])];
     const sources=Buffer.from(JSON.stringify(Object.fromEntries(paths.sort().map(p=>[p,readFileSync(p,'utf8')])))),bytes=Buffer.from(JSON.stringify(data));
     const report={schema:'meaning-study-v1',date:new Date().toISOString(),revision:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),source_sha256:sha(sources),data_sha256:sha(bytes),binary_sha256:sha(readFileSync(binary)),node:process.version,platform:process.platform,arch:process.arch,summary:summary(data),native_runs:Object.keys(data.runs).length,main_commits:Object.values(data.runs).reduce((s,r)=>s+r.trace.events.length,0),intervention_runs:data.interventions.reduce((s,c)=>s+c.runs.length,0),intervention_commits:data.interventions.reduce((s,c)=>s+c.runs.reduce((t,r)=>t+r.trace.events.length,0),0),collection_ms:performance.now()-started};
     writeFileSync(`${dir}/sources.json.gz`,gzipSync(sources));writeFileSync(`${dir}/outcomes.json.gz`,gzipSync(bytes));writeFileSync(`${dir}/report.json`,JSON.stringify(report,null,2)+'\n');

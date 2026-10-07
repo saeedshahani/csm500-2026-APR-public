@@ -1,0 +1,81 @@
+{
+  "snapshots": 73,
+  "native_cases": 513,
+  "translated_queries": 1539,
+  "statuses": {
+    "Admitted": 146,
+    "InvalidBinding": 353,
+    "Guardedness": 8,
+    "Dangling": 4,
+    "InvalidConfiguration": 2
+  },
+  "gadgets": [
+    {
+      "internal": 1,
+      "total": 7,
+      "reachable": 1,
+      "ordered": 0,
+      "min_edges": null,
+      "witness": null
+    },
+    {
+      "internal": 2,
+      "total": 121,
+      "reachable": 10,
+      "ordered": 8,
+      "min_edges": 3,
+      "witness": [
+        [
+          1,
+          2
+        ],
+        [
+          3
+        ]
+      ]
+    },
+    {
+      "internal": 3,
+      "total": 4096,
+      "reachable": 259,
+      "ordered": 224,
+      "min_edges": 4,
+      "witness": [
+        [
+          1
+        ],
+        [
+          2,
+          3
+        ],
+        [
+          4
+        ]
+      ]
+    },
+    {
+      "internal": 4,
+      "total": 234256,
+      "reachable": 12294,
+      "ordered": 11412,
+      "min_edges": 5,
+      "witness": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          3,
+          4
+        ],
+        [
+          5
+        ]
+      ]
+    }
+  ]
+}
+
+[stderr]

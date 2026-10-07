@@ -1,0 +1,39 @@
+{
+  "schema": "clean-archive-acceptance-v1",
+  "complete": true,
+  "archive_sha256": "a56a9c5861fe49aaf5f7d7e833178b686b1e133b8dc70d87446c57ea2c0f6634",
+  "archive_files": 2944,
+  "source_inventory_sha256": "89227fafa4b13aaff80a35f4029f199439b0b619cfe773f6928fbfa96e524de6",
+  "engine_source_sha256": "392a941cc7e3c566bddb4b2d5b3dc0fc7e8bf21b4772a772cc21341a1367a348",
+  "git_metadata": false,
+  "personal_archive": false,
+  "preexisting_build_outputs": false,
+  "dependencies": "Locked Rust/npm registry sources and pinned external Lean/Mathlib; dependency caches are available, compiled targets were rebuilt.",
+  "outcomes": {
+    "native_debug_release": "passed",
+    "production_webassembly_frontend_notices": "passed",
+    "script_tests": {
+      "passed": 115,
+      "failed": 0,
+      "skipped": 2,
+      "skip_reason": "personal-archive-only checks"
+    },
+    "catalogue_profiles": 23,
+    "abstract_proof_statements": 82,
+    "cross_feature_cli": "passed",
+    "organization_conditions": 191,
+    "numerical_solver_runs": 240,
+    "action_and_observer_correspondence": "passed",
+    "snapshot_byte_cases": 47,
+    "provenance_histories": 24
+  },
+  "logs": {
+    "adopted.log": "0122039ca0c977861e5ec0c7580c7ed0febba70fdd6c761425aa7e84ba0e43c5",
+    "examples.log": "fe197d7e68a3a2219bc71665f091ba1f4afeddcdf98a4f980696144c5636eb39",
+    "native.log": "5e165176b14b676f6c93a61e7f79bcc1dc8e315ee47c676959b5fe30eb0c1ca6",
+    "proofs.log": "9947b16a76bd05ed2b1a7c88885f0e36e0a46751c85502f569105bed31b6583d",
+    "scripts.log": "e41eab237a4d39d2984992680825eb6016d1894eac8262266ba0f1f650489b6b",
+    "web.log": "61364de48ac4706af1d7f29f20f93140ba4b8204f40d37a5750f530586372517"
+  },
+  "scope": "Local candidate reproduction only. No CI, hosted acceptance, source commit, publication or substantive freeze is inferred. Subsequent planning/evidence annotations are outside this archive identity."
+}

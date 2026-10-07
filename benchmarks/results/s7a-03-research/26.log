@@ -1,0 +1,7 @@
+Wrote benchmarks/results/s7a-03-research/studies/actions.json
+
+[stderr]
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.05s
+     Running tests/action_learning.rs (target/debug/deps/action_learning-3087197b332f6473)
+     Running tests/action_learning.rs (target/debug/deps/action_learning-7c9d03de39bca29b)
+     Running tests/observation_certificates.rs (target/debug/deps/observation_certificates-f422499d927c3fb0)

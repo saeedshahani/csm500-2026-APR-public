@@ -1,0 +1,20 @@
+[
+  {
+    "name": "historical-rebuilt",
+    "code": null,
+    "signal": "SIGKILL",
+    "peak": 6490456064,
+    "cause": "sampled process-group RSS ceiling exceeded",
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "name": "current",
+    "code": null,
+    "signal": "SIGKILL",
+    "peak": 6561087488,
+    "cause": "sampled process-group RSS ceiling exceeded",
+    "stdout": "",
+    "stderr": ""
+  }
+]

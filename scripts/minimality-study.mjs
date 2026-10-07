@@ -10,10 +10,11 @@ import {encode,decode,restore,rename,counts,edgeEncode,edgeDecode} from './minim
 import {enumerate,verifyWitness} from './minimality-gadgets.mjs';
 const [mode,directory]=process.argv.slice(2);
 assert.ok(['collect','verify'].includes(mode)&&directory,'collect|verify DIR [--live]');
+assert.ok(process.argv.slice(4).every(f=>f==='--live') && (mode==='verify'||process.argv.length===4),'unknown or incompatible option');
 const binary=resolve('target/release/examples/minimality');
 const sha=x=>createHash('sha256').update(x).digest('hex');
-function native(mode,input='') {
-  const r=spawnSync(binary,[mode],{input,encoding:'utf8',timeout:120000,maxBuffer:128*1024*1024});
+function native(mode,input='',options=[]) {
+  const r=spawnSync(binary,[mode,...options],{input,encoding:'utf8',timeout:120000,maxBuffer:128*1024*1024});
   assert.equal(r.status,0,r.error?.message??r.stderr);return r.stdout;
 }
 function translated(graph,variant,offset=0n) {
@@ -74,7 +75,9 @@ function gadgets() {
 }
 if(mode==='collect') {
   assert.ok(!existsSync(directory),'never overwrite a collection');mkdirSync(directory,{recursive:true});
-  const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>existsSync(p)&&(/^(Cargo\.(toml|lock)|rust-toolchain.toml)$/.test(p)||/^crates\/.*\.(rs|toml|lean)$/.test(p)||/^scripts\/minimality.*\.mjs$/.test(p)||p==='docs/research/minimality.md'||p==='examples/manifest.json'||/^examples\/.*\.(graph|lambda|atoms)$/.test(p))).sort();
+  const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>existsSync(p)&&(/^(Cargo\.(toml|lock)|rust-toolchain.toml)$/.test(p)||/^crates\/.*\.(rs|toml|lean)$/.test(p)||/^scripts\/minimality.*\.mjs$/.test(p)||p==='benchmarks/PROTOCOL.md'||/^examples\/.*\.(graph|lambda|atoms|json)$/.test(p))).sort();
+  const catalogue=JSON.parse(readFileSync('examples/manifest.json'));
+  for(const item of catalogue)for(const path of [item.authored,item.file])assert.ok(paths.includes(`examples/${path}`),`source bundle omits ${path}`);
   const sources=gzipSync(JSON.stringify({files:Object.fromEntries(paths.map(p=>[p,readFileSync(p).toString('base64')]))}));
   writeFileSync(resolve(directory,'sources.json.gz'),sources);
   const manifest={schema:'minimality-study-v1',complete:false,parent:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),created:new Date().toISOString(),source_sha256:sha(sources),binary_sha256:sha(readFileSync(binary)),environment:{node:process.version,platform:os.platform(),arch:os.arch(),cpu:os.cpus()[0].model,rust:execFileSync('rustc',['--version'],{encoding:'utf8'}).trim()},files:{},failure:null};
@@ -99,7 +102,10 @@ if(mode==='collect') {
   const report=JSON.parse(readFileSync(resolve(directory,'report.json')));
   assert.deepEqual({...check(corpus,answers),gadgets:gadgets()},report);
   if(process.argv.includes('--live')) {
-    assert.deepEqual(JSON.parse(native('corpus')),corpus);
+    // Replay exactly the frozen experiment's authored cases, not today's catalogue.
+    // New catalogue entries receive a distinct collection with their own provenance.
+    const paths=[...new Set(corpus.snapshots.map(s=>s.name).filter(p=>!p.startsWith('fixture/')))];
+    assert.deepEqual(JSON.parse(native('corpus',JSON.stringify(paths),['--paths'])),corpus);
     const variants=answers.length===corpus.cases.length*3?['M','T','P']:['T','P'];
     const input=corpus.cases.flatMap(c=>variants.map(v=>JSON.stringify(queryFor(c,v)))).join('\n')+'\n';
     assert.deepEqual(native('admit',input).trim().split('\n').map(x=>JSON.parse(x)),answers);

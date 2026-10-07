@@ -1,0 +1,3 @@
+{"counts":{"cases":47,"byte_oracle_agreements":47},"counterexample":{"atoms":"4096","fields":"4096","short_bytes":"277327","long_bytes":"406351","extra_bytes":"129024"}}
+
+[stderr]

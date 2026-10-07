@@ -3,14 +3,14 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {execFileSync, spawnSync} from 'node:child_process';
 import {mkdirSync, readFileSync, writeFileSync, readdirSync} from 'node:fs';
-import {join} from 'node:path';
+import {join,resolve} from 'node:path';
 import {pathToFileURL} from 'node:url';
 import {platform, arch} from 'node:os';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const node = (...args) => ['node', ...args];
 const tests = directory => readdirSync(directory).filter(p => p.endsWith('.test.mjs')).sort().map(p => `${directory}/${p}`);
-export function plans() {
+export function plans(artifacts='output/integrated-studies') {
   return {
     core: [
       ['cargo','fmt','--all','--','--check'],
@@ -26,6 +26,8 @@ export function plans() {
     research: [
       node('--test', ...tests('scripts')),
       ...['b','b2','c','d','e','f','f2'].map(loop => node(`scripts/verify-loop-${loop}.mjs`)),
+      node('benchmarks/results/s7a-01/verify-measurements.mjs'),
+      node('scripts/verify-loop-b2.mjs','benchmarks/results/s7a-02-scale'),
       node('scripts/workflow-study.mjs','verify','benchmarks/results/workflow-contracts-01','--live'),
       node('scripts/intervention-study.mjs','verify','benchmarks/results/interventions-03','--live'),
       node('scripts/minimality-study.mjs','verify','benchmarks/results/minimality-03','--live'),
@@ -37,12 +39,21 @@ export function plans() {
       node('scripts/verify-benchmark.mjs'),
       node('scripts/verify-scale-study.mjs'),
       node('scripts/verify-recovery-study.mjs'),
+      ['python3','-m','unittest','discover','-s','tests/organization','-v'],
+      ['python3','scripts/organization-study.py','verify','benchmarks/results/organization-02'],
+      ['python3','scripts/organization-rust-study.py','--cli','target/release/cli','--output',join(artifacts,'organization.json')],
+      ['python3','scripts/numerical-rust-study.py','--cli','target/release/cli','--output',join(artifacts,'numerical.json')],
+      ['python3','benchmarks/results/numerical-components-01/source/review-response/reproduce.py','--verify','benchmarks/results/numerical-components-01'],
+      node('scripts/action-learning-study.mjs','--output',join(artifacts,'actions.json')),
+      node('scripts/snapshot-cost-study.mjs','--cli','target/release/cli','--output',join(artifacts,'storage.json')),
+      node('scripts/selected-provenance-study.mjs',join(artifacts,'provenance.json')),
+      node('scripts/minimality-study.mjs','collect',join(artifacts,'minimality-current')),
+      node('scripts/minimality-study.mjs','verify',join(artifacts,'minimality-current'),'--live'),
     ],
     platform: [node('--test', ...tests('platform/tests')), ['npm','run','test:emulator','--prefix','platform']],
     web: ['build','lint','test:unit','test:parity','test:browser'].map(task => ['npm','--prefix','frontend','run',task]),
     proof: [node('scripts/admission-study.mjs','verify','benchmarks/results/admission-01','--proof'),
-      node('scripts/check-minimality-proof.mjs'),
-      ['lean','crates/engine/proofs/WorkflowContracts.lean']],
+      node('scripts/check-proofs.mjs')],
   };
 }
 
@@ -50,8 +61,8 @@ export function sourceInventory() {
   const paths = execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n');
   return Object.fromEntries([...new Set(paths)].filter(p =>
     /^(Cargo\.(toml|lock)|rust-toolchain\.toml|rustfmt\.toml|firebase(?:\.hosted)?\.json|firestore\.(rules|indexes\.json)|storage\.rules|\.firebaserc|\.dockerignore|\.gitignore)$/.test(p) ||
-    p==='docs/guides/workbench.md' ||
-    /^(crates|examples|scripts|platform|frontend|\.github)\//.test(p)
+    p==='docs/guides/workbench.md' || p==='benchmarks/PROTOCOL.md' ||
+    /^(crates|examples|scripts|platform|frontend|proofs|models|tests|\.github)\//.test(p)
   ).filter(p => !p.endsWith('/.DS_Store')).sort().map(p => [p,hash(readFileSync(p))]));
 }
 
@@ -72,8 +83,10 @@ export function validateReceipt(receipt, expected, read, current) {
 }
 
 export function collect(group,directory) {
-  const commands=plans()[group]; assert.ok(commands,`unknown group: ${group}`);
+  const artifacts=join(directory,'studies');
+  const commands=plans(artifacts)[group]; assert.ok(commands,`unknown group: ${group}`);
   mkdirSync(directory); // Refuse reuse: failed attempts remain evidence.
+  mkdirSync(artifacts);
   const sources=sourceInventory();
   const receipt={schema:'integrated-review-v1',group,complete:false,started:new Date().toISOString(),
     baseline_commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
@@ -85,7 +98,7 @@ export function collect(group,directory) {
     console.log(`[${group} ${index+1}/${commands.length}] ${command} ${args.join(' ')}`);
     const started=Date.now();
     const result=spawnSync(command,args,{encoding:'utf8',timeout:900000,maxBuffer:64*1024*1024,
-      env:{...process.env,RUSTDOCFLAGS:'-D warnings',CI:'true',PW_TEST_PORT:process.env.PW_TEST_PORT??'4181'}});
+      env:{...process.env,RUSTDOCFLAGS:'-D warnings',CI:'true',ORGANIZATION_NATIVE:resolve('target/release/cli'),PW_TEST_PORT:process.env.PW_TEST_PORT??'4181'}});
     const log=`${index}.log`,bytes=Buffer.from((result.stdout??'')+'\n[stderr]\n'+(result.stderr??''));
     writeFileSync(join(directory,log),bytes);
     receipt.results.push({index,exit_code:result.status,signal:result.signal,error:result.error?.message??null,
@@ -106,7 +119,7 @@ if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href) {
   else {
     const receipt=JSON.parse(readFileSync(join(directory,'receipt.json')));
     assert.equal(receipt.group,group);
-    validateReceipt(receipt,plans()[group],p=>readFileSync(join(directory,p)),flags.includes('--current')?sourceInventory():undefined);
+    validateReceipt(receipt,plans(join(directory,'studies'))[group],p=>readFileSync(join(directory,p)),flags.includes('--current')?sourceInventory():undefined);
     console.log(`Verified ${group}; ${flags.includes('--current')?'current':'recorded'} source identity. Hashes do not authenticate a producer.`);
   }
 }

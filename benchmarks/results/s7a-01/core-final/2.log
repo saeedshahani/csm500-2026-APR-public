@@ -1,0 +1,994 @@
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test strict_requests_and_resource_errors_never_publish_success ... ok
+test learning_compilation_execution_and_portable_replay ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+
+
+running 4 tests
+test resource_limited_loading_does_not_replace_a_valid_baseline ... ok
+test failed_authored_load_leaves_execution_and_prepared_proposal_unchanged ... ok
+test successful_authored_replacement_starts_a_new_history_even_for_same_source ... ok
+test authored_package_installs_and_its_literal_variable_then_matches_object_data ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test printed_arithmetic_and_self_lowering_run_without_hand_written_assignments ... ok
+test authored_rule_revision_changes_automatically_discovered_output ... ok
+test authored_installer_then_installed_rule_use_automatic_matching ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test compiled_commands_retain_recurrence_observer_seed_and_threshold_evidence ... ok
+test finite_prefixes_and_exact_step_bound_do_not_change_the_mathematical_classification ... ok
+test three_cases_agree_with_hand_derived_carriers_and_the_same_payload_measure ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 1 test
+test restoration_keeps_note_dependency_but_reattributes_the_exact_revision ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.23s
+
+
+running 1 test
+test ledger_to_checked_execution_is_a_cross_crate_integration_baseline ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 20 tests
+test arithmetic_run_reports_exact_normal_form_at_the_bound ... ok
+test failed_input_and_unwritable_destination_publish_nothing ... ok
+test incomplete_search_reports_a_resource_limit_with_no_partial_commit ... ok
+test loading_limits_fail_closed ... ok
+test check_validates_active_and_inactive_rules_without_running ... ok
+test help_documents_all_commands_and_exit_meanings ... ok
+test malformed_invalid_utf8_and_missing_inputs_never_produce_a_graph ... ok
+test report_size_limit_publishes_neither_a_prefix_nor_a_success_outcome ... ok
+test accepted_reflection_runs_bounded_and_is_reproducible ... ok
+test zero_steps_distinguishes_enabled_input_from_normal_form ... ok
+test unknown_non_head_and_quoted_rule_names_are_distinguished ... ok
+test rejected_rule_is_not_confused_with_global_or_partial_normality ... ok
+test invalid_arguments_fail_before_reading_or_output ... ok
+test observer_file_is_validated_by_check_without_querying_normality ... ok
+test output_does_not_follow_or_replace_a_destination_symlink ... ok
+test dataset_adapter_and_condition_sidecar_are_checked_commands ... ok
+test output_file_is_complete_loadable_and_never_overwrites_existing_data ... ok
+test behavioural_result_publication_never_overwrites_an_existing_report ... ok
+test native_checkpoint_rejects_mutation_and_preserves_files ... ok
+test native_checkpoint_continuation_matches_uninterrupted_history ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+
+running 1 test
+test adopted_applications_share_replay_storage_and_provenance ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.05s
+
+
+running 7 tests
+test a3_discovers_exactly_one_live_rule_from_printed_ledger ... ok
+test mode_change_is_read_from_current_graph_not_a_retained_view ... ok
+test self_rewrite_uses_source_pre_rank_revision_and_representation ... ok
+test a4_quoted_head_is_not_live_until_a_fresh_copy_is_installed ... ok
+test authored_rhs_membership_edit_changes_later_output_a_to_b ... ok
+test authored_activation_deactivation_redecodes_and_invalidates_old_proposals ... ok
+test complete_head_deletion_then_unrelated_creation_never_reuses_identity ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+test unknown_cli_command_fails_with_usage ... ok
+test compiled_cli_runs_the_walking_skeleton ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 2 tests
+test shrunken_inactive_depth_three_package_comparison_regression ... ok
+test generated_complete_carriers_roundtrip_and_obey_equivalence_laws ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.04s
+
+
+running 10 tests
+test regenerate_lambda_fixtures ... ignored, explicit deterministic fixture regeneration; overwrites only examples/lambda generated files
+test reference_substitution_has_hand_checked_binding_and_strategy_cases ... ok
+test source_validation_and_readback_limits_are_explicit ... ok
+test named_syntax_resolves_alpha_renaming_shadowing_and_rejects_bad_inputs ... ok
+test all_eleven_alias_specialisations_have_an_admitted_graph_witness ... ok
+test shared_source_nodes_and_divergent_prefix_do_not_require_noninjective_matches ... ok
+test graph_machine_simulates_nested_duplication_erasure_shadowing_and_lookup ... ok
+test bounded_generated_closed_terms_agree_at_every_observed_step ... ok
+test published_lambda_examples_match_manual_oracle_and_verified_histories ... ok
+test seeded_generated_closed_terms_have_shrinkable_source_reproductions ... ok
+
+test result: ok. 9 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 8.60s
+
+
+running 2 tests
+test direct_single_binding_cell_accumulates_ambiguous_reentrant_bindings ... ok
+test active_pair_identity_splice_works_but_unaccounted_fan_port_dangles ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test compiled_lambda_commands_preserve_meaning_and_distinguish_input_resource_failures ... ok
+test open_profile_commands_preserve_symbols_and_reject_ambiguous_options ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 5 tests
+test generate_open_evidence ... ignored, explicit evidence generation
+test strategy_counterfactuals_distinguish_open_weak_strong_and_strict ... ok
+test context_bounds_profiles_aliasing_and_readback_rejections ... ok
+test capture_shadowing_neutral_spines_and_divergence ... ok
+test exhaustive_small_open_terms_match_independent_substitution ... ok
+
+test result: ok. 4 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 36.35s
+
+
+running 5 tests
+test acquired_model_execution_exports_an_ordinary_verified_trace ... ok
+test malformed_and_resource_limited_models_have_distinct_exit_codes ... ok
+test empty_words_and_maximum_supported_words_are_checked ... ok
+test labels_are_opaque_and_table_order_does_not_choose_the_path ... ok
+test valid_input_bounds_do_not_bypass_native_resource_limits ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.02s
+
+
+running 3 tests
+test productive_mode_checks_a_declared_payload_contract ... ok
+test inert_analysis_is_explicit_versioned_and_fail_closed ... ok
+test contracts_have_distinct_exit_codes_and_invalid_inputs_are_not_refutations ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.35s
+
+
+running 3 tests
+test help_describes_scope ... ok
+test workflow_runs_and_export_checks_without_python ... ok
+test invalid_schema_and_resource_requests_publish_nothing ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 3 tests
+test help_describes_canonical_rust_entry_point_and_scope ... ok
+test invalid_requests_publish_nothing_and_do_not_overwrite_existing_files ... ok
+test rust_only_command_publishes_a_checked_portable_history ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.38s
+
+
+running 6 tests
+test arithmetic_names_are_not_native_operators ... ok
+test arithmetic_reaches_the_hand_derived_nonempty_normal_form ... ok
+test staging_installs_a_private_rule_then_runs_it_on_the_authored_object ... ok
+test mutual_regress_is_rejected_without_changing_any_atom_or_revision ... ok
+test self_modification_changes_a_to_b_after_graph_resident_promotion ... ok
+test restoration_returns_to_the_hand_derived_carrier_with_fresh_revisions ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+
+running 7 tests
+test comparison_zero_and_exact_empty_budget ... ok
+test labels_positions_parallel_edges_and_self_links_are_preserved ... ok
+test mode_rank_and_side_attributes_change_complete_equivalence ... ok
+test identity_ordered_scheduler_is_not_invariant_under_graph_renaming ... ok
+test identical_refinement_colours_do_not_establish_isomorphism ... ok
+test complete_quotation_metadata_and_fresh_revision_identity ... ok
+test generated_equivalence_laws_and_independent_oracle ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 3 tests
+test cycle_and_budget_reports_remain_loadable ... ok
+test deterministic_and_seeded_results_repeat_across_processes ... ok
+test invalid_scheduler_and_seed_options_are_input_errors ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 3 tests
+test report_publication_never_overwrites_and_report_is_not_a_trace ... ok
+test input_validation_and_resource_errors_produce_no_report ... ok
+test native_command_supports_occurrence_class_and_empty_selection ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+
+running 4 tests
+test malformed_bounds_are_not_treated_as_research_results ... ok
+test a_refutation_is_not_a_parse_error_or_successful_certificate ... ok
+test complete_analysis_and_inconclusive_have_distinct_machine_readable_outcomes ... ok
+test agreement_and_explicit_retry_reconstruction_are_exposed_without_fabricating_completion ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 6 tests
+test published_trace_is_a_checked_one_event_prefix ... ok
+test independent_examples_have_no_edges_and_commute_in_both_orders ... ok
+test cli_replay_validation_and_no_overwrite_are_atomic ... ok
+test s2_cli_golden_traces_preserve_operational_provenance ... ok
+test behaviour_goldens_cover_both_observers_and_independent_payloads ... ok
+test explicit_s2_histories_replay_through_cli_across_installation_and_self_modification ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.41s
+
+
+running 3 tests
+test snapshot_report_uses_checked_history_and_default_endpoint ... ok
+test malformed_tampered_or_out_of_range_input_never_yields_a_report ... ok
+test publication_refuses_existing_files_and_leaves_them_unchanged ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 2 tests
+test malformed_request_publishes_nothing ... ok
+test compile_execute_readback_and_replay ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.29s
+
+
+running 1 test
+test workflow_cli_certifies_runs_and_exports_replayable_history ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.79s
+
+
+running 6 tests
+test matching::tests::unexpected_binding_failure_is_not_an_expected_applicability_rejection ... ok
+test runner::tests::stale_selected_proposal_does_not_advance_rng_or_publish_graph ... ok
+test checked::tests::execution_counter_exhaustion_is_atomic ... ok
+test screened::tests::matching_signatures_still_require_exact_incidence_and_allow_renamed_recurrence ... ok
+test screened::tests::rule_invariant_screens_rank_changes_but_not_projected_recurrence ... ok
+test matching::tests::collection_insertion_order_does_not_change_search_with_fixed_atom_keys ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 11 tests
+test hidden_conflict_in_negative_evidence_repairs_atomically ... ok
+test no_positive_abstention_and_per_schema_repair ... ok
+test repair_quarantine_and_environmental_change_boundary ... ok
+test malformed_and_stale_observations_are_atomic ... ok
+test native_rule_removal_changes_execution ... ok
+test input_frame_injectivity_schema_bounds_and_search_failures ... ok
+test acquired_versions_and_compilation_are_immutable ... ok
+test transfer_frame_nullary_conditions_and_replay ... ok
+test binary_predicates_repeated_positions_and_renamed_frame ... ok
+test exhaustive_stationary_models_orders_and_negative_inference ... ok
+test native_all_complete_two_feature_models_and_inputs ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.96s
+
+
+running 6 tests
+test stale_match_after_deletion_is_rejected_and_commit_emits_one_event ... ok
+test changed_incoming_incidence_invalidates_proposal_without_changing_source_revision ... ok
+test allocator_and_order_do_not_depend_on_rejected_hypothetical_candidates ... ok
+test stale_revision_is_rejected_while_the_source_head_survives ... ok
+test fresh_installation_then_new_rule_execution_is_fully_automatic ... ok
+test quotation_exit_and_reentry_in_one_history_require_new_tokens_both_times ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 9 tests
+test stale_prepared_steps_and_external_edits_do_not_append_events ... ok
+test extraction_and_closure_limits_never_publish_partial_results ... ok
+test exact_recording_and_analysis_storage_boundaries ... ok
+test hand_derived_diamond_chain_unrelated_and_shared_read ... ok
+test consumed_payload_and_completed_support_remain_inspectable ... ok
+test runner_records_noops_without_ordering_shared_program_reads ... ok
+test recording_capacity_cancellation_replacement_and_rng_are_atomic ... ok
+test self_rewrite_has_exact_revision_links_and_read_consume_overlap ... ok
+test generated_legal_resource_histories_agree_with_both_oracles ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 13 tests
+test no_op_commit_also_invalidates_older_candidates ... ok
+test completed_context_contains_support_outside_the_raw_assignment ... ok
+test candidates_cannot_cross_identical_execution_instances ... ok
+test candidate_exhaustion_is_sticky_and_never_a_complete_empty_search ... ok
+test competing_candidates_are_stale_after_one_commits ... ok
+test lifecycle_and_guardedness_errors_identify_the_target_and_role ... ok
+test invalid_binding_has_structured_context_and_does_not_poison_search ... ok
+test post_state_resource_failure_preserves_allocator_and_marks_search_incomplete ... ok
+test prepared_ground_span_matches_hand_derived_self_lowering_and_reference ... ok
+test invalid_or_oversized_replacement_preserves_state_and_candidate_validity ... ok
+test replacing_with_an_identical_graph_starts_a_new_history ... ok
+test search_work_limits_allow_exact_boundary_and_fail_before_preparation ... ok
+test fresh_package_proposal_preserves_literal_variables_and_remains_uncommitted ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 2 tests
+test newly_created_constructor_quotation_is_explicitly_outside_fragment ... ok
+test exhaustive_two_side_oracle_and_both_removal_orders ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+
+running 7 tests
+test conflict_exhaustion_is_inconclusive_and_does_not_mutate_baseline ... ok
+test fresh_incoming_link_causes_dangling_interference ... ok
+test promotion_and_deactivation_invalidate_exact_source_occurrences ... ok
+test disjoint_and_shared_read_rewrites_commute_with_corresponding_fresh_atoms ... ok
+test deleted_rule_representation_and_revision_are_retained_in_history ... ok
+test consuming_the_same_occurrence_conflicts_even_when_another_match_remains ... ok
+test unquoting_enables_a_read_without_any_positive_resource_edge ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 26 tests
+test caller_edited_rule_views_do_not_authorise_execution ... ok
+test consuming_a_variable_bound_record_preserves_its_completed_support ... ok
+test arithmetic_dangling_rejection_is_atomic ... ok
+test mode_escalation_is_revision_sensitive_and_rank_guarded ... ok
+test arithmetic_preserves_nonempty_result_and_rule ... ok
+test c3_safe_rank_preserving_annotation_is_conservatively_rejected ... ok
+test linear_beta_feasibility_redirects_bound_occurrence ... ok
+test object_visibility_checks_completed_context_of_inactive_representations ... ok
+test preserved_context_cannot_point_to_an_explicitly_consumed_atom ... ok
+test mode_restriction_requires_simultaneous_removal_of_meta_only_body ... ok
+test audit_ledgers_validate_and_reproduce_counts ... ok
+test physical_head_deletion_requires_the_entire_representation ... ok
+test lifecycle_and_gc_check_the_second_affected_head_and_rollback_allocations ... ok
+test mutual_rank_swap_fails_gc_atomically ... ok
+test same_shape_metadata_replacement_requires_a_fresh_revision ... ok
+test literal_self_rewrite_changes_later_object_output ... ok
+test fresh_package_enters_with_literal_nested_variable ... ok
+test token_only_churn_is_not_a_substantive_alteration ... ok
+test a5_object_growth_does_not_consume_meta_rank ... ok
+test self_lowering_works_above_one_and_reads_preserved_tail ... ok
+test both_mutual_swap_directions_and_object_interleaving_leave_gc_counterexample_intact ... ok
+test preserved_quoted_head_requires_new_revision_on_entry ... ok
+test low_rank_unquoting_with_fresh_revision_is_admitted ... ok
+test quoting_a_live_head_consumes_its_executable_revision ... ok
+test c2_restoration_reattributes_revision_but_preserves_broader_causal_reads ... ok
+test preserved_quoted_head_cannot_bypass_entry_rank_check ... ok
+
+test result: ok. 26 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.84s
+
+
+running 7 tests
+test existential_enumeration_exhaustion_is_not_a_false_negative ... ok
+test dangling_is_checked_not_misreported_as_missing_positive_dependency ... ok
+test indirect_completed_context_visibility_is_replayed ... ok
+test target_revision_cannot_be_replaced_by_an_older_rule_with_the_same_head ... ok
+test omitted_allocation_is_transported_not_confused_with_another_atom ... ok
+test alternatives_depend_on_whether_the_query_fixes_the_binding ... ok
+test new_quotation_then_removal_is_nonmonotone_and_version_sensitive ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+
+running 8 tests
+test generated_live_exit_consumes_the_complete_representation_and_revision ... ok
+test generated_targeted_invalid_categories_are_distinct_and_atomic ... ok
+test generated_multi_target_promotions_and_negative_transactions ... ok
+test generated_ln_sequences_preserve_ground_typing_and_freshness ... ok
+test generated_packages_and_inactive_partial_representations_are_valid ... ok
+test recipe_shrinking_retains_valid_references_and_failure_preconditions ... ok
+test generated_shared_schedulers_repeat_and_converge_only_in_ln ... ok
+test generated_reflective_sequences_redecode_ranks_and_exact_revisions ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s
+
+
+running 2 tests
+test resource_failure_does_not_publish_partial_candidates_or_modify_state ... ok
+test lifecycle_revisions_quotation_and_seeded_selection_match_reference ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+
+
+running 8 tests
+test referenced_and_quoted_atoms_remain_and_projection_is_idempotent ... ok
+test payloads_cannot_be_erased_and_default_schema_is_unchanged ... ok
+test readers_including_future_readers_are_unsupported_not_refuted ... ok
+test concrete_logging_really_grows_and_naive_label_erasure_changes_behaviour ... ok
+test essential_growth_and_exhaustion_remain_inconclusive ... ok
+test retained_stuttering_distinguishes_starvation_from_post_recovery_logging ... ok
+test unbounded_logs_do_not_prevent_exact_finite_edit_bounds ... ok
+test native_bindings_and_successors_commute_with_independent_erasure ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 16.35s
+
+
+running 10 tests
+test identical_colours_do_not_certify_isomorphism_and_keys_are_not_equality ... ok
+test indexed_gate_and_exhaustion_leave_graph_and_rng_unpublished ... ok
+test verified_identity_witness_avoids_quadratic_self_comparison ... ok
+test custom_candidate_inspecting_strategy_receives_complete_candidates ... ok
+test negative_signature_screen_is_useful_but_never_an_equality_certificate ... ok
+test explicit_profiles_separate_build_provenance_from_replay_contract ... ok
+test actual_legacy_build_histories_migrate_without_changing_recorded_evidence ... ok
+test propagated_search_matches_exhaustive_permutation_oracle ... ok
+test cached_admission_agrees_with_independently_revalidated_baselines ... ok
+test profiled_runs_preserve_complete_set_selection_and_portable_continuation ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.19s
+
+
+running 6 tests
+test recurrence_gate_history_replacement_and_projected_observers_are_atomic ... ok
+test framed_replay_rejects_forged_events_profiles_and_continuation_claims ... ok
+test maintained_graph_metadata_matches_independent_scans_and_shared_snapshots ... ok
+test certificate_is_label_parametric_and_neither_projection_nor_replacement_changes_choices ... ok
+test frame_matches_full_validation_including_budget_boundaries_and_fallbacks ... ok
+test framed_schedules_events_and_continuations_match_reference ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.96s
+
+
+running 3 tests
+test join_counterfactuals_match_complete_reference_admission ... ok
+test distinct_rows_and_shared_dictionary_agree_across_schedules ... ok
+test immutable_join_preserves_reference_events_and_verified_replay ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+
+running 13 tests
+test enabled_set_combines_sources_once_and_candidate_order_is_repeatable ... ok
+test raw_visible_link_can_fail_hidden_support_grounding ... ok
+test budgets_are_cumulative_sticky_and_never_return_partial_enabled_sets ... ok
+test variable_sort_unions_and_wrong_constructor_labels_are_respected ... ok
+test candidate_poststate_resource_failure_aborts_instead_of_rejecting_a_match ... ok
+test meta_sees_quoted_and_operative_records_object_hides_inactive_representations ... ok
+test cyclic_nat_patterns_are_finite_and_arity_is_exact ... ok
+test empty_lhs_inactive_and_quoted_sources_are_distinguished ... ok
+test disconnected_patterns_enumerate_injective_permutations_not_aliases ... ok
+test applied_rule_is_prebound_and_multiple_self_variables_cannot_alias ... ok
+test all_parallel_resources_and_shared_occurrences_have_exact_expected_bindings ... ok
+test backtracking_restores_failed_branches_and_checks_field_direction ... ok
+test exhaustive_fixed_seed_differential_matching_and_nonmatching_inputs ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.47s
+
+
+running 8 tests
+test certificates_are_not_trusted_without_all_edges_and_resource_failures_are_not_refutations ... ok
+test retirement_counts_as_an_edit_and_renaming_preserves_the_result ... ok
+test finite_edit_gaps_do_not_hide_object_starvation_or_output_disagreement ... ok
+test total_edit_bound_allows_nonterminating_object_work_and_distinguishes_meta_dispatch ... ok
+test harmless_modulation_and_unproductive_modulation_are_not_the_same_contract ... ok
+test all_small_weighted_graphs_agree_with_independent_reachability_and_walk_oracles ... ok
+test bounded_bursts_and_repeated_object_steps_do_not_imply_finite_total_edits ... ok
+test restoration_and_fresh_spawning_are_accounted_for_not_only_body_edits ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.17s
+
+
+running 3 tests
+test cross_owner_shared_quotation_is_not_a_valid_cache_test_domain ... ok
+test unchanged_matched_atom_and_revision_do_not_certify_cached_admission ... ok
+test both_side_memberships_must_be_removed_before_object_matching ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 12 tests
+test bounded_exact_inputs_and_task_domains_reject_without_panics ... ok
+test residual_bounds_arbitrary_values_and_compiler_rejects_bad_envelopes ... ok
+test malformed_observation_syntax_never_enters_the_typed_api ... ok
+test malformed_schema_never_coerces_strings_or_ignores_keys ... ok
+test tampered_receipt_bounds_reject_even_with_recomputed_content_hash ... ok
+test invalid_queries_do_not_change_time_or_invalidate_other_receipts ... ok
+test departure_revision_and_incarnation_fence_old_receipts ... ok
+test held_receipt_movement_and_precision_limits ... ok
+test admitted_bad_observations_latch_and_revision_recovers ... ok
+test caps_are_enforced_and_session_operations_publish_each_status ... ok
+test methods_and_native_transport ... ok
+test high_retry_direct_and_compiled_work_when_iteration_does_not ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.19s
+
+
+running 1 test
+test all_three_word_three_query_certificates_and_regular_adversaries ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+
+running 5 tests
+test observer_declarations_are_versioned_unambiguous_and_canonical ... ok
+test all_retains_unattached_atoms_and_designated_inputs_never_rebind_to_replacements ... ok
+test nontriviality_requires_a_relation_not_nonempty_litter_or_parallel_inflation ... ok
+test rank_projection_expands_to_targets_without_becoming_an_executable_configuration ... ok
+test data_scope_excludes_templates_before_closure_and_empty_selection_is_explicit ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 5 tests
+test configuration_domains_and_unknown_fields_are_rejected ... ok
+test typed_application_never_imports_an_arbitrary_snapshot_as_execution_authority ... ok
+test continuation_partition_preserves_the_full_state_and_limits_are_atomic ... ok
+test exhausted_resources_stop_paid_activity_but_do_not_freeze_removal ... ok
+test canonical_rust_flow_renews_inherits_and_executes_without_python ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.30s
+
+
+running 9 tests
+test countdown_must_respect_object_link_endpoint_sorts ... ok
+test reopening_without_counter_update_is_not_recovery_from_arbitrary_corruption ... ok
+test guard_alone_allows_a_nonprogressing_loop_outside_the_useful_region ... ok
+test family_selected_events_replay_through_existing_portable_validation ... ok
+test finite_valid_disturbances_recover_from_both_control_phases ... ok
+test every_small_processing_order_recovers_but_routes_are_not_confluent ... ok
+test core_valid_aliases_and_harmless_extras_are_outside_the_certificate ... ok
+test generated_source_loads_and_zero_item_normality_agrees_with_general_search ... ok
+test actual_rule_changes_finish_jobs_then_continue_without_changing_results ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 15.54s
+
+
+running 6 tests
+test self_link_is_not_a_match_for_two_injectively_distinct_endpoints ... ok
+test equal_data_observations_do_not_preserve_normality ... ok
+test competing_outputs_refute_confluence_despite_strict_decrease ... ok
+test allowing_reverse_relabelling_refutes_termination_under_gc ... ok
+test all_orders_with_shared_endpoints_and_parallel_links_have_the_expected_carrier ... ok
+test generated_link_families_preserve_every_other_atom_and_normalise_exactly_once ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+
+running 4 tests
+test an_alternating_weak_strict_measure_model_terminates_but_restoration_breaks_it ... ok
+test generated_active_and_inactive_packages_check_every_entry_against_source_rank ... ok
+test a_fixed_installer_can_create_unboundedly_many_shallow_versions_in_the_mathematical_model ... ok
+test generated_closed_multihead_histories_respect_initial_rank_and_revision_depth ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+
+
+running 12 tests
+test observer_wire_format_and_exact_projection_budget ... ok
+test unchecked_scheduler_cannot_forge_or_publish_a_step ... ok
+test observer_selection_is_closed_and_input_identity_does_not_retarget ... ok
+test history_exact_boundary_is_accepted_and_one_less_is_exhausted ... ok
+test normality_zero_limit_and_requested_unavailability_are_distinct ... ok
+test cancellation_at_each_boundary_rolls_back_selection_randomness ... ok
+test repeat_is_diagnostic_and_precedes_step_limit_without_claiming_infinite_behaviour ... ok
+test replacement_releases_history_and_resets_rng_only_on_success ... ok
+test observation_search_and_retention_exhaustion_are_inconclusive_and_atomic ... ok
+test hidden_metadata_repeat_does_not_imply_complete_state_repeat ... ok
+test ordering_seed_repetition_and_rejected_preparations ... ok
+test restricted_recurrence_can_hide_live_rank_modification ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 6 tests
+test empty_trace_has_no_vacuous_necessity ... ok
+test read_consume_order_is_not_birth_read_ancestry ... ok
+test chronology_direct_creator_and_transitive_support_are_distinct ... ok
+test reflective_examples_include_revision_and_representation_reads ... ok
+test invalid_selection_and_exhaustion_never_publish_partial_results ... ok
+test generated_histories_and_class_projection_match_independent_dag ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.01s
+
+
+running 6 tests
+test public_identity_range_is_not_limited_to_javascript_numbers ... ok
+test empty_and_unicode_payloads_count_actual_utf8_and_framing ... ok
+test cycles_gapped_identities_and_allocator_state_survive_measurement ... ok
+test unchanged_entity_count_does_not_imply_unchanged_storage ... ok
+test aliasing_duplication_and_order_remain_distinct ... ok
+test resident_rules_revisions_and_every_recorded_state_are_measured ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 10 tests
+test arbitrary_rule_corruption_is_not_repaired_by_fixing_statuses ... ok
+test old_contracts_cannot_silently_enable_new_guarantees_and_limits_stay_inconclusive ... ok
+test reconstruction_rejects_lost_payload_invalid_core_ambiguity_and_invalid_incidence ... ok
+test within_run_stability_does_not_imply_agreement_but_normalisation_repairs_it ... ok
+test repeated_live_status_faults_restart_explicitly_and_recover_after_the_last_fault ... ok
+test an_unrestricted_meta_match_can_corrupt_the_repair_rule_itself ... ok
+test all_concrete_steps_match_independent_six_state_transition_table ... ok
+test missing_and_duplicate_statuses_need_explicit_external_reconstruction ... ok
+test different_schedules_and_finite_fault_epochs_replay_and_preserve_payload ... ok
+test every_one_and_two_component_fault_baseline_recovers_with_same_output ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.97s
+
+
+running 13 tests
+test individual_version_proofs_do_not_certify_arbitrary_switching ... ok
+test invalid_contracts_and_ambiguous_payloads_are_not_accepted ... ok
+test body_changes_cannot_be_merged_by_payload_equality ... ok
+test rank_algorithm_agrees_with_independent_bounded_path_enumeration ... ok
+test deleting_and_recreating_identical_payload_is_not_preservation ... ok
+test active_empty_rules_and_repair_undoing_are_real_counterexamples ... ok
+test real_rhs_and_lhs_revisions_are_certified_without_a_generator_manifest ... ok
+test legitimate_output_constancy_is_an_additional_obligation ... ok
+test resource_exhaustion_never_becomes_a_certificate_or_a_counterexample ... ok
+test genuine_body_changes_can_continue_after_recovery_but_cannot_starve_it ... ok
+test background_work_can_break_unfair_composition_even_without_shared_atoms ... ok
+test unrelated_atoms_and_noninterfering_packages_are_not_rejected_by_membership ... ok
+test guard_family_has_predicted_complete_state_space_and_rank ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+
+running 5 tests
+test ranked_incidence_preserves_sharing_positions_and_cyclic_prefixes ... ok
+test deleting_a_shared_vertex_requires_accounting_for_every_incoming_record ... ok
+test cyclic_argument_redirect_uses_one_repeated_template_identity ... ok
+test carrier_validity_does_not_enforce_the_ranked_term_signature ... ok
+test an_explicit_argument_redirect_preserves_the_other_shared_edge_and_program ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 10 tests
+test large_identities_gaps_cycles_forward_fields_and_exhausted_allocator ... ok
+test recurrence_spans_yields_and_intentional_new_run_resets_history ... ok
+test recorded_binding_mode_and_finished_empty_run_have_no_false_continuation ... ok
+test maximum_atom_identity_and_declared_recording_limits_are_checked ... ok
+test translated_runtime_identities_replay_without_printer_normalisation ... ok
+test paused_seeded_continuation_preserves_history_and_allocator ... ok
+test deterministic_json_unicode_checked_replay_every_index_and_derived_conflicts ... ok
+test strict_json_rejects_duplicates_unknown_missing_and_malformed_integers ... ok
+test each_import_budget_is_enforced ... ok
+test forged_events_edges_reports_and_checkpoint_metadata_rejected_atomically ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.10s
+
+
+running 5 tests
+test invalid_requests_and_exhaustion_are_explicit ... ok
+test installed_body_readback_detects_fault_injection ... ok
+test equivalent_over_budget_installed_body_is_not_the_checked_candidate ... ok
+test portable_history_resumes_with_captured_versions ... ok
+test all_schedules_preserve_readback_and_installed_contract ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 51.00s
+
+
+running 9 tests
+test unsafe_contracts_and_native_valid_extra_structure_are_not_certified ... ok
+test native_valid_guard_and_field_mutants_are_unsupported ... ok
+test resource_exhaustion_and_recording_failure_do_not_commit ... ok
+test starvation_is_possible_without_the_opt_in_scheduler ... ok
+test reset_starts_a_new_history_and_preserves_identity ... ok
+test persistent_fifo_serves_each_initial_task_before_repeating_one ... ok
+test finite_permits_and_persistent_modulation_have_distinct_guarantees ... ok
+test every_reference_successor_preserves_the_recognised_profile ... ok
+test branching_tasks_complete_with_fifo_and_preserved_parent_payloads ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 12.76s
+
+
+running 1 test
+test tests::identity_exhaustion_rejects_without_wraparound ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 11 tests
+test input_limit_checks_utf8_bytes_before_ledger_parsing ... ok
+test failed_late_batch_item_reports_context_and_preserves_allocator ... ok
+test atom_field_and_label_limits_reject_before_batch_allocation ... ok
+test construction_limits_count_existing_records_and_allow_exact_boundaries ... ok
+test dangling_diagnostics_identify_surviving_source_target_and_slot ... ok
+test field_typing_diagnostics_identify_record_role_and_endpoints ... ok
+test forward_references_and_object_cycles_lower_in_one_atomic_batch ... ok
+test detached_atom_and_rule_copies_cannot_modify_a_validated_graph ... ok
+test validation_work_is_bounded_and_validation_never_mutates_the_buffer ... ok
+test package_depth_is_a_resource_bound_not_a_schema_rejection ... ok
+test nested_packages_share_depth_and_work_limits_across_recursive_calls ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+
+running 3 tests
+test default_free_encoding_is_lossless_on_all_counted_fixtures ... ok
+test comparative_carrier_and_pattern_counts_match_the_declared_audit ... ok
+test omitted_control_records_have_only_provisional_storage_savings ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 16 tests
+test fieldless_zero_and_successor_arity_are_enforced ... ok
+test genuinely_cyclic_batch_closure_terminates_without_copying ... ok
+test finite_object_cycles_parallel_links_and_self_links_are_valid ... ok
+test invalid_ledger_syntax_is_rejected ... ok
+test identities_are_not_reused_and_failed_batches_are_atomic ... ok
+test reverse_queries_and_closed_deletion_agree ... ok
+test variable_declarations_and_field_typing_are_checked ... ok
+test rank_cycles_and_shared_chains_are_rejected ... ok
+test inactive_partial_sides_decode_but_cannot_be_activated_unclosed ... ok
+test active_rule_rejects_unbound_rhs_variables_and_wrong_mode ... ok
+test missing_live_metadata_is_rejected_even_when_inactive ... ok
+test decoded_representations_retain_quoted_revisions_and_complete_packages ... ok
+test inactive_installers_still_require_complete_fresh_packages ... ok
+test two_live_heads_cannot_quote_the_same_syntax ... ok
+test quoted_fields_cannot_cross_owner_boundaries ... ok
+test malformed_quotations_and_heads_are_rejected ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 1 test
+test candidates_share_immutable_payloads_but_not_mutations_or_allocators ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 9 tests
+test identifiers_punctuation_and_eof_retain_byte_spans ... ok
+test comment_delimiters_inside_strings_are_literal_and_blocks_are_non_nested ... ok
+test unknown_unicode_characters_are_not_identifiers_and_positions_count_scalars ... ok
+test strings_decode_supported_escapes_without_unicode_normalisation ... ok
+test reserved_keywords_are_exact_case_sensitive_words ... ok
+test unterminated_strings_and_comments_have_bounded_spans ... ok
+test invalid_escapes_and_unicode_scalars_produce_one_error_per_literal ... ok
+test lexical_and_independent_syntax_errors_are_both_reported ... ok
+test generated_short_malformed_inputs_terminate_with_valid_diagnostic_spans ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+
+running 28 tests
+test duplicate_names_point_to_both_declarations_and_do_not_resolve_ambiguously ... ok
+test file_wide_namespace_includes_heads_headers_memberships_and_packages ... ok
+test forward_references_logical_cycles_self_links_and_parallel_links_are_preserved ... ok
+test empty_input_graph_and_equality_only_unicode_labels_load ... ok
+test field_type_errors_select_reference_spans_and_preserve_core_context ... ok
+test empty_packages_and_zero_construction_limits_have_defined_behaviour ... ok
+test generated_memberships_cannot_collide_with_authored_names ... ok
+test headers_expand_to_named_records_without_defaults ... ok
+test external_package_capture_and_membership_self_cycle_reject ... ok
+test cross_owner_quotation_duplicate_membership_and_literal_lhs_heads_reject ... ok
+test binding_modes_and_refined_sort_sets_are_not_defaulted_or_erased ... ok
+test declaration_permutations_agree_under_the_explicit_authored_name_bijection ... ok
+test limits_count_expanded_atoms_fields_and_utf8_labels_before_graph_allocation ... ok
+test resolution_diagnostic_budget_truncates_without_publishing_a_graph ... ok
+test package_blocks_cannot_capture_other_rhs_items_or_preserved_items ... ok
+test unresolved_fields_memberships_and_rank_roots_report_use_and_container ... ok
+test missing_metadata_maps_to_head_and_nested_failure_maps_inside_package ... ok
+test rank_cycles_shared_suffixes_wrong_arity_and_wrong_root_sort_reject ... ok
+test zero_error_budget_applies_to_core_construction_and_validation_failures ... ok
+test inactive_incomplete_sides_are_distinct_from_incomplete_packages ... ok
+test shared_side_identity_and_literal_rhs_atoms_survive_lowering ... ok
+test missing_and_duplicate_rank_mode_revision_and_activation_reject ... ok
+test unbound_rhs_and_incompatible_admits_and_object_metadata_reject ... ok
+test input_validation_and_package_depth_limits_remain_resource_failures ... ok
+test origin_fields_and_generated_membership_provenance_are_complete ... ok
+test installer_package_matches_hand_derived_counts_and_literal_variable_ownership ... ok
+test nested_packages_include_inner_generated_memberships_but_not_their_own ... ok
+test generated_expansion_is_bounded_even_when_source_nesting_is_small ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 13 tests
+test comments_names_and_formatting_are_not_serialised ... ok
+test invalid_graph_and_resource_bounds_return_no_output ... ok
+test isomorphism_preserves_variable_attributes_and_multiplicity ... ok
+test identity_gaps_and_allocator_history_are_not_serialised ... ok
+test isomorphism_is_not_just_counts_degrees_or_key_equality ... ok
+test all_variable_sorts_bindings_and_escaped_labels_are_preserved ... ok
+test readable_snapshot_preserves_parallel_links_unattached_atoms_and_cycles ... ok
+test empty_inactive_shared_and_nested_states_round_trip ... ok
+test authored_packages_and_membership_modification_round_trip ... ok
+test exact_oracle_agrees_with_brute_force_on_small_functional_carriers ... ok
+test counted_ledgers_round_trip_as_complete_carriers ... ok
+test remaining_worked_example_families_round_trip ... ok
+test reproducible_generated_carriers_round_trip ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+
+running 21 tests
+test package_keeps_inner_rule_variables_and_memberships_structured ... ok
+test incomplete_inactive_rules_and_duplicate_headers_remain_syntax_not_validity ... ok
+test input_byte_preflight_is_shared_with_core_and_distinct_from_syntax_failure ... ok
+test nat_is_structural_and_has_no_numeric_shorthand ... ok
+test missing_semicolons_recover_at_the_next_complete_declaration_start ... ok
+test missing_punctuation_wrong_arity_and_eof_are_diagnosed ... ok
+test all_five_kinds_retain_ordered_fields_and_attributes ... ok
+test empty_program_and_comments_are_consumed_completely ... ok
+test forward_cycles_parallel_links_and_duplicates_remain_distinct_in_ast ... ok
+test diagnostic_limits_apply_to_lexing_and_parsing_without_returning_a_partial_ast ... ok
+test package_is_rhs_only_and_not_an_independent_atom_kind ... ok
+test recovery_balances_invalid_nested_blocks_and_keeps_outer_boundary ... ok
+test recovery_reports_independent_errors_inside_and_after_rules ... ok
+test every_record_role_has_its_exact_positional_arity ... ok
+test refined_sorts_and_both_binding_modes_are_explicit ... ok
+test reserved_names_and_wrong_label_positions_are_syntax_errors ... ok
+test rule_headers_and_shared_sides_have_named_record_identities ... ok
+test token_limits_exclude_comments_and_eof_and_report_truncation ... ok
+test spans_cover_names_references_attributes_and_blocks ... ok
+test documented_graph_examples_are_accepted_by_the_actual_parser ... ok
+test exact_nesting_bounds_and_zero_are_enforced_without_recursing_unboundedly ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+running 3 tests
+test projects_verify_source_history_settings_and_position_before_replacement ... ok
+test both_policies_match_independent_whole_carrier_and_revision_oracles ... ok
+test dataset_preview_and_bounded_inspection_are_atomic ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.44s
+
+
+running 10 tests
+test source_diagnostics_preserve_every_parser_span_and_related_location_atomically ... ok
+test policy_limits_empty_graph_and_located_errors ... ok
+test historical_inspection_and_analysis_preserve_the_run ... ok
+test causal_queries_return_witnessed_order_and_no_execution_changes ... ok
+test breakpoint_heads_survive_deactivation_and_deletion_without_spurious_stops ... ok
+test handle_lifecycle_and_atomic_replacement ... ok
+test breakpoints_do_not_pause_on_unscheduled_alternatives_and_invalid_changes_are_atomic ... ok
+test all_commands_preserve_replay_and_logical_run_semantics ... ok
+test open_lambda_preview_replay_and_rejection_preserve_the_loaded_session ... ok
+test breakpoints_preserve_selected_occurrences_rng_recurrence_and_portable_traces ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 23.78s
+
+
+running 5 tests
+test crates/engine/src/checked.rs - checked::Execution (line 160) - compile fail ... ok
+test crates/engine/src/checked.rs - checked::GroundMatch (line 69) - compile fail ... ok
+test crates/engine/src/checked.rs - checked::GroundRule (line 36) - compile fail ... ok
+test crates/engine/src/recording.rs - recording (line 4) ... ok
+test crates/engine/src/checked.rs - checked::Execution (line 146) ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.98s
+
+
+running 4 tests
+test crates/graph-core/src/validation.rs - validation::ValidatedGraph (line 43) - compile fail ... ok
+test crates/graph-core/src/lib.rs - Graph::get (line 407) - compile fail ... ok
+test crates/graph-core/src/validation.rs - validation::ValidatedGraph (line 35) - compile fail ... ok
+test crates/graph-core/src/lib.rs - Graph::get (line 400) - compile fail ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+
+running 4 tests
+test crates/parser/src/lowering.rs - lowering::LoadedProgram (line 22) - compile fail ... ok
+test crates/parser/src/lambda.rs - lambda (line 7) ... ok
+test crates/parser/src/lowering.rs - lowering::load (line 52) ... ok
+test crates/parser/src/lib.rs - (line 8) ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+
+[stderr]
+   Compiling parser v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/parser)
+   Compiling wasm-bridge v0.1.0 (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/crates/wasm-bridge)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.85s
+     Running unittests src/main.rs (target/debug/deps/cli-5cc1dd720bb2c853)
+     Running tests/action_learning.rs (target/debug/deps/action_learning-215adcec8cd86b6c)
+     Running tests/authored_loading.rs (target/debug/deps/authored_loading-06b1c8d091a1c352)
+     Running tests/automatic_execution.rs (target/debug/deps/automatic_execution-7757c6449cb1ca88)
+     Running tests/behaviour.rs (target/debug/deps/behaviour-6e87d92e9891693d)
+     Running tests/causal_history.rs (target/debug/deps/causal_history-d9452e897b35e818)
+     Running tests/checked_pipeline.rs (target/debug/deps/checked_pipeline-af61bc84a314b880)
+     Running tests/commands.rs (target/debug/deps/commands-c53d6e7844216e26)
+     Running tests/cross_feature.rs (target/debug/deps/cross_feature-cd12d554f1814169)
+     Running tests/decoding.rs (target/debug/deps/decoding-43f0c79d2739111c)
+     Running tests/demo.rs (target/debug/deps/demo-9ffa2ec245b05969)
+     Running tests/generated.rs (target/debug/deps/generated-edd02fdd925aae49)
+     Running tests/lambda.rs (target/debug/deps/lambda-fa5a6823023c6891)
+     Running tests/lambda_candidates.rs (target/debug/deps/lambda_candidates-1e23d68b7880901b)
+     Running tests/lambda_commands.rs (target/debug/deps/lambda_commands-a7afd3e72fb87f9f)
+     Running tests/lambda_open.rs (target/debug/deps/lambda_open-aaa2ccb507b6c832)
+     Running tests/learned_model.rs (target/debug/deps/learned_model-cbe695bd087b230d)
+     Running tests/meta_activity.rs (target/debug/deps/meta_activity-43ccc39500e77e67)
+     Running tests/numerical.rs (target/debug/deps/numerical-c430862b6fec93c8)
+     Running tests/organization.rs (target/debug/deps/organization-7abc2d009569a6ff)
+     Running tests/programs.rs (target/debug/deps/programs-03cea8439487e135)
+     Running tests/runtime_isomorphism.rs (target/debug/deps/runtime_isomorphism-712e7153d6aa4e73)
+     Running tests/scheduling.rs (target/debug/deps/scheduling-d8a2c77226ed1ebb)
+     Running tests/selected_provenance.rs (target/debug/deps/selected_provenance-0b82c852ecf9aae5)
+     Running tests/stability.rs (target/debug/deps/stability-e25efccf9311d2c7)
+     Running tests/trace.rs (target/debug/deps/trace-9658de2a8d17562d)
+     Running tests/trace_cost.rs (target/debug/deps/trace_cost-49328d55c7486f2a)
+     Running tests/versioned.rs (target/debug/deps/versioned-20ced35962dad7c7)
+     Running tests/workflow.rs (target/debug/deps/workflow-c94b1fe472c415ec)
+     Running unittests src/lib.rs (target/debug/deps/engine-db1ea7a9906e0a1d)
+     Running tests/action_learning.rs (target/debug/deps/action_learning-476b951d2af104a9)
+     Running tests/applicability.rs (target/debug/deps/applicability-ee34528bf7c50fd6)
+     Running tests/causal.rs (target/debug/deps/causal-eef9246ea0f34ddf)
+     Running tests/checked_interfaces.rs (target/debug/deps/checked_interfaces-ab8b2a25ff8ebf03)
+     Running tests/conditions.rs (target/debug/deps/conditions-862b0baaf0e37e12)
+     Running tests/conflict.rs (target/debug/deps/conflict-67a263e10253553c)
+     Running tests/conformance.rs (target/debug/deps/conformance-9cfb1eb101c83f75)
+     Running tests/counterfactual.rs (target/debug/deps/counterfactual-908d306b71710987)
+     Running tests/generated.rs (target/debug/deps/generated-2512ab6267374254)
+     Running tests/indexed.rs (target/debug/deps/indexed-f51b168f7141b10a)
+     Running tests/inert_abstraction.rs (target/debug/deps/inert_abstraction-d6e59c8b1a3ea5e7)
+     Running tests/loop_b.rs (target/debug/deps/loop_b-30386a7facbeb57d)
+     Running tests/loop_b_v3.rs (target/debug/deps/loop_b_v3-b4f66722f7c49c3a)
+     Running tests/loop_c.rs (target/debug/deps/loop_c-e6ee6bcae596ac80)
+     Running tests/matching.rs (target/debug/deps/matching-4afcf9442be78bb5)
+     Running tests/meta_activity.rs (target/debug/deps/meta_activity-479abe313209b8ed)
+     Running tests/method_obligations.rs (target/debug/deps/method_obligations-1ddf5ba81b6f98c8)
+     Running tests/numerical.rs (target/debug/deps/numerical-94734e44a146a625)
+     Running tests/observation_certificates.rs (target/debug/deps/observation_certificates-8684265f3d83d909)
+     Running tests/observation_contract.rs (target/debug/deps/observation_contract-4d89938e24e85364)
+     Running tests/organization.rs (target/debug/deps/organization-e3852e284993daa6)
+     Running tests/recovery.rs (target/debug/deps/recovery-da1cc63a24b9fbaf)
+     Running tests/restricted_core.rs (target/debug/deps/restricted_core-150faf23fc9f7b63)
+     Running tests/revision_chains.rs (target/debug/deps/revision_chains-7f896fe9bef2ce6a)
+     Running tests/run_control.rs (target/debug/deps/run_control-418198e2a22c1b5b)
+     Running tests/selected_provenance.rs (target/debug/deps/selected_provenance-9054ac3d9942908c)
+     Running tests/snapshot_cost.rs (target/debug/deps/snapshot_cost-8a68471742186271)
+     Running tests/stabilisation.rs (target/debug/deps/stabilisation-2b9683e8cce58c56)
+     Running tests/stability.rs (target/debug/deps/stability-b9bfd6f12942af9e)
+     Running tests/term_graph.rs (target/debug/deps/term_graph-27cbe9ef85acf567)
+     Running tests/trace.rs (target/debug/deps/trace-2cdb00824e9349df)
+     Running tests/versioned.rs (target/debug/deps/versioned-636049252615521c)
+     Running tests/workflow.rs (target/debug/deps/workflow-5f2eba4f00d0e9e7)
+     Running unittests src/lib.rs (target/debug/deps/graph_core-af8e54bb845d1dbf)
+     Running tests/checked_construction.rs (target/debug/deps/checked_construction-5b6ff849551cc773)
+     Running tests/encoding_audit.rs (target/debug/deps/encoding_audit-b8613b5295b5661e)
+     Running tests/invariants.rs (target/debug/deps/invariants-843a209d52fea099)
+     Running tests/persistent.rs (target/debug/deps/persistent-cc9989ae14bf7c18)
+     Running unittests src/lib.rs (target/debug/deps/parser-916572ae78d6f1db)
+     Running tests/lexer.rs (target/debug/deps/lexer-f8826faec79d7bbf)
+     Running tests/lowering.rs (target/debug/deps/lowering-d1576f957f564d96)
+     Running tests/printing.rs (target/debug/deps/printing-477749129ae57985)
+     Running tests/syntax.rs (target/debug/deps/syntax-217cc1be7b989fa3)
+     Running unittests src/lib.rs (target/debug/deps/wasm_bridge-eacd4531f1dc62be)
+     Running tests/datasets.rs (target/debug/deps/datasets-8be823a0dd3faa9b)
+     Running tests/protocol.rs (target/debug/deps/protocol-3374c36de46037bc)
+   Doc-tests engine
+   Doc-tests graph_core
+   Doc-tests parser
+   Doc-tests wasm_bridge

@@ -12,11 +12,11 @@ if (!directory || process.argv.length !== 3 || existsSync(directory))
 if (process.platform !== 'darwin') throw Error('Collection uses macOS time -l; verification is portable.');
 const binary = resolve('target/release/examples/recovery_probe');
 const sha = x => createHash('sha256').update(x).digest('hex');
-const protocol = readFileSync('docs/research/reflective-recovery.md');
+const protocol = readFileSync('benchmarks/PROTOCOL.md');
 const paths = [...new Set(execFileSync('git', ['ls-files', '-co', '--exclude-standard'], {encoding:'utf8'}).trim().split('\n'))]
   .filter(p => existsSync(p) && (/^(Cargo\.(lock|toml)|rust-toolchain.toml|rustfmt.toml)$/.test(p)
     || /^crates\/.*\.(rs|toml)$/.test(p) || /^examples\//.test(p)
-    || ['scripts/recovery-study.mjs', 'scripts/verify-recovery-study.mjs', 'docs/research/reflective-recovery.md'].includes(p))).sort();
+    || ['scripts/recovery-study.mjs', 'scripts/verify-recovery-study.mjs', 'benchmarks/PROTOCOL.md'].includes(p))).sort();
 const bundle = gzipSync(JSON.stringify({schema:'source-bundle-v1', encoding:'base64',
   files:Object.fromEntries(paths.map(p => [p, readFileSync(p).toString('base64')]))}));
 mkdirSync(directory, {recursive:true});
@@ -27,7 +27,7 @@ save('environment.json', {schema:'recovery-study-v1', date:new Date().toISOStrin
   commit:execFileSync('git',['rev-parse','HEAD'],{encoding:'utf8'}).trim(),
   dirty_status:execFileSync('git',['status','--porcelain'],{encoding:'utf8'}),
   source_bundle_sha256:sha(bundle), protocol_sha256:sha(protocol), binary_sha256:sha(readFileSync(binary)),
-  protocol_source_path:'docs/research/reflective-recovery.md',
+  protocol_source_path:'benchmarks/PROTOCOL.md',
   os:os.release(), cpu:os.cpus()[0].model, memory:os.totalmem(), node:process.version,
   rust:execFileSync('rustc',['-Vv'],{encoding:'utf8'}), samples:1, warmups:0, timeout_ms:30000,
   memory_ceiling:null, output_limit_bytes:1048576});

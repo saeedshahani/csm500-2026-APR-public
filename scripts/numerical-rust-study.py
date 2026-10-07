@@ -9,6 +9,7 @@ import json
 import random
 import subprocess
 import sys
+sys.dont_write_bytecode = True  # The imported reference is immutable evidence.
 from fractions import Fraction as Q
 from pathlib import Path
 

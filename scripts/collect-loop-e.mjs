@@ -14,7 +14,7 @@ const cells=[];
 for(let n=1;n<=3;n++)for(let code=0;code<6**n;code++)cells.push(['analyse',n,code]);
 for(const mode of ['missing','duplicate'])for(let code=0;code<6;code++)cells.push([mode,1,code]);
 const protocol={schema:'loop-e-diagnostic-v1',cells,timeout_ms:30000,output_bytes:1024**2,samples:1,performance_claim:false};
-const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>/^(Cargo\.(toml|lock)|rust-toolchain\.toml)$/.test(p)||/^crates\/.*\.(rs|toml|graph|atoms|lambda|txt)$/.test(p)||p.startsWith('examples/')||p==='scripts/collect-loop-e.mjs'||p==='scripts/verify-loop-e.mjs'||p==='docs/research/reflective-recovery.md').sort();
+const paths=[...new Set(execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n'))].filter(p=>/^(Cargo\.(toml|lock)|rust-toolchain\.toml)$/.test(p)||/^crates\/.*\.(rs|toml|graph|atoms|lambda|txt)$/.test(p)||p.startsWith('examples/')||p==='scripts/collect-loop-e.mjs'||p==='scripts/verify-loop-e.mjs'||p==='benchmarks/PROTOCOL.md').sort();
 const bundle=gzipSync(JSON.stringify({schema:'source-bundle-v1',encoding:'base64',files:Object.fromEntries(paths.map(p=>[p,readFileSync(p).toString('base64')]))}));
 writeFileSync(resolve(dir,'sources.json.gz'),bundle,{flag:'wx'});
 const record={protocol,source_bundle_sha256:sha(bundle),binary_sha256:sha(readFileSync(binary)),collected_at:new Date().toISOString(),environment:{platform:process.platform,arch:os.arch(),release:os.release(),cpu:os.cpus()[0]?.model},rows:[]};

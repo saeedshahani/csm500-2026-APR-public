@@ -1,38 +1,29 @@
+# Local configuration and operating-system files.
 .env
-
+.env.*
+!.env.example
 CLAUDE.md
+.DS_Store
 
-docs/papers/
-docs/archive/*
-!docs/archive/README.md
-!docs/archive/dissertation-full.md
-!docs/archive/literature.md
-!docs/archive/self-modification-theory/
-docs/worked-examples.md
-docs/simple.md
-docs/archive/research/
-docs/archive/self-modification-theory/
-docs/decisions.md
-docs/explainers/*
-!docs/explainers/simple.md
-docs/research/stretch/
-docs/dissertation.md
+# Personal manuscripts, readings and research history.
+/docs/archive/
+
+# Dependencies and generated builds.
+node_modules/
 /target/
-**/.DS_Store
-/frontend/node_modules/
-/platform/node_modules/
-firebase-debug.log*
-firestore-debug.log*
-/.firebase/
-/platform/.firebase/
 /frontend/dist/
 /frontend/pkg/
 /frontend/pkg-node/
+
+# Local Firebase state and test output.
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
 /frontend/playwright-report/
 /frontend/test-results/
 /output/
 /.playwright-cli/
 
-# Local Python model caches are not scientific source or evidence.
+# Python caches.
 __pycache__/
 *.py[cod]

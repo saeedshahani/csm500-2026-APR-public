@@ -1,0 +1,30 @@
+
+[stderr]
+test_one_lineage_reaches_admitted_native_execution (test_flow.FlowTests.test_one_lineage_reaches_admitted_native_execution) ... ok
+test_exact_full_field_blocks_for_reciprocal_and_self_recognition (test_jacobian.JacobianTests.test_exact_full_field_blocks_for_reciprocal_and_self_recognition) ... ok
+test_empty_reconstruction_cannot_pass (test_study.ReproductionTests.test_empty_reconstruction_cannot_pass) ... ok
+test_exact_artifact_inventory_is_required (test_study.ReproductionTests.test_exact_artifact_inventory_is_required) ... ok
+test_checkpoint_key_order_does_not_change_continuation (test_system.RegressionTests.test_checkpoint_key_order_does_not_change_continuation) ... ok
+test_inherited_validation_age_and_witness_clock_across_generations (test_system.RegressionTests.test_inherited_validation_age_and_witness_clock_across_generations) ... ok
+test_public_construction_rejects_invalid_resource_and_rng_domains (test_system.RegressionTests.test_public_construction_rejects_invalid_resource_and_rng_domains) ... ok
+test_tied_decoder_accuracy_and_exact_word_probability (test_system.RegressionTests.test_tied_decoder_accuracy_and_exact_word_probability) ... ok
+test_changed_inherited_code_breaks_zero_shot_model (test_system.SystemTests.test_changed_inherited_code_breaks_zero_shot_model) ... ok
+test_committed_prediction_checked_against_observation (test_system.SystemTests.test_committed_prediction_checked_against_observation) ... ok
+test_common_mode_false_acceptance_remains_undetected (test_system.SystemTests.test_common_mode_false_acceptance_remains_undetected) ... ok
+test_determinism (test_system.SystemTests.test_determinism) ... ok
+test_healthy_revalidation_acquires_complete_model (test_system.SystemTests.test_healthy_revalidation_acquires_complete_model) ... ok
+test_independent_checker_repairs_fault_without_accessing_hidden_table (test_system.SystemTests.test_independent_checker_repairs_fault_without_accessing_hidden_table) ... ok
+test_inheritance_world_conservation (test_system.SystemTests.test_inheritance_world_conservation) ... ok
+test_no_renewal_destroys_executable_instances (test_system.SystemTests.test_no_renewal_destroys_executable_instances) ... ok
+test_random_replacements_conserve_and_count (test_system.SystemTests.test_random_replacements_conserve_and_count) ... ok
+test_recognition_uses_observations_not_observer_core_labels (test_system.SystemTests.test_recognition_uses_observations_not_observer_core_labels) ... ok
+test_starvation_does_not_freeze_instances (test_system.SystemTests.test_starvation_does_not_freeze_instances) ... ok
+test_symbol_scarcity_is_binding (test_system.SystemTests.test_symbol_scarcity_is_binding) ... ok
+test_equilibria_and_full_mode_stability (test_system.TheoryTests.test_equilibria_and_full_mode_stability) ... ok
+test_repeated_root_and_no_positive_root_excluded (test_system.TheoryTests.test_repeated_root_and_no_positive_root_excluded) ... ok
+test_review_counterexample_and_all_zero_rate_boundaries (test_system.TheoryTests.test_review_counterexample_and_all_zero_rate_boundaries) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 1.313s
+
+OK

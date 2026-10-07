@@ -1,4 +1,4 @@
-//! Bounded native experimental profile. See docs/research/evaluation.md.
+//! Bounded native experimental profile. See benchmarks/PROTOCOL.md.
 #[path = "../benches/support/mod.rs"]
 mod support;
 use engine::observation::{isomorphic, isomorphic_indexed, Observer};
@@ -114,6 +114,11 @@ fn main() {
     assert!(n <= 100_000 && events <= 100_000);
     let lim = limits();
     let setup = Instant::now();
+    let report_phase = |name: &str| {
+        if std::env::var_os("REFLECTIVE_SCALE_PHASES").is_some() {
+            eprintln!("scale-phase {name} {}", setup.elapsed().as_millis());
+        }
+    };
     let graph = if family.starts_with("import:") {
         let source = std::fs::read_to_string(family.trim_start_matches("import:")).unwrap();
         parser::load_with_limits(
@@ -131,6 +136,7 @@ fn main() {
     };
     let setup_ns = setup.elapsed().as_nanos();
     let mut run = Execution::new(graph, lim).unwrap();
+    report_phase("validated");
     let mut result = json!({"schema":"scale-probe-v1","family":family,"size":n,"phase":phase,"seed":seed,
         "event_bound":events,"atoms":run.graph().len(),"fields":run.graph().field_count(),"setup_ns":setup_ns,
         "implementation":engine::trace::IMPLEMENTATION,"outcome":"Completed","commits":0});
@@ -290,6 +296,7 @@ fn main() {
                     .map(|(id, a)| (id, a.kind.clone()))
                     .collect();
                 let run_started = Instant::now();
+                report_phase("run-start");
                 let report = runner.run(
                     RunLimits {
                         max_steps: events,
@@ -300,6 +307,7 @@ fn main() {
                     || false,
                 )?;
                 result["run_ns"] = json!(run_started.elapsed().as_nanos());
+                report_phase("run-finished");
                 result["retained_states"] = json!(runner.retained_states());
                 result["outcome"] = json!(format!("{:?}", report.outcome));
                 result["run_diagnostic"] =
@@ -337,6 +345,7 @@ fn main() {
                     result["domain_verified"] = json!(true);
                 }
                 let export_started = Instant::now();
+                report_phase("export-start");
                 let document = TraceDocument::from_runner(
                     &runner,
                     None,
@@ -351,9 +360,11 @@ fn main() {
                     trace_limits,
                 )?;
                 let bytes = document.to_json(trace_limits.max_bytes)?;
+                report_phase("export-finished");
                 result["export_ns"] = json!(export_started.elapsed().as_nanos());
                 let import_started = Instant::now();
                 let verified = VerifiedTrace::import(&bytes, trace_limits)?;
+                report_phase("import-finished");
                 assert_eq!(
                     verified
                         .state_at(runner.execution().committed_steps() as usize)?

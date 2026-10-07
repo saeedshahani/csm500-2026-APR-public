@@ -10,7 +10,7 @@ assert.equal(createHash('sha256').update(bundle).digest('hex'),c.source_bundle_s
 const sources=JSON.parse(gunzipSync(bundle));
 const original=!Buffer.from(sources.files['crates/engine/src/stability.rs'],'base64').toString().includes('state.status == status');
 assert.ok(sources.files['crates/engine/src/stability.rs']);
-assert.ok(sources.files['docs/research/reflective-recovery.md']);
+assert.ok(sources.files['docs/research/reflective-recovery.md'] || sources.files['benchmarks/PROTOCOL.md']);
 assert.match(c.binary_sha256,/^[a-f0-9]{64}$/);
 const expected=[...Array.from({length:8},(_,i)=>['guard',i+1,512]),['guard',7,128],['output',1,128],['gated',1,128],['ungated',1,128],['frame',2,128],['compose',2,128]];
 assert.deepEqual(c.protocol.cells,expected);

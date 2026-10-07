@@ -10,8 +10,8 @@ const files=[...new Set(candidates)].filter(p=>existsSync(p)&&(
  /^\.github\/workflows\/.*\.ya?ml$/.test(p)||
  /^(frontend|platform|scripts|benchmarks)\//.test(p)||
  /^docs\/architecture\.md$/.test(p)||
- /^docs\/reference\/(lambda-encoding|trace-format|workbench)\.md$/.test(p)||
- /^docs\/research\/evaluation\.md$/.test(p)||
+ /^(proofs|models|tests)\//.test(p)||
+ /^docs\/formalism\.md$/.test(p)||
  /^docs\/guides\/workbench\.md$/.test(p)
 )).sort();
 const hash=createHash('sha256');

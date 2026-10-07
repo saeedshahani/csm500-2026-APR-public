@@ -1,0 +1,49 @@
+
+> reflective-graph-local-platform@0.1.0 test:emulator
+> node emulator.mjs --test
+
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-reflective-graph", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+i  firestore: Firestore Emulator logging to firestore-debug.log
+✔  firestore: Firestore Emulator was started in standard edition.
+✔  firestore: Firestore Emulator UI websocket is running on 9150.
+i  Running script: node --test platform/tests/emulator/*.test.mjs
+✔ real emulator users: project isolation, role matrix, immutable versions and native verified artefacts (300.207916ms)
+✔ permission revocation during native validation prevents publication (114.62375ms)
+✔ missing, wrong-audience, expired, disabled and revoked identities fail closed (1131.027584ms)
+(node:92964) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ request-scoped storage releases idle leases, executes one batch and preserves duplicate deliveries (677.515208ms)
+✔ Firestore/Storage adapters fence stale owners, reserve uploads and reject corruption (199.640667ms)
+✔ real API uses emulator metadata and artefacts across restart and concurrent idempotent requests (301.809166ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1644.095083
+✔  Script exited successfully (code 0)
+i  emulators: Shutting down emulators.
+i  firestore: Stopping Firestore Emulator
+i  auth: Stopping Authentication Emulator
+i  storage: Stopping Storage Emulator
+i  hub: Stopping emulator hub
+i  logging: Stopping Logging Emulator
+
+[stderr]
+(node:92844) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:92844) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+    at urlParse (node:url:137:13)
+    at Object.urlResolve [as resolve] (node:url:721:10)
+    at $RefParser.parse (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/platform/node_modules/@apidevtools/json-schema-ref-parser/lib/index.js:103:19)
+    at $RefParser.resolve (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/platform/node_modules/@apidevtools/json-schema-ref-parser/lib/index.js:184:16)
+    at $RefParser.bundle (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/platform/node_modules/@apidevtools/json-schema-ref-parser/lib/index.js:227:16)
+    at bundle (/Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/platform/node_modules/exegesis/lib/index.js:55:22)
+    at /Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/platform/node_modules/exegesis/lib/index.js:60:34
+    at Generator.next (<anonymous>)
+    at /Users/saeedshahani/MEGA/Programming/UoL/10. Project/Human Ontology/final-project-codebase/platform/node_modules/exegesis/lib/index.js:22:71
+    at new Promise (<anonymous>)

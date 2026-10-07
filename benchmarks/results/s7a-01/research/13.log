@@ -1,0 +1,1616 @@
+
+[stderr]
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+... Skipped lines
+
+  {
+    ambiguous: {
+      approval_sha256: '0a25c6d58f2f08c7f827f7229f29cb862368d3bbec383585470737d9c45b1aea',
+      code: 0,
+      compiled: {
+...
+        ],
++       implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+-       implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        initial: {
+          atoms: {
+            '0': {
+              fields: [],
+              kind: 'RuleHead'
+...
+        ],
++       implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+-       implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        initial: {
+          atoms: {
+            '0': {
+              fields: [],
+              kind: 'RuleHead'
+...
+        events: [],
++       implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+-       implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        initial: {
+          atoms: {
+            '0': {
+              fields: [],
+              kind: {
+...
+        ],
++       implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+-       implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        initial: {
+          atoms: {
+            '0': {
+              fields: [],
+              kind: 'RuleHead'
+...
+        events: [],
++       implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+-       implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        initial: {
+          atoms: {
+            '0': {
+              fields: [],
+              kind: 'RuleHead'
+...
+        ],
++       implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+-       implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        initial: {
+          atoms: {
+            '0': {
+              fields: [],
+              kind: 'RuleHead'
+
+    at checkChallenges (file:///Users/saeedshahani/MEGA/Programming/UoL/10.%20Project/Human%20Ontology/final-project-codebase/scripts/learning-study.mjs:91:18)
+    at file:///Users/saeedshahani/MEGA/Programming/UoL/10.%20Project/Human%20Ontology/final-project-codebase/scripts/learning-study.mjs:116:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:430:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:654:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: {
+    shifted: {
+      schema: 'calendar-promotion-v1',
+      approval_sha256: '7e188b2d02401ce1113002fda2dc68bc4c5411b04363cb50334170f753436a36',
+      source_sha256: '946995ef211887704d8641276a7f7ffdc078edd644e2ab11c7518108dcda3655',
+      compiled: {
+        source: 'program {\n' +
+          'atom raw_0 = Constructor("Raw: APR ");\n' +
+          'atom row_0 = Constructor("Row:[0,\\" APR \\"]");\n' +
+          'atom input_0 = Record[ObjectLink]("input", row_0, raw_0);\n' +
+          '}\n',
+        processors: 0,
+        rows: 1,
+        mapping: []
+      },
+      validation_trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+        source_sha256: 'f3fbd5cdc6466c4e483d754251cb55f37ab4d66cf8b35ba36c49efa3d9831be2',
+        initial_sha256: '722383b5d4e1567ec34e4988e2f053017011621b7596a470c3937d109eebcda7',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [
+          {
+            id: '0',
+            redex: [Object],
+            post_state: '1',
+            footprint: [Object],
+            fresh: [Object]
+          },
+          {
+            id: '1',
+            redex: [Object],
+            post_state: '2',
+            footprint: [Object],
+            fresh: [Object]
+          }
+        ],
+        dependencies: [ { before: '0', after: '1', witnesses: [Array] } ],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '92827e0b3686cc3c30719233a505d3288c9fc12366d65da6d03443d378815e4b'
+          },
+          {
+            state: '2',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '152205d78a209e61a1f5acf2262cc9cd1243cbb775e042bd3502d17150be22ee'
+          }
+        ]
+      },
+      code: 0,
+      trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+        source_sha256: '06aa51f9e10e292e9134935444dd4338c5ff8c1d46dd01c98e6f0e4b530b62ba',
+        initial_sha256: 'ddbdc4e08a08fea9abf4572d5b66512f7152c497d436ba18989ace2cd09ca9c2',
+        initial: {
+          next_identity: '3',
+          atoms: { '0': [Object], '1': [Object], '2': [Object] }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [],
+        dependencies: [],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: 'e6805fb7685865b3e54fffc17cc692b89916575a39078a68edeadd73a3ab1230'
+          }
+        ]
+      },
+      observation: {
+        outcome: 'NormalForm',
+        results: [ { row: 0, input: ' APR ', output: null } ],
+        commits: 0
+      }
+    },
+    ambiguous: {
+      schema: 'calendar-promotion-v1',
+      approval_sha256: '0a25c6d58f2f08c7f827f7229f29cb862368d3bbec383585470737d9c45b1aea',
+      source_sha256: '55597fc550e29b3afbc08509f759d948130177555dc02f62118fb2b374fe3a1e',
+      compiled: {
+        source: 'program {\n' +
+          'rule p0_process {\n' +
+          ' atom p0_z = Nat(); rank p0_rk = p0_z; mode p0_md = ModeObject; revision p0_rev;\n' +
+          ' atom p0_row = PatternVariable[Constructor] Free;\n' +
+          ' atom p0_raw = Constructor("Raw:may");\n' +
+          ' atom p0_old = Record[ObjectLink]("input", p0_row, p0_raw);\n' +
+          ' atom p0_value = Constructor("MonthNumber:05");\n' +
+          ' atom p0_result = Record[ObjectLink]("output", p0_row, p0_value);\n' +
+          ' lhs { p0_lr: p0_row; p0_lw: p0_raw; p0_li: p0_old; }\n' +
+          ' rhs { p0_rr: p0_row; p0_rw: p0_raw; p0_rv: p0_value; p0_ro: p0_result; }\n' +
+          '}\n' +
+          'rule a_approve {\n' +
+          ' atom a_z = Nat(); atom a_one = Nat(a_z); rank a_rk = a_one;\n' +
+          ' mode a_md = ModeMeta; revision a_rev; active a_enabled;\n' +
+          ' atom a_target = PatternVariable[RuleHead] Free;\n' +
+          ' atom a_tz = Nat(); atom a_tr = Record[Rank](a_target, a_tz);\n' +
+          ' atom a_tm = Record[ModeObject](a_target);\n' +
+          ' atom a_oldrev = Record[Revision](a_target); atom a_newrev = Record[Revision](a_target);\n' +
+          ' atom a_activation = Record[Active](a_target);\n' +
+          ' lhs { a_lt: a_target; a_lz: a_tz; a_lr: a_tr; a_lm: a_tm; a_lv: a_oldrev; }\n' +
+          ' rhs { a_rt: a_target; a_rz: a_tz; a_rr: a_tr; a_rm: a_tm; a_rv: a_newrev; a_ra: a_activation; }\n' +
+          '}\n' +
+          'atom raw_0 = Constructor("Raw:may");\n' +
+          'atom row_0 = Constructor("Row:[0,\\"may\\"]");\n' +
+          'atom input_0 = Record[ObjectLink]("input", row_0, raw_0);\n' +
+          '}\n',
+        processors: 1,
+        rows: 1,
+        mapping: [ { input: 'may', output: '05' } ]
+      },
+      validation_trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+        source_sha256: 'f3fbd5cdc6466c4e483d754251cb55f37ab4d66cf8b35ba36c49efa3d9831be2',
+        initial_sha256: '722383b5d4e1567ec34e4988e2f053017011621b7596a470c3937d109eebcda7',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [
+          {
+            id: '0',
+            redex: [Object],
+            post_state: '1',
+            footprint: [Object],
+            fresh: [Object]
+          },
+          {
+            id: '1',
+            redex: [Object],
+            post_state: '2',
+            footprint: [Object],
+            fresh: [Object]
+          }
+        ],
+        dependencies: [ { before: '0', after: '1', witnesses: [Array] } ],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '92827e0b3686cc3c30719233a505d3288c9fc12366d65da6d03443d378815e4b'
+          },
+          {
+            state: '2',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '152205d78a209e61a1f5acf2262cc9cd1243cbb775e042bd3502d17150be22ee'
+          }
+        ]
+      },
+      code: 0,
+      trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+        source_sha256: '29acf275732d2ca97fa9392bdfa56a9e25fc1773d2fc38f90b697b924ec0c511',
+        initial_sha256: 'bbf286945ae7199d1c6ec90aa8231fe3beac1ef49af677d90004f9f0dc61abe2',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [
+          {
+            id: '0',
+            redex: [Object],
+            post_state: '1',
+            footprint: [Object],
+            fresh: [Object]
+          },
+          {
+            id: '1',
+            redex: [Object],
+            post_state: '2',
+            footprint: [Object],
+            fresh: [Object]
+          }
+        ],
+        dependencies: [ { before: '0', after: '1', witnesses: [Array] } ],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: 'f89ecb7dd67c6aae5440c0c17a494545464fcc438328cdff92e5eb630628a5bc'
+          },
+          {
+            state: '2',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '15682cb841b07df1c08ae6d5cd957eb79cca6c87645a6022cd4f27978495c598'
+          }
+        ]
+      },
+      observation: {
+        outcome: 'NormalForm',
+        results: [ { row: 0, input: 'may', output: '05' } ],
+        commits: 2
+      }
+    },
+    wrong: {
+      code: 0,
+      trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+        source_sha256: '4548d3baa4adc1140e36c25f8b4f301e8226cca7802277ea97d88378474d7bc3',
+        initial_sha256: '73669d1143abdf8b288c0e43c9651c301ea4e28c2ae1100447277cf9abfa1c41',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [
+          {
+            id: '0',
+            redex: [Object],
+            post_state: '1',
+            footprint: [Object],
+            fresh: [Object]
+          },
+          {
+            id: '1',
+            redex: [Object],
+            post_state: '2',
+            footprint: [Object],
+            fresh: [Object]
+          }
+        ],
+        dependencies: [ { before: '0', after: '1', witnesses: [Array] } ],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '144f984a058dff77393ada0ef3260fa1a09eb2db956ad41007828b737b6f76d1'
+          },
+          {
+            state: '2',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '2f47c1be321188c0b28d99f6c954bded78fd4e5f4e15a3093fe136550eb9b87f'
+          }
+        ]
+      },
+      observation: {
+        outcome: 'NormalForm',
+        results: [ { row: 0, input: 'jan', output: '02' } ],
+        commits: 2
+      }
+    },
+    stopped: {
+      code: 3,
+      trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=5ee719c806aa0c0520406096656115d5e699eff1066f564c3900556f69bcab11',
+        source_sha256: 'f3fbd5cdc6466c4e483d754251cb55f37ab4d66cf8b35ba36c49efa3d9831be2',
+        initial_sha256: '722383b5d4e1567ec34e4988e2f053017011621b7596a470c3937d109eebcda7',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '0',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'StepLimit',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [],
+        dependencies: [],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '8fb5330a28f485243940ca8bd826068cda399a0f691efda7a610c0a6b377d814'
+          }
+        ]
+      },
+      observation: {
+        outcome: 'StepLimit',
+        results: [ { row: 0, input: 'jan', output: null } ],
+        commits: 0
+      }
+    }
+  },
+  expected: {
+    shifted: {
+      schema: 'calendar-promotion-v1',
+      approval_sha256: '7e188b2d02401ce1113002fda2dc68bc4c5411b04363cb50334170f753436a36',
+      source_sha256: '946995ef211887704d8641276a7f7ffdc078edd644e2ab11c7518108dcda3655',
+      compiled: {
+        source: 'program {\n' +
+          'atom raw_0 = Constructor("Raw: APR ");\n' +
+          'atom row_0 = Constructor("Row:[0,\\" APR \\"]");\n' +
+          'atom input_0 = Record[ObjectLink]("input", row_0, raw_0);\n' +
+          '}\n',
+        processors: 0,
+        rows: 1,
+        mapping: []
+      },
+      validation_trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        source_sha256: 'f3fbd5cdc6466c4e483d754251cb55f37ab4d66cf8b35ba36c49efa3d9831be2',
+        initial_sha256: '722383b5d4e1567ec34e4988e2f053017011621b7596a470c3937d109eebcda7',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [
+          {
+            id: '0',
+            redex: [Object],
+            post_state: '1',
+            footprint: [Object],
+            fresh: [Object]
+          },
+          {
+            id: '1',
+            redex: [Object],
+            post_state: '2',
+            footprint: [Object],
+            fresh: [Object]
+          }
+        ],
+        dependencies: [ { before: '0', after: '1', witnesses: [Array] } ],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '92827e0b3686cc3c30719233a505d3288c9fc12366d65da6d03443d378815e4b'
+          },
+          {
+            state: '2',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '152205d78a209e61a1f5acf2262cc9cd1243cbb775e042bd3502d17150be22ee'
+          }
+        ]
+      },
+      code: 0,
+      trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        source_sha256: '06aa51f9e10e292e9134935444dd4338c5ff8c1d46dd01c98e6f0e4b530b62ba',
+        initial_sha256: 'ddbdc4e08a08fea9abf4572d5b66512f7152c497d436ba18989ace2cd09ca9c2',
+        initial: {
+          next_identity: '3',
+          atoms: { '0': [Object], '1': [Object], '2': [Object] }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [],
+        dependencies: [],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: 'e6805fb7685865b3e54fffc17cc692b89916575a39078a68edeadd73a3ab1230'
+          }
+        ]
+      },
+      observation: {
+        outcome: 'NormalForm',
+        results: [ { row: 0, input: ' APR ', output: null } ],
+        commits: 0
+      }
+    },
+    ambiguous: {
+      schema: 'calendar-promotion-v1',
+      approval_sha256: '0a25c6d58f2f08c7f827f7229f29cb862368d3bbec383585470737d9c45b1aea',
+      source_sha256: '55597fc550e29b3afbc08509f759d948130177555dc02f62118fb2b374fe3a1e',
+      compiled: {
+        source: 'program {\n' +
+          'rule p0_process {\n' +
+          ' atom p0_z = Nat(); rank p0_rk = p0_z; mode p0_md = ModeObject; revision p0_rev;\n' +
+          ' atom p0_row = PatternVariable[Constructor] Free;\n' +
+          ' atom p0_raw = Constructor("Raw:may");\n' +
+          ' atom p0_old = Record[ObjectLink]("input", p0_row, p0_raw);\n' +
+          ' atom p0_value = Constructor("MonthNumber:05");\n' +
+          ' atom p0_result = Record[ObjectLink]("output", p0_row, p0_value);\n' +
+          ' lhs { p0_lr: p0_row; p0_lw: p0_raw; p0_li: p0_old; }\n' +
+          ' rhs { p0_rr: p0_row; p0_rw: p0_raw; p0_rv: p0_value; p0_ro: p0_result; }\n' +
+          '}\n' +
+          'rule a_approve {\n' +
+          ' atom a_z = Nat(); atom a_one = Nat(a_z); rank a_rk = a_one;\n' +
+          ' mode a_md = ModeMeta; revision a_rev; active a_enabled;\n' +
+          ' atom a_target = PatternVariable[RuleHead] Free;\n' +
+          ' atom a_tz = Nat(); atom a_tr = Record[Rank](a_target, a_tz);\n' +
+          ' atom a_tm = Record[ModeObject](a_target);\n' +
+          ' atom a_oldrev = Record[Revision](a_target); atom a_newrev = Record[Revision](a_target);\n' +
+          ' atom a_activation = Record[Active](a_target);\n' +
+          ' lhs { a_lt: a_target; a_lz: a_tz; a_lr: a_tr; a_lm: a_tm; a_lv: a_oldrev; }\n' +
+          ' rhs { a_rt: a_target; a_rz: a_tz; a_rr: a_tr; a_rm: a_tm; a_rv: a_newrev; a_ra: a_activation; }\n' +
+          '}\n' +
+          'atom raw_0 = Constructor("Raw:may");\n' +
+          'atom row_0 = Constructor("Row:[0,\\"may\\"]");\n' +
+          'atom input_0 = Record[ObjectLink]("input", row_0, raw_0);\n' +
+          '}\n',
+        processors: 1,
+        rows: 1,
+        mapping: [ { input: 'may', output: '05' } ]
+      },
+      validation_trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        source_sha256: 'f3fbd5cdc6466c4e483d754251cb55f37ab4d66cf8b35ba36c49efa3d9831be2',
+        initial_sha256: '722383b5d4e1567ec34e4988e2f053017011621b7596a470c3937d109eebcda7',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [
+          {
+            id: '0',
+            redex: [Object],
+            post_state: '1',
+            footprint: [Object],
+            fresh: [Object]
+          },
+          {
+            id: '1',
+            redex: [Object],
+            post_state: '2',
+            footprint: [Object],
+            fresh: [Object]
+          }
+        ],
+        dependencies: [ { before: '0', after: '1', witnesses: [Array] } ],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '92827e0b3686cc3c30719233a505d3288c9fc12366d65da6d03443d378815e4b'
+          },
+          {
+            state: '2',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '152205d78a209e61a1f5acf2262cc9cd1243cbb775e042bd3502d17150be22ee'
+          }
+        ]
+      },
+      code: 0,
+      trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        source_sha256: '29acf275732d2ca97fa9392bdfa56a9e25fc1773d2fc38f90b697b924ec0c511',
+        initial_sha256: 'bbf286945ae7199d1c6ec90aa8231fe3beac1ef49af677d90004f9f0dc61abe2',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [
+          {
+            id: '0',
+            redex: [Object],
+            post_state: '1',
+            footprint: [Object],
+            fresh: [Object]
+          },
+          {
+            id: '1',
+            redex: [Object],
+            post_state: '2',
+            footprint: [Object],
+            fresh: [Object]
+          }
+        ],
+        dependencies: [ { before: '0', after: '1', witnesses: [Array] } ],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: 'f89ecb7dd67c6aae5440c0c17a494545464fcc438328cdff92e5eb630628a5bc'
+          },
+          {
+            state: '2',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '15682cb841b07df1c08ae6d5cd957eb79cca6c87645a6022cd4f27978495c598'
+          }
+        ]
+      },
+      observation: {
+        outcome: 'NormalForm',
+        results: [ { row: 0, input: 'may', output: '05' } ],
+        commits: 2
+      }
+    },
+    wrong: {
+      code: 0,
+      trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        source_sha256: '4548d3baa4adc1140e36c25f8b4f301e8226cca7802277ea97d88378474d7bc3',
+        initial_sha256: '73669d1143abdf8b288c0e43c9651c301ea4e28c2ae1100447277cf9abfa1c41',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '512',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'NormalForm',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [
+          {
+            id: '0',
+            redex: [Object],
+            post_state: '1',
+            footprint: [Object],
+            fresh: [Object]
+          },
+          {
+            id: '1',
+            redex: [Object],
+            post_state: '2',
+            footprint: [Object],
+            fresh: [Object]
+          }
+        ],
+        dependencies: [ { before: '0', after: '1', witnesses: [Array] } ],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '144f984a058dff77393ada0ef3260fa1a09eb2db956ad41007828b737b6f76d1'
+          },
+          {
+            state: '2',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '2f47c1be321188c0b28d99f6c954bded78fd4e5f4e15a3093fe136550eb9b87f'
+          }
+        ]
+      },
+      observation: {
+        outcome: 'NormalForm',
+        results: [ { row: 0, input: 'jan', output: '02' } ],
+        commits: 2
+      }
+    },
+    stopped: {
+      code: 3,
+      trace: {
+        schema: 'reflective-trace-v1',
+        profile: 'checked-binding-positive-resources-v1',
+        implementation: 'engine-0.1.0-source-sha256=c9e504f727b95f0a6cfe19e067405e4abdbaa4aaf2d5f458a0ab66a6f081d67d',
+        source_sha256: 'f3fbd5cdc6466c4e483d754251cb55f37ab4d66cf8b35ba36c49efa3d9831be2',
+        initial_sha256: '722383b5d4e1567ec34e4988e2f053017011621b7596a470c3937d109eebcda7',
+        initial: {
+          next_identity: '45',
+          atoms: {
+            '0': [Object],
+            '1': [Object],
+            '2': [Object],
+            '3': [Object],
+            '4': [Object],
+            '5': [Object],
+            '6': [Object],
+            '7': [Object],
+            '8': [Object],
+            '9': [Object],
+            '10': [Object],
+            '11': [Object],
+            '12': [Object],
+            '13': [Object],
+            '14': [Object],
+            '15': [Object],
+            '16': [Object],
+            '17': [Object],
+            '18': [Object],
+            '19': [Object],
+            '20': [Object],
+            '21': [Object],
+            '22': [Object],
+            '23': [Object],
+            '24': [Object],
+            '25': [Object],
+            '26': [Object],
+            '27': [Object],
+            '28': [Object],
+            '29': [Object],
+            '30': [Object],
+            '31': [Object],
+            '32': [Object],
+            '33': [Object],
+            '34': [Object],
+            '35': [Object],
+            '36': [Object],
+            '37': [Object],
+            '38': [Object],
+            '39': [Object],
+            '40': [Object],
+            '41': [Object],
+            '42': [Object],
+            '43': [Object],
+            '44': [Object]
+          }
+        },
+        relation: 'positive_resource_order',
+        limitation: 'Positive footprints only: dangling, visibility, quotation, global validity and lifecycle/guard condition-establishment provenance is not recorded; absent edges do not establish independence.',
+        settings: {
+          execution_profile: 'indexed-v2',
+          graph: {
+            max_input_bytes: '4194304',
+            max_atoms: '10000',
+            max_fields: '20000',
+            max_label_bytes: '1048576',
+            max_package_depth: '32',
+            max_validation_work: '10000000'
+          },
+          search: { max_candidates: '1000', max_work: '1000000' },
+          recording: {
+            max_events: '10000',
+            max_units: '2000000',
+            max_work: '2000000'
+          },
+          analysis: { max_work: '2000000', max_units: '2000000' },
+          observer: {
+            declaration: 'observer-v1\nall\n',
+            inputs: {},
+            nontriviality_threshold: '2'
+          },
+          plan: {
+            max_steps: '0',
+            detect_cycles: false,
+            observation: [Object],
+            requested: null,
+            seed: null
+          }
+        },
+        status: 'finished',
+        report: {
+          outcome: 'StepLimit',
+          payload: null,
+          recurrence: null,
+          scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0'
+        },
+        events: [],
+        dependencies: [],
+        conflicts: [],
+        checkpoint_interval: '32',
+        checkpoints: [
+          {
+            state: '0',
+            graph: [Object],
+            scheduler: 'deterministic-v1; order=source-template-host-lexicographic-v1; engine=0.1.0',
+            continuation_sha256: '8fb5330a28f485243940ca8bd826068cda399a0f691efda7a610c0a6b377d814'
+          }
+        ]
+      },
+      observation: {
+        outcome: 'StepLimit',
+        results: [ { row: 0, input: 'jan', output: null } ],
+        commits: 0
+      }
+    }
+  },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v25.4.0

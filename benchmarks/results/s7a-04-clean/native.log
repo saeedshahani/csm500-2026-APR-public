@@ -1,0 +1,169 @@
+   Compiling proc-macro2 v1.0.107
+   Compiling quote v1.0.47
+   Compiling unicode-ident v1.0.24
+   Compiling version_check v0.9.5
+   Compiling libc v0.2.189
+   Compiling cfg-if v1.0.4
+   Compiling serde_core v1.0.228
+   Compiling zerocopy v0.8.57
+   Compiling typenum v1.20.1
+   Compiling autocfg v1.5.1
+   Compiling serde v1.0.228
+   Compiling memchr v2.8.3
+   Compiling serde_json v1.0.145
+   Compiling regex-syntax v0.8.11
+   Compiling itoa v1.0.18
+   Compiling generic-array v0.14.7
+   Compiling num-traits v0.2.19
+   Compiling aho-corasick v1.1.5
+   Compiling bitmaps v2.1.0
+   Compiling im v15.1.0
+   Compiling sized-chunks v0.6.5
+   Compiling fnv v1.0.7
+   Compiling ryu v1.0.23
+   Compiling regex-automata v0.4.18
+   Compiling ciborium-io v0.2.2
+   Compiling clap_lex v1.1.1
+   Compiling anstyle v1.0.14
+   Compiling either v1.18.0
+   Compiling clap_builder v4.6.7
+   Compiling itertools v0.10.5
+   Compiling syn v2.0.119
+   Compiling cast v0.3.0
+   Compiling unarray v0.1.4
+   Compiling lazy_static v1.5.0
+   Compiling equivalent v1.0.2
+   Compiling bitflags v2.13.2
+   Compiling getrandom v0.2.17
+   Compiling cpufeatures v0.2.17
+   Compiling serde_path_to_error v0.1.20
+   Compiling rand_core v0.6.4
+   Compiling same-file v1.0.6
+   Compiling rand_xoshiro v0.6.0
+   Compiling rand_xorshift v0.3.0
+   Compiling hashbrown v0.15.5
+   Compiling clap v4.6.7
+   Compiling walkdir v2.5.0
+   Compiling is-terminal v0.4.17
+   Compiling criterion-plot v0.5.0
+   Compiling indexmap v2.7.1
+   Compiling logos-codegen v0.16.1
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.8
+   Compiling regex v1.13.1
+   Compiling engine v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/engine)
+   Compiling anes v0.1.6
+   Compiling num-integer v0.1.47
+   Compiling fixedbitset v0.4.2
+   Compiling oorandom v11.1.5
+   Compiling once_cell v1.21.4
+   Compiling num-bigint v0.4.6
+   Compiling petgraph v0.6.5
+   Compiling zerocopy-derive v0.8.57
+   Compiling serde_derive v1.0.228
+   Compiling logos-derive v0.16.1
+   Compiling logos v0.16.1
+   Compiling num-rational v0.4.2
+   Compiling graph-core v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/graph-core)
+   Compiling tinytemplate v1.2.1
+   Compiling parser v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/parser)
+   Compiling ppv-lite86 v0.2.21
+   Compiling half v2.7.1
+   Compiling rand_chacha v0.3.1
+   Compiling ciborium-ll v0.2.2
+   Compiling rand v0.8.5
+   Compiling ciborium v0.2.2
+   Compiling proptest v1.6.0
+   Compiling criterion v0.5.1
+   Compiling wasm-bridge v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/wasm-bridge)
+   Compiling cli v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/cli)
+    Finished `release` profile [optimized] target(s) in 22.04s
+   Compiling rand_core v0.6.4
+   Compiling zerocopy v0.8.57
+   Compiling serde v1.0.228
+   Compiling libc v0.2.189
+   Compiling rand_xoshiro v0.6.0
+   Compiling rand v0.8.5
+   Compiling im v15.1.0
+   Compiling cpufeatures v0.2.17
+   Compiling sha2 v0.10.8
+   Compiling graph-core v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/graph-core)
+   Compiling parser v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/parser)
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.3.1
+   Compiling engine v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/engine)
+   Compiling cli v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/cli)
+    Finished `release` profile [optimized] target(s) in 13.69s
+   Compiling libc v0.2.189
+   Compiling version_check v0.9.5
+   Compiling cfg-if v1.0.4
+   Compiling typenum v1.20.1
+   Compiling proc-macro2 v1.0.107
+   Compiling unicode-ident v1.0.24
+   Compiling quote v1.0.47
+   Compiling serde_core v1.0.228
+   Compiling autocfg v1.5.1
+   Compiling memchr v2.8.3
+   Compiling zerocopy v0.8.57
+   Compiling regex-syntax v0.8.11
+   Compiling serde v1.0.228
+   Compiling fnv v1.0.7
+   Compiling serde_json v1.0.145
+   Compiling itoa v1.0.18
+   Compiling ryu v1.0.23
+   Compiling bitflags v2.13.2
+   Compiling unarray v0.1.4
+   Compiling lazy_static v1.5.0
+   Compiling generic-array v0.14.7
+   Compiling im v15.1.0
+   Compiling num-traits v0.2.19
+   Compiling aho-corasick v1.1.5
+   Compiling bitmaps v2.1.0
+   Compiling sized-chunks v0.6.5
+   Compiling regex-automata v0.4.18
+   Compiling serde_path_to_error v0.1.20
+   Compiling syn v2.0.119
+   Compiling getrandom v0.2.17
+   Compiling cpufeatures v0.2.17
+   Compiling rand_core v0.6.4
+   Compiling rand_xoshiro v0.6.0
+   Compiling rand_xorshift v0.3.0
+   Compiling logos-codegen v0.16.1
+   Compiling serde_derive v1.0.228
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling digest v0.10.7
+   Compiling sha2 v0.10.8
+   Compiling engine v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/engine)
+   Compiling logos-derive v0.16.1
+   Compiling num-integer v0.1.47
+   Compiling logos v0.16.1
+   Compiling num-bigint v0.4.6
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.3.1
+   Compiling rand v0.8.5
+   Compiling num-rational v0.4.2
+   Compiling proptest v1.6.0
+   Compiling graph-core v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/graph-core)
+   Compiling parser v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/parser)
+   Compiling wasm-bridge v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/wasm-bridge)
+   Compiling cli v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 11.82s
+   Compiling rand_core v0.6.4
+   Compiling regex-syntax v0.8.11
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_xoshiro v0.6.0
+   Compiling rand v0.8.5
+   Compiling rand_chacha v0.3.1
+   Compiling im v15.1.0
+   Compiling graph-core v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/graph-core)
+   Compiling regex-automata v0.4.18
+   Compiling engine v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/engine)
+   Compiling logos-codegen v0.16.1
+   Compiling logos-derive v0.16.1
+   Compiling logos v0.16.1
+   Compiling parser v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/parser)
+   Compiling cli v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/cli)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 5.89s

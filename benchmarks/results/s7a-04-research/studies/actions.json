@@ -1,0 +1,60 @@
+{
+  "schema": "action-learning-acceptance-v1",
+  "scope": "Current-source finite correspondence and abstract proof checks; no timing, native refinement or external replication claim.",
+  "environment": {
+    "platform": "darwin",
+    "architecture": "arm64",
+    "node": "v25.4.0"
+  },
+  "source_sha256": {
+    "Cargo.lock": "080be05dbe4c848694f60c2288e62d6ba9543a7eb73fa3a9ba7e5d4973753e9c",
+    "rust-toolchain.toml": "dc8a9e7668c882190e58da244ac78e86d0d9875140a6249849f49b74d7382a76",
+    "crates/engine/src/action_learning.rs": "b43a794e57b716a722b0413680ece86a7b5e5049971403c65e5c0fbd0ba8de02",
+    "crates/engine/src/action_learning/carrier.rs": "f0ea06b801389245415e6c71f59675af9b7bff629b991b7277dabd33ad458cdb",
+    "crates/engine/tests/action_learning.rs": "319859e076861edbb74b5fd106df1c6951d5a2f20c74000ca7b1ba2c3a137ab6",
+    "crates/engine/tests/observation_certificates.rs": "77754f260fb25810dc825cd8f402449deeca71f2c4a634b8cec94fb294bfec8f",
+    "crates/cli/tests/action_learning.rs": "3e9d1a3d0dbfd49f552cfc148d7c8dbd019086cdd3c059303952d032bae949c7",
+    "crates/cli/src/commands.rs": "73eb4b93465ed5f3dbed957269e42d10207874f43d0cdb0ad3cc4ed14c5dc28d",
+    "examples/action-learning/doors.json": "4c20fe33018f9cfb373d48b97c9e71f09e054914cfcd0dfcd9be0991665e9f46",
+    "scripts/action-learning-study.mjs": "4c4ed2c591cb8ea4f871dafaf8f07525f1d8c43905de4ab7dff5e3b95f46bcf5",
+    "proofs/action_learning/Safety.lean": "c26e28a616334da027cc9f0f4be07b202463a9ef40e09a0b325a0fd69df85ad7",
+    "proofs/observation/Certificates.lean": "79a6cab019d7c229d0a67621c2c8f8107fe9b0742ffc0ceadf4209d29ba0491e"
+  },
+  "proofs_checked": false,
+  "commands": [
+    {
+      "command": "rustc",
+      "arguments": [
+        "--version"
+      ],
+      "stdout": "rustc 1.85.0 (4d91de4e4 2025-02-17)\n"
+    },
+    {
+      "command": "cargo",
+      "arguments": [
+        "--version"
+      ],
+      "stdout": "cargo 1.85.0 (d73d2caf9 2024-12-31)\n"
+    },
+    {
+      "command": "cargo",
+      "arguments": [
+        "test",
+        "--locked",
+        "-p",
+        "engine",
+        "--test",
+        "action_learning",
+        "--test",
+        "observation_certificates",
+        "-p",
+        "cli",
+        "--test",
+        "action_learning",
+        "--",
+        "--nocapture"
+      ],
+      "stdout": "\nrunning 2 tests\ntest strict_requests_and_resource_errors_never_publish_success ... ok\ntest learning_compilation_execution_and_portable_replay ... ok\n\ntest result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.48s\n\n\nrunning 11 tests\ntest hidden_conflict_in_negative_evidence_repairs_atomically ... ok\ntest no_positive_abstention_and_per_schema_repair ... ok\ntest repair_quarantine_and_environmental_change_boundary ... ok\ntest malformed_and_stale_observations_are_atomic ... ok\ntest native_rule_removal_changes_execution ... ok\ntest input_frame_injectivity_schema_bounds_and_search_failures ... ok\ntest acquired_versions_and_compilation_are_immutable ... ok\ntest transfer_frame_nullary_conditions_and_replay ... ok\ntest binary_predicates_repeated_positions_and_renamed_frame ... ok\nACTION_EVIDENCE prefixes=7776 classifications=31104 safe_predictions=9000\ntest exhaustive_stationary_models_orders_and_negative_inference ... ok\nACTION_NATIVE executions=324 admitted_steps=144\ntest native_all_complete_two_feature_models_and_inputs ... ok\n\ntest result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.75s\n\n\nrunning 1 test\nOBSERVER_EVIDENCE configurations=32768\ntest all_three_word_three_query_certificates_and_regular_adversaries ... ok\n\ntest result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s\n\n"
+    }
+  ]
+}

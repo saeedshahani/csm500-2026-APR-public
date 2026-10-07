@@ -1,0 +1,57 @@
+
+> reflective-graph-local-platform@0.1.0 test:emulator
+> node emulator.mjs --test
+
+i  emulators: Starting emulators: auth, firestore, storage
+i  emulators: Detected demo project ID "demo-reflective-graph", emulated services will use a demo configuration and attempts to access non-emulated services for this project will fail.
+⚠  hub: Port 4400 is not open on 127.0.0.1, could not start emulator hub.
+⚠  hub: To select a different host/port, specify that host/port in a firebase.json config file:
+      {
+        // ...
+        "emulators": {
+          "hub": {
+            "host": "HOST",
+            "port": "PORT"
+          }
+        }
+      }
+⚠  logging: Port 4500 is not open on 127.0.0.1, could not start Logging Emulator.
+⚠  logging: To select a different host/port, specify that host/port in a firebase.json config file:
+      {
+        // ...
+        "emulators": {
+          "logging": {
+            "host": "HOST",
+            "port": "PORT"
+          }
+        }
+      }
+⚠  firestore: Port 8080 is not open on 127.0.0.1, could not start Firestore Emulator.
+⚠  firestore: To select a different host/port, specify that host/port in a firebase.json config file:
+      {
+        // ...
+        "emulators": {
+          "firestore": {
+            "host": "HOST",
+            "port": "PORT"
+          }
+        }
+      }
+⚠  storage: Port 9199 is not open on 127.0.0.1, could not start Storage Emulator.
+⚠  storage: To select a different host/port, specify that host/port in a firebase.json config file:
+      {
+        // ...
+        "emulators": {
+          "storage": {
+            "host": "HOST",
+            "port": "PORT"
+          }
+        }
+      }
+i  emulators: Shutting down emulators.
+
+Error: Could not start emulator hub, port taken.
+
+[stderr]
+(node:80741) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)

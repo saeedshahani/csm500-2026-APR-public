@@ -1,0 +1,14 @@
+
+> reflective-graph-workbench@0.1.0 test:browser
+> playwright test
+
+
+Running 33 tests using 1 worker
+·································
+  33 passed (54.6s)
+
+[stderr]
+[WebServer] (node:15195) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+(node:15196) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)

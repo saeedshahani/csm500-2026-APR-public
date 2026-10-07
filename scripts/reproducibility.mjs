@@ -34,7 +34,7 @@ function execute(command,args,options={}) {
 }
 function files() {
   const native=sourceFiles(['crates','examples']).filter(p=>/\.(rs|toml|txt|atoms|graph|json|lambda|observer|lean|md)$/.test(p));
-  return [...new Set(['Cargo.toml','Cargo.lock','rust-toolchain.toml','scripts/reproducibility.mjs','scripts/reproduction-panel.mjs','scripts/reproducibility.test.mjs','scripts/research-source-files.mjs','scripts/learning-corpus.mjs','scripts/meaning-corpus.mjs','scripts/minimality-codecs.mjs','platform/learning.mjs','platform/meaning.mjs','docs/research/evaluation.md',...native])].sort();
+  return [...new Set(['Cargo.toml','Cargo.lock','rust-toolchain.toml','scripts/reproducibility.mjs','scripts/reproduction-panel.mjs','scripts/reproducibility.test.mjs','scripts/research-source-files.mjs','scripts/learning-corpus.mjs','scripts/meaning-corpus.mjs','scripts/minimality-codecs.mjs','platform/learning.mjs','platform/meaning.mjs','benchmarks/PROTOCOL.md',...native])].sort();
 }
 function snapshot(){return Object.fromEntries(files().map(p=>[p,fs.readFileSync(p).toString('base64')]));}
 function unpack(bundle,dir){for(const[p,b]of Object.entries(bundle)){safePath(p);const dest=path.join(dir,p);fs.mkdirSync(path.dirname(dest),{recursive:true});fs.writeFileSync(dest,Buffer.from(b,'base64'),{flag:'wx'});}}

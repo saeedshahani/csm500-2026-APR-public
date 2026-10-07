@@ -12,7 +12,7 @@
     "wasm": "node scripts/build-wasm.mjs web",
     "wasm:node": "node scripts/build-wasm.mjs nodejs",
     "dev": "npm run wasm && vite --host 127.0.0.1",
-    "build": "npm run wasm && tsc --noEmit && vite build",
+    "build": "npm run wasm && tsc --noEmit && vite build && node scripts/build-notices.mjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src tests",
     "preview": "vite preview --host 127.0.0.1 --port 4173 --strictPort",

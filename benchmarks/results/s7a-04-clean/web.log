@@ -1,0 +1,265 @@
+
+added 227 packages, and audited 228 packages in 3s
+
+38 packages are looking for funding
+  run `npm fund` for details
+
+found 0 vulnerabilities
+
+> reflective-graph-workbench@0.1.0 build
+> npm run wasm && tsc --noEmit && vite build && node scripts/build-notices.mjs
+
+
+> reflective-graph-workbench@0.1.0 wasm
+> node scripts/build-wasm.mjs web
+
+    Updating crates.io index
+  Installing wasm-bindgen-cli v0.2.100
+    Updating crates.io index
+warning: package `spin v0.9.8` in Cargo.lock is yanked in registry `crates-io`, consider running without --locked
+    Updating crates.io index
+   Compiling proc-macro2 v1.0.93
+   Compiling unicode-ident v1.0.14
+   Compiling cfg-if v1.0.0
+   Compiling stable_deref_trait v1.2.0
+   Compiling libc v0.2.169
+   Compiling byteorder v1.5.0
+   Compiling autocfg v1.4.0
+   Compiling once_cell v1.20.2
+   Compiling crossbeam-utils v0.8.21
+   Compiling log v0.4.22
+   Compiling serde v1.0.217
+   Compiling version_check v0.9.5
+   Compiling bitflags v2.7.0
+   Compiling rayon-core v1.12.1
+   Compiling memchr v2.7.4
+   Compiling heck v0.5.0
+   Compiling litemap v0.7.4
+   Compiling semver v1.0.24
+   Compiling writeable v0.5.5
+   Compiling hashbrown v0.15.2
+   Compiling anyhow v1.0.95
+   Compiling equivalent v1.0.1
+   Compiling ahash v0.8.11
+   Compiling hashbrown v0.12.3
+   Compiling either v1.13.0
+   Compiling indexmap v1.9.3
+   Compiling fallible-iterator v0.2.0
+   Compiling icu_locid_transform_data v1.5.0
+   Compiling shlex v1.3.0
+   Compiling leb128 v0.2.5
+   Compiling icu_properties_data v1.5.0
+   Compiling smallvec v1.13.2
+   Compiling icu_normalizer_data v1.5.0
+   Compiling wasm-encoder v0.214.0
+   Compiling cc v1.2.9
+   Compiling utf16_iter v1.0.5
+   Compiling utf8_iter v1.0.4
+   Compiling write16 v1.0.0
+   Compiling rustix v0.38.43
+   Compiling utf8parse v0.2.2
+   Compiling unicase v2.8.1
+   Compiling anstyle-parse v0.2.6
+   Compiling aho-corasick v1.1.3
+   Compiling mime_guess v2.0.5
+   Compiling num-traits v0.2.19
+   Compiling is_terminal_polyfill v1.70.1
+   Compiling quote v1.0.38
+   Compiling fastrand v2.3.0
+   Compiling regex-syntax v0.8.5
+   Compiling syn v2.0.96
+   Compiling colorchoice v1.0.3
+   Compiling percent-encoding v2.3.1
+   Compiling untrusted v0.9.0
+   Compiling httparse v1.9.5
+   Compiling anstyle v1.0.10
+   Compiling anstyle-query v1.1.2
+   Compiling serde_json v1.0.135
+   Compiling spin v0.9.8
+   Compiling crossbeam-epoch v0.9.18
+   Compiling rustls-pki-types v1.10.1
+   Compiling crossbeam-deque v0.8.6
+   Compiling ring v0.17.8
+   Compiling anstream v0.6.18
+   Compiling getrandom v0.2.15
+   Compiling rayon v1.10.0
+   Compiling errno v0.3.10
+   Compiling rand_core v0.6.4
+   Compiling form_urlencoded v1.2.1
+   Compiling regex-automata v0.4.9
+   Compiling gimli v0.26.2
+   Compiling powerfmt v0.2.0
+   Compiling adler2 v2.0.0
+   Compiling itoa v1.0.14
+   Compiling mime v0.3.17
+   Compiling ryu v1.0.18
+   Compiling wasm-bindgen-shared v0.2.100
+   Compiling alloc-no-stdlib v2.0.4
+   Compiling rustls v0.23.21
+   Compiling core-foundation-sys v0.8.7
+   Compiling safemem v0.3.3
+   Compiling buf_redux v0.8.4
+   Compiling alloc-stdlib v0.2.2
+   Compiling iana-time-zone v0.1.61
+   Compiling miniz_oxide v0.8.2
+   Compiling deranged v0.3.11
+   Compiling num_threads v0.1.7
+   Compiling tempfile v3.15.0
+   Compiling num_cpus v1.16.0
+   Compiling twoway v0.1.8
+   Compiling crc32fast v1.4.2
+   Compiling num-conv v0.1.0
+   Compiling base64 v0.22.1
+   Compiling clap_lex v0.7.4
+   Compiling strsim v0.11.1
+   Compiling ascii v1.1.0
+   Compiling quick-error v1.2.3
+   Compiling chunked_transfer v1.5.0
+   Compiling time-core v0.1.2
+   Compiling zeroize v1.8.1
+   Compiling httpdate v1.0.3
+   Compiling subtle v2.6.1
+   Compiling tiny_http v0.12.0
+   Compiling clap_builder v4.5.26
+   Compiling chrono v0.4.39
+   Compiling time v0.3.37
+   Compiling flate2 v1.0.35
+   Compiling threadpool v1.8.1
+   Compiling brotli-decompressor v4.0.1
+   Compiling synstructure v0.13.1
+   Compiling id-arena v2.2.1
+   Compiling filetime v0.2.25
+   Compiling webpki-roots v0.26.7
+   Compiling humantime v2.1.0
+   Compiling sha1_smol v1.0.1
+   Compiling regex v1.11.1
+   Compiling base64 v0.13.1
+   Compiling rustc-demangle v0.1.24
+   Compiling env_filter v0.1.3
+   Compiling env_logger v0.11.6
+   Compiling zerocopy-derive v0.7.35
+   Compiling zerofrom-derive v0.1.5
+   Compiling yoke-derive v0.7.5
+   Compiling zerovec-derive v0.10.3
+   Compiling serde_derive v1.0.217
+   Compiling displaydoc v0.2.5
+   Compiling zerocopy v0.7.35
+   Compiling icu_provider_macros v1.5.0
+   Compiling walrus-macro v0.22.0
+   Compiling clap_derive v4.5.24
+   Compiling zerofrom v0.1.5
+   Compiling yoke v0.7.5
+   Compiling zerovec v0.10.4
+   Compiling ppv-lite86 v0.2.20
+   Compiling rand_chacha v0.3.1
+   Compiling rand v0.8.5
+   Compiling rustls-webpki v0.102.8
+   Compiling tinystr v0.7.6
+   Compiling icu_collections v1.5.0
+   Compiling multipart v0.18.0
+   Compiling icu_locid v1.5.0
+   Compiling clap v4.5.26
+   Compiling icu_provider v1.5.0
+   Compiling icu_locid_transform v1.5.0
+   Compiling icu_properties v1.5.1
+   Compiling hashbrown v0.14.5
+   Compiling indexmap v2.7.0
+   Compiling wasmparser v0.214.0
+   Compiling icu_normalizer v1.5.0
+   Compiling idna_adapter v1.2.0
+   Compiling idna v1.0.3
+   Compiling url v2.5.4
+   Compiling ureq v2.12.1
+   Compiling rouille v3.6.2
+   Compiling walrus v0.23.3
+   Compiling wasm-bindgen-wasm-conventions v0.2.100
+   Compiling wasm-bindgen-wasm-interpreter v0.2.100
+   Compiling wasm-bindgen-multi-value-xform v0.2.100
+   Compiling wasm-bindgen-externref-xform v0.2.100
+   Compiling wasm-bindgen-threads-xform v0.2.100
+   Compiling wasm-bindgen-cli-support v0.2.100
+   Compiling wasm-bindgen-cli v0.2.100
+    Finished `release` profile [optimized] target(s) in 24.93s
+warning: the following packages contain code that will be rejected by a future version of Rust: buf_redux v0.8.4, multipart v0.18.0
+note: to see what the problems were, use the option `--future-incompat-report`, or run `cargo report future-incompatibilities --id 1`
+  Installing /private/tmp/s7a-acceptance-checkout.STLp4Z/target/tools/bin/wasm-bindgen
+  Installing /private/tmp/s7a-acceptance-checkout.STLp4Z/target/tools/bin/wasm-bindgen-test-runner
+  Installing /private/tmp/s7a-acceptance-checkout.STLp4Z/target/tools/bin/wasm2es6js
+   Installed package `wasm-bindgen-cli v0.2.100` (executables `wasm-bindgen`, `wasm-bindgen-test-runner`, `wasm2es6js`)
+warning: be sure to add `/private/tmp/s7a-acceptance-checkout.STLp4Z/target/tools/bin` to your PATH to be able to run the installed binaries
+[INFO]: 🎯  Checking for the Wasm target...
+[INFO]: 🌀  Compiling to Wasm...
+    Blocking waiting for file lock on build directory
+   Compiling typenum v1.20.1
+   Compiling wasm-bindgen-shared v0.2.100
+   Compiling bumpalo v3.20.3
+   Compiling log v0.4.34
+   Compiling rand_core v0.6.4
+   Compiling cfg-if v1.0.4
+   Compiling serde_core v1.0.228
+   Compiling generic-array v0.14.7
+   Compiling rustversion v1.0.23
+   Compiling serde v1.0.228
+   Compiling syn v2.0.119
+   Compiling num-traits v0.2.19
+   Compiling wasm-bindgen v0.2.100
+   Compiling zerocopy v0.8.57
+   Compiling im v15.1.0
+   Compiling once_cell v1.21.4
+   Compiling itoa v1.0.18
+   Compiling serde_json v1.0.145
+   Compiling rand_xoshiro v0.6.0
+   Compiling ryu v1.0.23
+   Compiling memchr v2.8.3
+   Compiling engine v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/engine)
+   Compiling rand v0.8.5
+   Compiling bitmaps v2.1.0
+   Compiling block-buffer v0.10.4
+   Compiling crypto-common v0.1.7
+   Compiling digest v0.10.7
+   Compiling sized-chunks v0.6.5
+   Compiling sha2 v0.10.8
+   Compiling num-integer v0.1.47
+   Compiling num-bigint v0.4.6
+   Compiling serde_path_to_error v0.1.20
+   Compiling wasm-bindgen-backend v0.2.100
+   Compiling logos-codegen v0.16.1
+   Compiling serde_derive v1.0.228
+   Compiling num-rational v0.4.2
+   Compiling wasm-bindgen-macro-support v0.2.100
+   Compiling logos-derive v0.16.1
+   Compiling logos v0.16.1
+   Compiling wasm-bindgen-macro v0.2.100
+   Compiling ppv-lite86 v0.2.21
+   Compiling rand_chacha v0.3.1
+   Compiling graph-core v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/graph-core)
+   Compiling parser v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/parser)
+   Compiling js-sys v0.3.77
+   Compiling console_error_panic_hook v0.1.7
+   Compiling serde-wasm-bindgen v0.6.5
+   Compiling wasm-bridge v0.1.0 (/private/tmp/s7a-acceptance-checkout.STLp4Z/crates/wasm-bridge)
+    Finished `release` profile [optimized] target(s) in 15.38s
+[INFO]: Optional fields missing from Cargo.toml: 'description', 'repository', and 'license'. These are not necessary, but recommended
+[INFO]: ✨   Done in 15.88s
+[INFO]: 📦   Your wasm pkg is ready to publish at ../frontend/pkg.
+vite v8.3.0 building client environment for production...
+transforming...
+✓ 159 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                               0.48 kB │ gzip:   0.33 kB
+dist/assets/engine.worker-5atQ5tS7.js         4.86 kB
+dist/third-party-notices.md                  17.84 kB
+dist/assets/wasm_bridge_bg-7d4XaX--.wasm  2,238.96 kB │ gzip: 620.05 kB
+dist/assets/index-HPVU5_VN.css               26.87 kB │ gzip:   6.18 kB
+dist/assets/emulator-session-BSbTZW5g.js      0.61 kB │ gzip:   0.43 kB
+dist/assets/hosted-session-DgHpiwqv.js        0.96 kB │ gzip:   0.54 kB
+dist/assets/index.esm-Dc06N6Mn.js            88.48 kB │ gzip:  26.23 kB
+dist/assets/index-B2mLfVDO.js               905.99 kB │ gzip: 235.34 kB
+
+✓ built in 339ms
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
