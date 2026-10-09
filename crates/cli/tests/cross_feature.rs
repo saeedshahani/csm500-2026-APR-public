@@ -1,18 +1,17 @@
 //! Every application publishes the same checked-history contract.
 use serde_json::Value;
-use std::io::Write;
+mod support;
 use std::process::{Command, Output, Stdio};
 
 fn invoke(args: &[&str], input: &[u8]) -> Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_cli"))
+    let child = Command::new(env!("CARGO_BIN_EXE_cli"))
         .args(args)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    child.stdin.take().unwrap().write_all(input).unwrap();
-    child.wait_with_output().unwrap()
+    support::finish_with_input(child, input)
 }
 fn success(args: &[&str], input: &[u8]) -> Vec<u8> {
     let out = invoke(args, input);

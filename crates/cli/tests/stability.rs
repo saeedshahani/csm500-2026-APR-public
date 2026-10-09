@@ -1,3 +1,4 @@
+mod support;
 use std::{path::Path, process::Command};
 
 #[test]
@@ -76,8 +77,7 @@ fn malformed_bounds_are_not_treated_as_research_results() {
 
 #[test]
 fn a_refutation_is_not_a_parse_error_or_successful_certificate() {
-    use std::io::Write;
-    let mut child = Command::new(env!("CARGO_BIN_EXE_cli"))
+    let child = Command::new(env!("CARGO_BIN_EXE_cli"))
         .current_dir(Path::new(env!("CARGO_MANIFEST_DIR")).join("../.."))
         .args([
             "stability-check",
@@ -96,13 +96,7 @@ fn a_refutation_is_not_a_parse_error_or_successful_certificate() {
         contract,
         include_str!("../../../examples/practical/revise-output.contract.json")
     );
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(contract.as_bytes())
-        .unwrap();
-    let out = child.wait_with_output().unwrap();
+    let out = support::finish_with_input(child, contract.as_bytes());
     assert_eq!(out.status.code(), Some(7));
     let r: serde_json::Value = serde_json::from_slice(&out.stdout).unwrap();
     assert_eq!(r["verdict"], "refuted");

@@ -1,15 +1,14 @@
-use std::io::Write;
+mod support;
 use std::process::{Command, Stdio};
 fn invoke(args: &[&str], input: &[u8]) -> std::process::Output {
-    let mut c = Command::new(env!("CARGO_BIN_EXE_cli"))
+    let c = Command::new(env!("CARGO_BIN_EXE_cli"))
         .args(args)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    c.stdin.take().unwrap().write_all(input).unwrap();
-    c.wait_with_output().unwrap()
+    support::finish_with_input(c, input)
 }
 fn trace() -> Vec<u8> {
     let out = invoke(
@@ -57,20 +56,20 @@ fn native_command_supports_occurrence_class_and_empty_selection() {
 #[test]
 fn input_validation_and_resource_errors_produce_no_report() {
     let input = trace();
-    for flags in [
-        vec!["--select", "99"],
-        vec!["--select", "0,0"],
-        vec!["--select", "0", "--classes", "0=x"],
-        vec!["--classes", "0=x,0=x"],
-        vec!["--classes", "false=x"],
-        vec!["--classes", "0="],
-        vec!["--select", "-1"],
-        vec!["--max-units", "no"],
+    for (flags, code) in [
+        (vec!["--select", "99"], 1),
+        (vec!["--select", "0,0"], 2),
+        (vec!["--select", "0", "--classes", "0=x"], 2),
+        (vec!["--classes", "0=x,0=x"], 2),
+        (vec!["--classes", "false=x"], 2),
+        (vec!["--classes", "0="], 2),
+        (vec!["--select", "-1"], 2),
+        (vec!["--max-units", "no"], 2),
     ] {
         let mut args = vec!["trace-provenance", "-"];
         args.extend(flags);
         let out = invoke(&args, &input);
-        assert!(!out.status.success());
+        assert_eq!(out.status.code(), Some(code), "{out:?}");
         assert!(out.stdout.is_empty());
     }
     for option in ["--max-work", "--max-units"] {

@@ -1,8 +1,8 @@
 use serde_json::{json, Value};
-use std::io::Write;
+mod support;
 use std::process::{Command, Stdio};
 fn invoke(command: &str, input: &str, options: &[&str]) -> std::process::Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_cli"))
+    let child = Command::new(env!("CARGO_BIN_EXE_cli"))
         .args([command, "-"])
         .args(options)
         .stdin(Stdio::piped())
@@ -10,13 +10,7 @@ fn invoke(command: &str, input: &str, options: &[&str]) -> std::process::Output 
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(input.as_bytes())
-        .unwrap();
-    child.wait_with_output().unwrap()
+    support::finish_with_input(child, input.as_bytes())
 }
 #[test]
 fn workflow_runs_and_export_checks_without_python() {

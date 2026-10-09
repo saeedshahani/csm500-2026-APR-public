@@ -1,23 +1,17 @@
-use std::io::Write;
+mod support;
 use std::process::{Command, Output, Stdio};
 fn invoke(command: &str, input: &str) -> Output {
     invoke_args(&[command, "-"], input)
 }
 fn invoke_args(args: &[&str], input: &str) -> Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_cli"))
+    let child = Command::new(env!("CARGO_BIN_EXE_cli"))
         .args(args)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    child
-        .stdin
-        .take()
-        .unwrap()
-        .write_all(input.as_bytes())
-        .unwrap();
-    child.wait_with_output().unwrap()
+    support::finish_with_input(child, input.as_bytes())
 }
 
 #[test]

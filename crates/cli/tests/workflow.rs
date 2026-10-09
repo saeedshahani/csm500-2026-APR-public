@@ -1,20 +1,13 @@
-use std::{
-    io::Write,
-    process::{Command, Stdio},
-};
+mod support;
+use std::process::{Command, Stdio};
 fn invoke(command: &str, request: &serde_json::Value) -> std::process::Output {
-    let mut p = Command::new(env!("CARGO_BIN_EXE_cli"))
+    let p = Command::new(env!("CARGO_BIN_EXE_cli"))
         .args([command, "-"])
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .spawn()
         .unwrap();
-    p.stdin
-        .take()
-        .unwrap()
-        .write_all(request.to_string().as_bytes())
-        .unwrap();
-    p.wait_with_output().unwrap()
+    support::finish_with_input(p, request.to_string().as_bytes())
 }
 #[test]
 fn workflow_cli_certifies_runs_and_exports_replayable_history() {

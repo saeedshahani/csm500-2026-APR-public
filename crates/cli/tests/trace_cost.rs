@@ -1,15 +1,14 @@
-use std::io::Write;
+mod support;
 use std::process::{Command, Stdio};
 fn invoke(args: &[&str], input: &[u8]) -> std::process::Output {
-    let mut c = Command::new(env!("CARGO_BIN_EXE_cli"))
+    let c = Command::new(env!("CARGO_BIN_EXE_cli"))
         .args(args)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    c.stdin.take().unwrap().write_all(input).unwrap();
-    c.wait_with_output().unwrap()
+    support::finish_with_input(c, input)
 }
 fn trace() -> Vec<u8> {
     let o = invoke(

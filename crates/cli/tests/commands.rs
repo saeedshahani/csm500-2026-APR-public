@@ -1,4 +1,4 @@
-use std::io::{ErrorKind, Write};
+mod support;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Output, Stdio};
 use std::sync::atomic::{AtomicUsize, Ordering};
@@ -12,17 +12,14 @@ fn program(name: &str) -> PathBuf {
         .join(format!("{name}.graph"))
 }
 fn stdin(args: &[&str], text: &[u8]) -> Output {
-    let mut child = command()
+    let child = command()
         .args(args)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    if let Err(error) = child.stdin.take().unwrap().write_all(text) {
-        assert_eq!(error.kind(), ErrorKind::BrokenPipe);
-    }
-    child.wait_with_output().unwrap()
+    support::finish_with_input(child, text)
 }
 fn outcome(output: &Output, code: i32, label: &str, steps: u64) -> parser::LoadedProgram {
     assert_eq!(

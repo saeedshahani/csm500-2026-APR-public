@@ -5,7 +5,7 @@ mod oracle;
 use engine::observation::{ObservationLimits, Observer};
 use engine::trace::{GraphData, TraceLimits, VerifiedTrace};
 use graph_core::{GraphLimits, ValidatedGraph};
-use std::io::{ErrorKind, Write};
+mod support;
 use std::path::PathBuf;
 use std::process::{Command, Stdio};
 fn path(name: &str) -> PathBuf {
@@ -222,17 +222,14 @@ fn independent_examples_have_no_edges_and_commute_in_both_orders() {
     }
 }
 fn pipe(command: &[&str], input: &[u8]) -> std::process::Output {
-    let mut child = Command::new(env!("CARGO_BIN_EXE_cli"))
+    let child = Command::new(env!("CARGO_BIN_EXE_cli"))
         .args(command)
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
         .unwrap();
-    if let Err(error) = child.stdin.take().unwrap().write_all(input) {
-        assert_eq!(error.kind(), ErrorKind::BrokenPipe);
-    }
-    child.wait_with_output().unwrap()
+    support::finish_with_input(child, input)
 }
 #[test]
 fn cli_replay_validation_and_no_overwrite_are_atomic() {
