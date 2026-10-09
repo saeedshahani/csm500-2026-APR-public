@@ -59,13 +59,21 @@
       "conclusion": "failure",
       "failed_step": "Pinned kernel proofs and independent admission campaigns",
       "diagnosis": "Mathlib cache downloader reads lean-toolchain relative to the process working directory. lake --dir selects the package without changing that working directory, so invocation from the Rust repository fails before numerical proof checking.",
-      "correction_status": "approval requested"
+      "correction_status": "resolved on 6c94ea8745ada8620ddc66c8e12de55d8f8164c0; successful Rust workflow 37936399080",
+      "correction_receipt": "../s7a-08-ci/receipt.json"
     },
     "workbench": {"run_id": 37688582773, "conclusion": "success"},
     "container": {"run_id": 37688582743, "conclusion": "success"}
   },
+  "manual_email_acceptance": {
+    "date": "2026-10-09",
+    "source": "user confirmation in conversation",
+    "signup": "passed",
+    "verification_email_received_and_used": "passed",
+    "subsequent_sign_in": "passed"
+  },
   "limitations": [
-    "Synthetic accounts were administrator-verified; real inbox delivery remains a manual acceptance check.",
+    "The automated tests use administrator-verified synthetic accounts. The separate real-email check is user-reported manual acceptance, not an automated observation.",
     "Immutable synthetic project and job histories are retained; only disposable identities are removed.",
     "Fresh-browser checks cover the public workspace and account entry screen; signed production API workflows are exercised separately by hosted acceptance.",
     "The runtime audit is a selected configuration check, not a general security or availability assessment.",

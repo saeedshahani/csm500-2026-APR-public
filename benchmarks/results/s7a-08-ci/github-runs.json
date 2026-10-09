@@ -1,0 +1,546 @@
+[
+  {
+    "conclusion": "success",
+    "createdAt": "2026-10-09T13:22:40Z",
+    "databaseId": 37936399080,
+    "headSha": "6c94ea8745ada8620ddc66c8e12de55d8f8164c0",
+    "jobs": [
+      {
+        "completedAt": "2026-10-09T13:44:44Z",
+        "conclusion": "success",
+        "databaseId": 113839424342,
+        "name": "check",
+        "startedAt": "2026-10-09T13:22:44Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-09T13:22:47Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-09T13:22:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:22:50Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-09T13:22:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:22:59Z",
+            "conclusion": "success",
+            "name": "Install pinned toolchain",
+            "number": 3,
+            "startedAt": "2026-10-09T13:22:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:22:59Z",
+            "conclusion": "success",
+            "name": "Run cargo fmt --all -- --check",
+            "number": 4,
+            "startedAt": "2026-10-09T13:22:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:23:44Z",
+            "conclusion": "success",
+            "name": "Run cargo clippy --workspace --all-targets --locked -- -D warnings",
+            "number": 5,
+            "startedAt": "2026-10-09T13:22:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:31:40Z",
+            "conclusion": "success",
+            "name": "Run cargo test --workspace --locked",
+            "number": 6,
+            "startedAt": "2026-10-09T13:23:44Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:31:40Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 7,
+            "startedAt": "2026-10-09T13:31:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:32:55Z",
+            "conclusion": "success",
+            "name": "Acquired organization and native model correspondence",
+            "number": 8,
+            "startedAt": "2026-10-09T13:31:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:33:34Z",
+            "conclusion": "success",
+            "name": "Checked numerical component regression and frozen evidence",
+            "number": 9,
+            "startedAt": "2026-10-09T13:32:55Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:33:35Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 10,
+            "startedAt": "2026-10-09T13:33:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:33:35Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-java@v4",
+            "number": 11,
+            "startedAt": "2026-10-09T13:33:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:35:35Z",
+            "conclusion": "success",
+            "name": "Local developer API and Firebase persistence acceptance",
+            "number": 12,
+            "startedAt": "2026-10-09T13:33:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:42:16Z",
+            "conclusion": "success",
+            "name": "Large-data importer and experimental matching smoke",
+            "number": 13,
+            "startedAt": "2026-10-09T13:35:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:42:26Z",
+            "conclusion": "success",
+            "name": "Benchmark correctness smoke (not performance evidence)",
+            "number": 14,
+            "startedAt": "2026-10-09T13:42:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:42:59Z",
+            "conclusion": "success",
+            "name": "Check production WebAssembly dependencies",
+            "number": 15,
+            "startedAt": "2026-10-09T13:42:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:30Z",
+            "conclusion": "success",
+            "name": "Complete script inventory and current catalogue",
+            "number": 16,
+            "startedAt": "2026-10-09T13:42:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:31Z",
+            "conclusion": "success",
+            "name": "Retain property regressions",
+            "number": 17,
+            "startedAt": "2026-10-09T13:44:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:31Z",
+            "conclusion": "success",
+            "name": "Portable trace and checked replay smoke checks",
+            "number": 18,
+            "startedAt": "2026-10-09T13:44:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:39Z",
+            "conclusion": "success",
+            "name": "Run cargo doc --workspace --no-deps --locked",
+            "number": 19,
+            "startedAt": "2026-10-09T13:44:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:39Z",
+            "conclusion": "success",
+            "name": "Run cargo run --locked -p cli -- demo",
+            "number": 20,
+            "startedAt": "2026-10-09T13:44:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:40Z",
+            "conclusion": "success",
+            "name": "Authored CLI smoke checks",
+            "number": 21,
+            "startedAt": "2026-10-09T13:44:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:40Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-java@v4",
+            "number": 39,
+            "startedAt": "2026-10-09T13:44:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:40Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 40,
+            "startedAt": "2026-10-09T13:44:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:40Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 41,
+            "startedAt": "2026-10-09T13:44:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:41Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 42,
+            "startedAt": "2026-10-09T13:44:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:44:41Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 43,
+            "startedAt": "2026-10-09T13:44:41Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399080/job/113839424342"
+      },
+      {
+        "completedAt": "2026-10-09T13:26:45Z",
+        "conclusion": "success",
+        "databaseId": 113839425007,
+        "name": "proofs",
+        "startedAt": "2026-10-09T13:22:44Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-09T13:22:46Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-09T13:22:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:22:48Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-09T13:22:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:22:49Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-10-09T13:22:48Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:24:46Z",
+            "conclusion": "success",
+            "name": "Build native admission campaign dependency",
+            "number": 4,
+            "startedAt": "2026-10-09T13:22:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:26:42Z",
+            "conclusion": "success",
+            "name": "Pinned kernel proofs and independent admission campaigns",
+            "number": 5,
+            "startedAt": "2026-10-09T13:24:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:26:43Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 9,
+            "startedAt": "2026-10-09T13:26:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:26:43Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 10,
+            "startedAt": "2026-10-09T13:26:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:26:43Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "startedAt": "2026-10-09T13:26:43Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399080/job/113839425007"
+      }
+    ],
+    "name": "Rust checks",
+    "status": "completed",
+    "updatedAt": "2026-10-09T13:44:45Z",
+    "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399080"
+  },
+  {
+    "conclusion": "success",
+    "createdAt": "2026-10-09T13:22:40Z",
+    "databaseId": 37936399154,
+    "headSha": "6c94ea8745ada8620ddc66c8e12de55d8f8164c0",
+    "jobs": [
+      {
+        "completedAt": "2026-10-09T13:32:27Z",
+        "conclusion": "success",
+        "databaseId": 113839424801,
+        "name": "workbench",
+        "startedAt": "2026-10-09T13:22:44Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-09T13:22:46Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-09T13:22:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:22:50Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-09T13:22:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:22:59Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-10-09T13:22:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:23:02Z",
+            "conclusion": "success",
+            "name": "Run npm install --global npm@11.7.0",
+            "number": 4,
+            "startedAt": "2026-10-09T13:22:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:23:10Z",
+            "conclusion": "success",
+            "name": "Run rustup toolchain install 1.85.0 --profile minimal",
+            "number": 5,
+            "startedAt": "2026-10-09T13:23:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:23:12Z",
+            "conclusion": "success",
+            "name": "Run rustup target add wasm32-unknown-unknown --toolchain 1.85.0",
+            "number": 6,
+            "startedAt": "2026-10-09T13:23:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:23:33Z",
+            "conclusion": "success",
+            "name": "Run npm ci",
+            "number": 7,
+            "startedAt": "2026-10-09T13:23:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:27:38Z",
+            "conclusion": "success",
+            "name": "Run npm run build",
+            "number": 8,
+            "startedAt": "2026-10-09T13:23:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:27:41Z",
+            "conclusion": "success",
+            "name": "Run npm run lint",
+            "number": 9,
+            "startedAt": "2026-10-09T13:27:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:27:44Z",
+            "conclusion": "success",
+            "name": "Run npm run test:unit",
+            "number": 10,
+            "startedAt": "2026-10-09T13:27:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:29:36Z",
+            "conclusion": "success",
+            "name": "Run npm run test:parity",
+            "number": 11,
+            "startedAt": "2026-10-09T13:27:44Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:30:00Z",
+            "conclusion": "success",
+            "name": "Run npx playwright install --with-deps chromium",
+            "number": 12,
+            "startedAt": "2026-10-09T13:29:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:32:22Z",
+            "conclusion": "success",
+            "name": "Run npm run test:browser",
+            "number": 13,
+            "startedAt": "2026-10-09T13:30:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:32:24Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 14,
+            "startedAt": "2026-10-09T13:32:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:32:24Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 27,
+            "startedAt": "2026-10-09T13:32:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:32:24Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 28,
+            "startedAt": "2026-10-09T13:32:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:32:24Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 29,
+            "startedAt": "2026-10-09T13:32:24Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399154/job/113839424801"
+      }
+    ],
+    "name": "Workbench build and runtime parity",
+    "status": "completed",
+    "updatedAt": "2026-10-09T13:32:28Z",
+    "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399154"
+  },
+  {
+    "conclusion": "success",
+    "createdAt": "2026-10-09T13:22:40Z",
+    "databaseId": 37936399137,
+    "headSha": "6c94ea8745ada8620ddc66c8e12de55d8f8164c0",
+    "jobs": [
+      {
+        "completedAt": "2026-10-09T13:25:00Z",
+        "conclusion": "success",
+        "databaseId": 113839425259,
+        "name": "container",
+        "startedAt": "2026-10-09T13:22:44Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-09T13:22:46Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-09T13:22:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:22:50Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-09T13:22:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:24:52Z",
+            "conclusion": "success",
+            "name": "Build pinned-toolchain native platform",
+            "number": 3,
+            "startedAt": "2026-10-09T13:22:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:24:57Z",
+            "conclusion": "success",
+            "name": "Platform lifecycle within container limits",
+            "number": 4,
+            "startedAt": "2026-10-09T13:24:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:24:57Z",
+            "conclusion": "success",
+            "name": "Record actual image and binary identity",
+            "number": 5,
+            "startedAt": "2026-10-09T13:24:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:24:57Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 10,
+            "startedAt": "2026-10-09T13:24:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-09T13:24:57Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "startedAt": "2026-10-09T13:24:57Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399137/job/113839425259"
+      }
+    ],
+    "name": "Native platform container",
+    "status": "completed",
+    "updatedAt": "2026-10-09T13:25:01Z",
+    "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399137"
+  }
+]

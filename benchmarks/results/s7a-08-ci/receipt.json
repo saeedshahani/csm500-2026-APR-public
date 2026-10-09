@@ -1,0 +1,112 @@
+{
+  "schema": "reflective-ci-correction-v1",
+  "date": "2026-10-09",
+  "verified_commit": "6c94ea8745ada8620ddc66c8e12de55d8f8164c0",
+  "source_inventory_sha256": "ff25daa64796e6210712a1ba00852f6a6b502f5412c386610ae86eab4bf57a5a",
+  "deployed_runtime_commit": "eaa12f79827690c7ffc3626e94b1160666b547c7",
+  "application_sources_dependencies_proofs_and_deployment_configuration_unchanged": true,
+  "complete": true,
+  "corrections": [
+    {
+      "commit": "b1f98106617eae802093fd5460aba03b38c35dfc",
+      "issue": "Mathlib downloader must run inside its pinned checkout",
+      "regressions": "Actual workflow shell executes from unrelated cwd and paths containing spaces; downloader exit status propagates"
+    },
+    {
+      "commit": "1f4e081e273d982f6502bab9bd1620f4d2ae7780",
+      "issue": "Shared Rust and Mathlib runner exhausted disk",
+      "regressions": "Mandatory isolated proof runner retains all checks and builds native dependency; disposable incremental cache disabled"
+    },
+    {
+      "commit": "6c94ea8745ada8620ddc66c8e12de55d8f8164c0",
+      "issue": "CLI test writers panicked on early argument rejection",
+      "regressions": "Shared helper accepts BrokenPipe only with normal non-zero child exit; exact rejection codes, large input, full successful input and unexpected successful early closure checked"
+    }
+  ],
+  "local_checks": [
+    {
+      "command": "cargo fmt --all --check",
+      "exit_code": 0
+    },
+    {
+      "command": "cargo test --workspace --locked",
+      "exit_code": 0,
+      "passed": 514,
+      "failed": 0,
+      "ignored": 2,
+      "ignored_reason": "Explicit fixture/evidence generation routines",
+      "log": "workspace.log",
+      "sha256": "831815bd3dd48f9d7103d4eb832fc6d2a15f77265582d1fa8c1dec8803506bfd"
+    },
+    {
+      "command": "cargo clippy --workspace --all-targets --locked -- -D warnings",
+      "exit_code": 0,
+      "log": "clippy.log",
+      "sha256": "d052b2d7c13c910d8dfcaf745ebbe6e8714c6c03dfa039f4ba5b232597a1574f"
+    },
+    {
+      "command": "RUSTDOCFLAGS='-D warnings' cargo doc --workspace --no-deps --locked --offline",
+      "exit_code": 0,
+      "log": "rustdoc.log",
+      "sha256": "8847af17398827f4872b4bcedbcc9e63144bd3815a965763b2358e5ad373a106"
+    },
+    {
+      "command": "node --test scripts/*.test.mjs",
+      "exit_code": 0,
+      "passed": 120,
+      "failed": 0,
+      "log": "scripts.log",
+      "sha256": "975ce21b7aa68b4f86a9395a1786f07ee2eb22b573086279b348d27fef7f9c16"
+    },
+    {
+      "command": "cargo test --locked -q -p cli --test selected_provenance --test subprocess --test trace_cost",
+      "repetitions": 30,
+      "tests_per_repetition": 9,
+      "exit_code": 0,
+      "log": "subprocess-stress.log",
+      "sha256": "a856ddfc9c679d55c57f0f2c1905da4c7bec7c94c9f1ebccf2b99ee02081f358"
+    }
+  ],
+  "github_actions": [
+    {
+      "run_id": 37936399080,
+      "name": "Rust checks",
+      "conclusion": "success",
+      "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399080",
+      "commit": "6c94ea8745ada8620ddc66c8e12de55d8f8164c0"
+    },
+    {
+      "run_id": 37936399154,
+      "name": "Workbench build and runtime parity",
+      "conclusion": "success",
+      "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399154",
+      "commit": "6c94ea8745ada8620ddc66c8e12de55d8f8164c0"
+    },
+    {
+      "run_id": 37936399137,
+      "name": "Native platform container",
+      "conclusion": "success",
+      "url": "https://github.com/saeedshahani/csm500-2026-APR/actions/runs/37936399137",
+      "commit": "6c94ea8745ada8620ddc66c8e12de55d8f8164c0"
+    }
+  ],
+  "github_metadata": "github-runs.json",
+  "clean_linux_script_inventory": {
+    "passed": 118,
+    "failed": 0,
+    "skipped": 2,
+    "skip_reason": "Personal archive excluded from version control; both checks pass locally"
+  },
+  "proof_statements": 82,
+  "frontend": {
+    "unit_tests": 48,
+    "parity_tests": 25,
+    "browser_tests": 33
+  },
+  "catalogue_profiles": 23,
+  "limitations": [
+    "Acceptance is for the exact recorded source inventory; a later operational change requires renewed checks.",
+    "Abstract proof checking does not establish native refinement.",
+    "This receipt closes technical CI correction, not author manuscript approval or the S7A freeze."
+  ]
+}

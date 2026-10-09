@@ -63,6 +63,14 @@ Commit `1f4e081e273d982f6502bab9bd1620f4d2ae7780` isolates the proof runner. Its
 
 The separate [local proof receipt](../s7a-07-proof/receipt.json) passes both commands and all 82 statements on the runner-isolation source inventory `f6f800ce9f5cdef67c85e46214d8f549e2cb21e4b65e7fc5966f828867ccf449`. It precedes the CLI-test-helper correction and is not relabelled as a later source check. Neither correction changes application code or theorem statements.
 
+### Final CI acceptance
+
+All three GitHub workflows pass on `6c94ea8745ada8620ddc66c8e12de55d8f8164c0`: Rust and mandatory proofs (`37936399080`), workbench (`37936399154`) and container (`37936399137`). [The correction receipt](../s7a-08-ci/receipt.json) retains the exact source identity, run metadata and local logs. The source inventory is `ff25daa64796e6210712a1ba00852f6a6b502f5412c386610ae86eab4bf57a5a`. Earlier failed runs remain identifiable; none is relabelled successful.
+
+Local verification passes 514 Rust tests, formatting, strict Clippy, warning-free API documentation and all 120 script tests. The two ignored Rust tests are explicit fixture/evidence generators. Thirty repetitions of the nine subprocess/provenance/cost tests pass. Clean Linux CI passes the full native suite, independent adopted-application comparisons, API/emulator acceptance, research campaigns, benchmark correctness and all 23 catalogue profiles. It checks 82 abstract statements in ten proof sources. Its script inventory passes 118 tests and skips the two private-archive checks, which both pass locally. The workbench passes 48 frontend units, 25 parity tests and all 33 browser tests.
+
+The correction changes CI setup, verification instructions and test helpers only. Application sources, dependencies, proof statements, Firebase configuration and both manuscripts are unchanged; the separately recorded `eaa12f7` runtime remains deployed. On 9 October the user confirmed real-email signup, receipt and use of the verification message, and subsequent sign-in. This is manual acceptance reported by the user, distinct from automated identity testing. University declarations are handled outside the repository, and the examiner already has access to the existing GitHub repository. The author's substantive manuscript approval remains outstanding; technical acceptance does not constitute that approval or a completed S7A freeze.
+
 ## Controlled measurements
 
 Measurements ran serially after builds and functional campaigns had finished. Hardware and resource profiles are retained in each collection. Existing user applications were not terminated; system-level conditions are not claimed to be identical to the historical experiments.
