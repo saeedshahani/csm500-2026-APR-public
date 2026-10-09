@@ -2,11 +2,40 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {spawnSync} from 'node:child_process';
-import {readFileSync} from 'node:fs';
+import {readFileSync,mkdtempSync,mkdirSync,writeFileSync,rmSync} from 'node:fs';
+import {tmpdir} from 'node:os';
+import {join} from 'node:path';
 import {plans,validateReceipt} from './integrated-review.mjs';
 import {compareWorkflowResults} from './workflow-study.mjs';
 import {compareRustPaths,sourceFiles} from './research-source-files.mjs';
 const hash=value=>createHash('sha256').update(value).digest('hex');
+
+// Execute the actual CI cache-setup block from an unrelated working directory.
+// The stub reproduces Mathlib's relative toolchain read without network access.
+function cacheSetup(t,lakeBody) {
+  const root=mkdtempSync(join(tmpdir(),'graph proof setup '));
+  t.after(()=>rmSync(root,{recursive:true,force:true}));
+  const checkout=join(root,'tools with spaces','mathlib');
+  mkdirSync(checkout,{recursive:true});
+  writeFileSync(join(checkout,'lean-toolchain'),'leanprover/lean4:v4.19.0\n');
+  const workflow=readFileSync('.github/workflows/ci.yml','utf8');
+  const block=workflow.match(/export PATH="\$proof_tools\/lean-4\.19\.0-linux\/bin:\$PATH"\n([\s\S]*?)\n {10}NUMERICAL_MATHLIB=/)?.[1];
+  assert.ok(block,'CI Mathlib cache-setup block is missing');
+  return spawnSync('bash',['-euo','pipefail','-c',`lake() { ${lakeBody}; }\n${block}`],{
+    cwd:root,env:{...process.env,proof_tools:join(root,'tools with spaces')},
+    encoding:'utf8',timeout:10000,
+  });
+}
+test('CI downloads the pinned Mathlib cache from its checkout, including paths with spaces',t=>{
+  const run=cacheSetup(t,'if [ "${1:-}" = "--dir" ]; then shift 2; fi; test "$*" = "exe cache get"; test "$(< lean-toolchain)" = "leanprover/lean4:v4.19.0"');
+  assert.equal(run.status,0,run.stderr);
+  assert.equal(run.signal,null);
+});
+test('CI cache-setup errors remain failures',t=>{
+  const run=cacheSetup(t,'return 23');
+  assert.equal(run.status,23,run.stderr);
+  assert.equal(run.signal,null);
+});
 
 test('source verification matches Rust component ordering and the current executable',()=>{
   assert.ok(compareRustPaths('src/causal/provenance.rs','src/causal.rs')<0);

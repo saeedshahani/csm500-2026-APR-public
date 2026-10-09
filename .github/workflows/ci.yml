@@ -119,7 +119,8 @@ jobs:
           git clone --filter=blob:none --no-checkout https://github.com/leanprover-community/mathlib4.git "$proof_tools/mathlib"
           git -C "$proof_tools/mathlib" checkout --detach c44e0c8ee63ca166450922a373c7409c5d26b00b
           export PATH="$proof_tools/lean-4.19.0-linux/bin:$PATH"
-          lake --dir "$proof_tools/mathlib" exe cache get
+          # The cache downloader reads lean-toolchain relative to its process cwd.
+          (cd "$proof_tools/mathlib" && lake exe cache get)
           NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" bash scripts/check-numerical-proof.sh
           LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" node scripts/check-proofs.mjs
       - name: Check production WebAssembly dependencies
