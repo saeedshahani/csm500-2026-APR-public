@@ -1,0 +1,8 @@
+✔ [7/12] Built Cache.Lean:c.o
+✔ [8/12] Built Cache.Main:c.o
+✔ [9/12] Built Cache.Hashing:c.o
+✔ [10/12] Built Cache.Requests:c.o
+✔ [11/12] Built Cache.IO:c.o
+✔ [12/12] Built cache
+dyld[14461]: __DATA_CONST segment missing SG_READ_ONLY flag in /private/tmp/s7a-proof-recheck.EUoV6T/mathlib/.lake/build/bin/cache
+dyld[14461]: __DATA_CONST segment missing SG_READ_ONLY flag

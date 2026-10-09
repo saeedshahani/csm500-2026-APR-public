@@ -2,6 +2,9 @@ name: Rust checks
 on: [push, pull_request]
 permissions:
   contents: read
+env:
+  # Disposable runners do not reuse the large incremental compilation cache.
+  CARGO_INCREMENTAL: '0'
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -103,26 +106,6 @@ jobs:
           node scripts/verify-benchmark.mjs
           cargo build --release --locked -p cli
           node scripts/selected-provenance-study.mjs "$RUNNER_TEMP/selected-provenance.json"
-      - name: Pinned kernel proofs and independent admission campaigns
-        shell: bash
-        run: |
-          proof_tools=$(mktemp -d)
-          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst --output "$proof_tools/lean.tar.zst"
-          tar --zstd -xf "$proof_tools/lean.tar.zst" -C "$proof_tools"
-          LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" node scripts/admission-study.mjs verify benchmarks/results/admission-01 --proof
-          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/organization/Composition.lean
-          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/versioned/Publication.lean
-          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/action_learning/Safety.lean
-          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/observation/Certificates.lean
-          "$proof_tools/lean-4.19.0-linux/bin/lean" crates/engine/proofs/RepresentationCosts.lean
-          "$proof_tools/lean-4.19.0-linux/bin/lean" crates/engine/proofs/SelectedProvenance.lean
-          git clone --filter=blob:none --no-checkout https://github.com/leanprover-community/mathlib4.git "$proof_tools/mathlib"
-          git -C "$proof_tools/mathlib" checkout --detach c44e0c8ee63ca166450922a373c7409c5d26b00b
-          export PATH="$proof_tools/lean-4.19.0-linux/bin:$PATH"
-          # The cache downloader reads lean-toolchain relative to its process cwd.
-          (cd "$proof_tools/mathlib" && lake exe cache get)
-          NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" bash scripts/check-numerical-proof.sh
-          LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" node scripts/check-proofs.mjs
       - name: Check production WebAssembly dependencies
         run: |
           rustup target add wasm32-unknown-unknown --toolchain 1.85.0
@@ -162,3 +145,36 @@ jobs:
           status=0
           cargo run --locked -p cli -- run examples/programs/mutual-regress.graph --max-steps 1 --rule p || status=$?
           test "$status" -eq 4
+  proofs:
+    # Mathlib and the complete Rust build exceed a shared runner's disk budget.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+      - name: Build native admission campaign dependency
+        run: |
+          rustup toolchain install 1.85.0 --profile minimal
+          cargo build --release --locked -p engine --example admission_audit
+      - name: Pinned kernel proofs and independent admission campaigns
+        shell: bash
+        run: |
+          proof_tools=$(mktemp -d)
+          curl --fail --location --retry 3 https://github.com/leanprover/lean4/releases/download/v4.19.0/lean-4.19.0-linux.tar.zst --output "$proof_tools/lean.tar.zst"
+          tar --zstd -xf "$proof_tools/lean.tar.zst" -C "$proof_tools"
+          LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" node scripts/admission-study.mjs verify benchmarks/results/admission-01 --proof
+          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/organization/Composition.lean
+          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/versioned/Publication.lean
+          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/action_learning/Safety.lean
+          "$proof_tools/lean-4.19.0-linux/bin/lean" proofs/observation/Certificates.lean
+          "$proof_tools/lean-4.19.0-linux/bin/lean" crates/engine/proofs/RepresentationCosts.lean
+          "$proof_tools/lean-4.19.0-linux/bin/lean" crates/engine/proofs/SelectedProvenance.lean
+          git clone --filter=blob:none --no-checkout https://github.com/leanprover-community/mathlib4.git "$proof_tools/mathlib"
+          git -C "$proof_tools/mathlib" checkout --detach c44e0c8ee63ca166450922a373c7409c5d26b00b
+          export PATH="$proof_tools/lean-4.19.0-linux/bin:$PATH"
+          # The cache downloader reads lean-toolchain relative to its process cwd.
+          (cd "$proof_tools/mathlib" && lake exe cache get)
+          NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" bash scripts/check-numerical-proof.sh
+          LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin/lean" NUMERICAL_MATHLIB="$proof_tools/mathlib" NUMERICAL_LEAN_BIN="$proof_tools/lean-4.19.0-linux/bin" node scripts/check-proofs.mjs

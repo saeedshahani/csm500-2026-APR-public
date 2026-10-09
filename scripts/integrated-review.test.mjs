@@ -36,6 +36,18 @@ test('CI cache-setup errors remain failures',t=>{
   assert.equal(run.status,23,run.stderr);
   assert.equal(run.signal,null);
 });
+test('CI isolates Mathlib storage and retains the native proof-campaign dependency',()=>{
+  const workflow=readFileSync('.github/workflows/ci.yml','utf8');
+  assert.match(workflow,/CARGO_INCREMENTAL: '0'/);
+  const jobs=workflow.match(/\n  check:\n([\s\S]*?)\n  proofs:\n([\s\S]*)$/);
+  assert.ok(jobs,'proof verification needs a separate runner');
+  assert.ok(!jobs[1].includes('lake exe cache get'));
+  assert.match(jobs[2],/runs-on: ubuntu-latest/);
+  assert.match(jobs[2],/cargo build --release --locked -p engine --example admission_audit/);
+  assert.match(jobs[2],/admission-study\.mjs verify benchmarks\/results\/admission-01 --proof/);
+  assert.match(jobs[2],/node scripts\/check-proofs\.mjs/);
+  assert.ok(!jobs[2].includes('cargo test --workspace'));
+});
 
 test('source verification matches Rust component ordering and the current executable',()=>{
   assert.ok(compareRustPaths('src/causal/provenance.rs','src/causal.rs')<0);
