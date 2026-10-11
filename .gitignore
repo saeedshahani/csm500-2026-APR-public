@@ -2,11 +2,11 @@
 .env
 .env.*
 !.env.example
-CLAUDE.md
 .DS_Store
 
-# Personal manuscripts, readings, research history and document-production tools.
-/docs/
+# Archived manuscripts, research history and local document-production tools.
+/docs/archive/
+/figures/
 
 # Dependencies and generated builds.
 node_modules/

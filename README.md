@@ -26,7 +26,7 @@ New to the project? Start with the browser's order walkthrough and the [workbenc
 
 Software instructions remain in [the workbench guide](frontend/GUIDE.md), the component READMEs and the [example catalogue](examples/README.md). The [evaluation protocol](benchmarks/PROTOCOL.md), retained results under `benchmarks/results/`, proof sources and verification scripts supply the reproducibility material.
 
-Academic manuscripts and planning documents are maintained separately in the ignored `docs/` directory. They are not required to build or test the software. Frozen experimental protocols and source bundles retain their original contents and hashes.
+The [dissertation](docs/Dissertation.pdf) presents the research, software and evaluation. The [architecture](docs/architecture.pdf) and [formal model](docs/formalism.pdf) provide concise accounts of the system design and its semantics. The software can be built and tested independently of these documents. Frozen experimental protocols and source bundles retain their original contents and hashes.
 
 ## Build and check
 
