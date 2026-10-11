@@ -10,14 +10,14 @@ import {createHash} from 'node:crypto';
 import {sourceFiles} from './research-source-files.mjs';
 
 const sha = bytes => createHash('sha256').update(bytes).digest('hex');
-// The submission is mandatory; personal supplements have local-only checks.
+// Papers are maintained locally; software and evidence checks run in every checkout.
 const localFiles = files => files.filter(file => existsSync(file));
-const manuscripts = ['docs/dissertation.md', ...localFiles(['docs/archive/dissertation-full.md'])];
+const manuscripts = localFiles(['docs/dissertation.md', 'docs/archive/dissertation-full.md']);
 // Source archives have no Git metadata. Walk the distributed documentation there;
 // omit generated products and immutable historical bundles in either mode.
 function markdownPaths(directory='') {
   const omitted=new Set(['.git','node_modules','target','output','.firebase','.playwright-cli',
-    'docs/archive','benchmarks/results','frontend/dist','frontend/pkg','frontend/pkg-node',
+    'docs','benchmarks/results','frontend/dist','frontend/pkg','frontend/pkg-node',
     'frontend/test-results','frontend/playwright-report']);
   const paths=[];
   for(const entry of readdirSync(directory||'.',{withFileTypes:true})) {
@@ -28,22 +28,22 @@ function markdownPaths(directory='') {
   }
   return paths.sort();
 }
-test('the complete academic archive has one ignore rule without exceptions', () => {
+test('local academic documents have one ignore rule and are not tracked', () => {
   const rules=readFileSync('.gitignore','utf8').split('\n');
-  assert.deepEqual(rules.filter(line=>line.includes('docs/archive')),['/docs/archive/']);
+  assert.deepEqual(rules.filter(line=>line.includes('docs/')),['/docs/']);
   const temporary=mkdtempSync(join(tmpdir(),'reflective-ignore-check-'));
   try {
     execFileSync('git',['init','--quiet',temporary]);
     cpSync('.gitignore',join(temporary,'.gitignore'));
-    for(const path of ['README.md','dissertation-full.md','reference/trace-format.md','papers/example.pdf','explainers/simple.md','research/stretch/example.md']) {
-      const result=spawnSync('git',['check-ignore','--no-index','--quiet',`docs/archive/${path}`],{cwd:temporary});
+    for(const path of ['README.md','dissertation-full.md','reference/trace-format.md','papers/example.pdf','explainers/simple.md','research/stretch/example.md','document-production/render-dissertation-figures.mjs','document-production/render-dissertation-document.mjs','document-production/dissertation-figures.test.mjs','document-production/export-platform-graph.js','document-production/publication.css']) {
+      const result=spawnSync('git',['check-ignore','--no-index','--quiet',`docs/${path}`],{cwd:temporary});
       assert.equal(result.status,0,path);
     }
   } finally {
     rmSync(temporary,{recursive:true,force:true});
   }
-  if(existsSync('.git'))assert.equal(execFileSync('git',['ls-files','--','docs/archive'],{encoding:'utf8'}).trim(),'');
-  else assert.equal(existsSync('docs/archive'),false,'personal archive must not be distributed');
+  if(existsSync('.git'))assert.equal(execFileSync('git',['ls-files','--','docs'],{encoding:'utf8'}).trim(),'');
+  else assert.equal(existsSync('docs'),false,'personal documents must not be distributed');
 });
 test('current experiment collectors include the public protocol without private inputs', () => {
   assert.ok(existsSync('benchmarks/PROTOCOL.md'));
@@ -53,13 +53,13 @@ test('current experiment collectors include the public protocol without private 
     assert.doesNotMatch(source,/['"]docs\/(?:archive|research)\//,name);
   }
 });
-test('Sprint 7 separates substantive freeze from retained final delivery', () => {
+test('Sprint 7 separates substantive freeze from retained final delivery', {skip: !existsSync('docs/task-list.md')}, () => {
   const tasks=readFileSync('docs/task-list.md','utf8');
   const plan=readFileSync('docs/sprint-plan.md','utf8');
   const stageA='### S7A — Consolidation, cleanup and substantive freeze';
   const stageB='### S7B — Final document production, verification and handoff';
   for(const text of [tasks,plan]) {
-    assert.match(text,/## Sprint 7: 2 Oct – 13 Oct 2026/);
+    assert.match(text,/## Sprint 7: 7 Oct – 13 Oct 2026/);
     assert.ok(text.indexOf(stageA)>=0 && text.indexOf(stageB)>text.indexOf(stageA));
     for(let i=1;i<=5;i++)assert.ok(text.includes(`S7B.${i}`));
   }
@@ -122,7 +122,7 @@ test('representation costs use native verified states and preserve theoretical l
   assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('crates/engine/proofs/RepresentationCosts.lean'));
 });
 test('action acquisition has native execution and evidence-qualified standalone claims', () => {
-  for (const file of [...manuscripts,'docs/formalism.md','docs/architecture.md',...localFiles(['docs/archive/explainers/simple.md'])]) {
+  for (const file of [...manuscripts,...localFiles(['docs/formalism.md','docs/architecture.md','docs/archive/explainers/simple.md'])]) {
     const text=readFileSync(file,'utf8');
     assert.doesNotMatch(text,/research\/stretch\/T4-|T4 integration|phase-six learner/);
     assert.match(text,/quarantine/i);
@@ -130,8 +130,8 @@ test('action acquisition has native execution and evidence-qualified standalone 
   for(const file of manuscripts) {
     const text=readFileSync(file,'utf8').split('# Bibliography')[0];
     for(const count of ['7,776','31,104','9,000','324','144']) assert.ok(text.includes(count),`${file}: ${count}`);
-    assert.match(text,/Juba, Le and Stern \(2021\)/);
-    assert.match(text,/Fitting (remains|is)/);
+    assert.match(text,/Juba, Le and Stern(?: \(2021\)|, 2021)/);
+    assert.match(text,/[Ff]itting (remains|is)/);
   }
   for(const file of ['crates/engine/src/action_learning.rs','crates/engine/src/action_learning/carrier.rs']) {
     assert.doesNotMatch(readFileSync(file,'utf8'),/std::process|Command::new|research\/stretch|tests\/oracles/);
@@ -140,7 +140,7 @@ test('action acquisition has native execution and evidence-qualified standalone 
   assert.ok(ci.includes('proofs/action_learning/Safety.lean'));
   assert.ok(ci.includes('proofs/observation/Certificates.lean'));
 });
-test('the historical proposal is immutable while the dissertations remain maintained research', () => {
+test('the historical proposal is immutable while the dissertations remain maintained research', {skip: !existsSync('docs/project-proposal.md')}, () => {
   // Initial commit 04cfd35, including its original typo, links and missing final newline.
   // A fixed byte hash works in shallow checkouts and must not track editorial changes.
   const proposal = readFileSync('docs/project-proposal.md');
@@ -168,7 +168,7 @@ test('research applications use the existing Rust workspace rather than explorat
     assert.match(readFileSync('docs/archive/dissertation-full.md','utf8'), /0≤C_B<∞/);
 });
 
-test('the submission and any local full manuscript are standalone academic accounts', () => {
+test('the submission and any local full manuscript are standalone academic accounts', {skip: manuscripts.length === 0}, () => {
   for (const path of manuscripts) {
     const body = readFileSync(path, 'utf8').split('# Bibliography')[0];
     assert.deepEqual([...body.matchAll(/^# (\d+)\. /gm)].map(m => Number(m[1])), [1,2,3,4,5,6,7,8,9]);
@@ -202,7 +202,7 @@ test('versioned interpretation is native and its assurance includes installed bo
   }
 });
 
-test('literature reconciliation preserves provenance and the admission boundary', () => {
+test('literature reconciliation preserves provenance and the admission boundary', {skip: !existsSync('docs/formalism.md')}, () => {
   if(existsSync('docs/archive/dissertation-full.md')) {
   const full = readFileSync('docs/archive/dissertation-full.md', 'utf8');
   assert.match(full, /Tomita, Kurokawa and Murata \(2002, §2\)/);
@@ -229,8 +229,8 @@ test('literature reconciliation preserves provenance and the admission boundary'
   // Bibliographic corrections belong in the maintained papers, never the proposal.
 });
 
-test('planning preserves sprint dates, task identities and explicit final-candidate gates', () => {
-  const expected = ['13 Jul – 26 Jul', '27 Jul – 9 Aug', '10 Aug – 23 Aug', '24 Aug – 6 Sep', '7 Sep – 20 Sep', '21 Sep – 1 Oct', '2 Oct – 13 Oct'];
+test('planning records authorised activity dates and preserves task identities and final-candidate gates', {skip: !existsSync('docs/task-list.md')}, () => {
+  const expected = ['29 Aug – 6 Sep', '9 Sep – 11 Sep', '12 Sep', '12 Sep – 15 Sep', '15 Sep – 16 Sep', '16 Sep – 7 Oct', '7 Oct – 13 Oct'];
   for (const path of ['docs/sprint-plan.md', 'docs/task-list.md']) {
     const text = readFileSync(path, 'utf8');
     assert.deepEqual([...text.matchAll(/^## Sprint (\d+): (.+) 2026$/gm)].map(m => [Number(m[1]), m[2]]), expected.map((date, i) => [i+1, date]));
@@ -261,8 +261,10 @@ test('reproduction claims separate cross-environment semantics from byte identit
     for(const text of required)assert.ok(body.includes(text),`${file}: ${text}`);
     assert.doesNotMatch(body,/\]\((?:\.\.\/)*docs\//);
   }
-  assert.ok(readFileSync('docs/task-list.md','utf8').includes('- [x] S6-233 —'));
-  assert.ok(readFileSync('docs/task-list.md','utf8').includes('S6-234 —'));
+  if(existsSync('docs/task-list.md')) {
+    assert.ok(readFileSync('docs/task-list.md','utf8').includes('- [x] S6-233 —'));
+    assert.ok(readFileSync('docs/task-list.md','utf8').includes('S6-234 —'));
+  }
   execFileSync(process.execPath,['scripts/verify-reproduction.mjs','--check','benchmarks/results/reproduction-m/report.json'],{env:{...process.env,PATH:''}});
 });
 test('research source collection is recursive, deterministic and refuses nonregular entries', () => {
@@ -299,7 +301,9 @@ test('meaning claims distinguish normality, useful interpretation and intrinsic 
     for(const item of required)assert.ok(body.includes(item),`${path}: ${item}`);
     assert.doesNotMatch(body,/\]\((?:\.\.\/)*docs\//);
   }
-  const tasks=readFileSync('docs/task-list.md','utf8');for(const id of ['S6-183','S6-232'])assert.ok(tasks.includes(`- [x] ${id} —`));
+  if(existsSync('docs/task-list.md')) {
+    const tasks=readFileSync('docs/task-list.md','utf8');for(const id of ['S6-183','S6-232'])assert.ok(tasks.includes(`- [x] ${id} —`));
+  }
 });
 test('learning claims retain strong baselines, native scope and both standalone papers',()=>{
   const r=JSON.parse(readFileSync('benchmarks/results/learning-02/report.json'));
@@ -342,11 +346,42 @@ test('open lambda extension retains scoped evidence, compatibility and standalon
   }
   execFileSync(process.execPath,['scripts/lambda-open-study.mjs','verify','benchmarks/results/lambda-open-01']);
 });
+test('integrated research cites its primary precedents in prose and bibliography', {skip: manuscripts.length === 0}, () => {
+  const sources = [
+    ['Grundy', '2006'], ['Cirstea', '2001'], ['Lafont', '1997'],
+    ['Kissinger', '2015'], ['Lippi', '2007'], ['de Moura', '2021'],
+    ['Füchslin', '2001'], ['Wills', '2023'],
+    ['Bertsekas', '1983'], ['Kawan', '2025'], ['Geiselhart', '2016'], ['Rump', '2010'],
+    ['Amin', '2026'], ['Stoyle', '2007'],
+    ['Juba', '2021'], ['Peled', '1999'],
+    ['Kolmogorov', '1965'], ['Shen', '2015'], ['Allender', '2001'],
+    ['Grädel', '2017'], ['Baldan', '2019'],
+  ];
+  for (const path of manuscripts) {
+    const [body, remainder] = readFileSync(path, 'utf8').split('# Bibliography');
+    assert.ok(remainder, `${path}: bibliography missing`);
+    const entries = remainder.split('# Appendix')[0].trim().split(/\n\n+/);
+    assert.equal(new Set(entries).size, entries.length, `${path}: duplicate reference`);
+    for (const entry of entries) {
+      const author = entry.match(/^([^,(]+)(?:,| \()/)?.[1];
+      const year = entry.match(/\((\d{4}|n\.d\.)\)/)?.[1];
+      assert.ok(author && year, `${path}: unrecognised reference: ${entry}`);
+      const escape = value => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      assert.match(body, new RegExp(`${escape(author)}[^\\n]{0,150}${escape(year)}`), `${path}: uncited bibliography entry for ${author} ${year}`);
+    }
+    for (const [author, year] of sources) {
+      assert.match(body, new RegExp(`${author}[^\\n]{0,150}${year}`), `${path}: missing prose attribution for ${author} ${year}`);
+      assert.ok(entries.some(entry => entry.startsWith(`${author},`) && entry.includes(`(${year})`)), `${path}: missing reference for ${author} ${year}`);
+    }
+    assert.doesNotMatch(body, /(?:research\/stretch|T[1-6]-2026)/, `${path}: private research dependency`);
+  }
+});
 test('minimality papers retain the verified comparison and condensed word budget', () => {
-  const short=readFileSync('docs/dissertation.md','utf8').split('# Bibliography')[0];
+  const short=existsSync('docs/dissertation.md') ? readFileSync('docs/dissertation.md','utf8').split('# Bibliography')[0] : '';
   // Conservative check includes the title, abstract, headings, tables and captions.
-  // Only the bibliography is excluded; the user confirmed a 7,000-word ceiling.
-  assert.ok(short.trim().split(/\s+/).length<=7000,'condensed paper exceeds the confirmed 7,000-word ceiling');
+  // Source includes title, abstract, headings, tables and figure captions.
+  // Publication adds thirteen table-caption words; contents/lists duplicate text.
+  assert.ok(short.trim().split(/\s+/).length+13<=7000,'condensed paper exceeds the confirmed 7,000-word ceiling');
   for(const text of manuscripts.map(file=>readFileSync(file,'utf8').split('# Bibliography')[0])) {
     for(const required of ['U_M','U_T','U_P','238,480','1,431'])assert.ok(text.includes(required),required);
     assert.match(text,/variable-heavy|128 additional unowned/);
@@ -355,8 +390,11 @@ test('minimality papers retain the verified comparison and condensed word budget
   assert.equal(report.native_cases,477);assert.equal(report.translated_queries,1431);
   assert.equal(report.gadgets.reduce((sum,row)=>sum+row.total,0),238480);
 });
-test('manuscript section numbers are unique and local references resolve',()=>{
+test('manuscript section numbers are unique and local references resolve',{skip: manuscripts.length === 0},()=>{
   for(const file of manuscripts) {
+    const manuscript=readFileSync(file,'utf8');
+    const renderedFigures=new Set([...manuscript.matchAll(/^!\[Figure (\d+)\./gm)].map(m=>m[1]));
+    for(const [,number]of manuscript.matchAll(/\bFigure (\d+)\b/g))assert.ok(renderedFigures.has(number),`${file}: unresolved figure ${number}`);
     const body=readFileSync(file,'utf8').split('# Bibliography')[0];
     const sections=[...body.matchAll(/^#{1,6} (\d+(?:\.\d+)*)(?:\.)? /gm)].map(m=>m[1]);
     assert.equal(new Set(sections).size,sections.length,`${file}: duplicate numbered heading`);
@@ -401,7 +439,7 @@ test('local archived loop plans retain their ledger and anchors', {skip: !exists
 test('live repository Markdown links resolve after consolidation', () => {
   // Adopted documentation must survive exclusion of exploratory work. Frozen
   // collections verify their own manifests and are not live documentation.
-  const paths = (existsSync('.git') ? [...new Set(execFileSync('git', ['ls-files','-co','--exclude-standard','--','*.md',':(exclude)docs/archive/**'], {encoding:'utf8',maxBuffer:16*1024*1024}).trim().split('\n'))] : markdownPaths())
+  const paths = (existsSync('.git') ? [...new Set(execFileSync('git', ['ls-files','-co','--exclude-standard','--','*.md',':(exclude)docs/**'], {encoding:'utf8',maxBuffer:16*1024*1024}).trim().split('\n'))] : markdownPaths())
     .filter(p => p.endsWith('.md') && !p.startsWith('benchmarks/results/') && existsSync(p));
   const missing = [];
   for (const file of paths) {
@@ -411,7 +449,7 @@ test('live repository Markdown links resolve after consolidation', () => {
       const pathname = ref.split('#')[0];
       if (/^(?:[a-z]+:|\/\/)/i.test(pathname)) continue;
       const target = pathname ? resolve(dirname(file),decodeURIComponent(pathname)) : resolve(file);
-      assert.ok(!relative(process.cwd(),target).startsWith('docs/archive/'),`${file}: public link requires private archive: ${ref}`);
+      assert.ok(!relative(process.cwd(),target).startsWith('docs/'),`${file}: public link requires private documents: ${ref}`);
       if (!existsSync(target)) missing.push(`${file}: ${ref}`);
       const fragment = ref.split('#')[1];
       // The proposal is immutable historical material. Check maintained Markdown
@@ -432,7 +470,7 @@ test('live repository Markdown links resolve after consolidation', () => {
     }
   }
   assert.deepEqual(missing,[]);
-  assert.match(readFileSync('frontend/src/Guide.tsx','utf8'),/docs\/guides\/workbench\.md\?raw/);
+  assert.match(readFileSync('frontend/src/Guide.tsx','utf8'),/\.\.\/GUIDE\.md\?raw/);
 });
 test('personal research reference anchors remain usable locally', {skip: !existsSync('docs/archive/research/evaluation.md')}, () => {
   for(const [path,anchors] of [
@@ -478,7 +516,7 @@ test('acquired organization is adopted with corrected evidence and standalone pr
   assert.equal(results.groups['acquisition-learned'].met_criteria,4);
   assert.equal(results.groups['inheritance-both64'].met_criteria,2);
   assert.equal(results.groups['inheritance-both32'].met_criteria,0);
-  for (const file of [...manuscripts,'docs/architecture.md','crates/engine/src/organization/mod.rs','crates/engine/src/learned_model.rs']) {
+  for (const file of [...manuscripts,...localFiles(['docs/architecture.md']),'crates/engine/src/organization/mod.rs','crates/engine/src/learned_model.rs']) {
     const text=readFileSync(file,'utf8');
     assert.doesNotMatch(text,/T1 Research Record|T1 extension|research\/stretch\/T1-/);
   }
@@ -490,10 +528,12 @@ test('acquired organization is adopted with corrected evidence and standalone pr
     assert.doesNotMatch(readFileSync(file,'utf8'), /std::process|Command::new|tests\/oracles/);
   }
   assert.ok(readFileSync('.github/workflows/ci.yml','utf8').includes('numerical-rust-study.py'));
-  const short = readFileSync('docs/dissertation.md','utf8');
-  const organizationSection = short.indexOf('## 8.3 Can acquired representations support renewal?');
-  assert.ok(organizationSection >= 0 && organizationSection < short.indexOf('# 9. Discussion'));
-  assert.doesNotMatch(short, /findings strengthen RQ3 and RQ5/);
+  if(existsSync('docs/dissertation.md')) {
+    const short = readFileSync('docs/dissertation.md','utf8');
+    const organizationSection = short.indexOf('## 8.3 Acquired representations and renewal');
+    assert.ok(organizationSection >= 0 && organizationSection < short.indexOf('# 9. Discussion'));
+    assert.doesNotMatch(short, /findings strengthen RQ3 and RQ5/);
+  }
   for (const file of manuscripts) {
     assert.match(readFileSync(file,'utf8'), /[Aa]blations/);
   }

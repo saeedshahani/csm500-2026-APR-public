@@ -12,4 +12,4 @@ cargo run -p cli -- replay examples/traces/stable.trace.json --at 0
 cargo run -p cli -- replay examples/traces/stable.trace.json --at 1
 ```
 
-To obtain a new scheduled trace, run the export command documented in docs/reference/trace-format.md. A source-build mismatch rejects scheduler reproduction; this explicitly selected prefix remains subject to checked binding replay under the supported semantic profile. Editing its event, revision, fresh identities or dependency claims is not a valid way to change the result.
+To obtain a new scheduled trace, use `cargo run -p cli -- export examples/behaviour/stable.graph --max-steps 1 --output NEW.trace.json`. A source-build mismatch rejects scheduler reproduction; this explicitly selected prefix remains subject to checked binding replay under the supported semantic profile. Editing its event, revision, fresh identities or dependency claims is not a valid way to change the result.

@@ -13,7 +13,7 @@ The production distribution includes `third-party-notices.md`: Vite collects bun
 
 Verification: npm run lint, npm run test:unit, npm run test:parity, and npm run test:browser (after npx playwright install chromium). Browser tests use the production build, which must be rebuilt after Rust or frontend changes.
 
-See the [architecture](../docs/architecture.md) and [workbench guide](../docs/guides/workbench.md) for commands, limits, interruption, replay and research boundaries.
+See the [workbench guide](GUIDE.md), the [native command examples](../README.md) and the [platform API](../platform/README.md) for commands, limits, interruption and replay.
 
 ## UI reference for future work
 

@@ -425,18 +425,12 @@ fn reserved_names_and_wrong_label_positions_are_syntax_errors() {
 
 #[test]
 fn documented_graph_examples_are_accepted_by_the_actual_parser() {
-    // Test the tracked architecture rather than requiring the working paper or
-    // locally ignored explainers in repository builds.
-    let architecture = include_str!("../../../docs/architecture.md");
-    let mut count = 0;
-    for section in architecture.split("```graph\n").skip(1) {
-        let source = section.split("```").next().unwrap();
+    // Public syntax specimens remain build inputs independently of local papers.
+    for source in [
+        include_str!("../../../examples/syntax/inactive-keep.graph"),
+        include_str!("../../../examples/syntax/install-wrap.graph"),
+    ] {
         parse(source).unwrap();
         parser::load(source).unwrap();
-        count += 1;
     }
-    assert!(
-        count > 0,
-        "architecture must contain a runnable syntax specimen"
-    );
 }

@@ -5,8 +5,8 @@
 CLAUDE.md
 .DS_Store
 
-# Personal manuscripts, readings and research history.
-/docs/archive/
+# Personal manuscripts, readings, research history and document-production tools.
+/docs/
 
 # Dependencies and generated builds.
 node_modules/

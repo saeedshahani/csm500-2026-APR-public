@@ -1,0 +1,11 @@
+program {
+    rule keep {
+        atom zero = Nat();
+        rank keep_rank = zero;
+        mode keep_mode = ModeObject;
+        revision keep_revision;
+        atom x = PatternVariable[Constructor] Free;
+        lhs { keep_l: x; }
+        rhs { keep_r: x; }
+    }
+}

@@ -61,7 +61,7 @@ export function sourceInventory() {
   const paths = execFileSync('git',['ls-files','-co','--exclude-standard'],{encoding:'utf8'}).trim().split('\n');
   return Object.fromEntries([...new Set(paths)].filter(p =>
     /^(Cargo\.(toml|lock)|rust-toolchain\.toml|rustfmt\.toml|firebase(?:\.hosted)?\.json|firestore\.(rules|indexes\.json)|storage\.rules|\.firebaserc|\.dockerignore|\.gitignore)$/.test(p) ||
-    p==='docs/guides/workbench.md' || p==='benchmarks/PROTOCOL.md' ||
+    p==='benchmarks/PROTOCOL.md' ||
     /^(crates|examples|scripts|platform|frontend|proofs|models|tests|\.github)\//.test(p)
   ).filter(p => !p.endsWith('/.DS_Store')).sort().map(p => [p,hash(readFileSync(p))]));
 }

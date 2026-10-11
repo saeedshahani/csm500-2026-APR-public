@@ -1,4 +1,4 @@
-import guide from '../../docs/guides/workbench.md?raw';
+import guide from '../GUIDE.md?raw';
 const inline=(text:string)=>text.split(/(`[^`]+`)/g).map((part,index)=>part.startsWith('`')&&part.endsWith('`')?<code key={index}>{part.slice(1,-1)}</code>:part);
 // Render this repository-owned Markdown as React text, never as executable HTML.
 export function Guide(){

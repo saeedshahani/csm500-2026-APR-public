@@ -36,7 +36,7 @@ Cross-environment reproduction separates semantic agreement, executable-byte ide
 
 Use the verifier belonging to each result family; its default directory identifies the retained collection. Verification checks hashes, schemas, expected matrices, outcomes and independent oracles as applicable. `--live` repeats the supported native checks with the current build; it does not imply repeated timing. Proof checks require their pinned Lean/Mathlib dependencies. Refer to each script's usage and the adjacent result README for exact commands and supported modes.
 
-Required collectors, verifiers, proof sources, fixtures and retained result bundles are part of the software distribution. The private `docs/archive/` tree is not a build, test or evaluation dependency. The submitted dissertation must state its definitions, methods and results directly, without requiring another project document to supply its argument.
+Required collectors, verifiers, proof sources, fixtures and retained result bundles are part of the software distribution. The private `docs/` tree is not a build, test or evaluation dependency. The submitted dissertation must state its definitions, methods and results directly, without requiring another project document to supply its argument.
 
 ### Complete candidate acceptance
 

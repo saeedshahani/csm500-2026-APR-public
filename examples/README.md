@@ -1,6 +1,6 @@
 # Example catalogue and capability audit
 
-The optional native analysis fixture [inert-log.graph](practical/inert-log.graph) combines a two-credit rule factory with an indefinitely allocating logger. `meta-abstract` can establish its two-edit bound by checking that isolated `Log` atoms remain unreadable; ordinary `meta-check` cannot complete its infinite full-carrier quotient. This is an analysis witness, not an additional browser catalogue entry or a runtime garbage collector. [See the meta-activity study](../docs/formalism.md) for reader, connected-growth and starvation counterexamples.
+The optional native analysis fixture [inert-log.graph](practical/inert-log.graph) combines a two-credit rule factory with an indefinitely allocating logger. `meta-abstract` can establish its two-edit bound by checking that isolated `Log` atoms remain unreadable; ordinary `meta-check` cannot complete its infinite full-carrier quotient. This is an analysis witness, not an additional browser catalogue entry or a runtime garbage collector.
 
 The catalogue contains nineteen complete programs covering the seven required research categories: arithmetic, reflective modification, stability, oscillation, collapse, independent rewrites and lambda reduction. Two work-item profiles provide an additional practical interpretation; guarded processing also belongs to the reflective category. Version-aware interpretation demonstrates continuity across a checked implementation change. Every executable `.graph` includes its rules and initial data. No external rule store or built-in arithmetic operation is required.
 
@@ -20,7 +20,7 @@ Publication refuses to overwrite an existing destination. `NormalForm` exits 0; 
 
 In the browser, select the same example, press **Apply example settings**, then **Load program** and **Run**. Selecting source or applying settings does not modify an already loaded history. The timeline inspects that history. Lambda entries are also available through the named-source editor; the graph gallery displays the complete generated program, including its eleven machine rules.
 
-For a debugger walkthrough, open Rule breakpoints after loading practical/policy-enable and select process. The activation event runs first; the browser then pauses before processing an item with the replacement revision. Step commits that occurrence, while Run continues until another selected breakpoint or execution boundary. Debugger pauses do not add events or change the reference result. Reset/load/import clear the selections; worker recovery restores acknowledged controls separately from the trace. See [the workbench guide](../docs/guides/workbench.md#understand-why-execution-stops).
+For a debugger walkthrough, open Rule breakpoints after loading practical/policy-enable and select process. The activation event runs first; the browser then pauses before processing an item with the replacement revision. Step commits that occurrence, while Run continues until another selected breakpoint or execution boundary. Debugger pauses do not add events or change the reference result. Reset/load/import clear the selections; worker recovery restores acknowledged controls separately from the trace. See [the workbench guide](../frontend/GUIDE.md#understand-why-execution-stops).
 
 | Executable input | Step bound | Reference outcome | Interpretation and supporting evidence |
 |---|---:|---|---|
@@ -73,7 +73,7 @@ These generated regressions detect drift; they are not independent correctness p
 
 ## Capability conclusions
 
-The eight capabilities are those fixed in [formalism §12.1](../docs/formalism.md), not easier substitutes chosen after implementation.
+The following eight capabilities define the example audit. Each has executable evidence and an explicit scope.
 
 | Capability | Retained evidence | Conclusion and boundary |
 |---|---|---|
