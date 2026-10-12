@@ -115,6 +115,7 @@ test('submission assessment preserves proposal boundaries and separate finalisat
   for(const rq of ['RQ1','RQ2','RQ3','RQ4','RQ5'])assert.ok(paper.includes(`**${rq}:**`));
   for(const phrase of ['intrinsic meaning','global minimality','native refinement'])assert.ok(paper.includes(phrase));
   const task=readFileSync('docs/archive/task-list.md','utf8');
-  for(const id of ['S6-048','S6-072','S6-084'])assert.ok(task.includes(`- [ ] ${id} —`));
+  // Finalisation obligations must remain traceable after they are completed.
+  for(const id of ['S6-048','S6-072','S6-084'])assert.match(task,new RegExp(`^- \\[[ x]\\] ${id} —`,'m'));
   assert.ok(readFileSync('docs/archive/architecture.md','utf8').includes('closed and explicit-context open weak-head encoding'));
 });
