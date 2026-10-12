@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "Please cite this software and its accompanying dissertation when referring to this work."
+title: "A Minimal Self-Referential Graph Formalism for Internal Semantic and Temporal Structure"
+type: software
+authors:
+  - name: "Shahzada Saeed"
+repository-code: "https://github.com/saeedshahani/csm500-2026-APR-public"
+url: "https://reflective-graph-f1cd4.web.app/"
+version: "msc-final-2026-10-12"
+date-released: 2026-10-12
+license: "LicenseRef-All-Rights-Reserved"
